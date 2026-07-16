@@ -129,7 +129,7 @@
             "range": "1%",
             "numeral_color": "green",
             "label_color": "white",
-            "range_color": "muted",
+            "range_color": "light",
             "highlight": false
           }
         },
