@@ -16,11 +16,12 @@
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
         "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
         "image_url_mobile": "",
+        "overlay_strength": 45,
         "anchor_id": "top",
         "heading_size": 52,
         "heading_size_mobile": 30,
         "badge": "PREVENTIVE HEALTHCARE",
-        "heading": "Understand your body.\nProtect your health.",
+        "heading": "Understand your body.\nProtect your future health.",
         "subheading": "Powered by the world’s most advanced health measurement technology, AI, and physician expertise.",
         "council_line": "",
         "button_label": "Join the waitlist",
@@ -218,30 +219,12 @@
             "link": ""
           }
         },
-        "d2": {
-          "type": "addon",
-          "settings": {
-            "icon": "mri",
-            "name": "Full-Body MRI",
-            "description": "Comprehensive whole-body screening",
-            "link": ""
-          }
-        },
         "d3": {
           "type": "addon",
           "settings": {
             "icon": "blood",
             "name": "Multi-Cancer Blood Test",
             "description": "Early screening for 50+ cancers",
-            "link": ""
-          }
-        },
-        "d4": {
-          "type": "addon",
-          "settings": {
-            "icon": "heartbeat",
-            "name": "Coronary CT Angiography",
-            "description": "Detect hidden heart disease",
             "link": ""
           }
         },
@@ -257,9 +240,7 @@
       },
       "block_order": [
         "d1",
-        "d2",
         "d3",
-        "d4",
         "d5"
       ],
       "settings": {
