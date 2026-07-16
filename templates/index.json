@@ -16,9 +16,9 @@
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
         "anchor_id": "top",
         "badge": "PREVENTIVE HEALTHCARE",
-        "heading": "Measured Body.\nOptimized Life.",
+        "heading": "Your gym's scanner estimates.\nYour watch guesses.\nMedicine waits for the damage.",
         "subheading": "Galim is a new category of preventive healthcare — combining advanced diagnostics, AI, and physician expertise into one comprehensive health assessment.",
-        "council_line": "Developed by our Medical Council of specialists across every major body system.",
+        "council_line": "",
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
         "button_link": "",
@@ -31,7 +31,7 @@
         "eyebrow": "01 / THE GAP",
         "chip_label": "GALIM MEASURES",
         "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
-        "body": "<p>Thousands of measurements help identify potential future risks, long before they become obvious. One personalized roadmap, powered by AI.</p>",
+        "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
         "bg_color": "#082d36"
       }
     },
