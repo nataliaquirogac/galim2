@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-hero-media-h: {{ s.media_height_mobile | default: 44 }}vh;">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -31,19 +31,20 @@
       assign main_src = mobile_src
     endif
   -%}
-  {%- if main_src != blank -%}
-    <picture>
-      {%- if mobile_src != blank and desktop_src != blank -%}
-        <source media="(max-width: 768px)" srcset="{{ mobile_src }}">
-      {%- endif -%}
-      <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" fetchpriority="high" onerror="this.style.display='none'">
-    </picture>
-  {%- endif -%}
-
-  <div class="gh-hero__tint"></div>
-  <div class="gh-hero__grad-h"></div>
-  <div class="gh-hero__grad-v"></div>
-  <div class="gh-hero__grid"></div>
+  <div class="gh-hero__media">
+    {%- if main_src != blank -%}
+      <picture>
+        {%- if mobile_src != blank and desktop_src != blank -%}
+          <source media="(max-width: 768px)" srcset="{{ mobile_src }}">
+        {%- endif -%}
+        <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" fetchpriority="high" onerror="this.style.display='none'">
+      </picture>
+    {%- endif -%}
+    <div class="gh-hero__tint"></div>
+    <div class="gh-hero__grad-h"></div>
+    <div class="gh-hero__grad-v"></div>
+    <div class="gh-hero__grid"></div>
+  </div>
 
   <div class="gh-hero__inner">
     <div class="gh-hero__col">
@@ -90,6 +91,7 @@
     overflow: hidden;
     background: var(--gh-bg-900);
   }
+  .gh-hero__media { position: absolute; inset: 0; overflow: hidden; }
   .gh-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Full-cover teal tint: pulls any photo into the brand palette; strength is a customizer slider */
   .gh-hero__tint { position: absolute; inset: 0; background: rgb(8 45 54 / var(--gh-hero-tint, 0.45)); }
@@ -117,17 +119,22 @@
   .gh-hero__coords { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
 
   @media (max-width: 768px) {
-    .gh-hero { min-height: 540px; }
+    /* Split hero: clean photo on top, solid teal text panel below.
+       No text over the image, so readability never depends on the photo. */
+    .gh-hero { min-height: 0; display: block; background: var(--gh-bg-900); }
+    .gh-hero__media { position: relative; height: var(--gh-hero-media-h, 44vh); min-height: 300px; }
     .gh-hero__grad-h { display: none; }
-    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.4) 0%, transparent 30%, rgba(6,31,38,.5) 55%, rgba(6,31,38,.97) 100%); }
+    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.18) 0%, transparent 45%, var(--gh-bg-900) 100%); }
+    .gh-hero__tint { background: rgb(8 45 54 / calc(var(--gh-hero-tint, 0.45) * 0.5)); }
     .gh-hero__grid { display: none; }
-    .gh-hero__inner { padding: 0 20px 40px; }
-    .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; }
+    .gh-hero__inner { padding: 6px 20px 44px; }
+    .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; margin-top: 18px; }
     .gh-hero__dot { width: 6px; height: 6px; }
-    .gh-hero__h1 { line-height: 1.02; margin-bottom: 18px; }
-    .gh-hero__sub { font-size: 16px; margin-bottom: 14px; }
-    .gh-hero__council { font-size: 13px; margin-bottom: 24px; }
+    .gh-hero__h1 { line-height: 1.02; margin-bottom: 18px; text-shadow: none; }
+    .gh-hero__sub { font-size: 16px; margin-bottom: 14px; text-shadow: none; }
+    .gh-hero__council { font-size: 13px; margin-bottom: 24px; text-shadow: none; }
     .gh-hero__coords { display: none; }
+    .gh-btn--solid { width: 100%; justify-content: center; }
   }
 {% endstylesheet %}
 
@@ -142,6 +149,7 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
     { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength", "info": "Teal tint over the photo. Raise it for bright images so the text stands out.", "default": 45 },
+    { "type": "range", "id": "media_height_mobile", "min": 30, "max": 60, "step": 2, "unit": "vh", "label": "Photo height (mobile)", "info": "On mobile the photo sits on top and the text on a solid panel below.", "default": 44 },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
