@@ -36,7 +36,27 @@
             <div class="gh-pkg__body">
               {%- if b.list_intro != blank -%}<div class="gh-pkg__list-intro">{{ b.list_intro }}</div>{%- endif -%}
               {%- if b.features != blank -%}<div class="gh-pkg__features">{{ b.features }}</div>{%- endif -%}
-              {%- if b.addon_line != blank -%}<div class="gh-pkg__addon"><span class="gh-pkg__addon-plus">+</span>{{ b.addon_line }}</div>{%- endif -%}
+              {%- if b.addon_line != blank -%}
+                <div class="gh-pkg__addons">
+                  <div class="gh-pkg__addons-title">{{ b.addon_title | default: 'ADD-ONS' }}</div>
+                  {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
+                  {%- for row in addon_rows -%}
+                    {%- assign row_clean = row | strip_html | strip -%}
+                    {%- if row_clean != blank -%}
+                      <div class="gh-pkg__addon-row">
+                        <span class="gh-pkg__addon-plus">+</span>
+                        {%- assign paren = row_clean | split: '(' -%}
+                        {%- if paren.size > 1 -%}
+                          <span class="gh-pkg__addon-name">{{ paren[0] | strip }}</span>
+                          <span class="gh-pkg__addon-desc">{{ row_clean | remove_first: paren[0] }}</span>
+                        {%- else -%}
+                          <span class="gh-pkg__addon-name">{{ row_clean }}</span>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
             </div>
           </div>
         {%- endif -%}
@@ -100,12 +120,24 @@
   .gh-pkg__features li::before { content: "▸"; position: absolute; left: 0; color: var(--gh-green); }
   .gh-pkg__features strong { font-weight: 600; }
   .gh-pkg__features p { margin: 0; }
-  .gh-pkg__addon {
-    position: relative; margin-top: 25px; padding-top: 15px; padding-left: 24px;
+  .gh-pkg__addons {
+    margin-top: 25px; padding-top: 20px;
     border-top: 1px dashed rgba(168,194,200,.18);
-    font: 400 14px/1.5 var(--gh-sans); color: var(--gh-muted);
+    display: flex; flex-direction: column; gap: 10px;
   }
-  .gh-pkg__addon-plus { position: absolute; left: 0; top: 15px; color: var(--gh-slate); }
+  .gh-pkg__addons-title { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-green); margin-bottom: 2px; }
+  .gh-pkg__addon-row {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    background: rgba(140,191,138,.08);
+    border: 1px solid rgba(140,191,138,.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .gh-pkg__addon-row:hover { border-color: rgba(140,191,138,.5); background: rgba(140,191,138,.12); }
+  .gh-pkg__addon-plus { color: var(--gh-green); font: 600 15px/1 var(--gh-sans); }
+  .gh-pkg__addon-name { font: 500 15px/1.3 var(--gh-sans); color: var(--gh-white); }
+  .gh-pkg__addon-desc { font: 300 14px/1.3 var(--gh-sans); color: var(--gh-muted); }
 
   .gh-glp {
     margin-top: 28px; border-radius: 14px; background: rgba(168,194,200,.06);
@@ -166,7 +198,8 @@
         { "type": "text", "id": "badge_label", "label": "Badge label", "default": "FULL PICTURE" },
         { "type": "text", "id": "list_intro", "label": "List intro (mono, optional)" },
         { "type": "richtext", "id": "features", "label": "Features (bulleted list, bold = wt600)", "default": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>" },
-        { "type": "text", "id": "addon_line", "label": "Add-ons line (dashed, optional)", "default": "Add-ons: RMR (resting metabolism) · Lactate Threshold (endurance zones)" }
+        { "type": "text", "id": "addon_title", "label": "Add-ons title (mono)", "default": "ADD-ONS" },
+        { "type": "textarea", "id": "addon_line", "label": "Add-ons (one per line, optional)", "default": "RMR (resting metabolism)\nLactate Threshold (endurance zones)" }
       ]
     }
   ],
@@ -174,7 +207,7 @@
     {
       "name": "Galim · Protocols",
       "blocks": [
-        { "type": "package", "settings": { "icon": "bolt", "name": "Performance", "scan_time": "25 MIN SCAN", "tagline": "Fat loss, gain muscle, fitter life.", "price": "$1,499", "price_unit": "MXN", "featured": false, "features": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>", "addon_line": "Add-ons: RMR (resting metabolism) · Lactate Threshold (endurance zones)" } },
+        { "type": "package", "settings": { "icon": "bolt", "name": "Performance", "scan_time": "25 MIN SCAN", "tagline": "Fat loss, gain muscle, fitter life.", "price": "$1,499", "price_unit": "MXN", "featured": false, "features": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>", "addon_line": "RMR (resting metabolism)\nLactate Threshold (endurance zones)" } },
         { "type": "package", "settings": { "icon": "infinity", "name": "Longevity", "scan_time": "1 HR FULL WORKUP", "tagline": "Everything in Performance, plus deep diagnostics.", "price": "$4,999", "price_unit": "MXN", "featured": true, "badge_label": "FULL PICTURE", "list_intro": "EVERYTHING IN PERFORMANCE, PLUS", "features": "<ul><li>Biological age across 8 body systems</li><li>Advanced blood biomarkers</li><li>Early health risk detection</li><li>Your personalized longevity roadmap</li><li>Galim AI coach</li></ul>", "addon_line": "" } }
       ]
     }
