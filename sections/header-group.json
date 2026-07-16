@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
@@ -5,10 +14,10 @@
     "galim_announcement": {
       "type": "galim-announcement",
       "settings": {
-        "text": "OPENING NOVEMBER 1ST · CALZADA DEL VALLE, MONTERREY MX",
+        "text": "NOVEMBER 1ST · CALZADA DEL VALLE, MONTERREY MX",
         "show_glyphs": true,
-        "bg_color": "#8CBF8A",
-        "text_color": "#0C3B46"
+        "bg_color": "#8cbf8a",
+        "text_color": "#0c3b46"
       }
     },
     "galim_header": {
@@ -18,9 +27,13 @@
         "menu": "main-menu",
         "show_login": true,
         "login_label": "LOG IN",
+        "login_url": "",
         "waitlist_label": "JOIN WAITLIST"
       }
     }
   },
-  "order": ["galim_announcement", "galim_header"]
+  "order": [
+    "galim_announcement",
+    "galim_header"
+  ]
 }
