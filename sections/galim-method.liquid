@@ -13,7 +13,11 @@
     {%- if s.body_1 != blank -%}<p class="gh-method__p gh-method__p--muted">{{ s.body_1 }}</p>{%- endif -%}
     {%- if s.body_2 != blank -%}<p class="gh-method__p gh-method__p--light">{{ s.body_2 }}</p>{%- endif -%}
     {%- if s.button_label != blank -%}
-      <a href="{{ s.button_link | default: '/pages/como-funciona' }}" class="gh-btn gh-btn--outline">{{ s.button_label }} →</a>
+      {%- if s.button_link != blank -%}
+        <a href="{{ s.button_link }}" class="gh-btn gh-btn--outline">{{ s.button_label }} →</a>
+      {%- else -%}
+        <a href="#" class="gh-btn gh-btn--outline" data-gh-waitlist-open>{{ s.button_label }} →</a>
+      {%- endif -%}
     {%- endif -%}
   </div>
 </section>
@@ -57,7 +61,7 @@
     { "type": "textarea", "id": "body_1", "label": "Paragraph 1", "default": "A scan is a starting point, not a product. Our method turns every data point — your heart, your blood, your composition, your mobility — into a plan made only for you." },
     { "type": "textarea", "id": "body_2", "label": "Paragraph 2", "default": "With every visit, we measure again. And the plan evolves with you." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover the method" },
-    { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to /pages/como-funciona if left blank." }
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave blank to open the waitlist modal." }
   ],
   "presets": [{ "name": "Galim · Method" }]
 }

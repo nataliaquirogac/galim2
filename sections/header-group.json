@@ -26,7 +26,7 @@
         "logo": "shopify://shop_images/logo_galimhealth_white.png",
         "logo_height": 28,
         "menu": "main-menu",
-        "show_login": true,
+        "show_login": false,
         "login_label": "LOG IN",
         "login_url": "",
         "waitlist_label": "JOIN WAITLIST"

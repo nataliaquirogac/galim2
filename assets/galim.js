@@ -106,4 +106,56 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
+
+  /* ---- Reveal on scroll ----
+     Rect-based instead of IntersectionObserver: IO callbacks are throttled or
+     suspended in some embedded/background webviews, which would leave content
+     stuck at opacity 0. A scroll+rAF rect check degrades safely everywhere. */
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.Shopify && window.Shopify.designMode) return;
+
+    var els = Array.prototype.slice.call(
+      document.querySelectorAll(
+        '.gh-gap .gh-container, .gh-method__inner, .gh-cta__inner, ' +
+        '.gh-axes__card, .gh-axes__bq, .gh-pkg, .gh-glp, .gh-diag__row, ' +
+        '.gh-protocols__eyebrow, .gh-protocols__h2, .gh-diag__eyebrow, .gh-diag__h2, .gh-diag__sub, .gh-axes__eyebrow'
+      )
+    );
+    if (!els.length) return;
+
+    var counts = [];
+    els.forEach(function (el) {
+      var entry = null;
+      for (var i = 0; i < counts.length; i++) {
+        if (counts[i].parent === el.parentNode) { entry = counts[i]; break; }
+      }
+      if (!entry) { entry = { parent: el.parentNode, n: 0 }; counts.push(entry); }
+      el.classList.add('gh-reveal');
+      el.style.transitionDelay = Math.min(entry.n * 90, 450) + 'ms';
+      entry.n++;
+    });
+
+    var pending = els.slice();
+
+    function check() {
+      if (!pending.length) return;
+      var limit = window.innerHeight * 0.92;
+      pending = pending.filter(function (el) {
+        if (el.getBoundingClientRect().top < limit) {
+          el.classList.add('is-visible');
+          return false;
+        }
+        return true;
+      });
+      if (!pending.length) {
+        window.removeEventListener('scroll', check);
+        window.removeEventListener('resize', check);
+      }
+    }
+
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check, { passive: true });
+    check();
+  })();
 })();

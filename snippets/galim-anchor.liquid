@@ -1,0 +1,21 @@
+{%- comment -%}
+  Galim Health — single-page anchor mapping
+  Maps a menu item title to its landing-page anchor. Outputs the anchor
+  (e.g. "#plans") or nothing when the title has no matching section.
+  Usage: {% capture a %}{% render 'galim-anchor', title: link.title %}{% endcapture %}
+{%- endcomment -%}
+{%- liquid
+  assign t = title | downcase | strip
+  case t
+    when 'home', 'inicio'
+      echo '#top'
+    when 'catalog', 'catálogo', 'catalogo', 'plans', 'planes', 'protocols'
+      echo '#plans'
+    when 'method', 'método', 'metodo', 'the method'
+      echo '#method'
+    when 'contact', 'contacto'
+      echo '#contact'
+    when 'waitlist', 'join waitlist', 'lista de espera'
+      echo '#waitlist'
+  endcase
+-%}

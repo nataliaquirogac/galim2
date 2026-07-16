@@ -23,13 +23,31 @@
         {%- if s.nav_menu != blank -%}
           <div class="gh-footer__col">
             <span class="gh-footer__col-title">{{ s.nav_title | default: 'NAVIGATE' }}</span>
-            {%- for link in s.nav_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+            {%- for link in s.nav_menu.links -%}
+              {%- capture anchor -%}{%- render 'galim-anchor', title: link.title -%}{%- endcapture -%}
+              {%- if s.single_page and anchor != blank -%}
+                <a href="{{ anchor }}">{{ link.title }}</a>
+              {%- elsif s.single_page -%}
+                <span class="gh-footer__plain">{{ link.title }}</span>
+              {%- else -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endif -%}
+            {%- endfor -%}
           </div>
         {%- endif -%}
         {%- if s.legal_menu != blank or s.payment_note != blank -%}
           <div class="gh-footer__col">
             <span class="gh-footer__col-title">{{ s.legal_title | default: 'LEGAL' }}</span>
-            {%- for link in s.legal_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+            {%- for link in s.legal_menu.links -%}
+              {%- capture anchor -%}{%- render 'galim-anchor', title: link.title -%}{%- endcapture -%}
+              {%- if s.single_page and anchor != blank -%}
+                <a href="{{ anchor }}">{{ link.title }}</a>
+              {%- elsif s.single_page -%}
+                <span class="gh-footer__plain">{{ link.title }}</span>
+              {%- else -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endif -%}
+            {%- endfor -%}
             {%- if s.payment_note != blank -%}<span class="gh-footer__payment">{{ s.payment_note }}</span>{%- endif -%}
           </div>
         {%- endif -%}
@@ -55,6 +73,7 @@
   .gh-footer__col { display: flex; flex-direction: column; gap: 12px; font: 400 14px/1 var(--gh-sans); }
   .gh-footer__col-title { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-slate); margin-bottom: 4px; }
   .gh-footer__payment { color: var(--gh-slate); }
+  .gh-footer__plain { color: var(--gh-slate); cursor: default; }
   .gh-footer__bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font: 400 12px/1 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.04em; }
 
   @media (max-width: 768px) {
@@ -75,6 +94,7 @@
     { "type": "range", "id": "logo_height", "min": 16, "max": 40, "step": 1, "unit": "px", "label": "Logo height", "default": 24 },
     { "type": "textarea", "id": "tagline", "label": "Tagline", "default": "Measured body. Optimized life. Calzada del Valle, Monterrey MX." },
     { "type": "header", "content": "Columns" },
+    { "type": "checkbox", "id": "single_page", "label": "Single-page navigation", "info": "Menu items become landing anchors; unmatched items show as plain text.", "default": true },
     { "type": "text", "id": "nav_title", "label": "Navigate title", "default": "NAVIGATE" },
     { "type": "link_list", "id": "nav_menu", "label": "Navigate menu", "default": "main-menu" },
     { "type": "text", "id": "legal_title", "label": "Legal title", "default": "LEGAL" },

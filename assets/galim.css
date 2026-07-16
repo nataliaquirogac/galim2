@@ -105,9 +105,45 @@
 @keyframes gh-grid  { 0% { background-position: 0 0; } 100% { background-position: 0 64px; } }
 @keyframes gh-pulse { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.06); } }
 @keyframes gh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes gh-kenburns { from { transform: scale(1); } to { transform: scale(1.07); } }
+@keyframes gh-hero-in { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+/* Smooth anchor scrolling; sections land just below the sticky header ----- */
+html { scroll-behavior: smooth; }
+section[id],
+footer[id] { scroll-margin-top: 84px; }
+
+/* Brand text selection & keyboard focus ----------------------------------- */
+::selection { background: rgba(140, 191, 138, 0.4); color: #fff; }
+.gh-btn:focus-visible,
+.gh-header a:focus-visible,
+.gh-footer a:focus-visible,
+.gh-modal a:focus-visible,
+.gh-modal button:focus-visible,
+.gh-modal input:focus-visible,
+.gh-modal select:focus-visible,
+[data-gh-waitlist-open]:focus-visible {
+  outline: 2px solid var(--gh-green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reveal on scroll (class added by galim.js; no-JS keeps content visible) -- */
+.gh-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.gh-reveal.is-visible { opacity: 1; transform: none; }
+
+/* Hero life: slow Ken Burns on the photo, fade-up for the copy ------------ */
+.gh-hero__img { animation: gh-kenburns 26s ease-in-out infinite alternate; }
+.gh-hero__col { animation: gh-hero-in 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gh-page *,
-  .gh-page *::before,
-  .gh-page *::after { animation: none !important; }
+  html { scroll-behavior: auto; }
+  [class*="gh-"],
+  [class*="gh-"]::before,
+  [class*="gh-"]::after { animation: none !important; }
+  .gh-reveal { opacity: 1; transform: none; transition: none; }
 }

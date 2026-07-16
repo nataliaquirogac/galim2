@@ -31,7 +31,14 @@
 
     <nav class="gh-header__nav" aria-label="Primary">
       {%- for link in s.menu.links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- capture anchor -%}{%- render 'galim-anchor', title: link.title -%}{%- endcapture -%}
+        {%- if s.single_page and anchor != blank -%}
+          <a href="{{ anchor }}">{{ link.title }}</a>
+        {%- elsif s.single_page -%}
+          <span class="gh-header__nav-plain">{{ link.title }}</span>
+        {%- else -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endif -%}
       {%- endfor -%}
     </nav>
 
@@ -55,7 +62,12 @@
     <button type="button" class="gh-drawer__close" data-gh-drawer-close aria-label="Close">&times;</button>
     <nav class="gh-drawer__nav">
       {%- for link in s.menu.links -%}
-        <a href="{{ link.url }}" data-gh-drawer-close>{{ link.title }}</a>
+        {%- capture anchor -%}{%- render 'galim-anchor', title: link.title -%}{%- endcapture -%}
+        {%- if s.single_page and anchor != blank -%}
+          <a href="{{ anchor }}" data-gh-drawer-close>{{ link.title }}</a>
+        {%- elsif s.single_page == false -%}
+          <a href="{{ link.url }}" data-gh-drawer-close>{{ link.title }}</a>
+        {%- endif -%}
       {%- endfor -%}
     </nav>
     <div class="gh-drawer__actions">
@@ -106,6 +118,7 @@
   }
   .gh-header__nav a { color: var(--gh-light); }
   .gh-header__nav a:hover { color: var(--gh-green); }
+  .gh-header__nav-plain { color: var(--gh-muted); cursor: default; }
 
   .gh-header__actions { display: flex; gap: 22px; align-items: center; }
   .gh-header__login {
@@ -201,6 +214,13 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "single_page",
+      "label": "Single-page navigation",
+      "info": "Menu items link to landing sections (Home, Catalog, Method, Contact become anchors). Unmatched items show as plain text.",
+      "default": true
     },
     {
       "type": "checkbox",

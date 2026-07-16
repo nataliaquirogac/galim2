@@ -36,7 +36,7 @@
       {%- if mobile_src != blank and desktop_src != blank -%}
         <source media="(max-width: 768px)" srcset="{{ mobile_src }}">
       {%- endif -%}
-      <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" onerror="this.style.display='none'">
+      <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" fetchpriority="high" onerror="this.style.display='none'">
     </picture>
   {%- endif -%}
 
