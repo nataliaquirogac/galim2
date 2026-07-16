@@ -72,10 +72,15 @@
 <script src="{{ 'galim.js' | asset_url }}" defer="defer"></script>
 
 {% stylesheet %}
-  .gh-header {
+  /* Sticky lives on the section wrapper: inside Shopify each section sits in a
+     .shopify-section div exactly as tall as its content, so sticky on the inner
+     element has no room to travel. */
+  .gh-header-section {
     position: sticky;
     top: 0;
     z-index: 100;
+  }
+  .gh-header {
     background: rgba(12, 59, 70, 0.72);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(168, 194, 200, 0.14);
