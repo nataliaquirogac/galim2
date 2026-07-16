@@ -1,82 +1,207 @@
 {%- comment -%}
   Galim Health — 01 / THE GAP
-  Eyebrow, green check chip, big wt200 headline (bold = highlighted words), body.
+  Eyebrow, green check chip, headline and body.
 {%- endcomment -%}
 
-{%- liquid assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+-%}
 
-<section class="gh-gap gh-section" data-gh-section="gap" style="background: {{ s.bg_color }};">
+<section
+  class="gh-gap gh-section"
+  data-gh-section="gap"
+  style="background-color: {{ s.bg_color }};"
+>
   <div class="gh-container">
-    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-gap__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+
+    {%- if s.eyebrow != blank -%}
+      <p class="gh-eyebrow gh-gap__eyebrow">
+        {{ s.eyebrow }}
+      </p>
+    {%- endif -%}
+
     {%- if s.chip_label != blank -%}
       <div class="gh-gap__chip">
         <span class="gh-gap__check">✓</span>
-        <span class="gh-gap__chip-label">{{ s.chip_label }}</span>
+        <span class="gh-gap__chip-label">
+          {{ s.chip_label }}
+        </span>
       </div>
     {%- endif -%}
-    {%- if s.heading != blank -%}
-  <div class="gh-gap__h2">{{ s.heading }}</div>
-{%- endif -%}
 
-{%- if s.body != blank -%}
-  <div class="gh-gap__body">{{ s.body }}</div>
-{%- endif -%}
+    {%- if s.heading != blank -%}
+      <div class="gh-gap__heading">
+        {{ s.heading }}
+      </div>
+    {%- endif -%}
+
+    {%- if s.body != blank -%}
+      <div class="gh-gap__body">
+        {{ s.body }}
+      </div>
+    {%- endif -%}
+
   </div>
 </section>
 
-{% stylesheet %}
-  .gh-gap { border-top: 1px solid rgba(168,194,200,.1); }
-  .gh-gap__eyebrow { margin-bottom: 44px; }
-  .gh-gap__chip { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+<style>
+  .gh-gap {
+    border-top: 1px solid rgba(168, 194, 200, 0.1);
+  }
+
+  .gh-gap__eyebrow {
+    margin: 0 0 44px;
+  }
+
+  .gh-gap__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
   .gh-gap__check {
-    width: 26px; height: 26px; border-radius: 50%; background: var(--gh-green);
-    display: inline-flex; align-items: center; justify-content: center;
-    color: var(--gh-bg); font: 600 14px/1 var(--gh-sans); flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--gh-green, #8cbf8a);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gh-bg, #082d36);
+    font: 600 14px/1 var(--gh-sans, sans-serif);
+    flex-shrink: 0;
   }
-  .gh-gap__chip-label { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.2em; color: var(--gh-green); }
-  .gh-gap__h2 { font: 200 52px/1.12 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); max-width: 1000px; margin-bottom: 28px; }
-  .gh-gap__h2 strong { color: var(--gh-light); font-weight: 500; }
-  .gh-gap__body { font: 300 19px/1.6 var(--gh-sans); color: var(--gh-); max-width: 760px; }
-  .gh-gap__body p { margin: 0; }
 
-  @media (max-width: 768px) {
-    .gh-gap__eyebrow { margin-bottom: 22px; font-size: 10px; letter-spacing: 0.24em; }
-    .gh-gap__chip { gap: 10px; margin-bottom: 20px; }
-    .gh-gap__check { width: 24px; height: 24px; font-size: 13px; }
-    .gh-gap__chip-label { font-size: 10px; letter-spacing: 0.18em; }
-    .gh-gap__h2 { font-size: 30px; line-height: 1.15; margin-bottom: 18px; }
-    .gh-gap__body {
-  font: 300 19px/1.6 var(--gh-sans);
-  color: rgba(168, 194, 200, 0.72);
-  max-width: 760px;
-}
-
-.gh-gap__body p {
-  margin: 0;
-  color: inherit;
-}
-.gh-gap__h2 p {
-  margin: 0;
-}
-.gh-gap .gh-gap__body,
-.gh-gap .gh-gap__body p,
-.gh-gap .gh-gap__body * {
-  color: rgba(168, 194, 200, 0.72) !important;
-}
+  .gh-gap__chip-label {
+    font: 500 12px/1 var(--gh-mono, monospace);
+    letter-spacing: 0.2em;
+    color: var(--gh-green, #8cbf8a);
   }
-{% endstylesheet %}
+
+  /* TÍTULO */
+  .gh-gap .gh-gap__heading {
+    max-width: 1000px;
+    margin: 0 0 28px;
+    color: #f2f5f5 !important;
+    font-family: var(--gh-sans, sans-serif);
+    font-size: 52px;
+    font-weight: 200;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  .gh-gap .gh-gap__heading p {
+    margin: 0;
+    color: #f2f5f5 !important;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+
+  .gh-gap .gh-gap__heading strong {
+    color: #c8d8dc !important;
+    font-weight: 500;
+  }
+
+  /* PÁRRAFO GRIS — evita cualquier color negro del tema */
+  .gh-gap .gh-gap__body {
+    max-width: 760px;
+    margin: 0;
+    color: #8fa9af !important;
+    font-family: var(--gh-sans, sans-serif);
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .gh-gap .gh-gap__body p,
+  .gh-gap .gh-gap__body span,
+  .gh-gap .gh-gap__body strong,
+  .gh-gap .gh-gap__body em,
+  .gh-gap .gh-gap__body a {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #8fa9af !important;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+
+  @media screen and (max-width: 768px) {
+    .gh-gap__eyebrow {
+      margin-bottom: 22px;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+    }
+
+    .gh-gap__chip {
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .gh-gap__check {
+      width: 24px;
+      height: 24px;
+      font-size: 13px;
+    }
+
+    .gh-gap__chip-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+
+    .gh-gap .gh-gap__heading {
+      margin-bottom: 18px;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .gh-gap .gh-gap__body {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  }
+</style>
 
 {% schema %}
 {
   "name": "Galim · The Gap",
   "class": "gh-section-full",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "01 / THE GAP" },
-    { "type": "text", "id": "chip_label", "label": "Check chip label", "default": "GALIM MEASURES" },
-    { "type": "richtext", "id": "heading", "label": "Headline (bold = highlighted)", "default": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>" },
-    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Thousands of measurements help identify potential future risks, long before they become obvious. One personalized roadmap, powered by AI.</p>" },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "01 / THE GAP"
+    },
+    {
+      "type": "text",
+      "id": "chip_label",
+      "label": "Check chip label",
+      "default": "GALIM MEASURES"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Headline (bold = highlighted)",
+      "default": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Thousands of measurements help identify potential future risks, long before they become obvious. One personalized roadmap, powered by AI.</p>"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#082d36"
+    }
   ],
-  "presets": [{ "name": "Galim · The Gap" }]
+  "presets": [
+    {
+      "name": "Galim · The Gap"
+    }
+  ]
 }
 {% endschema %}
