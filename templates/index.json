@@ -54,7 +54,9 @@
           "settings": {
             "eyebrow": "◇ PERFORMANCE · YOUR BQ",
             "heading": "Your body in one number.",
-            "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number."
+            "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number.",
+            "note_title": "¿Estás en GLP-1?",
+            "note_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número — estimado. Performance mide lo que de verdad perdiste: grasa o tu base. Antes de empezar, y otra vez a las 8 semanas.</p>"
           }
         },
         "tier_1": {
@@ -197,8 +199,8 @@
         "heading": "The precision once reserved for elite clinics.   Now in Monterrey.",
         "bg_color": "#082d36",
         "glp_glyph": "◈",
-        "glp_title": "¿Estás en GLP-1?",
-        "glp_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número — estimado. Justo cuando bajas rápido es cuando más se equivoca. Performance mide lo que de verdad perdiste: grasa o tu base. Antes de empezar, y otra vez a las 8 semanas.</p>"
+        "glp_title": "",
+        "glp_body": ""
       }
     },
     "diagnostics": {

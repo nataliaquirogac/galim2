@@ -18,6 +18,12 @@
             {%- if block.settings.eyebrow != blank -%}<div class="gh-axes__card-eyebrow">{{ block.settings.eyebrow }}</div>{%- endif -%}
             {%- if block.settings.heading != blank -%}<h3 class="gh-axes__card-h3">{{ block.settings.heading }}</h3>{%- endif -%}
             {%- if block.settings.body != blank -%}<p class="gh-axes__card-body">{{ block.settings.body }}</p>{%- endif -%}
+            {%- if block.settings.note_title != blank or block.settings.note_body != blank -%}
+              <div class="gh-axes__note">
+                {%- if block.settings.note_title != blank -%}<p class="gh-axes__note-title">{{ block.settings.note_title }}</p>{%- endif -%}
+                {%- if block.settings.note_body != blank -%}<div class="gh-axes__note-body">{{ block.settings.note_body }}</div>{%- endif -%}
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
       {%- endfor -%}
@@ -61,6 +67,18 @@
   .gh-axes__card-eyebrow { position: relative; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-muted); margin-bottom: 24px; }
   .gh-axes__card-h3 { position: relative; font: 300 34px/1.15 var(--gh-sans); color: var(--gh-white); margin-bottom: 20px; }
   .gh-axes__card-body { position: relative; font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); }
+  .gh-axes__note {
+    position: relative;
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: rgba(140, 191, 138, 0.08);
+    border: 1px solid rgba(140, 191, 138, 0.25);
+    border-radius: 10px;
+  }
+  .gh-axes__note-title { font: 500 16px/1.3 var(--gh-sans); color: var(--gh-white); margin-bottom: 8px; }
+  .gh-axes__note-body,
+  .gh-axes__note-body p { font: 300 15px/1.6 var(--gh-sans); color: var(--gh-light); margin: 0; }
+  .gh-axes__note-body strong { font-weight: 600; color: var(--gh-green); }
 
   .gh-axes__bq {
     margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
@@ -137,7 +155,10 @@
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "◇ LONGEVITY" },
         { "type": "text", "id": "heading", "label": "Heading", "default": "Find it a decade early." },
-        { "type": "textarea", "id": "body", "label": "Body", "default": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." }
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." },
+        { "type": "header", "content": "Highlighted note (optional)" },
+        { "type": "text", "id": "note_title", "label": "Note title" },
+        { "type": "richtext", "id": "note_body", "label": "Note body (bold = green)" }
       ]
     },
     {
