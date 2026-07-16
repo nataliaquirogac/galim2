@@ -78,6 +78,26 @@
           <span class="gh-hero__coords">{{ s.coords }}</span>
         {%- endif -%}
       </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="gh-hero__plans">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'plan' -%}
+              {%- liquid
+                assign plan_href = block.settings.link
+                if plan_href == blank
+                  assign plan_href = '#plans'
+                endif
+              -%}
+              <a href="{{ plan_href }}" class="gh-hero__plan" {{ block.shopify_attributes }}>
+                {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
+                {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
+                {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -118,6 +138,20 @@
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
   .gh-hero__coords { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
 
+  .gh-hero__plans { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  .gh-hero__plan {
+    display: inline-flex; align-items: baseline; gap: 12px;
+    border: 1px solid rgba(214, 224, 226, 0.25);
+    border-radius: 2px;
+    padding: 13px 16px;
+    background: rgba(6, 31, 38, 0.35);
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .gh-hero__plan:hover { border-color: rgba(140, 191, 138, 0.6); background: rgba(6, 31, 38, 0.5); }
+  .gh-hero__plan-time { font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-green); white-space: nowrap; }
+  .gh-hero__plan-name { font: 400 14px/1.2 var(--gh-sans); color: var(--gh-light); }
+  .gh-hero__plan-price { font: 500 15px/1 var(--gh-sans); color: var(--gh-white); white-space: nowrap; }
+
   @media (max-width: 768px) {
     /* Split hero: clean photo on top, solid teal text panel below.
        No text over the image, so readability never depends on the photo. */
@@ -135,6 +169,9 @@
     .gh-hero__council { font-size: 13px; margin-bottom: 24px; text-shadow: none; }
     .gh-hero__coords { display: none; }
     .gh-btn--solid { width: 100%; justify-content: center; }
+    .gh-hero__plans { gap: 10px; margin-top: 22px; }
+    .gh-hero__plan { width: 100%; }
+    .gh-hero__plan-name { flex: 1; }
   }
 {% endstylesheet %}
 
@@ -164,6 +201,27 @@
     { "type": "url", "id": "button_link", "label": "Button link (if not modal)" },
     { "type": "text", "id": "coords", "label": "Coordinates line (mono)", "default": "CALZADA DEL VALLE · MONTERREY MX" }
   ],
-  "presets": [{ "name": "Galim · Hero" }]
+  "blocks": [
+    {
+      "type": "plan",
+      "name": "Plan chip",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "time", "label": "Time (mono)", "default": "25 MIN" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the Protocols section (#plans)." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Hero",
+      "blocks": [
+        { "type": "plan", "settings": { "time": "25 MIN", "name": "Performance", "price": "$1,499" } },
+        { "type": "plan", "settings": { "time": "50 MIN", "name": "Performance + Longevity", "price": "$4,999" } }
+      ]
+    }
+  ]
 }
 {% endschema %}

@@ -28,7 +28,29 @@
         "button_opens_modal": true,
         "button_link": "",
         "coords": "CALZADA DEL VALLE · MONTERREY MX"
-      }
+      },
+      "blocks": {
+        "plan_perf": {
+          "type": "plan",
+          "settings": {
+            "time": "25 MIN",
+            "name": "Performance",
+            "price": "$1,499"
+          }
+        },
+        "plan_long": {
+          "type": "plan",
+          "settings": {
+            "time": "50 MIN",
+            "name": "Performance + Longevity",
+            "price": "$4,999"
+          }
+        }
+      },
+      "block_order": [
+        "plan_perf",
+        "plan_long"
+      ]
     },
     "gap": {
       "type": "galim-gap",
@@ -180,7 +202,7 @@
           "settings": {
             "icon": "infinity",
             "name": "Longevity",
-            "scan_time": "1 HR FULL WORKUP",
+            "scan_time": "50 MIN FULL WORKUP",
             "tagline": "Everything in Performance, plus deep diagnostics.",
             "price": "$4,999",
             "price_unit": "MXN",
