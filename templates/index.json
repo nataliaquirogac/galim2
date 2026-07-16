@@ -11,31 +11,14 @@
   "sections": {
     "hero": {
       "type": "galim-hero",
-      "settings": {
-        "image": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
-        "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
-        "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
-        "image_url_mobile": "",
-        "overlay_strength": 45,
-        "anchor_id": "top",
-        "heading_size": 52,
-        "heading_size_mobile": 30,
-        "badge": "PREVENTIVE HEALTHCARE",
-        "heading": "Understand your body.\nProtect your future health.",
-        "subheading": "Powered by the world’s most advanced health measurement technology, AI, and physician expertise.",
-        "council_line": "",
-        "button_label": "Join the waitlist",
-        "button_opens_modal": true,
-        "button_link": "",
-        "coords": "CALZADA DEL VALLE · MONTERREY MX"
-      },
       "blocks": {
         "plan_perf": {
           "type": "plan",
           "settings": {
             "time": "25 MIN",
             "name": "Performance",
-            "price": "$1,499"
+            "price": "$1,499",
+            "link": ""
           }
         },
         "plan_long": {
@@ -43,14 +26,34 @@
           "settings": {
             "time": "50 MIN",
             "name": "Performance + Longevity",
-            "price": "$4,999"
+            "price": "$4,999",
+            "link": ""
           }
         }
       },
       "block_order": [
         "plan_perf",
         "plan_long"
-      ]
+      ],
+      "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
+        "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
+        "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
+        "image_url_mobile": "",
+        "overlay_strength": 45,
+        "mobile_text_style": "dark",
+        "anchor_id": "top",
+        "heading_size": 52,
+        "heading_size_mobile": 30,
+        "badge": "PREVENTIVE HEALTHCARE",
+        "heading": "Understand your body.\nProtect your future health.",
+        "subheading": "Powered by the world’s most advanced health measurement technology, millions of health data points, AI, and physician expertise",
+        "council_line": "",
+        "button_label": "Join the waitlist",
+        "button_opens_modal": true,
+        "button_link": "",
+        "coords": "CALZADA DEL VALLE · MONTERREY MX"
+      }
     },
     "gap": {
       "type": "galim-gap",
