@@ -25,7 +25,7 @@
           "type": "plan",
           "settings": {
             "time": "50 MIN",
-            "name": "Performance + Longevity",
+            "name": "Perf. + Longevity",
             "price": "$4,999",
             "link": ""
           }
@@ -41,18 +41,18 @@
         "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
         "image_url_mobile": "",
         "overlay_strength": 45,
-        "mobile_text_style": "dark",
         "anchor_id": "top",
         "heading_size": 52,
-        "heading_size_mobile": 30,
+        "heading_size_mobile": 34,
         "badge": "PREVENTIVE HEALTHCARE",
-        "heading": "Understand your body.\nProtect your future health.",
+        "heading": "Understand your body.",
         "subheading": "Powered by the world’s most advanced health measurement technology, millions of health data points, AI, and physician expertise",
         "council_line": "",
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
         "button_link": "",
-        "coords": "CALZADA DEL VALLE · MONTERREY MX"
+        "coords": "",
+        "heading_accent": "Protect your future health."
       }
     },
     "gap": {

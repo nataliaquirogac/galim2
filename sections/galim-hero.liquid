@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero gh-hero--m-{{ s.mobile_text_style | default: 'dark' }}" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -54,8 +54,14 @@
         </div>
       {%- endif -%}
 
-      {%- if s.heading != blank -%}
-        <h1 class="gh-hero__h1">{{ s.heading | newline_to_br }}</h1>
+      {%- if s.heading != blank or s.heading_accent != blank -%}
+        <h1 class="gh-hero__h1">
+          {{- s.heading | newline_to_br -}}
+          {%- if s.heading_accent != blank -%}
+            {%- if s.heading != blank -%}<br>{%- endif -%}
+            <span class="gh-hero__h1-accent">{{ s.heading_accent }}</span>
+          {%- endif -%}
+        </h1>
       {%- endif -%}
 
       {%- if s.subheading != blank -%}
@@ -65,19 +71,6 @@
       {%- if s.council_line != blank -%}
         <p class="gh-hero__council">{{ s.council_line }}</p>
       {%- endif -%}
-
-      <div class="gh-hero__actions">
-        {%- if s.button_label != blank -%}
-          {%- if s.button_opens_modal -%}
-            <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
-          {%- else -%}
-            <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
-          {%- endif -%}
-        {%- endif -%}
-        {%- if s.coords != blank -%}
-          <span class="gh-hero__coords">{{ s.coords }}</span>
-        {%- endif -%}
-      </div>
 
       {%- if section.blocks.size > 0 -%}
         <div class="gh-hero__plans">
@@ -98,6 +91,19 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
+
+      <div class="gh-hero__actions">
+        {%- if s.button_label != blank -%}
+          {%- if s.button_opens_modal -%}
+            <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
+          {%- else -%}
+            <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if s.coords != blank -%}
+          <span class="gh-hero__coords">{{ s.coords }}</span>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </section>
@@ -107,7 +113,7 @@
     position: relative;
     min-height: 940px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     overflow: hidden;
     background: var(--gh-bg-900);
   }
@@ -115,81 +121,78 @@
   .gh-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   /* Full-cover teal tint: pulls any photo into the brand palette; strength is a customizer slider */
   .gh-hero__tint { position: absolute; inset: 0; background: rgb(8 45 54 / var(--gh-hero-tint, 0.45)); }
-  .gh-hero__grad-h { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,31,38,.92) 0%, rgba(8,45,54,.72) 42%, rgba(8,45,54,.22) 100%); }
-  .gh-hero__grad-v { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,31,38,.45) 0%, transparent 28%, rgba(6,31,38,.35) 55%, rgba(6,31,38,.96) 100%); }
+  /* Diagonal gradient: darkens toward the right where the text block sits */
+  .gh-hero__grad-h { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(6,31,38,0) 32%, rgba(6,31,38,.38) 58%, rgba(8,45,54,.8) 92%); }
+  .gh-hero__grad-v { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,31,38,.3) 0%, transparent 28%, transparent 62%, rgba(6,31,38,.55) 100%); }
   .gh-hero__grid {
     position: absolute; inset: 0;
     background-image: linear-gradient(rgba(214,224,226,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(214,224,226,.05) 1px, transparent 1px);
     background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(80% 90% at 20% 60%, #000, transparent);
-    mask-image: radial-gradient(80% 90% at 20% 60%, #000, transparent);
+    -webkit-mask-image: radial-gradient(80% 90% at 75% 50%, #000, transparent);
+    mask-image: radial-gradient(80% 90% at 75% 50%, #000, transparent);
   }
-  .gh-hero__inner { position: relative; width: 100%; max-width: var(--gh-max); margin: 0 auto; padding: 0 40px 110px; }
-  .gh-hero__col { max-width: 720px; }
+  .gh-hero__inner { position: relative; width: 100%; max-width: var(--gh-max); margin: 0 auto; padding: 0 64px; display: flex; justify-content: flex-end; }
+  .gh-hero__col { max-width: 600px; }
   .gh-hero__badge {
     display: inline-flex; align-items: center; gap: 10px;
     font: 500 11px/1 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-light);
-    border: 1px solid rgba(214,224,226,.3); border-radius: 2px; padding: 8px 14px; margin-bottom: 32px;
+    margin-bottom: 26px;
   }
   .gh-hero__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gh-green); display: inline-block; animation: gh-blink 1.6s infinite; }
-  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.05 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 24px; text-shadow: 0 1px 2px rgba(6,31,38,.35), 0 6px 32px rgba(6,31,38,.45); }
-  .gh-hero__sub { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 600px; margin-bottom: 20px; text-shadow: 0 1px 2px rgba(6,31,38,.4), 0 4px 22px rgba(6,31,38,.4); }
-  .gh-hero__council { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 560px; margin-bottom: 44px; text-shadow: 0 1px 2px rgba(6,31,38,.4); }
+  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 22px; text-shadow: 0 1px 2px rgba(6,31,38,.35), 0 6px 32px rgba(6,31,38,.45); }
+  .gh-hero__h1-accent { font-weight: 500; }
+  .gh-hero__sub { font: 300 19px/1.55 var(--gh-sans); color: var(--gh-light); max-width: 520px; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(6,31,38,.4), 0 4px 22px rgba(6,31,38,.4); }
+  .gh-hero__council { font: 400 15px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 520px; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(6,31,38,.4); }
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
   .gh-hero__coords { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
 
-  .gh-hero__plans { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  /* Plans: on desktop a single quiet mono line above the CTA */
+  .gh-hero__plans { display: flex; flex-wrap: wrap; gap: 12px 34px; margin: 0 0 28px; }
   .gh-hero__plan {
-    display: inline-flex; align-items: baseline; gap: 12px;
-    border: 1px solid rgba(214, 224, 226, 0.25);
-    border-radius: 2px;
-    padding: 13px 16px;
-    background: rgba(6, 31, 38, 0.35);
-    transition: border-color 0.25s ease, background 0.25s ease;
+    display: inline-flex; align-items: baseline; gap: 9px;
+    font: 400 12px/1 var(--gh-mono); letter-spacing: 0.1em;
+    color: var(--gh-muted); text-transform: uppercase;
+    transition: color 0.25s ease;
   }
-  .gh-hero__plan:hover { border-color: rgba(140, 191, 138, 0.6); background: rgba(6, 31, 38, 0.5); }
-  .gh-hero__plan-time { font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-green); white-space: nowrap; }
-  .gh-hero__plan-name { font: 400 14px/1.2 var(--gh-sans); color: var(--gh-light); }
-  .gh-hero__plan-price { font: 500 15px/1 var(--gh-sans); color: var(--gh-white); white-space: nowrap; }
+  .gh-hero__plan:hover { color: var(--gh-green); }
+  .gh-hero__plan:hover .gh-hero__plan-price { color: var(--gh-green); }
+  .gh-hero__plan-time { color: inherit; white-space: nowrap; }
+  .gh-hero__plan-name { color: inherit; }
+  .gh-hero__plan-price { color: var(--gh-light); white-space: nowrap; transition: color 0.25s ease; }
+  .gh-hero__plan-price::before { content: "· "; color: var(--gh-slate); }
 
   @media (max-width: 768px) {
-    /* Full-screen photo hero (Neko style) */
-    .gh-hero { min-height: 100vh; min-height: 100svh; display: flex; align-items: stretch; }
+    /* Immersive minimal: full-screen photo, bottom gradient, text bottom-left */
+    .gh-hero { min-height: 100vh; min-height: 100svh; align-items: flex-end; }
     .gh-hero__grad-h,
     .gh-hero__grid { display: none; }
-    .gh-hero__inner { padding: 92px 20px 36px; display: flex; }
-    .gh-hero__col { max-width: none; width: 100%; display: flex; flex-direction: column; }
-    .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; }
+    .gh-hero__tint { background: rgb(8 45 54 / calc(var(--gh-hero-tint, 0.45) * 0.55)); }
+    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.28) 0%, transparent 30%, rgba(6,31,38,.5) 60%, rgba(6,31,38,.96) 100%); }
+    .gh-hero__inner { padding: 0 20px 24px; justify-content: flex-start; }
+    .gh-hero__col { max-width: none; width: 100%; }
+    .gh-hero__badge { font-size: 10px; letter-spacing: 0.2em; margin-bottom: 16px; }
     .gh-hero__dot { width: 6px; height: 6px; }
-    .gh-hero__h1 { line-height: 1.05; margin-bottom: 18px; }
-    .gh-hero__sub { font-size: 16px; margin-bottom: 14px; }
+    .gh-hero__h1 { line-height: 1.08; margin-bottom: 14px; }
+    .gh-hero__h1-accent { font-weight: inherit; }
+    .gh-hero__sub { font-size: 16px; margin-bottom: 24px; }
     .gh-hero__council { font-size: 13px; margin-bottom: 24px; }
     .gh-hero__coords { display: none; }
+
+    /* Plans become minimal hairline rows */
+    .gh-hero__plans { display: block; margin: 0 0 18px; border-top: 1px solid rgba(214,224,226,.16); }
+    .gh-hero__plan {
+      display: flex; width: 100%; align-items: center; gap: 14px;
+      padding: 15px 2px;
+      border-bottom: 1px solid rgba(214,224,226,.16);
+      text-transform: none; letter-spacing: 0;
+    }
+    .gh-hero__plan-time { font: 400 12px/1 var(--gh-mono); letter-spacing: 0.08em; color: var(--gh-muted); }
+    .gh-hero__plan-name { flex: 1; font: 300 17px/1.25 var(--gh-sans); color: var(--gh-light); }
+    .gh-hero__plan-price { font: 400 16px/1 var(--gh-mono); color: var(--gh-light); }
+    .gh-hero__plan-price::before { content: ""; }
+
+    .gh-hero__actions { width: 100%; }
     .gh-btn--solid { width: 100%; justify-content: center; }
-    .gh-hero__plans { gap: 10px; margin-top: 20px; }
-    .gh-hero__plan { width: 100%; }
-    .gh-hero__plan-name { flex: 1; text-align: left; }
-
-    /* Dark centered text over a bright photo */
-    .gh-hero--m-dark .gh-hero__tint,
-    .gh-hero--m-dark .gh-hero__grad-v { display: none; }
-    .gh-hero--m-dark .gh-hero__col { justify-content: center; align-items: center; text-align: center; }
-    .gh-hero--m-dark .gh-hero__badge { color: var(--gh-bg); border-color: rgba(12, 59, 70, 0.45); }
-    .gh-hero--m-dark .gh-hero__h1 { color: var(--gh-bg); text-shadow: none; }
-    .gh-hero--m-dark .gh-hero__sub { color: var(--gh-bg-900); text-shadow: none; }
-    .gh-hero--m-dark .gh-hero__council { color: rgba(8, 45, 54, 0.78); text-shadow: none; }
-    .gh-hero--m-dark .gh-hero__actions { justify-content: center; width: 100%; }
-    .gh-hero--m-dark .gh-btn--solid { background: var(--gh-bg); color: var(--gh-light); }
-    .gh-hero--m-dark .gh-hero__plans { width: 100%; }
-    .gh-hero--m-dark .gh-hero__plan { border-color: rgba(12, 59, 70, 0.35); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(4px); }
-    .gh-hero--m-dark .gh-hero__plan:hover { border-color: rgba(12, 59, 70, 0.6); background: rgba(255, 255, 255, 0.55); }
-    .gh-hero--m-dark .gh-hero__plan-time { color: var(--gh-bg); }
-    .gh-hero--m-dark .gh-hero__plan-name { color: var(--gh-bg-900); }
-    .gh-hero--m-dark .gh-hero__plan-price { color: var(--gh-bg); }
-
-    /* Light text with dark overlay (for dark photos) */
-    .gh-hero--m-light .gh-hero__col { justify-content: flex-end; }
-    .gh-hero--m-light .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.4) 0%, transparent 30%, rgba(6,31,38,.5) 55%, rgba(6,31,38,.97) 100%); }
   }
 {% endstylesheet %}
 
@@ -204,13 +207,13 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
     { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength (desktop)", "info": "Teal tint over the photo. Raise it for bright images so the text stands out.", "default": 45 },
-    { "type": "select", "id": "mobile_text_style", "label": "Mobile style", "options": [ { "value": "dark", "label": "Dark centered text (bright photo)" }, { "value": "light", "label": "Light text + dark overlay (dark photo)" } ], "default": "dark", "info": "On mobile the photo fills the screen; pick the text treatment that matches your photo." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
     { "type": "range", "id": "heading_size_mobile", "min": 22, "max": 46, "step": 2, "unit": "px", "label": "Heading size (mobile)", "default": 30 },
     { "type": "text", "id": "badge", "label": "Badge (mono)", "default": "PREVENTIVE HEALTHCARE · MEDICAL COUNCIL" },
-    { "type": "textarea", "id": "heading", "label": "Headline", "default": "Measured Body.\nOptimized Life." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "default": "Understand your body." },
+    { "type": "text", "id": "heading_accent", "label": "Headline accent (bolder line)", "default": "Protect your future." },
     { "type": "textarea", "id": "subheading", "label": "Subheadline", "default": "Galim is a new category of preventive healthcare — combining advanced diagnostics, AI, and physician expertise into one comprehensive health assessment." },
     { "type": "textarea", "id": "council_line", "label": "Council line", "default": "Developed by our Medical Council of specialists across every major body system." },
     { "type": "header", "content": "Button" },
