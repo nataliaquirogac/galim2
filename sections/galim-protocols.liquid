@@ -28,6 +28,7 @@
                 <div>
                   {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
                   {%- if b.scan_time != blank -%}<span class="gh-pkg__time">{{ b.scan_time }}</span>{%- endif -%}
+                  {%- if b.cadence != blank -%}<span class="gh-pkg__cadence">{{ b.cadence }}</span>{%- endif -%}
                 </div>
               </div>
               {%- if b.tagline != blank -%}<p class="gh-pkg__tagline">{{ b.tagline }}</p>{%- endif -%}
@@ -124,6 +125,7 @@
   .gh-pkg.is-featured .gh-pkg__icon { background: rgba(140,191,138,.18); border-color: rgba(140,191,138,.45); }
   .gh-pkg__name { font: 600 27px/1 var(--gh-sans); color: var(--gh-white); }
   .gh-pkg__time { font: 400 12px/1 var(--gh-mono); color: var(--gh-green); letter-spacing: 0.1em; }
+  .gh-pkg__cadence { display: block; font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
   .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin-bottom: 22px; }
   .gh-pkg__price { font: 200 48px/1 var(--gh-sans); color: var(--gh-white); letter-spacing: -0.02em; }
   .gh-pkg__unit { font-size: 15px; color: var(--gh-slate); }
@@ -206,6 +208,7 @@
         { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value":"bolt","label":"Lightning"}, {"value":"infinity","label":"Infinity"} ], "default": "bolt" },
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
         { "type": "text", "id": "scan_time", "label": "Scan time (mono)", "default": "25 MIN SCAN" },
+        { "type": "text", "id": "cadence", "label": "Recommendation line", "info": "e.g. Recommended every 8–12 weeks" },
         { "type": "text", "id": "tagline", "label": "Tagline", "default": "Fat loss, gain muscle, fitter life." },
         { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
         { "type": "text", "id": "price_unit", "label": "Price unit", "default": "MXN" },
