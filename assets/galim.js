@@ -59,9 +59,9 @@
       var phone = modalForm.querySelector('[data-gh-phone]');
       var source = modalForm.querySelector('[data-gh-source]');
       var parts = ['Galim waitlist'];
-      if (phone && phone.value) parts.push('Celular: ' + phone.value);
+      if (phone && phone.value) parts.push('Phone: ' + phone.value);
       if (source && source.selectedIndex >= 0) {
-        parts.push('Se enteró por: ' + source.options[source.selectedIndex].text);
+        parts.push('Source: ' + source.options[source.selectedIndex].text);
       }
       note.value = parts.join(' · ');
     });

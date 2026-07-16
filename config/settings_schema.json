@@ -1469,55 +1469,55 @@
         "type": "text",
         "id": "waitlist_title",
         "label": "Title",
-        "default": "Estás cerca."
+        "default": "You're close."
       },
       {
         "type": "text",
         "id": "waitlist_subtitle",
         "label": "Subtitle",
-        "default": "Unos datos, y guardamos tu lugar."
+        "default": "A few details, and we'll save your spot."
       },
       {
         "type": "text",
         "id": "waitlist_name_label",
         "label": "Name field label",
-        "default": "Nombre"
+        "default": "First name"
       },
       {
         "type": "text",
         "id": "waitlist_last_label",
         "label": "Last name field label",
-        "default": "Apellido"
+        "default": "Last name"
       },
       {
         "type": "text",
         "id": "waitlist_phone_label",
         "label": "Phone field label",
-        "default": "Celular"
+        "default": "Phone"
       },
       {
         "type": "text",
         "id": "waitlist_source_label",
         "label": "Referral field label",
-        "default": "¿Cómo te enteraste de nosotros?"
+        "default": "How did you hear about us?"
       },
       {
         "type": "text",
         "id": "waitlist_source_options",
         "label": "Referral options (comma-separated)",
-        "default": "Un doctor, Un nutriólogo, Instagram, Amigo o familiar, Google, Otro"
+        "default": "A doctor, A nutritionist, Instagram, Friend or family, Google, Other"
       },
       {
         "type": "text",
         "id": "waitlist_submit",
         "label": "Submit button label",
-        "default": "Únete a la lista de espera →"
+        "default": "Join the waiting list →"
       },
       {
         "type": "text",
         "id": "waitlist_success",
         "label": "Success message",
-        "default": "¡Listo! Guardamos tu lugar. Te avisaremos pronto."
+        "default": "Done! Your spot is saved. We'll be in touch soon."
       },
       {
         "type": "url",

@@ -58,8 +58,8 @@
             "eyebrow": "◇ PERFORMANCE · YOUR BQ",
             "heading": "Your body in one number.",
             "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number.",
-            "note_title": "¿Estás en GLP-1?",
-            "note_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número estimado. Performance mide lo que de verdad perdiste: grasa o tu base. </p>"
+            "note_title": "On a GLP-1?",
+            "note_body": "<p>Up to <strong>40% of the weight you lose can be muscle.</strong> Your gym’s InBody gives you an estimate. Performance measures what you actually lost: fat or your foundation.</p>"
           }
         },
         "tier_1": {
@@ -67,7 +67,7 @@
           "settings": {
             "numeral": "VI",
             "label": "Apex",
-            "range": "145+",
+            "range": "99%",
             "numeral_color": "green",
             "label_color": "white",
             "range_color": "muted",
@@ -78,8 +78,8 @@
           "type": "tier",
           "settings": {
             "numeral": "V",
-            "label": "Excepcional",
-            "range": "130–144",
+            "label": "Exceptional",
+            "range": "92–98%",
             "numeral_color": "muted",
             "label_color": "white",
             "range_color": "muted",
@@ -90,8 +90,8 @@
           "type": "tier",
           "settings": {
             "numeral": "IV",
-            "label": "Avanzado",
-            "range": "115–129",
+            "label": "Advanced",
+            "range": "75–91%",
             "numeral_color": "muted",
             "label_color": "white",
             "range_color": "muted",
@@ -102,8 +102,8 @@
           "type": "tier",
           "settings": {
             "numeral": "III",
-            "label": "Apto",
-            "range": "100–114",
+            "label": "Fit",
+            "range": "50–74%",
             "numeral_color": "light",
             "label_color": "white",
             "range_color": "light",
@@ -114,8 +114,8 @@
           "type": "tier",
           "settings": {
             "numeral": "II",
-            "label": "En desarrollo",
-            "range": "85–99",
+            "label": "Developing",
+            "range": "25–49%",
             "numeral_color": "slate",
             "label_color": "muted",
             "range_color": "muted",
@@ -127,7 +127,7 @@
           "settings": {
             "numeral": "I",
             "label": "Base",
-            "range": "<85",
+            "range": "<25%",
             "numeral_color": "slate",
             "label_color": "muted",
             "range_color": "muted",
@@ -148,10 +148,10 @@
       "settings": {
         "eyebrow": "02 / TWO AXES",
         "bg_color": "#0c3b46",
-        "bq_label": "THE BQ, EXPLAINED",
-        "bq_number": "100",
-        "bq_number_caption": "= promedio de tu edad. Cada punto arriba lo entrenaste.",
-        "bq_copy": "BQ: tu cuerpo, en un número. Como el IQ, pero de tu cuerpo — un benchmark vivo de cómo realmente rindes."
+        "bq_label": "YOUR BODY QUOTIENT",
+        "bq_number": "",
+        "bq_number_caption": "Your results place you into one of six performance levels — and show you what comes next.",
+        "bq_copy": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing."
       }
     },
     "protocols": {

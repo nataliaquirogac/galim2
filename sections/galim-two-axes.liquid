@@ -32,10 +32,14 @@
     <div class="gh-axes__bq">
       <div class="gh-axes__bq-left">
         {%- if s.bq_label != blank -%}<div class="gh-axes__bq-label">{{ s.bq_label }}</div>{%- endif -%}
-        <div class="gh-axes__bq-num-row">
-          <span class="gh-axes__bq-num">{{ s.bq_number | default: '100' }}</span>
-          {%- if s.bq_number_caption != blank -%}<span class="gh-axes__bq-num-cap">{{ s.bq_number_caption }}</span>{%- endif -%}
-        </div>
+        {%- if s.bq_number != blank -%}
+          <div class="gh-axes__bq-num-row">
+            <span class="gh-axes__bq-num">{{ s.bq_number }}</span>
+            {%- if s.bq_number_caption != blank -%}<span class="gh-axes__bq-num-cap">{{ s.bq_number_caption }}</span>{%- endif -%}
+          </div>
+        {%- elsif s.bq_number_caption != blank -%}
+          <p class="gh-axes__bq-cap-solo">{{ s.bq_number_caption }}</p>
+        {%- endif -%}
         {%- if s.bq_copy != blank -%}<p class="gh-axes__bq-copy">{{ s.bq_copy }}</p>{%- endif -%}
         <div class="gh-axes__bar gh-axes__bar--desktop"></div>
       </div>
@@ -89,6 +93,7 @@
   .gh-axes__bq-num-row { display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px; }
   .gh-axes__bq-num { font: 200 120px/1 var(--gh-sans); color: var(--gh-light); letter-spacing: -0.04em; }
   .gh-axes__bq-num-cap { font: 400 15px/1.4 var(--gh-mono); color: var(--gh-muted); max-width: 160px; }
+  .gh-axes__bq-cap-solo { font: 400 14px/1.7 var(--gh-mono); color: var(--gh-muted); max-width: 440px; margin-bottom: 22px; }
   .gh-axes__bq-copy { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 440px; }
   .gh-axes__bar {
     margin-top: 24px; height: 5px; border-radius: 3px; max-width: 440px;
@@ -144,9 +149,9 @@
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#0C3B46" },
     { "type": "header", "content": "BQ panel" },
     { "type": "text", "id": "bq_label", "label": "Panel label", "default": "THE BQ, EXPLAINED" },
-    { "type": "text", "id": "bq_number", "label": "Big number", "default": "100" },
-    { "type": "text", "id": "bq_number_caption", "label": "Number caption", "default": "= promedio de tu edad. Cada punto arriba lo entrenaste." },
-    { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "BQ: tu cuerpo, en un número. Como el IQ, pero de tu cuerpo — un benchmark vivo de cómo realmente rindes." }
+    { "type": "text", "id": "bq_number", "label": "Big number (optional)", "info": "Leave blank to hide." },
+    { "type": "text", "id": "bq_number_caption", "label": "Number caption", "default": "Your results place you into one of six performance levels — and show you what comes next." },
+    { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing." }
   ],
   "blocks": [
     {
@@ -181,12 +186,12 @@
       "blocks": [
         { "type": "axis", "settings": { "eyebrow": "◇ LONGEVITY", "heading": "Find it a decade early.", "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." } },
         { "type": "axis", "settings": { "eyebrow": "◇ PERFORMANCE · YOUR BQ", "heading": "Your body in one number.", "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number." } },
-        { "type": "tier", "settings": { "numeral": "VI", "label": "Apex", "range": "145+", "numeral_color": "green", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "V", "label": "Excepcional", "range": "130–144", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "IV", "label": "Avanzado", "range": "115–129", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "III", "label": "Apto", "range": "100–114", "numeral_color": "light", "label_color": "white", "range_color": "light", "highlight": true } },
-        { "type": "tier", "settings": { "numeral": "II", "label": "En desarrollo", "range": "85–99", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "I", "label": "Base", "range": "<85", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } }
+        { "type": "tier", "settings": { "numeral": "VI", "label": "Apex", "range": "99%", "numeral_color": "green", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "V", "label": "Exceptional", "range": "92–98%", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "IV", "label": "Advanced", "range": "75–91%", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "III", "label": "Fit", "range": "50–74%", "numeral_color": "light", "label_color": "white", "range_color": "light", "highlight": true } },
+        { "type": "tier", "settings": { "numeral": "II", "label": "Developing", "range": "25–49%", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "I", "label": "Base", "range": "<25%", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } }
       ]
     }
   ]

@@ -15,7 +15,7 @@
 {%- liquid
   assign s = settings
   assign action = s.waitlist_form_action
-  assign source_options = s.waitlist_source_options | default: 'Un doctor, Un nutriólogo, Instagram, Amigo o familiar, Google, Otro'
+  assign source_options = s.waitlist_source_options | default: 'A doctor, A nutritionist, Instagram, Friend or family, Google, Other'
   assign source_list = source_options | split: ','
 -%}
 
@@ -25,22 +25,22 @@
     <button type="button" class="gh-modal__close" data-gh-waitlist-close aria-label="Close">&times;</button>
 
     <p class="gh-modal__eyebrow">{{ s.waitlist_eyebrow | default: 'JOIN THE WAITLIST' }}</p>
-    <h2 id="gh-modal-title" class="gh-modal__title">{{ s.waitlist_title | default: 'Estás cerca.' }}</h2>
-    <p class="gh-modal__sub">{{ s.waitlist_subtitle | default: 'Unos datos, y guardamos tu lugar.' }}</p>
+    <h2 id="gh-modal-title" class="gh-modal__title">{{ s.waitlist_title | default: "You're close." }}</h2>
+    <p class="gh-modal__sub">{{ s.waitlist_subtitle | default: "A few details, and we'll save your spot." }}</p>
 
     {%- capture fields -%}
       <div class="gh-field-row">
         <label class="gh-field">
-          <span class="gh-field__label">{{ s.waitlist_name_label | default: 'Nombre' }}</span>
+          <span class="gh-field__label">{{ s.waitlist_name_label | default: 'First name' }}</span>
           <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
         </label>
         <label class="gh-field">
-          <span class="gh-field__label">{{ s.waitlist_last_label | default: 'Apellido' }}</span>
+          <span class="gh-field__label">{{ s.waitlist_last_label | default: 'Last name' }}</span>
           <input type="text" name="{% if action == blank %}contact[last_name]{% else %}last_name{% endif %}" required autocomplete="family-name">
         </label>
       </div>
       <label class="gh-field">
-        <span class="gh-field__label">{{ s.waitlist_phone_label | default: 'Celular' }}</span>
+        <span class="gh-field__label">{{ s.waitlist_phone_label | default: 'Phone' }}</span>
         <input type="tel" {% if action == blank %}data-gh-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
       </label>
       <label class="gh-field">
@@ -48,7 +48,7 @@
         <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
       </label>
       <label class="gh-field">
-        <span class="gh-field__label">{{ s.waitlist_source_label | default: '¿Cómo te enteraste de nosotros?' }}</span>
+        <span class="gh-field__label">{{ s.waitlist_source_label | default: 'How did you hear about us?' }}</span>
         <select {% if action == blank %}name="contact[tags]" data-gh-source{% else %}name="source"{% endif %}>
           {%- for opt in source_list -%}
             {%- assign opt_clean = opt | strip -%}
@@ -56,14 +56,14 @@
           {%- endfor -%}
         </select>
       </label>
-      <button type="submit" class="gh-btn gh-btn--solid gh-modal__submit">{{ s.waitlist_submit | default: 'Únete a la lista de espera →' }}</button>
+      <button type="submit" class="gh-btn gh-btn--solid gh-modal__submit">{{ s.waitlist_submit | default: 'Join the waiting list →' }}</button>
     {%- endcapture -%}
 
     {%- if action == blank -%}
       {%- form 'customer', class: 'gh-modal__form' -%}
         <input type="hidden" name="contact[note]" value="Galim waitlist signup" data-gh-note>
         {%- if form.posted_successfully? -%}
-          <p class="gh-modal__success">{{ s.waitlist_success | default: '¡Listo! Guardamos tu lugar. Te avisaremos pronto.' }}</p>
+          <p class="gh-modal__success">{{ s.waitlist_success | default: "Done! Your spot is saved. We'll be in touch soon." }}</p>
         {%- else -%}
           {%- if form.errors -%}
             <p class="gh-modal__error">{{ form.errors | default_errors }}</p>
