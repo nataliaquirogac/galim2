@@ -188,17 +188,17 @@
           "settings": {
             "icon": "bolt",
             "name": "Performance",
-            "scan_time": "25 MIN SCAN",
+            "scan_time": "25 MIN",
+            "cadence": "Recommended every 8–12 weeks",
             "tagline": "Fat loss, gain muscle, fitter life.",
             "price": "$1,499",
             "price_unit": "MXN",
             "featured": false,
             "badge_label": "FULL PICTURE",
             "list_intro": "",
-            "features": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>",
+            "features": "<ul><li><strong>Body Composition </strong></li><li>Muscle & Strength</li><li><strong>Movement & Mobility </strong></li><li>Cardiovascular Fitness</li><li><strong>Metabolic health </strong></li><li>Aerobic Capacity</li></ul>",
             "addon_title": "ADD-ONS",
-            "addon_line": "RMR (resting metabolism) \nLactate Threshold (endurance zones)",
-            "cadence": "Recommended every 8–12 weeks"
+            "addon_line": "RMR (resting metabolism) \nLactate Threshold (endurance zones)"
           }
         },
         "long": {
@@ -207,6 +207,7 @@
             "icon": "infinity",
             "name": "Longevity",
             "scan_time": "50 MIN FULL WORKUP",
+            "cadence": "Recommended every year",
             "tagline": "Everything in Performance, plus deep diagnostics.",
             "price": "$4,999",
             "price_unit": "MXN",
@@ -215,8 +216,7 @@
             "list_intro": "EVERYTHING IN PERFORMANCE, PLUS",
             "features": "<ul><li>Biological age across 8 body systems</li><li>Advanced blood biomarkers</li><li>Early health risk detection</li><li>Your personalized longevity roadmap</li><li>Galim AI coach</li></ul>",
             "addon_title": "ADD-ONS",
-            "addon_line": "",
-            "cadence": "Recommended every year"
+            "addon_line": ""
           }
         }
       },
