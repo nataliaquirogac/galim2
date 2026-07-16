@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px;">
   {%- if s.image != blank -%}
     <img class="gh-hero__img" src="{{ s.image | image_url: width: 1600 }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" width="1600" height="1040">
   {%- elsif s.image_url != blank -%}
@@ -86,7 +86,7 @@
     border: 1px solid rgba(214,224,226,.3); border-radius: 2px; padding: 8px 14px; margin-bottom: 32px;
   }
   .gh-hero__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gh-green); display: inline-block; animation: gh-blink 1.6s infinite; }
-  .gh-hero__h1 { font: 200 clamp(38px, 4.6vw, 64px)/1 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 26px; }
+  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.05 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 24px; }
   .gh-hero__sub { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 600px; margin-bottom: 20px; }
   .gh-hero__council { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 560px; margin-bottom: 44px; }
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
@@ -117,6 +117,8 @@
     { "type": "text", "id": "image_url", "label": "…or image URL", "info": "Used if no image is uploaded. Falls back to a dark panel.", "default": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600" },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
+    { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
+    { "type": "range", "id": "heading_size_mobile", "min": 22, "max": 46, "step": 2, "unit": "px", "label": "Heading size (mobile)", "default": 30 },
     { "type": "text", "id": "badge", "label": "Badge (mono)", "default": "PREVENTIVE HEALTHCARE · MEDICAL COUNCIL" },
     { "type": "textarea", "id": "heading", "label": "Headline", "default": "Measured Body.\nOptimized Life." },
     { "type": "textarea", "id": "subheading", "label": "Subheadline", "default": "Galim is a new category of preventive healthcare — combining advanced diagnostics, AI, and physician expertise into one comprehensive health assessment." },
