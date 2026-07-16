@@ -77,7 +77,22 @@
 
 {% stylesheet %}
   .gh-protocols__eyebrow { margin-bottom: 14px; }
-  .gh-protocols__h2 { font: 200 46px/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 48px; }
+  .gh-protocols__h2 { font: 200 46px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 48px; max-width: 900px; }
+  .gh-protocols__h2 p { margin: 0; }
+  /* Bold in the heading = animated light->green gradient text (echoes the BQ bar) */
+  .gh-protocols__h2 strong {
+    font-weight: 500;
+    background: linear-gradient(90deg, #D6E0E2, #8CBF8A 45%, #D6E0E2 90%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: gh-sweep 6s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gh-protocols__h2 strong { animation: none; }
+  }
   .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
 
   .gh-pkg {
@@ -176,7 +191,7 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "plans" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 / PROTOCOLS" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Choose your measurement." },
+    { "type": "richtext", "id": "heading", "label": "Heading (bold = animated gradient)", "default": "<p>Choose your measurement.</p>" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" },
     { "type": "header", "content": "GLP-1 note" },
     { "type": "text", "id": "glp_glyph", "label": "Glyph", "default": "◈" },
