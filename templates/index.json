@@ -209,8 +209,8 @@
         "bg_color": "#0c3b46",
         "bq_label": "YOUR BODY QUOTIENT",
         "bq_number": "",
-        "bq_number_caption": "Your results place you into one of six performance levels — and show you what comes next.",
-        "bq_copy": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing."
+        "bq_number_caption": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing.",
+        "bq_copy": "Your results place you into one of six performance levels — and show you what comes next."
       }
     },
     "protocols": {
