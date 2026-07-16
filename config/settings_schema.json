@@ -1485,27 +1485,27 @@
       },
       {
         "type": "text",
-        "id": "waitlist_interest_label",
-        "label": "Interest field label",
-        "default": "¿Qué te interesa más?"
+        "id": "waitlist_last_label",
+        "label": "Last name field label",
+        "default": "Apellido"
       },
       {
         "type": "text",
-        "id": "waitlist_opt_1",
-        "label": "Interest option 1",
-        "default": "Rendimiento"
+        "id": "waitlist_phone_label",
+        "label": "Phone field label",
+        "default": "Celular"
       },
       {
         "type": "text",
-        "id": "waitlist_opt_2",
-        "label": "Interest option 2",
-        "default": "Longevidad"
+        "id": "waitlist_source_label",
+        "label": "Referral field label",
+        "default": "¿Cómo te enteraste de nosotros?"
       },
       {
         "type": "text",
-        "id": "waitlist_opt_3",
-        "label": "Interest option 3",
-        "default": "Aún no sé"
+        "id": "waitlist_source_options",
+        "label": "Referral options (comma-separated)",
+        "default": "Un doctor, Un nutriólogo, Instagram, Amigo o familiar, Google, Otro"
       },
       {
         "type": "text",
@@ -1517,7 +1517,7 @@
         "type": "text",
         "id": "waitlist_success",
         "label": "Success message",
-        "default": "¡Listo! Te avisaremos. Gracias por unirte."
+        "default": "¡Listo! Guardamos tu lugar. Te avisaremos pronto."
       },
       {
         "type": "url",

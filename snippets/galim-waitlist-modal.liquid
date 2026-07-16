@@ -1,17 +1,22 @@
 {%- comment -%}
   Galim Health — Waitlist modal
   Rendered once globally by the header. Opened via [data-gh-waitlist-open].
-  Accepts overrides from settings (title, copy, interest options, endpoint).
+  Fields: nombre, apellido, celular, email, ¿cómo te enteraste de nosotros?
 
   Wiring:
-  - If settings.waitlist_form_action is blank -> Shopify native customer form
-    (adds the email as a customer/newsletter subscriber, tagged so you can filter the waitlist).
-  - If a URL is provided -> a plain form posts there (e.g. an external form endpoint).
+  - If settings.waitlist_form_action is blank -> Shopify native customer form.
+    Creates the customer with first/last name + email; the referral source is
+    saved as a tag (e.g. "waitlist, un-doctor") and, together with the phone,
+    into the customer note (packed by galim.js on submit).
+  - If a URL is provided -> a plain form posts there
+    (fields: name, last_name, phone, email, source).
 {%- endcomment -%}
 
 {%- liquid
   assign s = settings
   assign action = s.waitlist_form_action
+  assign source_options = s.waitlist_source_options | default: 'Un doctor, Un nutriólogo, Instagram, Amigo o familiar, Google, Otro'
+  assign source_list = source_options | split: ','
 -%}
 
 <div id="gh-waitlist-modal" class="gh-modal" role="dialog" aria-modal="true" aria-labelledby="gh-modal-title" hidden>
@@ -24,20 +29,31 @@
     <p class="gh-modal__sub">{{ s.waitlist_subtitle | default: 'Unos datos, y guardamos tu lugar.' }}</p>
 
     {%- capture fields -%}
+      <div class="gh-field-row">
+        <label class="gh-field">
+          <span class="gh-field__label">{{ s.waitlist_name_label | default: 'Nombre' }}</span>
+          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
+        </label>
+        <label class="gh-field">
+          <span class="gh-field__label">{{ s.waitlist_last_label | default: 'Apellido' }}</span>
+          <input type="text" name="{% if action == blank %}contact[last_name]{% else %}last_name{% endif %}" required autocomplete="family-name">
+        </label>
+      </div>
       <label class="gh-field">
-        <span class="gh-field__label">{{ s.waitlist_name_label | default: 'Nombre' }}</span>
-        <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="name">
+        <span class="gh-field__label">{{ s.waitlist_phone_label | default: 'Celular' }}</span>
+        <input type="tel" {% if action == blank %}data-gh-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
       </label>
       <label class="gh-field">
         <span class="gh-field__label">Email</span>
         <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
       </label>
       <label class="gh-field">
-        <span class="gh-field__label">{{ s.waitlist_interest_label | default: '¿Qué te interesa más?' }}</span>
-        <select name="{% if action == blank %}contact[tags]{% else %}interest{% endif %}">
-          <option value="waitlist, rendimiento">{{ s.waitlist_opt_1 | default: 'Rendimiento' }}</option>
-          <option value="waitlist, longevidad">{{ s.waitlist_opt_2 | default: 'Longevidad' }}</option>
-          <option value="waitlist, indeciso" selected>{{ s.waitlist_opt_3 | default: 'Aún no sé' }}</option>
+        <span class="gh-field__label">{{ s.waitlist_source_label | default: '¿Cómo te enteraste de nosotros?' }}</span>
+        <select {% if action == blank %}name="contact[tags]" data-gh-source{% else %}name="source"{% endif %}>
+          {%- for opt in source_list -%}
+            {%- assign opt_clean = opt | strip -%}
+            <option value="{% if action == blank %}waitlist, {{ opt_clean | handleize }}{% else %}{{ opt_clean }}{% endif %}">{{ opt_clean }}</option>
+          {%- endfor -%}
         </select>
       </label>
       <button type="submit" class="gh-btn gh-btn--solid gh-modal__submit">{{ s.waitlist_submit | default: 'Únete a la lista de espera →' }}</button>
@@ -45,9 +61,9 @@
 
     {%- if action == blank -%}
       {%- form 'customer', class: 'gh-modal__form' -%}
-        <input type="hidden" name="contact[note]" value="Galim waitlist signup">
+        <input type="hidden" name="contact[note]" value="Galim waitlist signup" data-gh-note>
         {%- if form.posted_successfully? -%}
-          <p class="gh-modal__success">{{ s.waitlist_success | default: '¡Listo! Te avisaremos. Gracias por unirte.' }}</p>
+          <p class="gh-modal__success">{{ s.waitlist_success | default: '¡Listo! Guardamos tu lugar. Te avisaremos pronto.' }}</p>
         {%- else -%}
           {%- if form.errors -%}
             <p class="gh-modal__error">{{ form.errors | default_errors }}</p>
@@ -85,7 +101,9 @@
   .gh-modal__panel {
     position: relative;
     width: 100%;
-    max-width: 460px;
+    max-width: 480px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
     background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
     border: 1px solid var(--gh-border-strong);
     border-radius: 16px;
@@ -111,6 +129,7 @@
   .gh-modal__title { font: 200 34px/1.05 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 8px; }
   .gh-modal__sub { font: 300 16px/1.5 var(--gh-sans); color: var(--gh-muted); margin-bottom: 28px; }
   .gh-modal__form { display: flex; flex-direction: column; gap: 16px; }
+  .gh-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .gh-field { display: flex; flex-direction: column; gap: 7px; }
   .gh-field__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gh-slate); }
   .gh-field input,
@@ -123,6 +142,7 @@
     font: 400 15px/1.2 var(--gh-sans);
     width: 100%;
   }
+  .gh-field input::placeholder { color: var(--gh-slate); }
   .gh-field input:focus,
   .gh-field select:focus { outline: none; border-color: var(--gh-green); }
   .gh-field select { appearance: none; cursor: pointer; }
@@ -130,7 +150,9 @@
   .gh-modal__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
   .gh-modal__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
   @media (max-width: 768px) {
-    .gh-modal__panel { padding: 40px 24px 32px; }
+    .gh-modal { padding: 14px; }
+    .gh-modal__panel { padding: 36px 22px 28px; }
     .gh-modal__title { font-size: 28px; }
+    .gh-field-row { grid-template-columns: 1fr; gap: 16px; }
   }
 {% endstylesheet %}

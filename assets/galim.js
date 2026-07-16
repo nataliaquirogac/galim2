@@ -50,6 +50,28 @@
     if (e.key === 'Escape' && modal && !modal.hidden) closeModal();
   });
 
+  /* Pack phone + referral source into the customer note before the native form posts */
+  var modalForm = modal ? modal.querySelector('form') : null;
+  if (modalForm) {
+    modalForm.addEventListener('submit', function () {
+      var note = modalForm.querySelector('[data-gh-note]');
+      if (!note) return; // external endpoint: fields post with their own names
+      var phone = modalForm.querySelector('[data-gh-phone]');
+      var source = modalForm.querySelector('[data-gh-source]');
+      var parts = ['Galim waitlist'];
+      if (phone && phone.value) parts.push('Celular: ' + phone.value);
+      if (source && source.selectedIndex >= 0) {
+        parts.push('Se enteró por: ' + source.options[source.selectedIndex].text);
+      }
+      note.value = parts.join(' · ');
+    });
+  }
+
+  /* After the form posts, the page reloads — reopen the modal to show success/errors */
+  if (modal && modal.querySelector('.gh-modal__success, .gh-modal__error')) {
+    openModal();
+  }
+
   /* ---- Mobile nav drawer ---- */
   var drawer = document.getElementById('gh-drawer');
 
