@@ -13,10 +13,31 @@
 -%}
 
 <section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px;">
-  {%- if s.image != blank -%}
-    <img class="gh-hero__img" src="{{ s.image | image_url: width: 1600 }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" width="1600" height="1040">
-  {%- elsif s.image_url != blank -%}
-    <img class="gh-hero__img" src="{{ s.image_url }}" alt="{{ shop.name }}" loading="eager" onerror="this.style.display='none'">
+  {%- liquid
+    assign desktop_src = ''
+    if s.image != blank
+      assign desktop_src = s.image | image_url: width: 1800
+    elsif s.image_url != blank
+      assign desktop_src = s.image_url
+    endif
+    assign mobile_src = ''
+    if s.image_mobile != blank
+      assign mobile_src = s.image_mobile | image_url: width: 900
+    elsif s.image_url_mobile != blank
+      assign mobile_src = s.image_url_mobile
+    endif
+    assign main_src = desktop_src
+    if main_src == blank
+      assign main_src = mobile_src
+    endif
+  -%}
+  {%- if main_src != blank -%}
+    <picture>
+      {%- if mobile_src != blank and desktop_src != blank -%}
+        <source media="(max-width: 768px)" srcset="{{ mobile_src }}">
+      {%- endif -%}
+      <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" onerror="this.style.display='none'">
+    </picture>
   {%- endif -%}
 
   <div class="gh-hero__grad-h"></div>
@@ -113,8 +134,10 @@
   "class": "gh-section-full",
   "settings": [
     { "type": "header", "content": "Background image" },
-    { "type": "image_picker", "id": "image", "label": "Hero image" },
-    { "type": "text", "id": "image_url", "label": "…or image URL", "info": "Used if no image is uploaded. Falls back to a dark panel.", "default": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600" },
+    { "type": "image_picker", "id": "image", "label": "Hero image (desktop)" },
+    { "type": "text", "id": "image_url", "label": "…or desktop image URL", "info": "Used if no image is uploaded. Falls back to a dark panel.", "default": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
+    { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
