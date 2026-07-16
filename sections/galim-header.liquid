@@ -81,10 +81,9 @@
     z-index: 100;
   }
   .gh-header {
-    background: rgba(12, 59, 70, 0.72);
-    backdrop-filter: blur(14px);
+    background: var(--gh-bg);
     border-bottom: 1px solid rgba(168, 194, 200, 0.14);
-    transition: padding 0.25s ease, background 0.25s ease;
+    transition: padding 0.25s ease;
   }
   .gh-header__inner {
     max-width: var(--gh-max);
@@ -96,7 +95,6 @@
     transition: padding 0.25s ease;
   }
   .gh-header.is-condensed .gh-header__inner { padding-top: 12px; padding-bottom: 12px; }
-  .gh-header.is-condensed { background: rgba(12, 59, 70, 0.92); }
   .gh-header__logo { display: inline-flex; align-items: center; }
   .gh-header__logo img { width: auto; display: block; }
 
