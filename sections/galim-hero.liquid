@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-hero-media-h: {{ s.media_height_mobile | default: 44 }}vh;">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero gh-hero--m-{{ s.mobile_text_style | default: 'dark' }}" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -153,25 +153,43 @@
   .gh-hero__plan-price { font: 500 15px/1 var(--gh-sans); color: var(--gh-white); white-space: nowrap; }
 
   @media (max-width: 768px) {
-    /* Split hero: clean photo on top, solid teal text panel below.
-       No text over the image, so readability never depends on the photo. */
-    .gh-hero { min-height: 0; display: block; background: var(--gh-bg-900); }
-    .gh-hero__media { position: relative; height: var(--gh-hero-media-h, 44vh); min-height: 300px; }
-    .gh-hero__grad-h { display: none; }
-    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.18) 0%, transparent 45%, var(--gh-bg-900) 100%); }
-    .gh-hero__tint { background: rgb(8 45 54 / calc(var(--gh-hero-tint, 0.45) * 0.5)); }
+    /* Full-screen photo hero (Neko style) */
+    .gh-hero { min-height: 100vh; min-height: 100svh; display: flex; align-items: stretch; }
+    .gh-hero__grad-h,
     .gh-hero__grid { display: none; }
-    .gh-hero__inner { padding: 6px 20px 44px; }
-    .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; margin-top: 18px; }
+    .gh-hero__inner { padding: 92px 20px 36px; display: flex; }
+    .gh-hero__col { max-width: none; width: 100%; display: flex; flex-direction: column; }
+    .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; }
     .gh-hero__dot { width: 6px; height: 6px; }
-    .gh-hero__h1 { line-height: 1.02; margin-bottom: 18px; text-shadow: none; }
-    .gh-hero__sub { font-size: 16px; margin-bottom: 14px; text-shadow: none; }
-    .gh-hero__council { font-size: 13px; margin-bottom: 24px; text-shadow: none; }
+    .gh-hero__h1 { line-height: 1.05; margin-bottom: 18px; }
+    .gh-hero__sub { font-size: 16px; margin-bottom: 14px; }
+    .gh-hero__council { font-size: 13px; margin-bottom: 24px; }
     .gh-hero__coords { display: none; }
     .gh-btn--solid { width: 100%; justify-content: center; }
-    .gh-hero__plans { gap: 10px; margin-top: 22px; }
+    .gh-hero__plans { gap: 10px; margin-top: 20px; }
     .gh-hero__plan { width: 100%; }
-    .gh-hero__plan-name { flex: 1; }
+    .gh-hero__plan-name { flex: 1; text-align: left; }
+
+    /* Dark centered text over a bright photo */
+    .gh-hero--m-dark .gh-hero__tint,
+    .gh-hero--m-dark .gh-hero__grad-v { display: none; }
+    .gh-hero--m-dark .gh-hero__col { justify-content: center; align-items: center; text-align: center; }
+    .gh-hero--m-dark .gh-hero__badge { color: var(--gh-bg); border-color: rgba(12, 59, 70, 0.45); }
+    .gh-hero--m-dark .gh-hero__h1 { color: var(--gh-bg); text-shadow: none; }
+    .gh-hero--m-dark .gh-hero__sub { color: var(--gh-bg-900); text-shadow: none; }
+    .gh-hero--m-dark .gh-hero__council { color: rgba(8, 45, 54, 0.78); text-shadow: none; }
+    .gh-hero--m-dark .gh-hero__actions { justify-content: center; width: 100%; }
+    .gh-hero--m-dark .gh-btn--solid { background: var(--gh-bg); color: var(--gh-light); }
+    .gh-hero--m-dark .gh-hero__plans { width: 100%; }
+    .gh-hero--m-dark .gh-hero__plan { border-color: rgba(12, 59, 70, 0.35); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(4px); }
+    .gh-hero--m-dark .gh-hero__plan:hover { border-color: rgba(12, 59, 70, 0.6); background: rgba(255, 255, 255, 0.55); }
+    .gh-hero--m-dark .gh-hero__plan-time { color: var(--gh-bg); }
+    .gh-hero--m-dark .gh-hero__plan-name { color: var(--gh-bg-900); }
+    .gh-hero--m-dark .gh-hero__plan-price { color: var(--gh-bg); }
+
+    /* Light text with dark overlay (for dark photos) */
+    .gh-hero--m-light .gh-hero__col { justify-content: flex-end; }
+    .gh-hero--m-light .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.4) 0%, transparent 30%, rgba(6,31,38,.5) 55%, rgba(6,31,38,.97) 100%); }
   }
 {% endstylesheet %}
 
@@ -185,8 +203,8 @@
     { "type": "text", "id": "image_url", "label": "…or desktop image URL", "info": "Used if no image is uploaded. Falls back to a dark panel.", "default": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600" },
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
-    { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength", "info": "Teal tint over the photo. Raise it for bright images so the text stands out.", "default": 45 },
-    { "type": "range", "id": "media_height_mobile", "min": 30, "max": 60, "step": 2, "unit": "vh", "label": "Photo height (mobile)", "info": "On mobile the photo sits on top and the text on a solid panel below.", "default": 44 },
+    { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength (desktop)", "info": "Teal tint over the photo. Raise it for bright images so the text stands out.", "default": 45 },
+    { "type": "select", "id": "mobile_text_style", "label": "Mobile style", "options": [ { "value": "dark", "label": "Dark centered text (bright photo)" }, { "value": "light", "label": "Light text + dark overlay (dark photo)" } ], "default": "dark", "info": "On mobile the photo fills the screen; pick the text treatment that matches your photo." },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
