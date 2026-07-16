@@ -46,7 +46,9 @@
           "settings": {
             "eyebrow": "◇ LONGEVITY",
             "heading": "Find it a decade early.",
-            "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act."
+            "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act.",
+            "note_title": "",
+            "note_body": ""
           }
         },
         "axis_2": {
@@ -56,7 +58,7 @@
             "heading": "Your body in one number.",
             "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number.",
             "note_title": "¿Estás en GLP-1?",
-            "note_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número — estimado. Performance mide lo que de verdad perdiste: grasa o tu base. Antes de empezar, y otra vez a las 8 semanas.</p>"
+            "note_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número estimado. Performance mide lo que de verdad perdiste: grasa o tu base. </p>"
           }
         },
         "tier_1": {
