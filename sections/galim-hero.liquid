@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px;">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -40,6 +40,7 @@
     </picture>
   {%- endif -%}
 
+  <div class="gh-hero__tint"></div>
   <div class="gh-hero__grad-h"></div>
   <div class="gh-hero__grad-v"></div>
   <div class="gh-hero__grid"></div>
@@ -90,8 +91,10 @@
     background: var(--gh-bg-900);
   }
   .gh-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .gh-hero__grad-h { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,31,38,.92) 0%, rgba(8,45,54,.78) 42%, rgba(8,45,54,.35) 100%); }
-  .gh-hero__grad-v { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,31,38,.55) 0%, transparent 30%, transparent 55%, rgba(6,31,38,.85) 100%); }
+  /* Full-cover teal tint: pulls any photo into the brand palette; strength is a customizer slider */
+  .gh-hero__tint { position: absolute; inset: 0; background: rgb(8 45 54 / var(--gh-hero-tint, 0.45)); }
+  .gh-hero__grad-h { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,31,38,.92) 0%, rgba(8,45,54,.72) 42%, rgba(8,45,54,.22) 100%); }
+  .gh-hero__grad-v { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,31,38,.45) 0%, transparent 28%, rgba(6,31,38,.35) 55%, rgba(6,31,38,.96) 100%); }
   .gh-hero__grid {
     position: absolute; inset: 0;
     background-image: linear-gradient(rgba(214,224,226,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(214,224,226,.05) 1px, transparent 1px);
@@ -107,16 +110,16 @@
     border: 1px solid rgba(214,224,226,.3); border-radius: 2px; padding: 8px 14px; margin-bottom: 32px;
   }
   .gh-hero__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gh-green); display: inline-block; animation: gh-blink 1.6s infinite; }
-  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.05 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 24px; }
-  .gh-hero__sub { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 600px; margin-bottom: 20px; }
-  .gh-hero__council { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 560px; margin-bottom: 44px; }
+  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.05 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 24px; text-shadow: 0 1px 2px rgba(6,31,38,.35), 0 6px 32px rgba(6,31,38,.45); }
+  .gh-hero__sub { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 600px; margin-bottom: 20px; text-shadow: 0 1px 2px rgba(6,31,38,.4), 0 4px 22px rgba(6,31,38,.4); }
+  .gh-hero__council { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 560px; margin-bottom: 44px; text-shadow: 0 1px 2px rgba(6,31,38,.4); }
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
   .gh-hero__coords { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
 
   @media (max-width: 768px) {
     .gh-hero { min-height: 540px; }
     .gh-hero__grad-h { display: none; }
-    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.4) 0%, transparent 35%, rgba(6,31,38,.92) 100%); }
+    .gh-hero__grad-v { background: linear-gradient(180deg, rgba(6,31,38,.4) 0%, transparent 30%, rgba(6,31,38,.5) 55%, rgba(6,31,38,.97) 100%); }
     .gh-hero__grid { display: none; }
     .gh-hero__inner { padding: 0 20px 40px; }
     .gh-hero__badge { font-size: 9px; letter-spacing: 0.18em; padding: 7px 11px; margin-bottom: 20px; }
@@ -138,6 +141,7 @@
     { "type": "text", "id": "image_url", "label": "…or desktop image URL", "info": "Used if no image is uploaded. Falls back to a dark panel.", "default": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600" },
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
+    { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength", "info": "Teal tint over the photo. Raise it for bright images so the text stands out.", "default": 45 },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
