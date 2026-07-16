@@ -1,0 +1,115 @@
+{%- comment -%}
+  Galim Health — 04 / ADVANCED DIAGNOSTICS
+  Five full-width rows (repeatable blocks): icon · faded number · name+desc · arrow.
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<section class="gh-diag gh-section" data-gh-section="diagnostics" style="background: {{ s.bg_color }};">
+  <div class="gh-container">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-diag__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="gh-diag__h2">{{ s.heading }}</h2>{%- endif -%}
+    {%- if s.subheading != blank -%}<p class="gh-diag__sub">{{ s.subheading }}</p>{%- endif -%}
+
+    <div class="gh-diag__rows">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- assign n = forloop.index -%}
+        {%- assign row_tag = 'div' -%}
+        {%- if b.link != blank -%}{%- assign row_tag = 'a' -%}{%- endif -%}
+        <{{ row_tag }} class="gh-diag__row"{% if b.link != blank %} href="{{ b.link }}"{% endif %} {{ block.shopify_attributes }}>
+          <span class="gh-diag__icon">
+            {%- case b.icon -%}
+              {%- when 'dna' -%}{%- render 'icon-dna', size: 30 -%}
+              {%- when 'mri' -%}{%- render 'icon-mri', size: 30 -%}
+              {%- when 'blood' -%}{%- render 'icon-blood', size: 30 -%}
+              {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 30 -%}
+              {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 30 -%}
+              {%- else -%}{%- render 'icon-dna', size: 30 -%}
+            {%- endcase -%}
+          </span>
+          <span class="gh-diag__num">{{ n | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="gh-diag__text">
+            {%- if b.name != blank -%}<span class="gh-diag__name">{{ b.name }}</span>{%- endif -%}
+            {%- if b.description != blank -%}<span class="gh-diag__desc">{{ b.description }}</span>{%- endif -%}
+          </span>
+          <span class="gh-diag__arrow">→</span>
+        </{{ row_tag }}>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-diag__eyebrow { margin-bottom: 14px; }
+  .gh-diag__h2 { font: 200 40px/1.15 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); max-width: 820px; margin-bottom: 12px; }
+  .gh-diag__sub { font: 300 16px/1.5 var(--gh-sans); color: var(--gh-muted); margin-bottom: 44px; }
+  .gh-diag__rows { display: flex; flex-direction: column; gap: 14px; }
+  .gh-diag__row {
+    display: grid; grid-template-columns: auto 64px 1fr auto; align-items: center; gap: 28px;
+    border: 1px solid var(--gh-border); border-radius: 14px; padding: 26px 34px;
+    background: linear-gradient(90deg, rgba(140,191,138,.08), rgba(168,194,200,.02) 40%);
+    transition: transform 0.3s, border-color 0.3s; color: inherit;
+  }
+  .gh-diag__row:hover { transform: translateX(8px); border-color: rgba(140,191,138,.5); color: inherit; }
+  .gh-diag__icon {
+    width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(140,191,138,.14); border: 1px solid rgba(140,191,138,.3);
+    display: inline-flex; align-items: center; justify-content: center; color: var(--gh-green);
+  }
+  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(140,191,138,.45); }
+  .gh-diag__text { display: flex; flex-direction: column; gap: 6px; }
+  .gh-diag__name { font: 500 24px/1.1 var(--gh-sans); color: var(--gh-white); }
+  .gh-diag__desc { font: 300 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
+  .gh-diag__arrow { font: 400 22px/1 var(--gh-sans); color: var(--gh-slate); }
+
+  @media (max-width: 768px) {
+    .gh-diag__h2 { font-size: 28px; margin-bottom: 10px; }
+    .gh-diag__sub { font-size: 14px; margin-bottom: 26px; }
+    .gh-diag__rows { gap: 12px; }
+    .gh-diag__row { grid-template-columns: auto 1fr; gap: 16px; padding: 20px; }
+    .gh-diag__row:hover { transform: none; }
+    .gh-diag__icon { width: 48px; height: 48px; border-radius: 12px; }
+    .gh-diag__num { display: none; }
+    .gh-diag__name { font-size: 18px; }
+    .gh-diag__desc { font-size: 13px; }
+    .gh-diag__arrow { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Advanced Diagnostics",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "04 / ADVANCED DIAGNOSTICS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "For those who want to optimize even further." },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Optional · available separately · tailored to your age, family history, goals, and Galim results." },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0C3B46" }
+  ],
+  "blocks": [
+    {
+      "type": "addon",
+      "name": "Add-on row",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value":"dna","label":"DNA helix"}, {"value":"mri","label":"MRI scan frame"}, {"value":"blood","label":"Blood drop"}, {"value":"heartbeat","label":"Heartbeat"}, {"value":"microbiome","label":"Microbiome circles"} ], "default": "dna" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Whole Genome Sequencing" },
+        { "type": "text", "id": "description", "label": "Description", "default": "Your lifelong genetic blueprint" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Advanced Diagnostics",
+      "blocks": [
+        { "type": "addon", "settings": { "icon": "dna", "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint" } },
+        { "type": "addon", "settings": { "icon": "mri", "name": "Full-Body MRI", "description": "Comprehensive whole-body screening" } },
+        { "type": "addon", "settings": { "icon": "blood", "name": "Multi-Cancer Blood Test", "description": "Early screening for 50+ cancers" } },
+        { "type": "addon", "settings": { "icon": "heartbeat", "name": "Coronary CT Angiography", "description": "Detect hidden heart disease" } },
+        { "type": "addon", "settings": { "icon": "microbiome", "name": "Microbiome Analysis", "description": "Gut health & metabolic insights" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,26 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "galim_announcement": {
+      "type": "galim-announcement",
+      "settings": {
+        "text": "OPENING NOVEMBER 1ST · CALZADA DEL VALLE, MONTERREY MX",
+        "show_glyphs": true,
+        "bg_color": "#8CBF8A",
+        "text_color": "#0C3B46"
+      }
+    },
+    "galim_header": {
+      "type": "galim-header",
+      "settings": {
+        "logo_height": 26,
+        "menu": "main-menu",
+        "show_login": true,
+        "login_label": "LOG IN",
+        "waitlist_label": "JOIN WAITLIST"
+      }
+    }
+  },
+  "order": ["galim_announcement", "galim_header"]
+}

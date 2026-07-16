@@ -1,0 +1,113 @@
+/* ============================================================
+   Galim Health — global tokens & base
+   Palette, typography helpers, keyframes shared by galim-* sections.
+   Section-specific layout lives in each section's {% stylesheet %}.
+   ============================================================ */
+
+:root {
+  /* Backgrounds */
+  --gh-bg: #0C3B46;        /* primary background */
+  --gh-bg-900: #082d36;    /* alternating sections, hero base */
+  --gh-bg-950: #061f26;    /* footer */
+  /* Card gradient stops */
+  --gh-teal-700: #12505d;
+  --gh-teal-750: #103f4a;
+  --gh-teal-760: #0e4653;
+  --gh-teal-770: #0b3a45;
+  /* Text */
+  --gh-light: #D6E0E2;     /* primary text / light buttons / headline accents */
+  --gh-muted: #A8C2C8;     /* secondary body text */
+  --gh-slate: #6E8897;     /* tertiary text, mono labels, bullets */
+  --gh-white: #ffffff;
+  /* Accent — use sparingly */
+  --gh-green: #8CBF8A;
+  /* Common alphas */
+  --gh-border: rgba(168, 194, 200, 0.16);
+  --gh-border-strong: rgba(168, 194, 200, 0.22);
+  --gh-hairline: rgba(168, 194, 200, 0.12);
+  --gh-green-tint: rgba(140, 191, 138, 0.14);
+  --gh-light-tint: rgba(214, 224, 226, 0.05);
+
+  --gh-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --gh-sans: 'Fustat', system-ui, -apple-system, sans-serif;
+
+  /* Layout */
+  --gh-max: 1440px;
+  --gh-pad-x: 40px;
+  --gh-pad-y: 110px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gh-pad-x: 20px;
+    --gh-pad-y: 56px;
+  }
+}
+
+/* Landing pages use the dark canvas + Fustat everywhere.
+   Scoped to the body so Dawn's cart/account/product pages keep their own styling. */
+.gh-page {
+  background: var(--gh-bg);
+  color: var(--gh-light);
+  font-family: var(--gh-sans);
+  -webkit-font-smoothing: antialiased;
+}
+.gh-page a:not(.gh-btn) { color: inherit; text-decoration: none; }
+.gh-page a:not(.gh-btn):hover { color: var(--gh-green); }
+
+/* Shared building blocks -------------------------------------------------- */
+.gh-eyebrow {
+  font: 500 11px/1 var(--gh-mono);
+  letter-spacing: 0.28em;
+  color: var(--gh-slate);
+  text-transform: uppercase;
+}
+.gh-section {
+  padding: var(--gh-pad-y) var(--gh-pad-x);
+}
+.gh-container {
+  max-width: var(--gh-max);
+  margin: 0 auto;
+}
+
+/* Buttons ----------------------------------------------------------------- */
+.gh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  font-family: var(--gh-sans);
+  cursor: pointer;
+  border: 0;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+.gh-btn--solid {
+  background: var(--gh-light);
+  color: var(--gh-bg);
+  font: 500 15px/1 var(--gh-sans);
+  letter-spacing: 0.02em;
+  padding: 18px 32px;
+}
+.gh-btn--solid:hover { color: var(--gh-bg); transform: translateY(-1px); }
+.gh-btn--outline {
+  border: 1px solid rgba(214, 224, 226, 0.4);
+  color: var(--gh-light);
+  font: 500 14px/1 var(--gh-sans);
+  padding: 16px 28px;
+  background: transparent;
+}
+.gh-btn--outline:hover { border-color: rgba(214, 224, 226, 0.8); color: var(--gh-light); }
+
+/* Keyframes --------------------------------------------------------------- */
+@keyframes gh-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes gh-sweep { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes gh-grid  { 0% { background-position: 0 0; } 100% { background-position: 0 64px; } }
+@keyframes gh-pulse { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.06); } }
+@keyframes gh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-page *,
+  .gh-page *::before,
+  .gh-page *::after { animation: none !important; }
+}

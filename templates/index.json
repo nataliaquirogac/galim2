@@ -1,0 +1,108 @@
+{
+  "sections": {
+    "hero": {
+      "type": "galim-hero",
+      "settings": {
+        "anchor_id": "top",
+        "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
+        "badge": "PREVENTIVE HEALTHCARE · MEDICAL COUNCIL",
+        "heading": "Measured Body.\nOptimized Life.",
+        "subheading": "Galim is a new category of preventive healthcare — combining advanced diagnostics, AI, and physician expertise into one comprehensive health assessment.",
+        "council_line": "Developed by our Medical Council of specialists across every major body system.",
+        "button_label": "Join the waitlist",
+        "button_opens_modal": true,
+        "coords": "CALZADA DEL VALLE · MONTERREY MX"
+      }
+    },
+    "gap": {
+      "type": "galim-gap",
+      "settings": {
+        "eyebrow": "01 / THE GAP",
+        "chip_label": "GALIM MEASURES",
+        "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
+        "body": "<p>Thousands of measurements help identify potential future risks, long before they become obvious. One personalized roadmap, powered by AI.</p>",
+        "bg_color": "#082d36"
+      }
+    },
+    "two_axes": {
+      "type": "galim-two-axes",
+      "settings": {
+        "eyebrow": "02 / TWO AXES",
+        "bg_color": "#0C3B46",
+        "bq_label": "THE BQ, EXPLAINED",
+        "bq_number": "100",
+        "bq_number_caption": "= promedio de tu edad. Cada punto arriba lo entrenaste.",
+        "bq_copy": "BQ: tu cuerpo, en un número. Como el IQ, pero de tu cuerpo — un benchmark vivo de cómo realmente rindes."
+      },
+      "blocks": {
+        "axis_1": { "type": "axis", "settings": { "eyebrow": "◇ LONGEVITY", "heading": "Find it a decade early.", "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." } },
+        "axis_2": { "type": "axis", "settings": { "eyebrow": "◇ PERFORMANCE · YOUR BQ", "heading": "Your body in one number.", "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number." } },
+        "tier_1": { "type": "tier", "settings": { "numeral": "VI", "label": "Apex", "range": "145+", "numeral_color": "green", "label_color": "white", "range_color": "muted" } },
+        "tier_2": { "type": "tier", "settings": { "numeral": "V", "label": "Excepcional", "range": "130–144", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        "tier_3": { "type": "tier", "settings": { "numeral": "IV", "label": "Avanzado", "range": "115–129", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        "tier_4": { "type": "tier", "settings": { "numeral": "III", "label": "Apto", "range": "100–114", "numeral_color": "light", "label_color": "white", "range_color": "light", "highlight": true } },
+        "tier_5": { "type": "tier", "settings": { "numeral": "II", "label": "En desarrollo", "range": "85–99", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } },
+        "tier_6": { "type": "tier", "settings": { "numeral": "I", "label": "Base", "range": "<85", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } }
+      },
+      "block_order": ["axis_1", "axis_2", "tier_1", "tier_2", "tier_3", "tier_4", "tier_5", "tier_6"]
+    },
+    "protocols": {
+      "type": "galim-protocols",
+      "settings": {
+        "anchor_id": "plans",
+        "eyebrow": "03 / PROTOCOLS",
+        "heading": "Choose your measurement.",
+        "bg_color": "#082d36",
+        "glp_glyph": "◈",
+        "glp_title": "¿Estás en GLP-1?",
+        "glp_body": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número — estimado. Justo cuando bajas rápido es cuando más se equivoca. Performance mide lo que de verdad perdiste: grasa o tu base. Antes de empezar, y otra vez a las 8 semanas.</p>"
+      },
+      "blocks": {
+        "perf": { "type": "package", "settings": { "icon": "bolt", "name": "Performance", "scan_time": "25 MIN SCAN", "tagline": "Fat loss, gain muscle, fitter life.", "price": "$1,499", "price_unit": "MXN", "featured": false, "features": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>", "addon_line": "Add-ons: RMR (resting metabolism) · Lactate Threshold (endurance zones)" } },
+        "long": { "type": "package", "settings": { "icon": "infinity", "name": "Longevity", "scan_time": "1 HR FULL WORKUP", "tagline": "Everything in Performance, plus deep diagnostics.", "price": "$4,999", "price_unit": "MXN", "featured": true, "badge_label": "FULL PICTURE", "list_intro": "EVERYTHING IN PERFORMANCE, PLUS", "features": "<ul><li>Biological age across 8 body systems</li><li>Advanced blood biomarkers</li><li>Early health risk detection</li><li>Your personalized longevity roadmap</li><li>Galim AI coach</li></ul>", "addon_line": "" } }
+      },
+      "block_order": ["perf", "long"]
+    },
+    "diagnostics": {
+      "type": "galim-diagnostics",
+      "settings": {
+        "eyebrow": "04 / ADVANCED DIAGNOSTICS",
+        "heading": "For those who want to optimize even further.",
+        "subheading": "Optional · available separately · tailored to your age, family history, goals, and Galim results.",
+        "bg_color": "#0C3B46"
+      },
+      "blocks": {
+        "d1": { "type": "addon", "settings": { "icon": "dna", "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint" } },
+        "d2": { "type": "addon", "settings": { "icon": "mri", "name": "Full-Body MRI", "description": "Comprehensive whole-body screening" } },
+        "d3": { "type": "addon", "settings": { "icon": "blood", "name": "Multi-Cancer Blood Test", "description": "Early screening for 50+ cancers" } },
+        "d4": { "type": "addon", "settings": { "icon": "heartbeat", "name": "Coronary CT Angiography", "description": "Detect hidden heart disease" } },
+        "d5": { "type": "addon", "settings": { "icon": "microbiome", "name": "Microbiome Analysis", "description": "Gut health & metabolic insights" } }
+      },
+      "block_order": ["d1", "d2", "d3", "d4", "d5"]
+    },
+    "method": {
+      "type": "galim-method",
+      "settings": {
+        "anchor_id": "method",
+        "eyebrow": "THE GALIM METHOD",
+        "heading": "<p>We don't just measure. <strong>We optimize</strong> — exactly to your body.</p>",
+        "body_1": "A scan is a starting point, not a product. Our method turns every data point — your heart, your blood, your composition, your mobility — into a plan made only for you.",
+        "body_2": "With every visit, we measure again. And the plan evolves with you.",
+        "button_label": "Discover the method",
+        "button_link": "/pages/como-funciona"
+      }
+    },
+    "final_cta": {
+      "type": "galim-final-cta",
+      "settings": {
+        "anchor_id": "waitlist",
+        "eyebrow": "CALZADA DEL VALLE · MONTERREY MX",
+        "heading": "Body measured.\n<strong>Optimized life.</strong>",
+        "button_label": "Join the waiting list",
+        "button_opens_modal": true,
+        "note": "OPENING NOVEMBER 1ST · UNOS DATOS, Y GUARDAMOS TU LUGAR"
+      }
+    }
+  },
+  "order": ["hero", "gap", "two_axes", "protocols", "diagnostics", "method", "final_cta"]
+}

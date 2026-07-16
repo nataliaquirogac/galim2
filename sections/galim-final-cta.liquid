@@ -1,0 +1,57 @@
+{%- comment -%}
+  Galim Health — Final CTA
+  Centered, dotted bg, eyebrow, wt200 headline (bold second line), light button (opens modal).
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<section id="{{ s.anchor_id | default: 'waitlist' }}" class="gh-cta gh-section" data-gh-section="final-cta">
+  <div class="gh-cta__dots"></div>
+  <div class="gh-cta__inner">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-cta__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="gh-cta__h2">{{ s.heading | newline_to_br }}</h2>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      {%- if s.button_opens_modal -%}
+        <a href="#" class="gh-btn gh-btn--solid gh-cta__btn" data-gh-waitlist-open>{{ s.button_label }} →</a>
+      {%- else -%}
+        <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid gh-cta__btn">{{ s.button_label }} →</a>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if s.note != blank -%}<p class="gh-cta__note">{{ s.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-cta { position: relative; padding: 150px 40px; text-align: center; overflow: hidden; background: linear-gradient(160deg, var(--gh-teal-760), var(--gh-bg-900)); border-top: 1px solid rgba(168,194,200,.12); }
+  .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(214,224,226,.06) 1.4px, transparent 1.4px); background-size: 22px 22px; }
+  .gh-cta__inner { position: relative; }
+  .gh-cta__eyebrow { color: var(--gh-green); letter-spacing: 0.28em; margin-bottom: 28px; }
+  .gh-cta__h2 { font: 200 76px/.98 var(--gh-sans); letter-spacing: -0.03em; color: var(--gh-white); margin-bottom: 40px; }
+  .gh-cta__h2 strong { font-weight: 600; }
+  .gh-cta__btn { font-size: 16px; letter-spacing: 0.04em; padding: 20px 44px; }
+  .gh-cta__note { font: 400 12px/1 var(--gh-mono); color: var(--gh-slate); margin-top: 24px; letter-spacing: 0.04em; }
+
+  @media (max-width: 768px) {
+    .gh-cta { padding: 64px 20px; }
+    .gh-cta__eyebrow { margin-bottom: 22px; letter-spacing: 0.22em; font-size: 10px; }
+    .gh-cta__h2 { font-size: 42px; margin-bottom: 28px; }
+    .gh-cta__btn { font-size: 15px; padding: 17px 36px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Final CTA",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "waitlist" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "CALZADA DEL VALLE · MONTERREY MX" },
+    { "type": "textarea", "id": "heading", "label": "Headline (bold with <strong>, line breaks kept)", "default": "Body measured.\n<strong>Optimized life.</strong>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join the waiting list" },
+    { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
+    { "type": "url", "id": "button_link", "label": "Button link (if not modal)" },
+    { "type": "text", "id": "note", "label": "Note (mono)", "default": "OPENING NOVEMBER 1ST · UNOS DATOS, Y GUARDAMOS TU LUGAR" }
+  ],
+  "presets": [{ "name": "Galim · Final CTA" }]
+}
+{% endschema %}

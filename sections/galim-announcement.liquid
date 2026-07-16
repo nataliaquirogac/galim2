@@ -1,0 +1,71 @@
+{%- comment -%}
+  Galim Health — Announcement bar
+  Thin green bar, teal mono uppercase text. Fully editable.
+{%- endcomment -%}
+
+{%- if section.settings.text != blank -%}
+  <div
+    class="gh-announcement"
+    style="--gh-ann-bg: {{ section.settings.bg_color }}; --gh-ann-text: {{ section.settings.text_color }};"
+  >
+    <div class="gh-announcement__inner">
+      {%- if section.settings.show_glyphs -%}◈&nbsp;&nbsp;{%- endif -%}
+      {{ section.settings.text }}
+      {%- if section.settings.show_glyphs -%}&nbsp;&nbsp;◈{%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .gh-announcement {
+    background: var(--gh-ann-bg, #8CBF8A);
+    color: var(--gh-ann-text, #0C3B46);
+    text-align: center;
+  }
+  .gh-announcement__inner {
+    font: 500 12px/1 var(--gh-mono);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+  }
+  @media (max-width: 768px) {
+    .gh-announcement__inner {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      padding: 8px 10px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Announcement",
+  "class": "gh-announcement-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "OPENING NOVEMBER 1ST · CALZADA DEL VALLE, MONTERREY MX"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_glyphs",
+      "label": "Show ◈ glyphs at the ends",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#8CBF8A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#0C3B46"
+    }
+  ]
+}
+{% endschema %}

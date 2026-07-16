@@ -1,0 +1,88 @@
+{%- comment -%}
+  Galim Health — Footer
+  White logo + tagline, NAVIGATE / LEGAL columns, bottom mono row.
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<footer id="{{ s.anchor_id | default: 'contact' }}" class="gh-footer" data-gh-section="footer">
+  <div class="gh-container">
+    <div class="gh-footer__top">
+      <div class="gh-footer__brand">
+        <a href="{{ routes.root_url }}" class="gh-footer__logo">
+          {%- if s.logo != blank -%}
+            <img src="{{ s.logo | image_url: width: 320 }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;">
+          {%- else -%}
+            <img src="{{ 'logo_galimhealth_white.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;">
+          {%- endif -%}
+        </a>
+        {%- if s.tagline != blank -%}<p class="gh-footer__tagline">{{ s.tagline }}</p>{%- endif -%}
+      </div>
+
+      <div class="gh-footer__cols">
+        {%- if s.nav_menu != blank -%}
+          <div class="gh-footer__col">
+            <span class="gh-footer__col-title">{{ s.nav_title | default: 'NAVIGATE' }}</span>
+            {%- for link in s.nav_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if s.legal_menu != blank or s.payment_note != blank -%}
+          <div class="gh-footer__col">
+            <span class="gh-footer__col-title">{{ s.legal_title | default: 'LEGAL' }}</span>
+            {%- for link in s.legal_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+            {%- if s.payment_note != blank -%}<span class="gh-footer__payment">{{ s.payment_note }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="gh-footer__bottom">
+      <span>{{ s.copyright | default: '© 2026 GALIM HEALTH' }}</span>
+      {%- if s.bottom_right != blank -%}<span>{{ s.bottom_right }}</span>{%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .gh-footer { background: var(--gh-bg-950); color: var(--gh-light); padding: 70px 40px 40px; font-family: var(--gh-sans); }
+  .gh-footer a { color: var(--gh-muted); }
+  .gh-footer a:hover { color: var(--gh-green); }
+  .gh-footer__top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; padding-bottom: 48px; border-bottom: 1px solid rgba(168,194,200,.12); }
+  .gh-footer__logo { display: inline-block; }
+  .gh-footer__logo img { width: auto; display: block; margin-bottom: 18px; }
+  .gh-footer__tagline { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-slate); max-width: 260px; }
+  .gh-footer__cols { display: flex; gap: 64px; }
+  .gh-footer__col { display: flex; flex-direction: column; gap: 12px; font: 400 14px/1 var(--gh-sans); }
+  .gh-footer__col-title { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-slate); margin-bottom: 4px; }
+  .gh-footer__payment { color: var(--gh-slate); }
+  .gh-footer__bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font: 400 12px/1 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.04em; }
+
+  @media (max-width: 768px) {
+    .gh-footer { padding: 44px 20px 24px; }
+    .gh-footer__top { flex-direction: column; gap: 28px; padding-bottom: 28px; }
+    .gh-footer__cols { gap: 48px; }
+    .gh-footer__bottom { padding-top: 20px; border-top: 1px solid rgba(168,194,200,.12); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Footer",
+  "class": "gh-footer-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "contact" },
+    { "type": "image_picker", "id": "logo", "label": "Logo (white)", "info": "Defaults to logo_galimhealth_white.png." },
+    { "type": "range", "id": "logo_height", "min": 16, "max": 40, "step": 1, "unit": "px", "label": "Logo height", "default": 24 },
+    { "type": "textarea", "id": "tagline", "label": "Tagline", "default": "Measured body. Optimized life. Calzada del Valle, Monterrey MX." },
+    { "type": "header", "content": "Columns" },
+    { "type": "text", "id": "nav_title", "label": "Navigate title", "default": "NAVIGATE" },
+    { "type": "link_list", "id": "nav_menu", "label": "Navigate menu", "default": "main-menu" },
+    { "type": "text", "id": "legal_title", "label": "Legal title", "default": "LEGAL" },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal menu", "default": "footer" },
+    { "type": "text", "id": "payment_note", "label": "Payment note", "default": "Payment · PayPal" },
+    { "type": "header", "content": "Bottom row" },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2026 GALIM HEALTH" },
+    { "type": "text", "id": "bottom_right", "label": "Bottom-right text", "default": "MEASURED BODY · OPTIMIZED LIFE" }
+  ]
+}
+{% endschema %}

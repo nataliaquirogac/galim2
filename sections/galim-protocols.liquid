@@ -1,0 +1,183 @@
+{%- comment -%}
+  Galim Health — 03 / PROTOCOLS
+  Two package cards (repeatable blocks) + full-width GLP-1 note. No booking button.
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<section id="{{ s.anchor_id | default: 'plans' }}" class="gh-protocols gh-section" data-gh-section="protocols" style="background: {{ s.bg_color }};">
+  <div class="gh-container">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-protocols__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="gh-protocols__h2">{{ s.heading }}</h2>{%- endif -%}
+
+    <div class="gh-protocols__cards">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'package' -%}
+          {%- assign b = block.settings -%}
+          <div class="gh-pkg{% if b.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
+            {%- if b.featured and b.badge_label != blank -%}<div class="gh-pkg__badge">{{ b.badge_label }}</div>{%- endif -%}
+            <div class="gh-pkg__head">
+              <div class="gh-pkg__head-row">
+                <span class="gh-pkg__icon">
+                  {%- case b.icon -%}
+                    {%- when 'infinity' -%}{%- render 'icon-infinity', size: 30 -%}
+                    {%- when 'bolt' -%}{%- render 'icon-bolt', size: 26 -%}
+                    {%- else -%}{%- render 'icon-bolt', size: 26 -%}
+                  {%- endcase -%}
+                </span>
+                <div>
+                  {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
+                  {%- if b.scan_time != blank -%}<span class="gh-pkg__time">{{ b.scan_time }}</span>{%- endif -%}
+                </div>
+              </div>
+              {%- if b.tagline != blank -%}<p class="gh-pkg__tagline">{{ b.tagline }}</p>{%- endif -%}
+              {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
+            </div>
+            <div class="gh-pkg__body">
+              {%- if b.list_intro != blank -%}<div class="gh-pkg__list-intro">{{ b.list_intro }}</div>{%- endif -%}
+              {%- if b.features != blank -%}<div class="gh-pkg__features">{{ b.features }}</div>{%- endif -%}
+              {%- if b.addon_line != blank -%}<div class="gh-pkg__addon"><span class="gh-pkg__addon-plus">+</span>{{ b.addon_line }}</div>{%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if s.glp_title != blank or s.glp_body != blank -%}
+      <div class="gh-glp">
+        {%- if s.glp_glyph != blank -%}<span class="gh-glp__glyph">{{ s.glp_glyph }}</span>{%- endif -%}
+        <div>
+          {%- if s.glp_title != blank -%}<p class="gh-glp__title">{{ s.glp_title }}</p>{%- endif -%}
+          {%- if s.glp_body != blank -%}<div class="gh-glp__body">{{ s.glp_body }}</div>{%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-protocols__eyebrow { margin-bottom: 14px; }
+  .gh-protocols__h2 { font: 200 46px/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 48px; }
+  .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+
+  .gh-pkg {
+    position: relative; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--gh-border-strong);
+    background: linear-gradient(180deg, var(--gh-teal-750), var(--gh-teal-770));
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+  .gh-pkg.is-featured {
+    border-color: rgba(140,191,138,.4);
+    background: linear-gradient(180deg, var(--gh-teal-700), var(--gh-teal-770));
+    box-shadow: 0 0 0 1px rgba(140,191,138,.12), 0 18px 50px rgba(0,0,0,.3);
+  }
+  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(140,191,138,.3), 0 28px 70px rgba(0,0,0,.4); }
+  .gh-pkg__badge {
+    position: absolute; top: 20px; right: 20px; z-index: 2;
+    font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-bg);
+    background: var(--gh-green); padding: 6px 11px; border-radius: 2px;
+  }
+  .gh-pkg__head { position: relative; padding: 38px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
+  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(140,191,138,.2), transparent 60%); }
+  .gh-pkg__head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .gh-pkg__icon {
+    width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(140,191,138,.14); border: 1px solid rgba(140,191,138,.35);
+    display: inline-flex; align-items: center; justify-content: center; color: var(--gh-green);
+  }
+  .gh-pkg.is-featured .gh-pkg__icon { background: rgba(140,191,138,.18); border-color: rgba(140,191,138,.45); }
+  .gh-pkg__name { font: 600 27px/1 var(--gh-sans); color: var(--gh-white); }
+  .gh-pkg__time { font: 400 12px/1 var(--gh-mono); color: var(--gh-green); letter-spacing: 0.1em; }
+  .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin-bottom: 22px; }
+  .gh-pkg__price { font: 200 48px/1 var(--gh-sans); color: var(--gh-white); letter-spacing: -0.02em; }
+  .gh-pkg__unit { font-size: 15px; color: var(--gh-slate); }
+
+  .gh-pkg__body { padding: 30px 38px; }
+  .gh-pkg__list-intro { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.12em; color: var(--gh-slate); margin-bottom: 15px; }
+  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 15px; }
+  .gh-pkg__features li { position: relative; font: 400 15px/1.4 var(--gh-sans); color: var(--gh-light); padding-left: 24px; }
+  .gh-pkg__features li::before { content: "▸"; position: absolute; left: 0; color: var(--gh-green); }
+  .gh-pkg__features strong { font-weight: 600; }
+  .gh-pkg__features p { margin: 0; }
+  .gh-pkg__addon {
+    position: relative; margin-top: 25px; padding-top: 15px; padding-left: 24px;
+    border-top: 1px dashed rgba(168,194,200,.18);
+    font: 400 14px/1.5 var(--gh-sans); color: var(--gh-muted);
+  }
+  .gh-pkg__addon-plus { position: absolute; left: 0; top: 15px; color: var(--gh-slate); }
+
+  .gh-glp {
+    margin-top: 28px; border-radius: 14px; background: rgba(168,194,200,.06);
+    border: 1px solid rgba(168,194,200,.2); padding: 32px 36px;
+    display: flex; gap: 22px; align-items: flex-start;
+  }
+  .gh-glp__glyph { font: 400 30px/1 var(--gh-sans); color: var(--gh-green); flex-shrink: 0; }
+  .gh-glp__title { font: 500 20px/1.4 var(--gh-sans); color: var(--gh-white); margin-bottom: 12px; }
+  .gh-glp__body, .gh-glp__body p { font: 300 17px/1.6 var(--gh-sans); color: var(--gh-light); max-width: 820px; margin: 0; }
+  .gh-glp__body strong { font-weight: 600; color: var(--gh-green); }
+
+  @media (max-width: 768px) {
+    .gh-protocols__h2 { font-size: 32px; margin-bottom: 28px; }
+    .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
+    .gh-pkg:hover { transform: none; }
+    .gh-pkg__head { padding: 28px; }
+    .gh-pkg__icon { width: 46px; height: 46px; border-radius: 11px; }
+    .gh-pkg__name { font-size: 24px; }
+    .gh-pkg__time { font-size: 11px; }
+    .gh-pkg__tagline { font-size: 14px; margin-bottom: 16px; }
+    .gh-pkg__price { font-size: 40px; }
+    .gh-pkg__unit { font-size: 14px; }
+    .gh-pkg__body { padding: 24px 28px; }
+    .gh-pkg__features li { font-size: 14px; }
+    .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
+    .gh-glp__glyph { display: none; }
+    .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
+    .gh-glp__body, .gh-glp__body p { font-size: 15px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Protocols",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "plans" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 / PROTOCOLS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Choose your measurement." },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" },
+    { "type": "header", "content": "GLP-1 note" },
+    { "type": "text", "id": "glp_glyph", "label": "Glyph", "default": "◈" },
+    { "type": "text", "id": "glp_title", "label": "Title", "default": "¿Estás en GLP-1?" },
+    { "type": "richtext", "id": "glp_body", "label": "Body (bold = green)", "default": "<p>Hasta el <strong>40% de lo que bajas puede ser músculo.</strong> El InBody de tu gym te da un número — estimado. Justo cuando bajas rápido es cuando más se equivoca. Performance mide lo que de verdad perdiste: grasa o tu base. Antes de empezar, y otra vez a las 8 semanas.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "package",
+      "name": "Package",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value":"bolt","label":"Lightning"}, {"value":"infinity","label":"Infinity"} ], "default": "bolt" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
+        { "type": "text", "id": "scan_time", "label": "Scan time (mono)", "default": "25 MIN SCAN" },
+        { "type": "text", "id": "tagline", "label": "Tagline", "default": "Fat loss, gain muscle, fitter life." },
+        { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
+        { "type": "text", "id": "price_unit", "label": "Price unit", "default": "MXN" },
+        { "type": "checkbox", "id": "featured", "label": "Featured (green border + badge)", "default": false },
+        { "type": "text", "id": "badge_label", "label": "Badge label", "default": "FULL PICTURE" },
+        { "type": "text", "id": "list_intro", "label": "List intro (mono, optional)" },
+        { "type": "richtext", "id": "features", "label": "Features (bulleted list, bold = wt600)", "default": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>" },
+        { "type": "text", "id": "addon_line", "label": "Add-ons line (dashed, optional)", "default": "Add-ons: RMR (resting metabolism) · Lactate Threshold (endurance zones)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Protocols",
+      "blocks": [
+        { "type": "package", "settings": { "icon": "bolt", "name": "Performance", "scan_time": "25 MIN SCAN", "tagline": "Fat loss, gain muscle, fitter life.", "price": "$1,499", "price_unit": "MXN", "featured": false, "features": "<ul><li>Your BQ score vs. your age group</li><li>DEXA body fat, muscle & distribution</li><li><strong>VO₂ Max</strong> — fitness & longevity score</li><li><strong>True strength</strong> — not just what you lift</li><li>Mobility gaps limiting performance</li><li>AI coach built from your measurement</li></ul>", "addon_line": "Add-ons: RMR (resting metabolism) · Lactate Threshold (endurance zones)" } },
+        { "type": "package", "settings": { "icon": "infinity", "name": "Longevity", "scan_time": "1 HR FULL WORKUP", "tagline": "Everything in Performance, plus deep diagnostics.", "price": "$4,999", "price_unit": "MXN", "featured": true, "badge_label": "FULL PICTURE", "list_intro": "EVERYTHING IN PERFORMANCE, PLUS", "features": "<ul><li>Biological age across 8 body systems</li><li>Advanced blood biomarkers</li><li>Early health risk detection</li><li>Your personalized longevity roadmap</li><li>Galim AI coach</li></ul>", "addon_line": "" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

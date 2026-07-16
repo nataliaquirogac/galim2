@@ -1,0 +1,170 @@
+{%- comment -%}
+  Galim Health — 02 / TWO AXES
+  Two axis cards (blocks) + "THE BQ, EXPLAINED" panel with giant 100, copy,
+  animated gradient bar and the tier table (blocks). Cards & tiers are repeatable blocks.
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<section class="gh-axes gh-section" data-gh-section="two-axes" style="background: {{ s.bg_color }};">
+  <div class="gh-container">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-axes__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+
+    <div class="gh-axes__cards">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'axis' -%}
+          <div class="gh-axes__card" {{ block.shopify_attributes }}>
+            <div class="gh-axes__glow"></div>
+            {%- if block.settings.eyebrow != blank -%}<div class="gh-axes__card-eyebrow">{{ block.settings.eyebrow }}</div>{%- endif -%}
+            {%- if block.settings.heading != blank -%}<h3 class="gh-axes__card-h3">{{ block.settings.heading }}</h3>{%- endif -%}
+            {%- if block.settings.body != blank -%}<p class="gh-axes__card-body">{{ block.settings.body }}</p>{%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="gh-axes__bq">
+      <div class="gh-axes__bq-left">
+        {%- if s.bq_label != blank -%}<div class="gh-axes__bq-label">{{ s.bq_label }}</div>{%- endif -%}
+        <div class="gh-axes__bq-num-row">
+          <span class="gh-axes__bq-num">{{ s.bq_number | default: '100' }}</span>
+          {%- if s.bq_number_caption != blank -%}<span class="gh-axes__bq-num-cap">{{ s.bq_number_caption }}</span>{%- endif -%}
+        </div>
+        {%- if s.bq_copy != blank -%}<p class="gh-axes__bq-copy">{{ s.bq_copy }}</p>{%- endif -%}
+        <div class="gh-axes__bar"></div>
+      </div>
+      <div class="gh-axes__bq-right">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tier' -%}
+            <div class="gh-axes__tier{% if block.settings.highlight %} is-highlight{% endif %}" {{ block.shopify_attributes }}>
+              <span class="gh-axes__tier-num gh-c-{{ block.settings.numeral_color }}">{{ block.settings.numeral }}</span>
+              <span class="gh-axes__tier-label gh-c-{{ block.settings.label_color }}">{{ block.settings.label }}</span>
+              <span class="gh-axes__tier-range gh-c-{{ block.settings.range_color }}">{{ block.settings.range }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-axes__eyebrow { margin-bottom: 44px; }
+  .gh-axes__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .gh-axes__card {
+    position: relative; border-radius: 14px; padding: 48px;
+    background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg));
+    border: 1px solid var(--gh-border); overflow: hidden;
+  }
+  .gh-axes__glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(140,191,138,.25), transparent 65%); filter: blur(20px); }
+  .gh-axes__card-eyebrow { position: relative; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-muted); margin-bottom: 24px; }
+  .gh-axes__card-h3 { position: relative; font: 300 34px/1.15 var(--gh-sans); color: var(--gh-white); margin-bottom: 20px; }
+  .gh-axes__card-body { position: relative; font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); }
+
+  .gh-axes__bq {
+    margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    border-radius: 14px; background: var(--gh-bg-900); border: 1px solid var(--gh-border-strong); padding: 48px;
+    overflow: hidden; position: relative;
+  }
+  .gh-axes__bq-label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.2em; color: var(--gh-slate); margin-bottom: 22px; }
+  .gh-axes__bq-num-row { display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px; }
+  .gh-axes__bq-num { font: 200 120px/1 var(--gh-sans); color: var(--gh-light); letter-spacing: -0.04em; }
+  .gh-axes__bq-num-cap { font: 400 15px/1.4 var(--gh-mono); color: var(--gh-muted); max-width: 160px; }
+  .gh-axes__bq-copy { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 440px; }
+  .gh-axes__bar {
+    margin-top: 24px; height: 5px; border-radius: 3px; max-width: 440px;
+    background: linear-gradient(90deg, #6E8897, #A8C2C8 60%, #8CBF8A);
+    background-size: 200% 100%; animation: gh-sweep 5s linear infinite;
+  }
+  .gh-axes__bq-right { display: flex; flex-direction: column; }
+  .gh-axes__tier {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: center;
+    padding: 14px 4px; border-bottom: 1px solid rgba(168,194,200,.14);
+  }
+  .gh-axes__tier:last-child { border-bottom: 0; }
+  .gh-axes__tier.is-highlight { background: rgba(214,224,226,.05); }
+  .gh-axes__tier-num { font: 500 15px/1 var(--gh-mono); }
+  .gh-axes__tier-label { font: 400 18px/1 var(--gh-sans); }
+  .gh-axes__tier-range { font: 400 16px/1 var(--gh-mono); }
+
+  .gh-c-green { color: var(--gh-green); }
+  .gh-c-light { color: var(--gh-light); }
+  .gh-c-muted { color: var(--gh-muted); }
+  .gh-c-slate { color: var(--gh-slate); }
+  .gh-c-white { color: var(--gh-white); }
+
+  @media (max-width: 768px) {
+    .gh-axes__eyebrow { margin-bottom: 22px; font-size: 10px; letter-spacing: 0.24em; }
+    .gh-axes__cards { grid-template-columns: 1fr; gap: 16px; }
+    .gh-axes__card { padding: 30px; }
+    .gh-axes__glow { display: none; }
+    .gh-axes__card-eyebrow { font-size: 11px; letter-spacing: 0.14em; margin-bottom: 16px; }
+    .gh-axes__card-h3 { font-size: 26px; margin-bottom: 14px; }
+    .gh-axes__card-body { font-size: 15px; }
+    .gh-axes__bq { grid-template-columns: 1fr; gap: 0; padding: 30px; margin-top: 16px; }
+    .gh-axes__bq-num { font-size: 84px; }
+    .gh-axes__bq-num-cap { font-size: 13px; }
+    .gh-axes__bq-copy { font-size: 18px; margin-bottom: 20px; }
+    .gh-axes__bar { order: 3; margin-top: 18px; max-width: none; }
+    .gh-axes__bq-right { margin-top: 0; }
+    .gh-axes__tier { grid-template-columns: 40px 1fr auto; padding: 11px 2px; }
+    .gh-axes__tier-num { font-size: 13px; }
+    .gh-axes__tier-label { font-size: 16px; }
+    .gh-axes__tier-range { font-size: 14px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Two Axes",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 / TWO AXES" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0C3B46" },
+    { "type": "header", "content": "BQ panel" },
+    { "type": "text", "id": "bq_label", "label": "Panel label", "default": "THE BQ, EXPLAINED" },
+    { "type": "text", "id": "bq_number", "label": "Big number", "default": "100" },
+    { "type": "text", "id": "bq_number_caption", "label": "Number caption", "default": "= promedio de tu edad. Cada punto arriba lo entrenaste." },
+    { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "BQ: tu cuerpo, en un número. Como el IQ, pero de tu cuerpo — un benchmark vivo de cómo realmente rindes." }
+  ],
+  "blocks": [
+    {
+      "type": "axis",
+      "name": "Axis card",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "◇ LONGEVITY" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Find it a decade early." },
+        { "type": "textarea", "id": "body", "label": "Body", "default": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "BQ tier row",
+      "settings": [
+        { "type": "text", "id": "numeral", "label": "Roman numeral", "default": "VI" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Apex" },
+        { "type": "text", "id": "range", "label": "Range", "default": "145+" },
+        { "type": "select", "id": "numeral_color", "label": "Numeral color", "options": [ {"value":"green","label":"Green"}, {"value":"light","label":"Light"}, {"value":"muted","label":"Muted"}, {"value":"slate","label":"Slate"} ], "default": "green" },
+        { "type": "select", "id": "label_color", "label": "Label color", "options": [ {"value":"white","label":"White"}, {"value":"muted","label":"Muted"} ], "default": "white" },
+        { "type": "select", "id": "range_color", "label": "Range color", "options": [ {"value":"light","label":"Light"}, {"value":"muted","label":"Muted"} ], "default": "muted" },
+        { "type": "checkbox", "id": "highlight", "label": "Highlight row", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Two Axes",
+      "blocks": [
+        { "type": "axis", "settings": { "eyebrow": "◇ LONGEVITY", "heading": "Find it a decade early.", "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." } },
+        { "type": "axis", "settings": { "eyebrow": "◇ PERFORMANCE · YOUR BQ", "heading": "Your body in one number.", "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number." } },
+        { "type": "tier", "settings": { "numeral": "VI", "label": "Apex", "range": "145+", "numeral_color": "green", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "V", "label": "Excepcional", "range": "130–144", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "IV", "label": "Avanzado", "range": "115–129", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "III", "label": "Apto", "range": "100–114", "numeral_color": "light", "label_color": "white", "range_color": "light", "highlight": true } },
+        { "type": "tier", "settings": { "numeral": "II", "label": "En desarrollo", "range": "85–99", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } },
+        { "type": "tier", "settings": { "numeral": "I", "label": "Base", "range": "<85", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

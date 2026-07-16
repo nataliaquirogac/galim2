@@ -1,0 +1,136 @@
+{%- comment -%}
+  Galim Health — Waitlist modal
+  Rendered once globally by the header. Opened via [data-gh-waitlist-open].
+  Accepts overrides from settings (title, copy, interest options, endpoint).
+
+  Wiring:
+  - If settings.waitlist_form_action is blank -> Shopify native customer form
+    (adds the email as a customer/newsletter subscriber, tagged so you can filter the waitlist).
+  - If a URL is provided -> a plain form posts there (e.g. an external form endpoint).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = settings
+  assign action = s.waitlist_form_action
+-%}
+
+<div id="gh-waitlist-modal" class="gh-modal" role="dialog" aria-modal="true" aria-labelledby="gh-modal-title" hidden>
+  <div class="gh-modal__overlay" data-gh-waitlist-close></div>
+  <div class="gh-modal__panel" role="document">
+    <button type="button" class="gh-modal__close" data-gh-waitlist-close aria-label="Close">&times;</button>
+
+    <p class="gh-modal__eyebrow">{{ s.waitlist_eyebrow | default: 'JOIN THE WAITLIST' }}</p>
+    <h2 id="gh-modal-title" class="gh-modal__title">{{ s.waitlist_title | default: 'Estás cerca.' }}</h2>
+    <p class="gh-modal__sub">{{ s.waitlist_subtitle | default: 'Unos datos, y guardamos tu lugar.' }}</p>
+
+    {%- capture fields -%}
+      <label class="gh-field">
+        <span class="gh-field__label">{{ s.waitlist_name_label | default: 'Nombre' }}</span>
+        <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="name">
+      </label>
+      <label class="gh-field">
+        <span class="gh-field__label">Email</span>
+        <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
+      </label>
+      <label class="gh-field">
+        <span class="gh-field__label">{{ s.waitlist_interest_label | default: '¿Qué te interesa más?' }}</span>
+        <select name="{% if action == blank %}contact[tags]{% else %}interest{% endif %}">
+          <option value="waitlist, rendimiento">{{ s.waitlist_opt_1 | default: 'Rendimiento' }}</option>
+          <option value="waitlist, longevidad">{{ s.waitlist_opt_2 | default: 'Longevidad' }}</option>
+          <option value="waitlist, indeciso" selected>{{ s.waitlist_opt_3 | default: 'Aún no sé' }}</option>
+        </select>
+      </label>
+      <button type="submit" class="gh-btn gh-btn--solid gh-modal__submit">{{ s.waitlist_submit | default: 'Únete a la lista de espera →' }}</button>
+    {%- endcapture -%}
+
+    {%- if action == blank -%}
+      {%- form 'customer', class: 'gh-modal__form' -%}
+        <input type="hidden" name="contact[note]" value="Galim waitlist signup">
+        {%- if form.posted_successfully? -%}
+          <p class="gh-modal__success">{{ s.waitlist_success | default: '¡Listo! Te avisaremos. Gracias por unirte.' }}</p>
+        {%- else -%}
+          {%- if form.errors -%}
+            <p class="gh-modal__error">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+          {{ fields }}
+        {%- endif -%}
+      {%- endform -%}
+    {%- else -%}
+      <form action="{{ action }}" method="post" class="gh-modal__form" accept-charset="UTF-8">
+        {{ fields }}
+      </form>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .gh-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .gh-modal.is-open { opacity: 1; }
+  .gh-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 31, 38, 0.72);
+    backdrop-filter: blur(6px);
+  }
+  .gh-modal__panel {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
+    border: 1px solid var(--gh-border-strong);
+    border-radius: 16px;
+    padding: 44px 40px 40px;
+    transform: translateY(12px) scale(0.98);
+    transition: transform 0.25s ease;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  }
+  .gh-modal.is-open .gh-modal__panel { transform: translateY(0) scale(1); }
+  .gh-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    background: none;
+    border: 0;
+    color: var(--gh-muted);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .gh-modal__close:hover { color: var(--gh-light); }
+  .gh-modal__eyebrow { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-green); margin-bottom: 16px; }
+  .gh-modal__title { font: 200 34px/1.05 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 8px; }
+  .gh-modal__sub { font: 300 16px/1.5 var(--gh-sans); color: var(--gh-muted); margin-bottom: 28px; }
+  .gh-modal__form { display: flex; flex-direction: column; gap: 16px; }
+  .gh-field { display: flex; flex-direction: column; gap: 7px; }
+  .gh-field__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gh-slate); }
+  .gh-field input,
+  .gh-field select {
+    background: rgba(6, 31, 38, 0.5);
+    border: 1px solid var(--gh-border);
+    border-radius: 4px;
+    padding: 13px 14px;
+    color: var(--gh-light);
+    font: 400 15px/1.2 var(--gh-sans);
+    width: 100%;
+  }
+  .gh-field input:focus,
+  .gh-field select:focus { outline: none; border-color: var(--gh-green); }
+  .gh-field select { appearance: none; cursor: pointer; }
+  .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; }
+  .gh-modal__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
+  .gh-modal__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
+  @media (max-width: 768px) {
+    .gh-modal__panel { padding: 40px 24px 32px; }
+    .gh-modal__title { font-size: 28px; }
+  }
+{% endstylesheet %}

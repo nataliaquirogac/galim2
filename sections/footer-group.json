@@ -1,0 +1,21 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "galim_footer": {
+      "type": "galim-footer",
+      "settings": {
+        "logo_height": 24,
+        "tagline": "Measured body. Optimized life. Calzada del Valle, Monterrey MX.",
+        "nav_title": "NAVIGATE",
+        "nav_menu": "main-menu",
+        "legal_title": "LEGAL",
+        "legal_menu": "footer",
+        "payment_note": "Payment · PayPal",
+        "copyright": "© 2026 GALIM HEALTH",
+        "bottom_right": "MEASURED BODY · OPTIMIZED LIFE"
+      }
+    }
+  },
+  "order": ["galim_footer"]
+}

@@ -1,0 +1,227 @@
+{%- comment -%}
+  Galim Health — Sticky header
+  White logo · nav (linklist) · Log in · Join Waitlist button.
+  Mobile: logo + hamburger opening a drawer with the same links.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign login_url = s.login_url
+  if login_url == blank
+    assign login_url = routes.account_login_url
+  endif
+-%}
+
+<header class="gh-header" data-gh-header>
+  <div class="gh-header__inner">
+    <a href="{{ routes.root_url }}" class="gh-header__logo" aria-label="{{ shop.name }}">
+      {%- if s.logo != blank -%}
+        <img
+          src="{{ s.logo | image_url: width: 400 }}"
+          alt="{{ shop.name }}"
+          width="{{ s.logo.width }}"
+          height="{{ s.logo.height }}"
+          style="height: {{ s.logo_height }}px;"
+          loading="eager"
+        >
+      {%- else -%}
+        <img src="{{ 'logo_galimhealth_white.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;" loading="eager">
+      {%- endif -%}
+    </a>
+
+    <nav class="gh-header__nav" aria-label="Primary">
+      {%- for link in s.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="gh-header__actions">
+      {%- if s.show_login -%}
+        <a href="{{ login_url }}" class="gh-header__login">{{ s.login_label | default: 'LOG IN' }}</a>
+      {%- endif -%}
+      <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+    </div>
+
+    <button type="button" class="gh-header__burger" data-gh-drawer-toggle aria-label="Menu" aria-expanded="false" aria-controls="gh-drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+{%- comment -%} Mobile drawer {%- endcomment -%}
+<div id="gh-drawer" class="gh-drawer" hidden>
+  <div class="gh-drawer__overlay" data-gh-drawer-close></div>
+  <aside class="gh-drawer__panel" aria-label="Menu">
+    <button type="button" class="gh-drawer__close" data-gh-drawer-close aria-label="Close">&times;</button>
+    <nav class="gh-drawer__nav">
+      {%- for link in s.menu.links -%}
+        <a href="{{ link.url }}" data-gh-drawer-close>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+    <div class="gh-drawer__actions">
+      {%- if s.show_login -%}
+        <a href="{{ login_url }}" class="gh-drawer__login">{{ s.login_label | default: 'LOG IN' }}</a>
+      {%- endif -%}
+      <a href="#" class="gh-btn gh-btn--solid gh-drawer__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+    </div>
+  </aside>
+</div>
+
+{%- render 'galim-waitlist-modal' -%}
+
+<script src="{{ 'galim.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .gh-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(12, 59, 70, 0.72);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(168, 194, 200, 0.14);
+    transition: padding 0.25s ease, background 0.25s ease;
+  }
+  .gh-header__inner {
+    max-width: var(--gh-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    transition: padding 0.25s ease;
+  }
+  .gh-header.is-condensed .gh-header__inner { padding-top: 12px; padding-bottom: 12px; }
+  .gh-header.is-condensed { background: rgba(12, 59, 70, 0.92); }
+  .gh-header__logo { display: inline-flex; align-items: center; }
+  .gh-header__logo img { width: auto; display: block; }
+
+  .gh-header__nav {
+    display: flex;
+    gap: 38px;
+    font: 400 14px/1 var(--gh-sans);
+    letter-spacing: 0.02em;
+  }
+  .gh-header__nav a { color: var(--gh-light); }
+  .gh-header__nav a:hover { color: var(--gh-green); }
+
+  .gh-header__actions { display: flex; gap: 22px; align-items: center; }
+  .gh-header__login {
+    font: 400 13px/1 var(--gh-mono);
+    letter-spacing: 0.05em;
+    color: var(--gh-light);
+    opacity: 0.8;
+  }
+  .gh-header__login:hover { opacity: 1; color: var(--gh-green); }
+  .gh-header__cta {
+    border: 1px solid rgba(214, 224, 226, 0.35);
+    color: var(--gh-light);
+    padding: 9px 16px;
+    border-radius: 2px;
+    font: 400 11px/1 var(--gh-mono);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+  .gh-header__cta:hover { border-color: var(--gh-green); color: var(--gh-green); }
+
+  .gh-header__burger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    width: 22px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .gh-header__burger span { height: 1.5px; background: var(--gh-light); border-radius: 2px; }
+  .gh-header__burger span:last-child { width: 14px; }
+
+  /* Drawer */
+  .gh-drawer { position: fixed; inset: 0; z-index: 150; }
+  .gh-drawer__overlay { position: absolute; inset: 0; background: rgba(6, 31, 38, 0.6); }
+  .gh-drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(320px, 84vw);
+    background: var(--gh-bg-900);
+    border-left: 1px solid var(--gh-border);
+    padding: 72px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+  }
+  .gh-drawer.is-open .gh-drawer__panel { transform: translateX(0); }
+  .gh-drawer__close { position: absolute; top: 18px; right: 20px; background: none; border: 0; color: var(--gh-light); font-size: 30px; line-height: 1; cursor: pointer; }
+  .gh-drawer__nav { display: flex; flex-direction: column; gap: 22px; }
+  .gh-drawer__nav a { font: 300 24px/1 var(--gh-sans); color: var(--gh-light); }
+  .gh-drawer__nav a:hover { color: var(--gh-green); }
+  .gh-drawer__actions { margin-top: auto; display: flex; flex-direction: column; gap: 16px; padding-top: 32px; }
+  .gh-drawer__login { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.08em; color: var(--gh-muted); }
+  .gh-drawer__cta { justify-content: center; }
+
+  @media (max-width: 768px) {
+    .gh-header__inner { padding: 14px 20px; }
+    .gh-header__nav,
+    .gh-header__actions { display: none; }
+    .gh-header__burger { display: flex; }
+    .gh-header__logo img { height: 18px !important; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Header",
+  "class": "gh-header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (white, for dark header)",
+      "info": "Defaults to logo_galimhealth_white.png in assets."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo height (desktop)",
+      "default": 26
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_login",
+      "label": "Show Log in link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "login_label",
+      "label": "Log in label",
+      "default": "LOG IN"
+    },
+    {
+      "type": "url",
+      "id": "login_url",
+      "label": "Log in URL",
+      "info": "Leave blank to use the customer login page."
+    },
+    {
+      "type": "text",
+      "id": "waitlist_label",
+      "label": "Waitlist button label",
+      "default": "JOIN WAITLIST"
+    }
+  ]
+}
+{% endschema %}
