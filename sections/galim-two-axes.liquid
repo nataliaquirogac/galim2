@@ -31,7 +31,7 @@
           {%- if s.bq_number_caption != blank -%}<span class="gh-axes__bq-num-cap">{{ s.bq_number_caption }}</span>{%- endif -%}
         </div>
         {%- if s.bq_copy != blank -%}<p class="gh-axes__bq-copy">{{ s.bq_copy }}</p>{%- endif -%}
-        <div class="gh-axes__bar"></div>
+        <div class="gh-axes__bar gh-axes__bar--desktop"></div>
       </div>
       <div class="gh-axes__bq-right">
         {%- for block in section.blocks -%}
@@ -43,6 +43,7 @@
             </div>
           {%- endif -%}
         {%- endfor -%}
+        <div class="gh-axes__bar gh-axes__bar--mobile"></div>
       </div>
     </div>
   </div>
@@ -76,6 +77,7 @@
     background: linear-gradient(90deg, #6E8897, #A8C2C8 60%, #8CBF8A);
     background-size: 200% 100%; animation: gh-sweep 5s linear infinite;
   }
+  .gh-axes__bar--mobile { display: none; }
   .gh-axes__bq-right { display: flex; flex-direction: column; }
   .gh-axes__tier {
     display: grid; grid-template-columns: 56px 1fr auto; align-items: center;
@@ -105,7 +107,8 @@
     .gh-axes__bq-num { font-size: 84px; }
     .gh-axes__bq-num-cap { font-size: 13px; }
     .gh-axes__bq-copy { font-size: 18px; margin-bottom: 20px; }
-    .gh-axes__bar { order: 3; margin-top: 18px; max-width: none; }
+    .gh-axes__bar--desktop { display: none; }
+    .gh-axes__bar--mobile { display: block; margin-top: 18px; max-width: none; }
     .gh-axes__bq-right { margin-top: 0; }
     .gh-axes__tier { grid-template-columns: 40px 1fr auto; padding: 11px 2px; }
     .gh-axes__tier-num { font-size: 13px; }
