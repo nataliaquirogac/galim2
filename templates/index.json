@@ -12,8 +12,9 @@
     "hero": {
       "type": "galim-hero",
       "settings": {
-        "image": "shopify://shop_images/Escena_65.png",
+        "image": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
+        "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-07-16_at_12.14.30.jpg",
         "image_url_mobile": "",
         "anchor_id": "top",
         "heading_size": 52,
