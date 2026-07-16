@@ -1,0 +1,95 @@
+{%- comment -%}
+  Galim Health — Steps ("Measure. Understand. Improve.")
+  Giant stacked words that light up in sequence (scanner-style loop),
+  followed by a supporting paragraph. Words are repeatable blocks.
+{%- endcomment -%}
+
+{%- liquid assign s = section.settings -%}
+
+<section class="gh-steps gh-section" data-gh-section="steps" style="background: {{ s.bg_color }}; --gh-steps-count: {{ section.blocks.size | at_least: 1 }};">
+  <div class="gh-container">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-steps__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <h2 class="gh-steps__words">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' and block.settings.word != blank -%}
+            <span class="gh-steps__word" style="--gh-step-i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+              <span class="gh-steps__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>{{ block.settings.word }}
+            </span>
+          {%- endif -%}
+        {%- endfor -%}
+      </h2>
+    {%- endif -%}
+
+    {%- if s.body != blank -%}<p class="gh-steps__body">{{ s.body }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-steps__eyebrow { margin-bottom: 44px; }
+  .gh-steps__words { display: flex; flex-direction: column; gap: 4px; margin-bottom: 40px; }
+  .gh-steps__word {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    font: 200 clamp(44px, 6vw, 84px)/1.12 var(--gh-sans);
+    letter-spacing: -0.03em;
+    color: var(--gh-light);
+    animation: gh-step-cycle calc(var(--gh-steps-count, 3) * 2.4s) ease-in-out infinite;
+    animation-delay: calc(var(--gh-step-i, 0) * 2.4s);
+  }
+  .gh-steps__num {
+    font: 500 13px/1 var(--gh-mono);
+    letter-spacing: 0.14em;
+    color: currentColor;
+    opacity: 0.75;
+  }
+  @keyframes gh-step-cycle {
+    0% { color: var(--gh-slate); }
+    7%, 26% { color: var(--gh-white); }
+    38%, 100% { color: var(--gh-slate); }
+  }
+  .gh-steps__body { font: 300 20px/1.6 var(--gh-sans); color: var(--gh-light); max-width: 680px; }
+
+  @media (max-width: 768px) {
+    .gh-steps__eyebrow { margin-bottom: 24px; font-size: 10px; letter-spacing: 0.24em; }
+    .gh-steps__words { margin-bottom: 26px; }
+    .gh-steps__word { gap: 14px; line-height: 1.18; }
+    .gh-steps__num { font-size: 11px; }
+    .gh-steps__body { font-size: 16px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Steps",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 / ONE VISIT" },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "In one visit, you'll understand your body more clearly than ever before — and leave knowing exactly what to improve next." },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0C3B46" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Word",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "word", "label": "Word", "default": "Measure." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Steps",
+      "blocks": [
+        { "type": "step", "settings": { "word": "Measure." } },
+        { "type": "step", "settings": { "word": "Understand." } },
+        { "type": "step", "settings": { "word": "Improve." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -117,7 +117,7 @@
 
     var els = Array.prototype.slice.call(
       document.querySelectorAll(
-        '.gh-gap .gh-container, .gh-method__inner, .gh-cta__inner, ' +
+        '.gh-gap .gh-container, .gh-steps .gh-container, .gh-method__inner, .gh-cta__inner, ' +
         '.gh-axes__card, .gh-axes__bq, .gh-pkg, .gh-glp, .gh-diag__row, ' +
         '.gh-protocols__eyebrow, .gh-protocols__h2, .gh-diag__eyebrow, .gh-diag__h2, .gh-diag__sub, .gh-axes__eyebrow'
       )

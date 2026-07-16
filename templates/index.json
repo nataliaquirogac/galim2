@@ -172,7 +172,7 @@
         "tier_6"
       ],
       "settings": {
-        "eyebrow": "02 / TWO AXES",
+        "eyebrow": "03 / TWO AXES",
         "bg_color": "#0c3b46",
         "bq_label": "YOUR BODY QUOTIENT",
         "bq_number": "",
@@ -226,7 +226,7 @@
       ],
       "settings": {
         "anchor_id": "plans",
-        "eyebrow": "03 / PROTOCOLS",
+        "eyebrow": "04 / PROTOCOLS",
         "heading": "<p>The precision once reserved for elite clinics.<br/><strong>Now within reach.</strong></p>",
         "bg_color": "#082d36",
         "glp_glyph": "◈",
@@ -271,7 +271,7 @@
         "d5"
       ],
       "settings": {
-        "eyebrow": "04 / ADVANCED DIAGNOSTICS",
+        "eyebrow": "05 / ADVANCED DIAGNOSTICS",
         "heading": "For those who want to optimize even further.",
         "subheading": "Optional · available separately · tailored to your age, family history, goals, and Galim results.",
         "bg_color": "#0c3b46"
@@ -300,11 +300,45 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
+    },
+    "steps": {
+      "type": "galim-steps",
+      "settings": {
+        "eyebrow": "02 / ONE VISIT",
+        "body": "In one visit, you'll understand your body more clearly than ever before — and leave knowing exactly what to improve next.",
+        "bg_color": "#0C3B46"
+      },
+      "blocks": {
+        "w1": {
+          "type": "step",
+          "settings": {
+            "word": "Measure."
+          }
+        },
+        "w2": {
+          "type": "step",
+          "settings": {
+            "word": "Understand."
+          }
+        },
+        "w3": {
+          "type": "step",
+          "settings": {
+            "word": "Improve."
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ]
     }
   },
   "order": [
     "hero",
     "gap",
+    "steps",
     "two_axes",
     "protocols",
     "diagnostics",
