@@ -47,6 +47,19 @@
         <a href="{{ login_url }}" class="gh-header__login">{{ s.login_label | default: 'LOG IN' }}</a>
       {%- endif -%}
       <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'gh-header__lang' -%}
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          {%- for lang in localization.available_languages -%}
+            {%- if lang.iso_code == localization.language.iso_code -%}
+              <span class="gh-header__lang-current" aria-current="true">{{ lang.iso_code | upcase }}</span>
+            {%- else -%}
+              <button type="submit" name="locale_code" value="{{ lang.iso_code }}" class="gh-header__lang-btn" lang="{{ lang.iso_code }}">{{ lang.iso_code | upcase }}</button>
+            {%- endif -%}
+            {%- unless forloop.last -%}<span class="gh-header__lang-sep">/</span>{%- endunless -%}
+          {%- endfor -%}
+        {%- endform -%}
+      {%- endif -%}
     </div>
 
     <button type="button" class="gh-header__burger" data-gh-drawer-toggle aria-label="Menu" aria-expanded="false" aria-controls="gh-drawer">
@@ -139,6 +152,26 @@
   }
   .gh-header__cta:hover { border-color: var(--gh-green); color: var(--gh-green); }
 
+  .gh-header__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font: 500 12px/1 var(--gh-mono);
+    letter-spacing: 0.08em;
+  }
+  .gh-header__lang-current { color: var(--gh-white); }
+  .gh-header__lang-sep { color: var(--gh-slate); }
+  .gh-header__lang-btn {
+    background: none;
+    border: 0;
+    padding: 2px;
+    color: var(--gh-slate);
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+  .gh-header__lang-btn:hover { color: var(--gh-green); }
+
   .gh-header__burger {
     display: none;
     flex-direction: column;
@@ -184,7 +217,14 @@
     .gh-header__login,
     .gh-header__burger { display: none; }
     .gh-header__cta { padding: 8px 13px; font-size: 10px; }
-    .gh-header__logo img { height: 18px !important; }
+    /* With more than one published language, mobile swaps the CTA for ES/EN */
+    .gh-header__lang {
+      border: 1px solid rgba(214, 224, 226, 0.35);
+      border-radius: 2px;
+      padding: 8px 12px;
+    }
+    .gh-header__actions:has(.gh-header__lang) .gh-header__cta { display: none; }
+    .gh-header__lang-btn { padding: 0; }
   }
 {% endstylesheet %}
 
