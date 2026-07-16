@@ -93,7 +93,7 @@
           "settings": {
             "numeral": "VI",
             "label": "Apex",
-            "range": "99%",
+            "range": "1%",
             "numeral_color": "green",
             "label_color": "white",
             "range_color": "muted",
@@ -105,7 +105,7 @@
           "settings": {
             "numeral": "V",
             "label": "Exceptional",
-            "range": "91–98%",
+            "range": "2–9%",
             "numeral_color": "muted",
             "label_color": "white",
             "range_color": "muted",
@@ -117,7 +117,7 @@
           "settings": {
             "numeral": "IV",
             "label": "Advanced",
-            "range": "80-90%",
+            "range": "10-19%",
             "numeral_color": "muted",
             "label_color": "white",
             "range_color": "muted",
@@ -129,7 +129,7 @@
           "settings": {
             "numeral": "III",
             "label": "Fit",
-            "range": "71–79%",
+            "range": "20–29%",
             "numeral_color": "light",
             "label_color": "white",
             "range_color": "light",
@@ -141,7 +141,7 @@
           "settings": {
             "numeral": "II",
             "label": "Developing",
-            "range": "51-70%",
+            "range": "30-49%",
             "numeral_color": "slate",
             "label_color": "muted",
             "range_color": "muted",
