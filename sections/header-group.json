@@ -23,7 +23,7 @@
     "galim_header": {
       "type": "galim-header",
       "settings": {
-        "logo_height": 26,
+        "logo_height": 32,
         "menu": "main-menu",
         "show_login": true,
         "login_label": "LOG IN",
