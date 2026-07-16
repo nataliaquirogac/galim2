@@ -124,12 +124,24 @@
         "tier_1": {
           "type": "tier",
           "settings": {
+            "numeral": "",
+            "label": "",
+            "range": "TOP",
+            "numeral_color": "green",
+            "label_color": "white",
+            "range_color": "light",
+            "highlight": false
+          }
+        },
+        "tier_CbCjzD": {
+          "type": "tier",
+          "settings": {
             "numeral": "VI",
             "label": "Apex",
             "range": "1%",
             "numeral_color": "green",
             "label_color": "white",
-            "range_color": "light",
+            "range_color": "muted",
             "highlight": false
           }
         },
@@ -198,6 +210,7 @@
         "axis_1",
         "axis_2",
         "tier_1",
+        "tier_CbCjzD",
         "tier_2",
         "tier_3",
         "tier_4",
