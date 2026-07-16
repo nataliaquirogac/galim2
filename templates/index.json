@@ -65,6 +65,39 @@
         "bg_color": "#082d36"
       }
     },
+    "steps": {
+      "type": "galim-steps",
+      "blocks": {
+        "w1": {
+          "type": "step",
+          "settings": {
+            "word": "Measure."
+          }
+        },
+        "w2": {
+          "type": "step",
+          "settings": {
+            "word": "Understand."
+          }
+        },
+        "w3": {
+          "type": "step",
+          "settings": {
+            "word": "Improve."
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ],
+      "settings": {
+        "eyebrow": "02 / ONE VISIT",
+        "body": "In one visit, you'll understand your body more clearly than ever before and leave knowing exactly what to improve next.",
+        "bg_color": "#0c3b46"
+      }
+    },
     "two_axes": {
       "type": "galim-two-axes",
       "blocks": {
@@ -300,39 +333,6 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
-    },
-    "steps": {
-      "type": "galim-steps",
-      "settings": {
-        "eyebrow": "02 / ONE VISIT",
-        "body": "In one visit, you'll understand your body more clearly than ever before — and leave knowing exactly what to improve next.",
-        "bg_color": "#0C3B46"
-      },
-      "blocks": {
-        "w1": {
-          "type": "step",
-          "settings": {
-            "word": "Measure."
-          }
-        },
-        "w2": {
-          "type": "step",
-          "settings": {
-            "word": "Understand."
-          }
-        },
-        "w3": {
-          "type": "step",
-          "settings": {
-            "word": "Improve."
-          }
-        }
-      },
-      "block_order": [
-        "w1",
-        "w2",
-        "w3"
-      ]
     }
   },
   "order": [
