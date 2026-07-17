@@ -88,31 +88,31 @@
 
   .gh-mq__card {
     flex: 0 0 auto;
-    width: 220px;
-    padding: 16px 18px 18px;
-    border-radius: 10px;
+    width: 180px;
+    padding: 13px 14px 14px;
+    border-radius: 9px;
     border: 1px solid var(--gh-border);
     background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
     color: var(--gh-light);
-    display: flex; flex-direction: column; gap: 8px;
+    display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
     transition: border-color 0.25s ease;
   }
   .gh-mq__card:hover { border-color: rgba(140, 191, 138, 0.4); }
 
   /* Icon + name on the same line */
-  .gh-mq__head { display: flex; align-items: center; gap: 10px; }
+  .gh-mq__head { display: flex; align-items: center; gap: 8px; }
   .gh-mq__icon {
-    width: 32px; height: 32px; border-radius: 8px;
+    width: 26px; height: 26px; border-radius: 6px;
     background: rgba(140, 191, 138, 0.14);
     border: 1px solid rgba(140, 191, 138, 0.3);
     display: inline-flex; align-items: center; justify-content: center;
     color: var(--gh-green);
     flex-shrink: 0;
   }
-  .gh-mq__icon svg { width: 18px; height: 18px; }
-  .gh-mq__name { font: 500 15px/1.15 var(--gh-sans); color: var(--gh-white); }
-  .gh-mq__desc { font: 300 12.5px/1.45 var(--gh-sans); color: var(--gh-muted); margin: 0; }
+  .gh-mq__icon svg { width: 15px; height: 15px; }
+  .gh-mq__name { font: 500 13px/1.15 var(--gh-sans); color: var(--gh-white); }
+  .gh-mq__desc { font: 300 11.5px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0; }
 
   /* Side fades */
   .gh-mq__sides { position: absolute; inset: 0; pointer-events: none; }
@@ -154,7 +154,7 @@
 
   .gh-mq__progress {
     flex: 1;
-    height: 22px;               /* larger hit area than the visible bar */
+    height: 24px;               /* larger hit area than the visible bar */
     position: relative;
     display: flex;
     align-items: center;
@@ -165,33 +165,34 @@
   .gh-mq__progress::before {
     content: "";
     position: absolute; left: 0; right: 0; top: 50%;
-    height: 3px;
-    background: rgba(168, 194, 200, 0.16);
+    height: 6px;
+    background: rgba(168, 194, 200, 0.18);
     border-radius: 999px;
     transform: translateY(-50%);
   }
   .gh-mq__progress-bar {
     position: absolute; left: 0; top: 50%;
-    height: 3px;
+    height: 6px;
     width: 0%;
     background: var(--gh-green);
     border-radius: 999px;
     transform: translateY(-50%);
     transition: width 0.15s ease-out, background 0.25s ease;
     pointer-events: none;
+    box-shadow: 0 0 12px rgba(140, 191, 138, 0.55);
   }
   .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
   .gh-mq__progress-thumb {
     position: absolute; top: 50%;
     left: 0%;
-    width: 12px; height: 12px;
+    width: 14px; height: 14px;
     border-radius: 50%;
-    background: var(--gh-white);
-    border: 2px solid var(--gh-green);
+    background: var(--gh-green);
+    border: 2px solid var(--gh-white);
     transform: translate(-50%, -50%);
     transition: left 0.15s ease-out, transform 0.15s ease-out;
     pointer-events: none;
-    box-shadow: 0 2px 8px rgba(6, 31, 38, 0.4);
+    box-shadow: 0 0 0 3px rgba(140, 191, 138, 0.25), 0 2px 8px rgba(6, 31, 38, 0.5);
   }
   .gh-mq__progress:hover .gh-mq__progress-thumb,
   .gh-mq__progress.is-dragging .gh-mq__progress-thumb { transform: translate(-50%, -50%) scale(1.25); }
@@ -201,15 +202,15 @@
 
   @media (max-width: 768px) {
     .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
-    .gh-mq__card { width: 200px; padding: 14px 16px 16px; }
-    .gh-mq__icon { width: 30px; height: 30px; border-radius: 7px; }
-    .gh-mq__icon svg { width: 17px; height: 17px; }
-    .gh-mq__name { font-size: 14px; }
-    .gh-mq__desc { font-size: 12px; }
+    .gh-mq__card { width: 160px; padding: 12px 13px 13px; }
+    .gh-mq__icon { width: 24px; height: 24px; border-radius: 6px; }
+    .gh-mq__icon svg { width: 14px; height: 14px; }
+    .gh-mq__name { font-size: 12.5px; }
+    .gh-mq__desc { font-size: 11px; line-height: 1.35; }
     .gh-mq__sides::before,
     .gh-mq__sides::after { width: 6%; }
     .gh-mq__progress { max-width: none; }
-    .gh-mq__nav { width: 32px; height: 32px; font-size: 20px; }
+    .gh-mq__nav { width: 30px; height: 30px; font-size: 18px; }
   }
 {% endstylesheet %}
 
