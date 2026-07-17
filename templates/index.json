@@ -108,6 +108,14 @@
             "description": "Capacity, airflow, and oxygen efficiency."
           }
         },
+        "item_6WJCYy": {
+          "type": "item",
+          "settings": {
+            "icon": "dna",
+            "name": "Bone",
+            "description": "Bone density, strength and skeletal health."
+          }
+        },
         "m7": {
           "type": "item",
           "settings": {
@@ -156,6 +164,7 @@
         "m10",
         "m12",
         "m6",
+        "item_6WJCYy",
         "m7",
         "m9",
         "m1",
