@@ -182,6 +182,7 @@
     },
     "gap": {
       "type": "galim-gap",
+      "disabled": true,
       "settings": {
         "eyebrow": "01 / THE GAP",
         "chip_label": "GALIM MEASURES",
@@ -195,18 +196,21 @@
       "blocks": {
         "w1": {
           "type": "step",
+          "disabled": true,
           "settings": {
             "word": "Measure."
           }
         },
         "w2": {
           "type": "step",
+          "disabled": true,
           "settings": {
             "word": "Understand."
           }
         },
         "w3": {
           "type": "step",
+          "disabled": true,
           "settings": {
             "word": "Improve."
           }
