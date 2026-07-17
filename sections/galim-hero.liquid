@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }};">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-side-color: {{ s.side_color | default: '#092e2b' }}; --gh-side-width: {{ s.side_width | default: 22 }}%;">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -44,6 +44,7 @@
     <div class="gh-hero__grad-h"></div>
     <div class="gh-hero__grad-v"></div>
     <div class="gh-hero__grid"></div>
+    <div class="gh-hero__sides" aria-hidden="true"></div>
   </div>
 
   <div class="gh-hero__inner">
@@ -139,6 +140,24 @@
   .gh-hero__grad-v { position: absolute; inset: 0; display: none; pointer-events: none; }
   .gh-hero__grid { display: none; }
 
+  /* Side fades: brand color at the edges, transparent toward the center */
+  .gh-hero__sides { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .gh-hero__sides::before,
+  .gh-hero__sides::after {
+    content: "";
+    position: absolute; top: 0; bottom: 0;
+    width: var(--gh-side-width, 22%);
+    pointer-events: none;
+  }
+  .gh-hero__sides::before {
+    left: 0;
+    background: linear-gradient(to right, var(--gh-side-color, #092e2b), rgba(9,46,43,0));
+  }
+  .gh-hero__sides::after {
+    right: 0;
+    background: linear-gradient(to left, var(--gh-side-color, #092e2b), rgba(9,46,43,0));
+  }
+
   /* Content: absolute bottom-right on desktop */
   .gh-hero__inner {
     position: absolute; right: 56px; bottom: 52px;
@@ -209,6 +228,9 @@
     .gh-hero__img { object-position: 20% 25%; }
     .gh-hero__tint { display: none; }
     .gh-hero__grad-h { display: none; }
+    /* Narrower side fades on mobile so the photo shows more */
+    .gh-hero__sides::before,
+    .gh-hero__sides::after { width: 12%; }
     .gh-hero__grad-v {
       display: block;
       background: linear-gradient(180deg,
@@ -236,6 +258,8 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
     { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength (desktop)", "info": "Teal tint over the whole photo. Keep low so the photo shows; the diagonal scrim already darkens the text side.", "default": 20 },
+    { "type": "color", "id": "side_color", "label": "Side fade color", "info": "Color that fades in from the left and right edges over the photo.", "default": "#092e2b" },
+    { "type": "range", "id": "side_width", "min": 0, "max": 40, "step": 2, "unit": "%", "label": "Side fade width", "default": 22 },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
