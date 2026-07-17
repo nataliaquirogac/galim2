@@ -253,11 +253,11 @@
         "axis_2": {
           "type": "axis",
           "settings": {
-            "eyebrow": "",
-            "heading": "",
-            "body": "",
-            "note_title": "On a GLP-1?",
-            "note_body": "<p>Up to <strong>40% of the weight you lose can be muscle.</strong> Your gym’s InBody gives you an estimate. Performance measures what you actually lost: fat or your foundation.</p>"
+            "eyebrow": "◇ GLP-1",
+            "heading": "Using Ozempic®, Wegovy®, or Mounjaro®?",
+            "body": "GLP-1 medications can help you lose weight — but they don't tell you what you're losing. Up to 40% of weight loss may come from muscle. Galim measures what matters, helping you preserve muscle while losing fat.",
+            "note_title": "",
+            "note_body": ""
           }
         },
         "tier_1": {

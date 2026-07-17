@@ -61,12 +61,16 @@
 
 {% stylesheet %}
   .gh-axes__eyebrow { margin-bottom: 32px; }
-  .gh-axes__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  /* Auto-fit: 2 cards side-by-side, 1 card fills the container elegantly */
+  .gh-axes__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
   .gh-axes__card {
-    position: relative; border-radius: 14px; padding: 10px;
+    position: relative; border-radius: 14px; padding: 32px;
     background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg));
     border: 1px solid var(--gh-border); overflow: hidden;
   }
+  /* When alone, the card gets a tighter max width so it doesn't feel oversized */
+  .gh-axes__cards:has(.gh-axes__card:only-child) { grid-template-columns: 1fr; }
+  .gh-axes__card:only-child { max-width: 760px; }
   .gh-axes__glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(140,191,138,.25), transparent 65%); filter: blur(20px); }
   .gh-axes__card-eyebrow { position: relative; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-muted); margin-bottom: 24px; }
   .gh-axes__card-h3 { position: relative; font: 300 34px/1.15 var(--gh-sans); color: var(--gh-white); margin-bottom: 20px; }
