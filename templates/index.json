@@ -126,7 +126,7 @@
           "settings": {
             "numeral": "",
             "label": "",
-            "range": "TOP",
+            "range": "AGE PERCENTILE",
             "numeral_color": "green",
             "label_color": "white",
             "range_color": "light",
