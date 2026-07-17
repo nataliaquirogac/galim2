@@ -17,42 +17,46 @@
   </div>
 
   {%- if section.blocks.size > 0 -%}
-    <div class="gh-mq__viewport" aria-label="Measurement components">
-      <div class="gh-mq__track">
-        {%- for pass in (1..2) -%}
-          <div class="gh-mq__group" {% if pass == 2 %}aria-hidden="true"{% endif %}>
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'item' -%}
-                {%- assign b = block.settings -%}
-                <div class="gh-mq__card"{% if pass == 1 %} {{ block.shopify_attributes }}{% endif %}>
-                  <span class="gh-mq__icon">
-                    {%- case b.icon -%}
-                      {%- when 'eye' -%}{%- render 'icon-eye' -%}
-                      {%- when 'ear' -%}{%- render 'icon-ear' -%}
-                      {%- when 'lung' -%}{%- render 'icon-lung' -%}
-                      {%- when 'heartbeat' -%}{%- render 'icon-heartbeat' -%}
-                      {%- when 'brain' -%}{%- render 'icon-brain' -%}
-                      {%- when 'muscle' -%}{%- render 'icon-muscle' -%}
-                      {%- when 'skin' -%}{%- render 'icon-skin' -%}
-                      {%- when 'balance' -%}{%- render 'icon-balance' -%}
-                      {%- when 'pressure' -%}{%- render 'icon-pressure' -%}
-                      {%- when 'blood' -%}{%- render 'icon-blood' -%}
-                      {%- when 'dna' -%}{%- render 'icon-dna' -%}
-                      {%- when 'microbiome' -%}{%- render 'icon-microbiome' -%}
-                      {%- when 'mri' -%}{%- render 'icon-mri' -%}
-                      {%- when 'bolt' -%}{%- render 'icon-bolt' -%}
-                      {%- else -%}{%- render 'icon-heartbeat' -%}
-                    {%- endcase -%}
-                  </span>
-                  {%- if b.name != blank -%}<h3 class="gh-mq__name">{{ b.name }}</h3>{%- endif -%}
-                  {%- if b.description != blank -%}<p class="gh-mq__desc">{{ b.description }}</p>{%- endif -%}
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
+    <div class="gh-mq__viewport" data-gh-carousel aria-label="Measurement components">
+      <div class="gh-mq__track" data-gh-track tabindex="0">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'item' -%}
+            {%- assign b = block.settings -%}
+            <div class="gh-mq__card" {{ block.shopify_attributes }}>
+              <div class="gh-mq__head">
+                <span class="gh-mq__icon">
+                  {%- case b.icon -%}
+                    {%- when 'eye' -%}{%- render 'icon-eye', size: 20 -%}
+                    {%- when 'ear' -%}{%- render 'icon-ear', size: 20 -%}
+                    {%- when 'lung' -%}{%- render 'icon-lung', size: 20 -%}
+                    {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 20 -%}
+                    {%- when 'brain' -%}{%- render 'icon-brain', size: 20 -%}
+                    {%- when 'muscle' -%}{%- render 'icon-muscle', size: 20 -%}
+                    {%- when 'skin' -%}{%- render 'icon-skin', size: 20 -%}
+                    {%- when 'balance' -%}{%- render 'icon-balance', size: 20 -%}
+                    {%- when 'pressure' -%}{%- render 'icon-pressure', size: 20 -%}
+                    {%- when 'blood' -%}{%- render 'icon-blood', size: 20 -%}
+                    {%- when 'dna' -%}{%- render 'icon-dna', size: 20 -%}
+                    {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 20 -%}
+                    {%- when 'mri' -%}{%- render 'icon-mri', size: 20 -%}
+                    {%- when 'bolt' -%}{%- render 'icon-bolt', size: 18 -%}
+                    {%- else -%}{%- render 'icon-heartbeat', size: 20 -%}
+                  {%- endcase -%}
+                </span>
+                {%- if b.name != blank -%}<h3 class="gh-mq__name">{{ b.name }}</h3>{%- endif -%}
+              </div>
+              {%- if b.description != blank -%}<p class="gh-mq__desc">{{ b.description }}</p>{%- endif -%}
+            </div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
       <div class="gh-mq__sides" aria-hidden="true"></div>
+    </div>
+
+    <div class="gh-container gh-mq__progress-wrap">
+      <div class="gh-mq__progress" role="progressbar" aria-label="Scroll progress">
+        <div class="gh-mq__progress-bar" data-gh-progress></div>
+      </div>
     </div>
   {%- endif -%}
 </section>
@@ -60,47 +64,54 @@
 {% stylesheet %}
   .gh-mq { padding: var(--gh-pad-y) 0; overflow: hidden; }
   .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
-  .gh-mq__eyebrow { margin-bottom: 14px; }
-  .gh-mq__h2 { font: 200 32px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 32px; max-width: 720px; }
+  .gh-mq__eyebrow { margin-bottom: 12px; }
+  .gh-mq__h2 { font: 200 28px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 24px; max-width: 720px; }
 
-  .gh-mq__viewport {
-    position: relative;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
-  }
+  /* Swipeable scroll container (no more auto-marquee) */
+  .gh-mq__viewport { position: relative; }
   .gh-mq__track {
     display: flex;
-    width: max-content;
-    animation: gh-mq-scroll var(--gh-mq-duration, 45s) linear infinite;
+    gap: 10px;
+    padding: 2px var(--gh-pad-x) 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--gh-pad-x);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  .gh-mq__viewport:hover .gh-mq__track { animation-play-state: paused; }
-  .gh-mq__group { display: flex; gap: 12px; padding-right: 12px; flex: 0 0 auto; }
+  .gh-mq__track::-webkit-scrollbar { display: none; }
+  .gh-mq__track:focus-visible { outline: 2px solid var(--gh-green); outline-offset: 4px; border-radius: 4px; }
 
   .gh-mq__card {
     flex: 0 0 auto;
-    width: 200px;
-    padding: 20px 20px 22px;
-    border-radius: 12px;
+    width: 220px;
+    padding: 16px 18px 18px;
+    border-radius: 10px;
     border: 1px solid var(--gh-border);
     background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
     color: var(--gh-light);
-    display: flex; flex-direction: column; gap: 10px;
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    display: flex; flex-direction: column; gap: 8px;
+    scroll-snap-align: start;
+    transition: border-color 0.25s ease;
   }
-  .gh-mq__card:hover { border-color: rgba(140, 191, 138, 0.45); transform: translateY(-2px); }
+  .gh-mq__card:hover { border-color: rgba(140, 191, 138, 0.4); }
+
+  /* Icon + name on the same line */
+  .gh-mq__head { display: flex; align-items: center; gap: 10px; }
   .gh-mq__icon {
-    width: 40px; height: 40px; border-radius: 10px;
+    width: 32px; height: 32px; border-radius: 8px;
     background: rgba(140, 191, 138, 0.14);
     border: 1px solid rgba(140, 191, 138, 0.3);
     display: inline-flex; align-items: center; justify-content: center;
     color: var(--gh-green);
     flex-shrink: 0;
   }
-  .gh-mq__icon svg { width: 22px; height: 22px; }
-  .gh-mq__name { font: 500 16px/1.2 var(--gh-sans); color: var(--gh-white); }
-  .gh-mq__desc { font: 300 13px/1.45 var(--gh-sans); color: var(--gh-muted); margin: 0; }
+  .gh-mq__icon svg { width: 18px; height: 18px; }
+  .gh-mq__name { font: 500 15px/1.15 var(--gh-sans); color: var(--gh-white); }
+  .gh-mq__desc { font: 300 12.5px/1.45 var(--gh-sans); color: var(--gh-muted); margin: 0; }
 
+  /* Side fades */
   .gh-mq__sides { position: absolute; inset: 0; pointer-events: none; }
   .gh-mq__sides::before,
   .gh-mq__sides::after {
@@ -117,24 +128,34 @@
     background: linear-gradient(to left, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
   }
 
-  @keyframes gh-mq-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+  /* Progress bar: tracks scrollLeft %, fills as the user swipes */
+  .gh-mq__progress-wrap { margin-top: 20px; }
+  .gh-mq__progress {
+    height: 3px;
+    background: rgba(168, 194, 200, 0.14);
+    border-radius: 999px;
+    overflow: hidden;
+    max-width: 320px;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .gh-mq__track { animation: none; }
-    .gh-mq__viewport { overflow-x: auto; }
+  .gh-mq__progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--gh-green);
+    border-radius: 999px;
+    transition: width 0.15s ease-out;
   }
+  .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
 
   @media (max-width: 768px) {
-    .gh-mq__h2 { font-size: 24px; margin-bottom: 20px; }
-    .gh-mq__card { width: 170px; padding: 18px 16px 20px; gap: 8px; }
-    .gh-mq__icon { width: 36px; height: 36px; }
-    .gh-mq__icon svg { width: 20px; height: 20px; }
+    .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
+    .gh-mq__card { width: 200px; padding: 14px 16px 16px; }
+    .gh-mq__icon { width: 30px; height: 30px; border-radius: 7px; }
+    .gh-mq__icon svg { width: 17px; height: 17px; }
     .gh-mq__name { font-size: 14px; }
-    .gh-mq__desc { font-size: 12px; line-height: 1.4; }
+    .gh-mq__desc { font-size: 12px; }
     .gh-mq__sides::before,
     .gh-mq__sides::after { width: 6%; }
+    .gh-mq__progress { max-width: none; }
   }
 {% endstylesheet %}
 

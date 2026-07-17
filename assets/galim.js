@@ -107,6 +107,43 @@
     onScroll();
   }
 
+  /* ---- Carousels: progress bar tracking scrollLeft ---- */
+  document.querySelectorAll('[data-gh-carousel]').forEach(function (viewport) {
+    var track = viewport.querySelector('[data-gh-track]');
+    var bar = viewport.parentNode.querySelector('[data-gh-progress]');
+    if (!track || !bar) return;
+
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      if (max <= 1) { bar.style.width = '100%'; bar.classList.add('is-end'); return; }
+      var pct = Math.max(0, Math.min(1, track.scrollLeft / max));
+      bar.style.width = (pct * 100) + '%';
+      bar.classList.toggle('is-end', pct >= 0.995);
+    }
+
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+
+    /* Drag with mouse on desktop (touch already works via native scroll) */
+    var isDown = false, startX = 0, startLeft = 0;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      isDown = true; startX = e.clientX; startLeft = track.scrollLeft;
+      track.setPointerCapture(e.pointerId);
+      track.style.cursor = 'grabbing';
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!isDown) return;
+      track.scrollLeft = startLeft - (e.clientX - startX);
+    });
+    var release = function () { isDown = false; track.style.cursor = ''; };
+    track.addEventListener('pointerup', release);
+    track.addEventListener('pointercancel', release);
+    track.addEventListener('pointerleave', release);
+
+    update();
+  });
+
   /* ---- Reveal on scroll ----
      Rect-based instead of IntersectionObserver: IO callbacks are throttled or
      suspended in some embedded/background webviews, which would leave content
