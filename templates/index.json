@@ -63,7 +63,7 @@
         "m8": {
           "type": "item",
           "settings": {
-            "icon": "bolt",
+            "icon": "dna",
             "name": "Body composition",
             "description": "Fat, muscle, and bone - mapped in full."
           }
@@ -143,7 +143,7 @@
         "m3": {
           "type": "item",
           "settings": {
-            "icon": "balance",
+            "icon": "bolt",
             "name": "Mobility",
             "description": "Range of motion and movement quality."
           }
