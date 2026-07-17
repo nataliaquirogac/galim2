@@ -53,12 +53,26 @@
   }
   .gh-steps__body { font: 300 20px/1.6 var(--gh-sans); color: var(--gh-light); max-width: 680px; }
 
+  .gh-steps {
+  padding-top: 32px !important;
+  padding-bottom: 64px !important;
+}
+
+.gh-steps__eyebrow {
+  margin-top: 0;
+}
+
   @media (max-width: 768px) {
     .gh-steps__eyebrow { margin-bottom: 24px; font-size: 10px; letter-spacing: 0.24em; }
     .gh-steps__words { margin-bottom: 26px; }
     .gh-steps__word { gap: 14px; line-height: 1.18; }
     .gh-steps__num { font-size: 11px; }
     .gh-steps__body { font-size: 16px; }
+
+    .gh-steps {
+  padding-top: 20px !important;
+  padding-bottom: 40px !important;
+}
   }
 {% endstylesheet %}
 
