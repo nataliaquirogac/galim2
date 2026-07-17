@@ -64,8 +64,8 @@
           "type": "item",
           "settings": {
             "icon": "dna",
-            "name": "Body composition",
-            "description": "Fat, muscle, and bone - mapped in full."
+            "name": "Real Body composition",
+            "description": "Fat, muscle, and bone - DEXA scan"
           }
         },
         "m11": {
