@@ -107,39 +107,91 @@
     onScroll();
   }
 
-  /* ---- Carousels: progress bar tracking scrollLeft ---- */
+  /* ---- Carousels: swipe + interactive scrubber + prev/next buttons ---- */
   document.querySelectorAll('[data-gh-carousel]').forEach(function (viewport) {
+    var section = viewport.closest('section');
     var track = viewport.querySelector('[data-gh-track]');
-    var bar = viewport.parentNode.querySelector('[data-gh-progress]');
-    if (!track || !bar) return;
+    if (!track || !section) return;
+    var bar = section.querySelector('[data-gh-progress]');
+    var thumb = section.querySelector('[data-gh-thumb]');
+    var scrubber = section.querySelector('[data-gh-scrubber]');
+    var prev = section.querySelector('[data-gh-nav="prev"]');
+    var next = section.querySelector('[data-gh-nav="next"]');
+
+    function maxScroll() { return track.scrollWidth - track.clientWidth; }
 
     function update() {
-      var max = track.scrollWidth - track.clientWidth;
-      if (max <= 1) { bar.style.width = '100%'; bar.classList.add('is-end'); return; }
+      var max = maxScroll();
+      if (max <= 1) {
+        if (bar) { bar.style.width = '100%'; bar.classList.add('is-end'); }
+        if (thumb) thumb.style.left = '100%';
+        if (scrubber) scrubber.setAttribute('aria-valuenow', 100);
+        if (prev) prev.disabled = true;
+        if (next) next.disabled = true;
+        return;
+      }
       var pct = Math.max(0, Math.min(1, track.scrollLeft / max));
-      bar.style.width = (pct * 100) + '%';
-      bar.classList.toggle('is-end', pct >= 0.995);
+      if (bar) {
+        bar.style.width = (pct * 100) + '%';
+        bar.classList.toggle('is-end', pct >= 0.995);
+      }
+      if (thumb) thumb.style.left = (pct * 100) + '%';
+      if (scrubber) scrubber.setAttribute('aria-valuenow', Math.round(pct * 100));
+      if (prev) prev.disabled = pct <= 0.005;
+      if (next) next.disabled = pct >= 0.995;
     }
 
     track.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
 
-    /* Drag with mouse on desktop (touch already works via native scroll) */
-    var isDown = false, startX = 0, startLeft = 0;
-    track.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'mouse') return;
-      isDown = true; startX = e.clientX; startLeft = track.scrollLeft;
-      track.setPointerCapture(e.pointerId);
-      track.style.cursor = 'grabbing';
-    });
-    track.addEventListener('pointermove', function (e) {
-      if (!isDown) return;
-      track.scrollLeft = startLeft - (e.clientX - startX);
-    });
-    var release = function () { isDown = false; track.style.cursor = ''; };
-    track.addEventListener('pointerup', release);
-    track.addEventListener('pointercancel', release);
-    track.addEventListener('pointerleave', release);
+    /* Prev/next: scroll by one card width (first card as reference) */
+    function step(dir) {
+      var card = track.querySelector('.gh-mq__card');
+      var by = card ? card.getBoundingClientRect().width + 10 : track.clientWidth * 0.8;
+      track.scrollBy({ left: dir * by, behavior: 'smooth' });
+    }
+    if (prev) prev.addEventListener('click', function () { step(-1); });
+    if (next) next.addEventListener('click', function () { step(1); });
+
+    /* Interactive scrubber: click/drag to jump */
+    if (scrubber) {
+      var dragging = false;
+      function seekFromEvent(e) {
+        var rect = scrubber.getBoundingClientRect();
+        var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        var max = maxScroll();
+        track.scrollLeft = pct * max;
+      }
+      scrubber.addEventListener('pointerdown', function (e) {
+        dragging = true;
+        scrubber.classList.add('is-dragging');
+        scrubber.setPointerCapture(e.pointerId);
+        seekFromEvent(e);
+      });
+      scrubber.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        seekFromEvent(e);
+      });
+      var release = function (e) {
+        dragging = false;
+        scrubber.classList.remove('is-dragging');
+        if (e && scrubber.hasPointerCapture && e.pointerId != null && scrubber.hasPointerCapture(e.pointerId)) {
+          scrubber.releasePointerCapture(e.pointerId);
+        }
+      };
+      scrubber.addEventListener('pointerup', release);
+      scrubber.addEventListener('pointercancel', release);
+      /* Keyboard: arrow keys move by one card, Home/End to extremes */
+      scrubber.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault(); track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else if (e.key === 'End') {
+          e.preventDefault(); track.scrollTo({ left: maxScroll(), behavior: 'smooth' });
+        }
+      });
+    }
 
     update();
   });

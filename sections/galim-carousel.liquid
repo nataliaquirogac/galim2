@@ -54,9 +54,12 @@
     </div>
 
     <div class="gh-container gh-mq__progress-wrap">
-      <div class="gh-mq__progress" role="progressbar" aria-label="Scroll progress">
+      <button type="button" class="gh-mq__nav" data-gh-nav="prev" aria-label="Previous">‹</button>
+      <div class="gh-mq__progress" data-gh-scrubber role="slider" aria-label="Carousel position" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <div class="gh-mq__progress-bar" data-gh-progress></div>
+        <div class="gh-mq__progress-thumb" data-gh-thumb></div>
       </div>
+      <button type="button" class="gh-mq__nav" data-gh-nav="next" aria-label="Next">›</button>
     </div>
   {%- endif -%}
 </section>
@@ -128,23 +131,73 @@
     background: linear-gradient(to left, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
   }
 
-  /* Progress bar: tracks scrollLeft %, fills as the user swipes */
-  .gh-mq__progress-wrap { margin-top: 20px; }
+  /* Interactive scrubber: click/drag to navigate, prev/next arrows */
+  .gh-mq__progress-wrap {
+    margin-top: 22px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .gh-mq__nav {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--gh-border);
+    background: transparent;
+    color: var(--gh-light);
+    font: 300 22px/1 var(--gh-sans);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .gh-mq__nav:hover { border-color: var(--gh-green); color: var(--gh-green); }
+  .gh-mq__nav:disabled { opacity: 0.35; cursor: default; }
+  .gh-mq__nav:disabled:hover { border-color: var(--gh-border); color: var(--gh-light); }
+
   .gh-mq__progress {
+    flex: 1;
+    height: 22px;               /* larger hit area than the visible bar */
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    touch-action: none;
+    max-width: 420px;
+  }
+  .gh-mq__progress::before {
+    content: "";
+    position: absolute; left: 0; right: 0; top: 50%;
     height: 3px;
-    background: rgba(168, 194, 200, 0.14);
+    background: rgba(168, 194, 200, 0.16);
     border-radius: 999px;
-    overflow: hidden;
-    max-width: 320px;
+    transform: translateY(-50%);
   }
   .gh-mq__progress-bar {
-    height: 100%;
+    position: absolute; left: 0; top: 50%;
+    height: 3px;
     width: 0%;
     background: var(--gh-green);
     border-radius: 999px;
-    transition: width 0.15s ease-out;
+    transform: translateY(-50%);
+    transition: width 0.15s ease-out, background 0.25s ease;
+    pointer-events: none;
   }
   .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
+  .gh-mq__progress-thumb {
+    position: absolute; top: 50%;
+    left: 0%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gh-white);
+    border: 2px solid var(--gh-green);
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease-out, transform 0.15s ease-out;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(6, 31, 38, 0.4);
+  }
+  .gh-mq__progress:hover .gh-mq__progress-thumb,
+  .gh-mq__progress.is-dragging .gh-mq__progress-thumb { transform: translate(-50%, -50%) scale(1.25); }
+  .gh-mq__progress.is-dragging { cursor: grabbing; }
+  .gh-mq__progress:focus-visible { outline: none; }
+  .gh-mq__progress:focus-visible .gh-mq__progress-thumb { box-shadow: 0 0 0 4px rgba(140, 191, 138, 0.35); }
 
   @media (max-width: 768px) {
     .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
@@ -156,6 +209,7 @@
     .gh-mq__sides::before,
     .gh-mq__sides::after { width: 6%; }
     .gh-mq__progress { max-width: none; }
+    .gh-mq__nav { width: 32px; height: 32px; font-size: 20px; }
   }
 {% endstylesheet %}
 
