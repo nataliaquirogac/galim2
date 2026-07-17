@@ -22,7 +22,7 @@
     endif
     assign mobile_src = ''
     if s.image_mobile != blank
-      assign mobile_src = s.image_mobile | image_url: width: 900
+      assign mobile_src = s.image_mobile | image_url: width: 700
     elsif s.image_url_mobile != blank
       assign mobile_src = s.image_url_mobile
     endif
