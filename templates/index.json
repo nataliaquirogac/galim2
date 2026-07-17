@@ -38,7 +38,7 @@
       "settings": {
         "image": "shopify://shop_images/COMING_SOON.png",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
-        "image_mobile": "shopify://shop_images/COMING_SOON.png",
+        "image_mobile": "shopify://shop_images/2.png",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#092e2b",
@@ -60,6 +60,70 @@
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
+        "m11": {
+          "type": "item",
+          "settings": {
+            "icon": "skin",
+            "name": "Skin",
+            "description": "Screening for lesions and sun damage."
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "icon": "heartbeat",
+            "name": "Cardiovascular Function",
+            "description": "Rhythm, output, arterial health."
+          }
+        },
+        "m10": {
+          "type": "item",
+          "settings": {
+            "icon": "brain",
+            "name": "Cognition",
+            "description": "Reaction, memory, focus."
+          }
+        },
+        "m12": {
+          "type": "item",
+          "settings": {
+            "icon": "microbiome",
+            "name": "Gut",
+            "description": "Microbiome and metabolic insights."
+          }
+        },
+        "m8": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "name": "Body composition",
+            "description": "DEXA — fat, muscle, distribution."
+          }
+        },
+        "m6": {
+          "type": "item",
+          "settings": {
+            "icon": "blood",
+            "name": "Blood biomarkers",
+            "description": "Metabolic, inflammatory, hormonal panels."
+          }
+        },
+        "m7": {
+          "type": "item",
+          "settings": {
+            "icon": "muscle",
+            "name": "Strength",
+            "description": "True force output, not just what you lift."
+          }
+        },
+        "m9": {
+          "type": "item",
+          "settings": {
+            "icon": "balance",
+            "name": "Mobility & balance",
+            "description": "Joint range, posture, stability."
+          }
+        },
         "m1": {
           "type": "item",
           "settings": {
@@ -83,84 +147,20 @@
             "name": "Lung Health",
             "description": "Capacity, flow, oxygen exchange."
           }
-        },
-        "m4": {
-          "type": "item",
-          "settings": {
-            "icon": "heartbeat",
-            "name": "Cardiovascular Function",
-            "description": "Rhythm, output, arterial health."
-          }
-        },
-        "m6": {
-          "type": "item",
-          "settings": {
-            "icon": "blood",
-            "name": "Blood biomarkers",
-            "description": "Metabolic, inflammatory, hormonal panels."
-          }
-        },
-        "m7": {
-          "type": "item",
-          "settings": {
-            "icon": "muscle",
-            "name": "Strength",
-            "description": "True force output, not just what you lift."
-          }
-        },
-        "m8": {
-          "type": "item",
-          "settings": {
-            "icon": "bolt",
-            "name": "Body composition",
-            "description": "DEXA — fat, muscle, distribution."
-          }
-        },
-        "m9": {
-          "type": "item",
-          "settings": {
-            "icon": "balance",
-            "name": "Mobility & balance",
-            "description": "Joint range, posture, stability."
-          }
-        },
-        "m10": {
-          "type": "item",
-          "settings": {
-            "icon": "brain",
-            "name": "Cognition",
-            "description": "Reaction, memory, focus."
-          }
-        },
-        "m11": {
-          "type": "item",
-          "settings": {
-            "icon": "skin",
-            "name": "Skin",
-            "description": "Screening for lesions and sun damage."
-          }
-        },
-        "m12": {
-          "type": "item",
-          "settings": {
-            "icon": "microbiome",
-            "name": "Gut",
-            "description": "Microbiome and metabolic insights."
-          }
         }
       },
       "block_order": [
-        "m1",
-        "m2",
-        "m3",
+        "m11",
         "m4",
+        "m10",
+        "m12",
+        "m8",
         "m6",
         "m7",
-        "m8",
         "m9",
-        "m10",
-        "m11",
-        "m12"
+        "m1",
+        "m2",
+        "m3"
       ],
       "settings": {
         "eyebrow": "WHAT WE MEASURE",
