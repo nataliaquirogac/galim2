@@ -93,7 +93,7 @@
     border-radius: 14px; background: var(--gh-bg-900); border: 1px solid var(--gh-border-strong); padding: 40px;
     overflow: hidden; position: relative;
   }
-  .gh-axes__bq-label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.2em; color: var(--gh-slate); margin-bottom: 20px; }
+  .gh-axes__bq-label { font: 500 15px/1.2 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-light); text-transform: uppercase; margin-bottom: 24px; }
   .gh-axes__bq-num-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
   .gh-axes__bq-num { font: 200 120px/1 var(--gh-sans); color: var(--gh-light); letter-spacing: -0.04em; }
   .gh-axes__bq-num-cap { font: 400 15px/1.4 var(--gh-mono); color: var(--gh-muted); max-width: 160px; }
@@ -107,12 +107,12 @@
   .gh-axes__bar--mobile { display: none; }
   .gh-axes__bq-right { display: flex; flex-direction: column; }
   .gh-axes__tier {
-    display: grid; grid-template-columns: 56px 1fr auto; align-items: center;
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
     padding: 12px 4px; border-bottom: 1px solid rgba(168,194,200,.14);
   }
   .gh-axes__tier:last-child { border-bottom: 0; }
   .gh-axes__tier.is-highlight { background: rgba(214,224,226,.05); }
-  .gh-axes__tier-num { font: 500 15px/1 var(--gh-mono); }
+  .gh-axes__tier-num { display: none; }
   .gh-axes__tier-label { font: 400 18px/1 var(--gh-sans); }
   .gh-axes__tier-range { font: 400 16px/1 var(--gh-mono); }
 
@@ -138,8 +138,8 @@
     .gh-axes__bar--desktop { display: none; }
     .gh-axes__bar--mobile { display: block; margin-top: 18px; max-width: none; }
     .gh-axes__bq-right { margin-top: 0; }
-    .gh-axes__tier { grid-template-columns: 40px 1fr auto; padding: 12px 2px; }
-    .gh-axes__tier-num { font-size: 13px; }
+    .gh-axes__tier { grid-template-columns: 1fr auto; padding: 12px 2px; }
+    .gh-axes__bq-label { font-size: 13px; letter-spacing: 0.22em; margin-bottom: 20px; }
     .gh-axes__tier-label { font-size: 16px; }
     .gh-axes__tier-range { font-size: 14px; }
   }
