@@ -148,6 +148,14 @@
             "description": "Hearing range and early signs of loss."
           }
         },
+        "item_jCmJiH": {
+          "type": "item",
+          "settings": {
+            "icon": "heartbeat",
+            "name": "Cardiovascular",
+            "description": "VO₂ max, aerobic capacity, and endurance."
+          }
+        },
         "m3": {
           "type": "item",
           "settings": {
@@ -169,6 +177,7 @@
         "m9",
         "m1",
         "m2",
+        "item_jCmJiH",
         "m3"
       ],
       "settings": {
