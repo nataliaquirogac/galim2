@@ -78,8 +78,8 @@
 </section>
 
 {% stylesheet %}
-  .gh-protocols__eyebrow { margin-bottom: 14px; }
-  .gh-protocols__h2 { font: 200 46px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 48px; max-width: 900px; }
+  .gh-protocols__eyebrow { margin-bottom: 12px; }
+  .gh-protocols__h2 { font: 200 44px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 36px; max-width: 900px; }
   .gh-protocols__h2 p { margin: 0; }
   /* Bold in the heading = animated light->green gradient text (echoes the BQ bar) */
   .gh-protocols__h2 strong {
@@ -115,9 +115,9 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-bg);
     background: var(--gh-green); padding: 6px 11px; border-radius: 2px;
   }
-  .gh-pkg__head { position: relative; padding: 38px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
+  .gh-pkg__head { position: relative; padding: 32px 34px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(140,191,138,.2), transparent 60%); }
-  .gh-pkg__head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .gh-pkg__head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
   .gh-pkg__icon {
     width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
     background: rgba(140,191,138,.14); border: 1px solid rgba(140,191,138,.35);
@@ -125,14 +125,14 @@
   }
   .gh-pkg.is-featured .gh-pkg__icon { background: rgba(140,191,138,.18); border-color: rgba(140,191,138,.45); }
   .gh-pkg__name { font: 600 27px/1 var(--gh-sans); color: var(--gh-white); }
-  .gh-pkg__subtitle { font: 300 14px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 6px 0 8px; }
+  .gh-pkg__subtitle { font: 300 14px/1.35 var(--gh-sans); color: var(--gh-muted); margin: 4px 0 10px; }
   .gh-pkg__time { font: 400 12px/1 var(--gh-mono); color: var(--gh-green); letter-spacing: 0.1em; }
-  .gh-pkg__cadence { display: block; font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; }
-  .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin-bottom: 22px; }
-  .gh-pkg__price { font: 200 48px/1 var(--gh-sans); color: var(--gh-white); letter-spacing: -0.02em; }
+  .gh-pkg__cadence { display: block; font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 8px; }
+  .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 18px 0 20px; }
+  .gh-pkg__price { font: 200 44px/1 var(--gh-sans); color: var(--gh-white); letter-spacing: -0.02em; }
   .gh-pkg__unit { font-size: 15px; color: var(--gh-slate); }
 
-  .gh-pkg__body { padding: 30px 38px; }
+  .gh-pkg__body { padding: 26px 34px 30px; }
   .gh-pkg__list-intro { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.12em; color: var(--gh-slate); margin-bottom: 15px; }
   .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 15px; }
   .gh-pkg__features li { position: relative; font: 400 15px/1.4 var(--gh-sans); color: var(--gh-light); padding-left: 24px; }
@@ -169,17 +169,17 @@
   .gh-glp__body strong { font-weight: 600; color: var(--gh-green); }
 
   @media (max-width: 768px) {
-    .gh-protocols__h2 { font-size: 32px; margin-bottom: 28px; }
+    .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
-    .gh-pkg__head { padding: 28px; }
+    .gh-pkg__head { padding: 24px 22px; }
     .gh-pkg__icon { width: 46px; height: 46px; border-radius: 11px; }
     .gh-pkg__name { font-size: 24px; }
     .gh-pkg__time { font-size: 11px; }
-    .gh-pkg__tagline { font-size: 14px; margin-bottom: 16px; }
-    .gh-pkg__price { font-size: 40px; }
+    .gh-pkg__tagline { font-size: 14px; margin: 14px 0 16px; }
+    .gh-pkg__price { font-size: 38px; }
     .gh-pkg__unit { font-size: 14px; }
-    .gh-pkg__body { padding: 24px 28px; }
+    .gh-pkg__body { padding: 22px 22px 24px; }
     .gh-pkg__features li { font-size: 14px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
