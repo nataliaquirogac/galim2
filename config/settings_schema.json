@@ -1505,7 +1505,19 @@
         "type": "text",
         "id": "waitlist_source_options",
         "label": "Referral options (comma-separated)",
-        "default": "A doctor, A nutritionist, Instagram, Friend or family, Google, Other"
+        "default": "A doctor, A nutritionist, Instagram, Friend or family, Google, I saw the location, Other"
+      },
+      {
+        "type": "text",
+        "id": "waitlist_other_label",
+        "label": "\"Other\" specify label",
+        "default": "Please specify"
+      },
+      {
+        "type": "text",
+        "id": "waitlist_other_placeholder",
+        "label": "\"Other\" placeholder",
+        "default": "Tell us where…"
       },
       {
         "type": "text",

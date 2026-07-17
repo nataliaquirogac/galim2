@@ -50,18 +50,45 @@
     if (e.key === 'Escape' && modal && !modal.hidden) closeModal();
   });
 
-  /* Pack phone + referral source into the customer note before the native form posts */
+  /* Show/hide the "Please specify" field when the source dropdown is "Other" */
   var modalForm = modal ? modal.querySelector('form') : null;
   if (modalForm) {
+    var sourceSelect = modalForm.querySelector('[data-gh-source]');
+    var otherField = modalForm.querySelector('[data-gh-other-field]');
+    var otherInput = modalForm.querySelector('[data-gh-other-input]');
+    var isOtherSelected = function () {
+      if (!sourceSelect) return false;
+      var opt = sourceSelect.options[sourceSelect.selectedIndex];
+      return !!(opt && opt.hasAttribute('data-gh-other'));
+    };
+    var syncOther = function () {
+      if (!otherField) return;
+      var show = isOtherSelected();
+      otherField.hidden = !show;
+      if (otherInput) {
+        otherInput.required = show;
+        if (show) setTimeout(function () { otherInput.focus(); }, 0);
+        else otherInput.value = '';
+      }
+    };
+    if (sourceSelect) {
+      sourceSelect.addEventListener('change', syncOther);
+      syncOther();
+    }
+
+    /* Pack phone + referral source into the customer note before the native form posts */
     modalForm.addEventListener('submit', function () {
       var note = modalForm.querySelector('[data-gh-note]');
       if (!note) return; // external endpoint: fields post with their own names
       var phone = modalForm.querySelector('[data-gh-phone]');
-      var source = modalForm.querySelector('[data-gh-source]');
       var parts = ['Galim waitlist'];
       if (phone && phone.value) parts.push('Phone: ' + phone.value);
-      if (source && source.selectedIndex >= 0) {
-        parts.push('Source: ' + source.options[source.selectedIndex].text);
+      if (sourceSelect && sourceSelect.selectedIndex >= 0) {
+        var label = sourceSelect.options[sourceSelect.selectedIndex].text;
+        if (isOtherSelected() && otherInput && otherInput.value.trim()) {
+          label = 'Other — ' + otherInput.value.trim();
+        }
+        parts.push('Source: ' + label);
       }
       note.value = parts.join(' · ');
     });

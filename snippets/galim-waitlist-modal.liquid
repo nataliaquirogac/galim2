@@ -15,7 +15,7 @@
 {%- liquid
   assign s = settings
   assign action = s.waitlist_form_action
-  assign source_options = s.waitlist_source_options | default: 'A doctor, A nutritionist, Instagram, Friend or family, Google, Other'
+  assign source_options = s.waitlist_source_options | default: 'A doctor, A nutritionist, Instagram, Friend or family, Google, I saw the location, Other'
   assign source_list = source_options | split: ','
 -%}
 
@@ -52,9 +52,13 @@
         <select {% if action == blank %}name="contact[tags]" data-gh-source{% else %}name="source"{% endif %}>
           {%- for opt in source_list -%}
             {%- assign opt_clean = opt | strip -%}
-            <option value="{% if action == blank %}waitlist, {{ opt_clean | handleize }}{% else %}{{ opt_clean }}{% endif %}">{{ opt_clean }}</option>
+            <option value="{% if action == blank %}waitlist, {{ opt_clean | handleize }}{% else %}{{ opt_clean }}{% endif %}"{% if opt_clean == 'Other' or opt_clean == 'Otro' %} data-gh-other{% endif %}>{{ opt_clean }}</option>
           {%- endfor -%}
         </select>
+      </label>
+      <label class="gh-field gh-field--other" data-gh-other-field hidden>
+        <span class="gh-field__label">{{ s.waitlist_other_label | default: 'Please specify' }}</span>
+        <input type="text" {% if action == blank %}data-gh-other-input{% else %}name="source_other"{% endif %} autocomplete="off" placeholder="{{ s.waitlist_other_placeholder | default: 'Tell us where…' }}">
       </label>
       <button type="submit" class="gh-btn gh-btn--solid gh-modal__submit">{{ s.waitlist_submit | default: 'Join the waiting list →' }}</button>
     {%- endcapture -%}
