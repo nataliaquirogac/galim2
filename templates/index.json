@@ -116,6 +116,14 @@
             "description": "Bone density, strength and skeletal health."
           }
         },
+        "item_jCmJiH": {
+          "type": "item",
+          "settings": {
+            "icon": "heartbeat",
+            "name": "Cardiovascular",
+            "description": "VO₂ max, aerobic capacity, and endurance."
+          }
+        },
         "m7": {
           "type": "item",
           "settings": {
@@ -148,14 +156,6 @@
             "description": "Hearing range and early signs of loss."
           }
         },
-        "item_jCmJiH": {
-          "type": "item",
-          "settings": {
-            "icon": "heartbeat",
-            "name": "Cardiovascular",
-            "description": "VO₂ max, aerobic capacity, and endurance."
-          }
-        },
         "m3": {
           "type": "item",
           "settings": {
@@ -173,11 +173,11 @@
         "m12",
         "m6",
         "item_6WJCYy",
+        "item_jCmJiH",
         "m7",
         "m9",
         "m1",
         "m2",
-        "item_jCmJiH",
         "m3"
       ],
       "settings": {
