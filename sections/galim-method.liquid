@@ -28,6 +28,10 @@
     padding: 130px 40px;
     overflow: hidden;
     color: #ffffff;
+    /* Hex fallback so the section always has a dark background even if the
+       inline style (customizer-driven) isn't in the served HTML yet
+       (Shopify HTML CDN cache can lag behind theme file updates). */
+    background: linear-gradient(160deg, #082d36 0%, #0C3B46 100%);
   }
   .gh-method__grid {
     position: absolute; inset: 0;
