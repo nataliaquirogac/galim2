@@ -5,7 +5,7 @@
 
 {%- liquid assign s = section.settings -%}
 
-<section id="{{ s.anchor_id | default: 'method' }}" class="gh-method gh-section" data-gh-section="method">
+<section id="{{ s.anchor_id | default: 'method' }}" class="gh-method gh-section" data-gh-section="method" style="background: linear-gradient(160deg, {{ s.bg_top | default: '#082d36' }} 0%, {{ s.bg_bottom | default: '#0C3B46' }} 100%);">
   <div class="gh-method__grid"></div>
   <div class="gh-container gh-method__inner">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-method__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
@@ -24,12 +24,11 @@
 
 {% stylesheet %}
   .gh-method {
-  position: relative;
-  padding: 130px 40px;
-  background: linear-gradient(160deg, #061f26 0%, #0b3540 100%);
-  overflow: hidden;
-  color: #ffffff;
-}
+    position: relative;
+    padding: 130px 40px;
+    overflow: hidden;
+    color: #ffffff;
+  }
   .gh-method__grid {
     position: absolute; inset: 0;
     background-image: linear-gradient(rgba(168,194,200,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(168,194,200,.05) 1px, transparent 1px);
@@ -67,7 +66,10 @@
     { "type": "textarea", "id": "body_1", "label": "Paragraph 1", "default": "A scan is a starting point, not a product. Our method turns every data point — your heart, your blood, your composition, your mobility — into a plan made only for you." },
     { "type": "textarea", "id": "body_2", "label": "Paragraph 2", "default": "With every visit, we measure again. And the plan evolves with you." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Discover the method" },
-    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave blank to open the waitlist modal." }
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Leave blank to open the waitlist modal." },
+    { "type": "header", "content": "Background" },
+    { "type": "color", "id": "bg_top", "label": "Gradient top", "default": "#082d36" },
+    { "type": "color", "id": "bg_bottom", "label": "Gradient bottom", "default": "#0C3B46" }
   ],
   "presets": [{ "name": "Galim · Method" }]
 }
