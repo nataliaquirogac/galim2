@@ -187,7 +187,15 @@
     color: rgba(246, 245, 238, 0.82);
   }
   .gh-hero__council { display: none; }
-  .gh-hero__coords { display: none; }
+  .gh-hero__coords {
+    display: inline-block;
+    font: 400 12px/1.4 var(--gh-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gh-green);
+    padding-left: 14px;
+    border-left: 1px solid rgba(174, 191, 152, 0.4);
+  }
 
   /* Plans as one mono line with `·` separators */
   .gh-hero__plans {
@@ -244,6 +252,7 @@
     .gh-hero__sub { font-size: 15px; margin: 16px 0 22px; }
     .gh-hero__plans { flex-wrap: wrap; gap: 10px 18px; margin-bottom: 22px; }
     .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
+    .gh-hero__coords { display: none; }
   }
 {% endstylesheet %}
 
