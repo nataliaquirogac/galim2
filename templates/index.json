@@ -60,6 +60,14 @@
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
+        "m8": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "name": "Body composition",
+            "description": "Fat, muscle, and bone - mapped in full."
+          }
+        },
         "m11": {
           "type": "item",
           "settings": {
@@ -90,14 +98,6 @@
             "icon": "microbiome",
             "name": "Gut",
             "description": "Microbiome and metabolic insights."
-          }
-        },
-        "m8": {
-          "type": "item",
-          "settings": {
-            "icon": "bolt",
-            "name": "Body composition",
-            "description": "DEXA — fat, muscle, distribution."
           }
         },
         "m6": {
@@ -150,11 +150,11 @@
         }
       },
       "block_order": [
+        "m8",
         "m11",
         "m4",
         "m10",
         "m12",
-        "m8",
         "m6",
         "m7",
         "m9",
