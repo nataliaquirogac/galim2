@@ -170,7 +170,16 @@
 
   @media (max-width: 600px) {
     /* Immersive minimal: full-screen photo, bottom gradient, text bottom-left */
-    .gh-hero { min-height: 100vh; min-height: 100svh; align-items: flex-end; }
+    .gh-hero  .gh-hero {
+    min-height: auto;
+    align-items: flex-start;
+  }
+
+  .gh-hero__inner {
+    padding: 50px 20px 24px;
+    justify-content: flex-start;
+  }
+}
     .gh-hero__grad-h,
     .gh-hero__grid { display: none; }
     .gh-hero__tint { background: rgb(8 45 54 / calc(var(--gh-hero-tint, 0.45) * 0.4)); }
