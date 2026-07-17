@@ -350,10 +350,134 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
+    },
+    "carousel": {
+      "type": "galim-carousel",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "icon": "eye",
+            "name": "Vision",
+            "description": "Visual acuity and eye health."
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "icon": "ear",
+            "name": "Hearing",
+            "description": "Auditory range and clarity."
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "icon": "lung",
+            "name": "Lung function",
+            "description": "Capacity, flow, oxygen exchange."
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "icon": "heartbeat",
+            "name": "Cardiovascular",
+            "description": "Rhythm, output, arterial health."
+          }
+        },
+        "m5": {
+          "type": "item",
+          "settings": {
+            "icon": "pressure",
+            "name": "Blood pressure",
+            "description": "Systolic, diastolic, arterial stiffness."
+          }
+        },
+        "m6": {
+          "type": "item",
+          "settings": {
+            "icon": "blood",
+            "name": "Blood biomarkers",
+            "description": "Metabolic, inflammatory, hormonal panels."
+          }
+        },
+        "m7": {
+          "type": "item",
+          "settings": {
+            "icon": "muscle",
+            "name": "Strength",
+            "description": "True force output, not just what you lift."
+          }
+        },
+        "m8": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "name": "Body composition",
+            "description": "DEXA — fat, muscle, distribution."
+          }
+        },
+        "m9": {
+          "type": "item",
+          "settings": {
+            "icon": "balance",
+            "name": "Mobility & balance",
+            "description": "Joint range, posture, stability."
+          }
+        },
+        "m10": {
+          "type": "item",
+          "settings": {
+            "icon": "brain",
+            "name": "Cognition",
+            "description": "Reaction, memory, focus."
+          }
+        },
+        "m11": {
+          "type": "item",
+          "settings": {
+            "icon": "skin",
+            "name": "Skin",
+            "description": "Screening for lesions and sun damage."
+          }
+        },
+        "m12": {
+          "type": "item",
+          "settings": {
+            "icon": "microbiome",
+            "name": "Gut",
+            "description": "Microbiome and metabolic insights."
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9",
+        "m10",
+        "m11",
+        "m12"
+      ],
+      "settings": {
+        "eyebrow": "WHAT WE MEASURE",
+        "heading": "Every system, in one visit.",
+        "bg_color": "#082d36",
+        "speed": 45,
+        "side_color": "#082d36",
+        "side_width": 12
+      }
     }
   },
   "order": [
     "hero",
+    "carousel",
     "gap",
     "steps",
     "two_axes",

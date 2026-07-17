@@ -1,0 +1,198 @@
+{%- comment -%}
+  Galim Health — What we measure (auto-scroll carousel)
+  Marquee-style infinite carousel: each block is one measurement component
+  (Vision, Hearing, Lung Function, etc.). No JS — pure CSS keyframe loop,
+  paused on hover. Items are duplicated in the DOM so the loop is seamless.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign duration = s.speed | default: 45
+-%}
+
+<section class="gh-mq gh-section" data-gh-section="carousel" style="background: {{ s.bg_color }}; --gh-mq-duration: {{ duration }}s; --gh-side-color: {{ s.side_color | default: '#082d36' }}; --gh-side-width: {{ s.side_width | default: 12 }}%;">
+  <div class="gh-container">
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-mq__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="gh-mq__h2">{{ s.heading }}</h2>{%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="gh-mq__viewport" aria-label="Measurement components">
+      <div class="gh-mq__track">
+        {%- for pass in (1..2) -%}
+          <div class="gh-mq__group" {% if pass == 2 %}aria-hidden="true"{% endif %}>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'item' -%}
+                {%- assign b = block.settings -%}
+                <div class="gh-mq__card"{% if pass == 1 %} {{ block.shopify_attributes }}{% endif %}>
+                  <span class="gh-mq__icon">
+                    {%- case b.icon -%}
+                      {%- when 'eye' -%}{%- render 'icon-eye' -%}
+                      {%- when 'ear' -%}{%- render 'icon-ear' -%}
+                      {%- when 'lung' -%}{%- render 'icon-lung' -%}
+                      {%- when 'heartbeat' -%}{%- render 'icon-heartbeat' -%}
+                      {%- when 'brain' -%}{%- render 'icon-brain' -%}
+                      {%- when 'muscle' -%}{%- render 'icon-muscle' -%}
+                      {%- when 'skin' -%}{%- render 'icon-skin' -%}
+                      {%- when 'balance' -%}{%- render 'icon-balance' -%}
+                      {%- when 'pressure' -%}{%- render 'icon-pressure' -%}
+                      {%- when 'blood' -%}{%- render 'icon-blood' -%}
+                      {%- when 'dna' -%}{%- render 'icon-dna' -%}
+                      {%- when 'microbiome' -%}{%- render 'icon-microbiome' -%}
+                      {%- when 'mri' -%}{%- render 'icon-mri' -%}
+                      {%- when 'bolt' -%}{%- render 'icon-bolt' -%}
+                      {%- else -%}{%- render 'icon-heartbeat' -%}
+                    {%- endcase -%}
+                  </span>
+                  {%- if b.name != blank -%}<h3 class="gh-mq__name">{{ b.name }}</h3>{%- endif -%}
+                  {%- if b.description != blank -%}<p class="gh-mq__desc">{{ b.description }}</p>{%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="gh-mq__sides" aria-hidden="true"></div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .gh-mq { padding: var(--gh-pad-y) 0; overflow: hidden; }
+  .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
+  .gh-mq__eyebrow { margin-bottom: 14px; }
+  .gh-mq__h2 { font: 200 40px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 40px; max-width: 820px; }
+
+  .gh-mq__viewport {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  }
+  .gh-mq__track {
+    display: flex;
+    width: max-content;
+    animation: gh-mq-scroll var(--gh-mq-duration, 45s) linear infinite;
+  }
+  .gh-mq__viewport:hover .gh-mq__track { animation-play-state: paused; }
+  .gh-mq__group { display: flex; gap: 16px; padding-right: 16px; flex: 0 0 auto; }
+
+  .gh-mq__card {
+    flex: 0 0 auto;
+    width: 260px;
+    padding: 28px 26px;
+    border-radius: 14px;
+    border: 1px solid var(--gh-border);
+    background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
+    color: var(--gh-light);
+    display: flex; flex-direction: column; gap: 14px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .gh-mq__card:hover { border-color: rgba(140, 191, 138, 0.45); transform: translateY(-3px); }
+  .gh-mq__icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: rgba(140, 191, 138, 0.14);
+    border: 1px solid rgba(140, 191, 138, 0.3);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--gh-green);
+    flex-shrink: 0;
+  }
+  .gh-mq__name { font: 500 20px/1.2 var(--gh-sans); color: var(--gh-white); }
+  .gh-mq__desc { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-muted); margin: 0; }
+
+  .gh-mq__sides { position: absolute; inset: 0; pointer-events: none; }
+  .gh-mq__sides::before,
+  .gh-mq__sides::after {
+    content: ""; position: absolute; top: 0; bottom: 0;
+    width: var(--gh-side-width, 12%);
+    z-index: 2;
+  }
+  .gh-mq__sides::before {
+    left: 0;
+    background: linear-gradient(to right, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
+  }
+  .gh-mq__sides::after {
+    right: 0;
+    background: linear-gradient(to left, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
+  }
+
+  @keyframes gh-mq-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gh-mq__track { animation: none; }
+    .gh-mq__viewport { overflow-x: auto; }
+  }
+
+  @media (max-width: 768px) {
+    .gh-mq__h2 { font-size: 28px; margin-bottom: 24px; }
+    .gh-mq__card { width: 220px; padding: 22px 20px; }
+    .gh-mq__icon { width: 44px; height: 44px; }
+    .gh-mq__name { font-size: 17px; }
+    .gh-mq__desc { font-size: 13px; }
+    .gh-mq__sides::before,
+    .gh-mq__sides::after { width: 6%; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Carousel",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "WHAT WE MEASURE" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Every system, in one visit." },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" },
+    { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Loop duration", "info": "Time for one full pass. Higher = slower.", "default": 45 },
+    { "type": "header", "content": "Side fades" },
+    { "type": "color", "id": "side_color", "label": "Side fade color", "default": "#082d36" },
+    { "type": "range", "id": "side_width", "min": 0, "max": 30, "step": 2, "unit": "%", "label": "Side fade width", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Measurement",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          {"value":"eye","label":"Eye"},
+          {"value":"ear","label":"Ear"},
+          {"value":"lung","label":"Lung"},
+          {"value":"heartbeat","label":"Heart"},
+          {"value":"brain","label":"Brain"},
+          {"value":"muscle","label":"Muscle / Strength"},
+          {"value":"skin","label":"Skin"},
+          {"value":"balance","label":"Balance / Posture"},
+          {"value":"pressure","label":"Blood pressure"},
+          {"value":"blood","label":"Blood"},
+          {"value":"dna","label":"DNA"},
+          {"value":"microbiome","label":"Microbiome"},
+          {"value":"mri","label":"MRI / Scan"},
+          {"value":"bolt","label":"Performance"}
+        ], "default": "eye" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Vision" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Visual acuity and eye health." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Carousel",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "eye", "name": "Vision", "description": "Visual acuity and eye health." } },
+        { "type": "item", "settings": { "icon": "ear", "name": "Hearing", "description": "Auditory range and clarity." } },
+        { "type": "item", "settings": { "icon": "lung", "name": "Lung function", "description": "Capacity, flow, oxygen exchange." } },
+        { "type": "item", "settings": { "icon": "heartbeat", "name": "Cardiovascular", "description": "Rhythm, output, arterial health." } },
+        { "type": "item", "settings": { "icon": "pressure", "name": "Blood pressure", "description": "Systolic, diastolic, arterial stiffness." } },
+        { "type": "item", "settings": { "icon": "blood", "name": "Blood biomarkers", "description": "Metabolic, inflammatory, hormonal panels." } },
+        { "type": "item", "settings": { "icon": "muscle", "name": "Strength", "description": "True force output, not just what you lift." } },
+        { "type": "item", "settings": { "icon": "bolt", "name": "Body composition", "description": "DEXA — fat, muscle, distribution." } },
+        { "type": "item", "settings": { "icon": "balance", "name": "Mobility & balance", "description": "Joint range, posture, stability." } },
+        { "type": "item", "settings": { "icon": "brain", "name": "Cognition", "description": "Reaction, memory, focus." } },
+        { "type": "item", "settings": { "icon": "skin", "name": "Skin", "description": "Screening for lesions and sun damage." } },
+        { "type": "item", "settings": { "icon": "microbiome", "name": "Gut", "description": "Microbiome and metabolic insights." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
