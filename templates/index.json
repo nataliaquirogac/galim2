@@ -364,6 +364,7 @@
           "settings": {
             "icon": "bolt",
             "name": "Performance",
+            "subtitle": "Your BQ",
             "scan_time": "25 MIN",
             "cadence": "Recommended every 8–12 weeks",
             "tagline": "Fat loss, gain muscle, fitter life.",
@@ -382,6 +383,7 @@
           "settings": {
             "icon": "infinity",
             "name": "Longevity",
+            "subtitle": "Your Biological Age",
             "scan_time": "50 MIN FULL WORKUP",
             "cadence": "Recommended every year",
             "tagline": "Everything in Performance, plus deep diagnostics.",
