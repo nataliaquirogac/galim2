@@ -36,9 +36,9 @@
         "plan_long"
       ],
       "settings": {
-        "image": "shopify://shop_images/Screenshot_2026-07-16_at_5.43.28_p.m..png",
+        "image": "shopify://shop_images/COMING_SOON.png",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
-        "image_mobile": "shopify://shop_images/Screenshot_2026-07-16_at_5.43.28_p.m..png",
+        "image_mobile": "shopify://shop_images/COMING_SOON.png",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#092e2b",
@@ -80,7 +80,7 @@
           "type": "item",
           "settings": {
             "icon": "lung",
-            "name": "Lung function",
+            "name": "Lung Health",
             "description": "Capacity, flow, oxygen exchange."
           }
         },
@@ -88,16 +88,8 @@
           "type": "item",
           "settings": {
             "icon": "heartbeat",
-            "name": "Cardiovascular",
+            "name": "Cardiovascular Function",
             "description": "Rhythm, output, arterial health."
-          }
-        },
-        "m5": {
-          "type": "item",
-          "settings": {
-            "icon": "pressure",
-            "name": "Blood pressure",
-            "description": "Systolic, diastolic, arterial stiffness."
           }
         },
         "m6": {
@@ -162,7 +154,6 @@
         "m2",
         "m3",
         "m4",
-        "m5",
         "m6",
         "m7",
         "m8",
