@@ -71,44 +71,20 @@
         "m11": {
           "type": "item",
           "settings": {
-            "icon": "skin",
-            "name": "Skin",
-            "description": "Screening for lesions and sun damage."
+            "icon": "heartbeat",
+            "name": "Heart",
+            "description": "Rhythm, output, and hidden risk factors."
           }
         },
         "m4": {
           "type": "item",
           "settings": {
-            "icon": "heartbeat",
-            "name": "Cardiovascular Function",
-            "description": "Rhythm, output, arterial health."
+            "icon": "blood",
+            "name": "Blood",
+            "description": "Metabolic, hormonal, and inflammatory markers."
           }
         },
         "m10": {
-          "type": "item",
-          "settings": {
-            "icon": "brain",
-            "name": "Cognition",
-            "description": "Reaction, memory, focus."
-          }
-        },
-        "m12": {
-          "type": "item",
-          "settings": {
-            "icon": "microbiome",
-            "name": "Gut",
-            "description": "Microbiome and metabolic insights."
-          }
-        },
-        "m6": {
-          "type": "item",
-          "settings": {
-            "icon": "blood",
-            "name": "Blood biomarkers",
-            "description": "Metabolic, inflammatory, hormonal panels."
-          }
-        },
-        "m7": {
           "type": "item",
           "settings": {
             "icon": "muscle",
@@ -116,36 +92,60 @@
             "description": "True force output, not just what you lift."
           }
         },
+        "m12": {
+          "type": "item",
+          "settings": {
+            "icon": "skin",
+            "name": "Skin",
+            "description": "Sun damage, texture, and mole mapping."
+          }
+        },
+        "m6": {
+          "type": "item",
+          "settings": {
+            "icon": "lung",
+            "name": "Lungs",
+            "description": "Capacity, airflow, and oxygen efficiency."
+          }
+        },
+        "m7": {
+          "type": "item",
+          "settings": {
+            "icon": "brain",
+            "name": "Brain",
+            "description": "Memory, focus, and processing speed."
+          }
+        },
         "m9": {
           "type": "item",
           "settings": {
-            "icon": "balance",
-            "name": "Mobility & balance",
-            "description": "Joint range, posture, stability."
+            "icon": "dna",
+            "name": "Arteries",
+            "description": "Stiffness and your true arterial age."
           }
         },
         "m1": {
           "type": "item",
           "settings": {
             "icon": "eye",
-            "name": "Vision",
-            "description": "Visual acuity and eye health."
+            "name": "Eyes",
+            "description": "Vision, eye pressure, and retinal health."
           }
         },
         "m2": {
           "type": "item",
           "settings": {
             "icon": "ear",
-            "name": "Hearing",
-            "description": "Auditory range and clarity."
+            "name": "Ears",
+            "description": "Hearing range and early signs of loss."
           }
         },
         "m3": {
           "type": "item",
           "settings": {
-            "icon": "lung",
-            "name": "Lung Health",
-            "description": "Capacity, flow, oxygen exchange."
+            "icon": "balance",
+            "name": "Mobility",
+            "description": "Range of motion and movement quality."
           }
         }
       },
