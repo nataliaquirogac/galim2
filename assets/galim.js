@@ -117,8 +117,16 @@
     var scrubber = section.querySelector('[data-gh-scrubber]');
     var prev = section.querySelector('[data-gh-nav="prev"]');
     var next = section.querySelector('[data-gh-nav="next"]');
+    var count = section.querySelector('[data-gh-count]');
+    var cards = track.querySelectorAll('.gh-mq__card');
 
     function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+    function updateCount(pct) {
+      if (!count || !cards.length) return;
+      var idx = Math.min(cards.length, Math.round(pct * (cards.length - 1)) + 1);
+      count.textContent = (idx < 10 ? '0' : '') + idx;
+    }
 
     function update() {
       var max = maxScroll();
@@ -128,6 +136,7 @@
         if (scrubber) scrubber.setAttribute('aria-valuenow', 100);
         if (prev) prev.disabled = true;
         if (next) next.disabled = true;
+        updateCount(1);
         return;
       }
       var pct = Math.max(0, Math.min(1, track.scrollLeft / max));
@@ -139,6 +148,7 @@
       if (scrubber) scrubber.setAttribute('aria-valuenow', Math.round(pct * 100));
       if (prev) prev.disabled = pct <= 0.005;
       if (next) next.disabled = pct >= 0.995;
+      updateCount(pct);
     }
 
     track.addEventListener('scroll', update, { passive: true });

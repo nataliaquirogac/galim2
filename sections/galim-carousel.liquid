@@ -60,6 +60,7 @@
         <div class="gh-mq__progress-thumb" data-gh-thumb></div>
       </div>
       <button type="button" class="gh-mq__nav" data-gh-nav="next" aria-label="Next">›</button>
+      <span class="gh-mq__count"><b data-gh-count>01</b>&nbsp;/&nbsp;{{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
     </div>
   {%- endif -%}
 </section>
@@ -74,8 +75,8 @@
   .gh-mq__viewport { position: relative; }
   .gh-mq__track {
     display: flex;
-    gap: 10px;
-    padding: 2px var(--gh-pad-x) 4px;
+    gap: 12px;
+    padding: 4px var(--gh-pad-x);
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -89,7 +90,7 @@
   .gh-mq__card {
     flex: 0 0 auto;
     width: 180px;
-    padding: 13px 14px 14px;
+    padding: 12px;
     border-radius: 9px;
     border: 1px solid var(--gh-border);
     background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
@@ -131,11 +132,18 @@
     background: linear-gradient(to left, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
   }
 
-  /* Interactive scrubber: click/drag to navigate, prev/next arrows */
+  /* Interactive scrubber: click/drag to navigate, prev/next arrows, counter */
   .gh-mq__progress-wrap {
-    margin-top: 22px;
-    display: flex; align-items: center; gap: 14px;
+    margin-top: 24px;
+    display: flex; align-items: center; gap: 16px;
   }
+  .gh-mq__count {
+    font: 500 12px/1 var(--gh-mono);
+    letter-spacing: 0.12em;
+    color: var(--gh-slate);
+    white-space: nowrap;
+  }
+  .gh-mq__count b { font-weight: 500; color: var(--gh-green); }
   .gh-mq__nav {
     flex-shrink: 0;
     width: 34px; height: 34px;
@@ -160,7 +168,6 @@
     align-items: center;
     cursor: pointer;
     touch-action: none;
-    max-width: 420px;
   }
   .gh-mq__progress::before {
     content: "";
@@ -174,12 +181,13 @@
     position: absolute; left: 0; top: 50%;
     height: 6px;
     width: 0%;
-    background: var(--gh-green);
+    min-width: 16px;   /* green nub always visible, even at position 0 */
+    background: linear-gradient(90deg, #9ccf9a, var(--gh-green));
     border-radius: 999px;
     transform: translateY(-50%);
     transition: width 0.15s ease-out, background 0.25s ease;
     pointer-events: none;
-    box-shadow: 0 0 12px rgba(140, 191, 138, 0.55);
+    box-shadow: 0 0 10px rgba(140, 191, 138, 0.8), 0 0 24px rgba(140, 191, 138, 0.35);
   }
   .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
   .gh-mq__progress-thumb {
@@ -202,7 +210,7 @@
 
   @media (max-width: 768px) {
     .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
-    .gh-mq__card { width: 160px; padding: 12px 13px 13px; }
+    .gh-mq__card { width: 160px; padding: 12px; }
     .gh-mq__icon { width: 24px; height: 24px; border-radius: 6px; }
     .gh-mq__icon svg { width: 14px; height: 14px; }
     .gh-mq__name { font-size: 12.5px; }

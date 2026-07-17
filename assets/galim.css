@@ -31,16 +31,16 @@
   --gh-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --gh-sans: 'Fustat', system-ui, -apple-system, sans-serif;
 
-  /* Layout */
+  /* Layout — spacing follows a 4/8pt scale */
   --gh-max: 1440px;
   --gh-pad-x: 40px;
-  --gh-pad-y: 110px;
+  --gh-pad-y: 96px;
 }
 
 @media (max-width: 768px) {
   :root {
     --gh-pad-x: 20px;
-    --gh-pad-y: 52px;
+    --gh-pad-y: 40px;
   }
 }
 

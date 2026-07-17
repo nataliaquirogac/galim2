@@ -20,18 +20,22 @@
               <div class="gh-pkg__head-row">
                 <span class="gh-pkg__icon">
                   {%- case b.icon -%}
-                    {%- when 'infinity' -%}{%- render 'icon-infinity', size: 30 -%}
-                    {%- when 'bolt' -%}{%- render 'icon-bolt', size: 26 -%}
-                    {%- else -%}{%- render 'icon-bolt', size: 26 -%}
+                    {%- when 'infinity' -%}{%- render 'icon-infinity', size: 26 -%}
+                    {%- when 'bolt' -%}{%- render 'icon-bolt', size: 22 -%}
+                    {%- else -%}{%- render 'icon-bolt', size: 22 -%}
                   {%- endcase -%}
                 </span>
-                <div>
+                <div class="gh-pkg__title-wrap">
                   {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
                   {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
+                </div>
+              </div>
+              {%- if b.scan_time != blank or b.cadence != blank -%}
+                <div class="gh-pkg__meta">
                   {%- if b.scan_time != blank -%}<span class="gh-pkg__time">{{ b.scan_time }}</span>{%- endif -%}
                   {%- if b.cadence != blank -%}<span class="gh-pkg__cadence">{{ b.cadence }}</span>{%- endif -%}
                 </div>
-              </div>
+              {%- endif -%}
               {%- if b.tagline != blank -%}<p class="gh-pkg__tagline">{{ b.tagline }}</p>{%- endif -%}
               {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
             </div>
@@ -115,32 +119,34 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-bg);
     background: var(--gh-green); padding: 6px 11px; border-radius: 2px;
   }
-  .gh-pkg__head { position: relative; padding: 32px 34px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
+  .gh-pkg__head { position: relative; padding: 32px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(140,191,138,.2), transparent 60%); }
-  .gh-pkg__head-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .gh-pkg__head-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   .gh-pkg__icon {
-    width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
     background: rgba(140,191,138,.14); border: 1px solid rgba(140,191,138,.35);
     display: inline-flex; align-items: center; justify-content: center; color: var(--gh-green);
   }
   .gh-pkg.is-featured .gh-pkg__icon { background: rgba(140,191,138,.18); border-color: rgba(140,191,138,.45); }
-  .gh-pkg__name { font: 600 27px/1 var(--gh-sans); color: var(--gh-white); }
-  .gh-pkg__subtitle { font: 300 14px/1.35 var(--gh-sans); color: var(--gh-muted); margin: 4px 0 10px; }
+  .gh-pkg__title-wrap { display: flex; flex-direction: column; gap: 4px; }
+  .gh-pkg__name { font: 600 26px/1.05 var(--gh-sans); color: var(--gh-white); }
+  .gh-pkg__subtitle { font: 300 14px/1.3 var(--gh-sans); color: var(--gh-muted); margin: 0; }
+  .gh-pkg__meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
   .gh-pkg__time { font: 400 12px/1 var(--gh-mono); color: var(--gh-green); letter-spacing: 0.1em; }
-  .gh-pkg__cadence { display: block; font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 8px; }
-  .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 18px 0 20px; }
+  .gh-pkg__cadence { font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); letter-spacing: 0.06em; text-transform: uppercase; }
+  .gh-pkg__tagline { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0 0 16px; }
   .gh-pkg__price { font: 200 44px/1 var(--gh-sans); color: var(--gh-white); letter-spacing: -0.02em; }
   .gh-pkg__unit { font-size: 15px; color: var(--gh-slate); }
 
   .gh-pkg__body { padding: 26px 34px 30px; }
   .gh-pkg__list-intro { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.12em; color: var(--gh-slate); margin-bottom: 15px; }
-  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 15px; }
+  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
   .gh-pkg__features li { position: relative; font: 400 15px/1.4 var(--gh-sans); color: var(--gh-light); padding-left: 24px; }
   .gh-pkg__features li::before { content: "▸"; position: absolute; left: 0; color: var(--gh-green); }
   .gh-pkg__features strong { font-weight: 600; }
   .gh-pkg__features p { margin: 0; }
   .gh-pkg__addons {
-    margin-top: 25px; padding-top: 20px;
+    margin-top: 24px; padding-top: 20px;
     border-top: 1px dashed rgba(168,194,200,.18);
     display: flex; flex-direction: column; gap: 10px;
   }
@@ -172,14 +178,14 @@
     .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
-    .gh-pkg__head { padding: 24px 22px; }
+    .gh-pkg__head { padding: 24px 20px; }
     .gh-pkg__icon { width: 46px; height: 46px; border-radius: 11px; }
     .gh-pkg__name { font-size: 24px; }
     .gh-pkg__time { font-size: 11px; }
-    .gh-pkg__tagline { font-size: 14px; margin: 14px 0 16px; }
+    .gh-pkg__tagline { font-size: 14px; margin: 0 0 12px; }
     .gh-pkg__price { font-size: 38px; }
     .gh-pkg__unit { font-size: 14px; }
-    .gh-pkg__body { padding: 22px 22px 24px; }
+    .gh-pkg__body { padding: 20px 20px 24px; }
     .gh-pkg__features li { font-size: 14px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
