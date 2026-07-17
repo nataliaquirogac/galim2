@@ -109,113 +109,119 @@
 </section>
 
 {% stylesheet %}
+  /* Galim Health — Hero
+     Desktop: content bottom-right, 305° diagonal scrim.
+     Mobile:  content bottom-left, 180° vertical scrim. */
+
   .gh-hero {
     position: relative;
-    min-height: 940px;
-    display: flex;
-    align-items: center;
+    min-height: 704px;
     overflow: hidden;
     background: var(--gh-bg-900);
   }
   .gh-hero__media { position: absolute; inset: 0; overflow: hidden; }
-  .gh-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  /* Full-cover teal tint: pulls any photo into the brand palette; strength is a customizer slider */
-  .gh-hero__tint { position: absolute; inset: 0; background: rgb(8 45 54 / var(--gh-hero-tint, 0.45)); }
-  /* Diagonal scrim: darkest at the bottom-right, fades out toward top-left */
+  .gh-hero__img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 0% 30%;
+  }
+  /* Optional teal tint over the full photo (customizer slider) */
+  .gh-hero__tint { position: absolute; inset: 0; background: rgb(9 46 43 / var(--gh-hero-tint, 0.2)); pointer-events: none; }
+  /* THE EFFECT: diagonal scrim over the photo */
   .gh-hero__grad-h {
-    position: absolute; inset: 0;
+    position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(305deg,
-      rgba(6,31,38,.97) 0%,
-      rgba(6,31,38,.85) 26%,
-      rgba(6,31,38,.35) 52%,
-      rgba(6,31,38,0) 72%);
+      rgba(9, 46, 43, 0.97) 0%,
+      rgba(9, 46, 43, 0.85) 26%,
+      rgba(9, 46, 43, 0.35) 52%,
+      rgba(9, 46, 43, 0) 72%);
   }
-  .gh-hero__grad-v { position: absolute; inset: 0; display: none; }
-  .gh-hero__grid {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(214,224,226,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(214,224,226,.05) 1px, transparent 1px);
-    background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(80% 90% at 75% 50%, #000, transparent);
-    mask-image: radial-gradient(80% 90% at 75% 50%, #000, transparent);
-  }
-  .gh-hero__inner { position: relative; width: 100%; max-width: var(--gh-max); margin: 0 auto; padding: 0 64px; display: flex; justify-content: flex-end; }
-  .gh-hero__col { max-width: 600px; }
-  .gh-hero__badge {
-    display: inline-flex; align-items: center; gap: 10px;
-    font: 500 11px/1 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-light);
-    margin-bottom: 26px;
-  }
-  .gh-hero__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gh-green); display: inline-block; animation: gh-blink 1.6s infinite; }
-  .gh-hero__h1 { font: 200 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 52px))/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 22px; text-shadow: 0 1px 2px rgba(6,31,38,.35), 0 6px 32px rgba(6,31,38,.45); }
-  .gh-hero__h1-accent { font-weight: 500; }
-  .gh-hero__sub { font: 300 19px/1.55 var(--gh-sans); color: var(--gh-light); max-width: 520px; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(6,31,38,.4), 0 4px 22px rgba(6,31,38,.4); }
-  .gh-hero__council { font: 400 15px/1.5 var(--gh-sans); color: var(--gh-muted); max-width: 520px; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(6,31,38,.4); }
-  .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
-  .gh-hero__coords { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
+  .gh-hero__grad-v { position: absolute; inset: 0; display: none; pointer-events: none; }
+  .gh-hero__grid { display: none; }
 
-  /* Plans: on desktop a single quiet mono line above the CTA */
-  .gh-hero__plans { display: flex; flex-wrap: wrap; gap: 12px 34px; margin: 0 0 28px; }
-  .gh-hero__plan {
-    display: inline-flex; align-items: baseline; gap: 9px;
-    font: 400 12px/1 var(--gh-mono); letter-spacing: 0.1em;
-    color: var(--gh-muted); text-transform: uppercase;
-    transition: color 0.25s ease;
-  }
-  .gh-hero__plan:hover { color: var(--gh-green); }
-  .gh-hero__plan:hover .gh-hero__plan-price { color: var(--gh-green); }
-  .gh-hero__plan-time { color: inherit; white-space: nowrap; }
-  .gh-hero__plan-name { color: inherit; }
-  .gh-hero__plan-price { color: var(--gh-light); white-space: nowrap; transition: color 0.25s ease; }
-  .gh-hero__plan-price::before { content: "· "; color: var(--gh-slate); }
-
-  @media (max-width: 600px) {
-    /* Immersive minimal: full-screen photo, bottom gradient, text bottom-left */
-    .gh-hero  .gh-hero {
-    min-height: auto;
-    align-items: flex-start;
-  }
-
+  /* Content: absolute bottom-right on desktop */
   .gh-hero__inner {
-    padding: 50px 20px 24px;
-    justify-content: flex-start;
+    position: absolute; right: 56px; bottom: 52px;
+    width: 540px; max-width: calc(100% - 80px);
+    color: #f6f5ee;
   }
-}
-    .gh-hero__grad-h,
-    .gh-hero__grid { display: none; }
-    .gh-hero__tint { background: rgb(8 45 54 / calc(var(--gh-hero-tint, 0.45) * 0.4)); }
+  .gh-hero__col { display: block; }
+
+  .gh-hero__badge {
+    display: inline-flex; align-items: center; gap: 9px;
+    font: 500 12px/1 var(--gh-mono);
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gh-green);
+  }
+  .gh-hero__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gh-green); display: inline-block; }
+
+  .gh-hero__h1 {
+    margin: 22px 0 0;
+    font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.02 var(--gh-sans);
+    letter-spacing: -0.025em;
+    color: #f6f5ee;
+  }
+  .gh-hero__h1-accent { font-weight: 500; }
+  .gh-hero__sub {
+    margin: 20px 0 30px; max-width: 430px;
+    font: 300 18px/1.5 var(--gh-sans);
+    color: rgba(246, 245, 238, 0.82);
+  }
+  .gh-hero__council { display: none; }
+  .gh-hero__coords { display: none; }
+
+  /* Plans as one mono line with `·` separators */
+  .gh-hero__plans {
+    list-style: none; margin: 0 0 24px; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font: 400 12px/1 var(--gh-mono);
+    letter-spacing: 0.06em;
+    color: rgba(246, 245, 238, 0.75);
+  }
+  .gh-hero__plan {
+    display: inline-flex; align-items: baseline; gap: 8px;
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+  .gh-hero__plan:hover { color: #f6f5ee; }
+  .gh-hero__plan-time { color: var(--gh-green); text-transform: uppercase; white-space: nowrap; }
+  .gh-hero__plan-name { color: inherit; text-transform: uppercase; }
+  .gh-hero__plan-name::before { content: " · "; color: inherit; }
+  .gh-hero__plan-price { color: inherit; white-space: nowrap; }
+  .gh-hero__plan-price::before { content: " · "; color: inherit; }
+
+  /* Solid cream button */
+  .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .gh-hero .gh-btn--solid {
+    background: #eeecdf;
+    color: #0c3a37;
+    padding: 16px 28px;
+    border-radius: 3px;
+    font: 400 16px/1 var(--gh-sans);
+    letter-spacing: 0;
+    text-shadow: none;
+  }
+  .gh-hero .gh-btn--solid:hover { background: #f6f5ee; color: #0c3a37; }
+
+  /* MOBILE (5c): vertical scrim + bottom-left content */
+  @media (max-width: 768px) {
+    .gh-hero { min-height: 100vh; min-height: 100svh; }
+    .gh-hero__img { object-position: 20% 25%; }
+    .gh-hero__tint { display: none; }
+    .gh-hero__grad-h { display: none; }
     .gh-hero__grad-v {
       display: block;
       background: linear-gradient(180deg,
-        rgba(6,31,38,.5) 0%,
-        rgba(6,31,38,0) 38%,
-        rgba(6,31,38,.8) 66%,
-        rgba(6,31,38,.98) 100%);
+        rgba(9, 46, 43, 0.5) 0%,
+        rgba(9, 46, 43, 0) 38%,
+        rgba(9, 46, 43, 0.8) 66%,
+        rgba(9, 46, 43, 0.98) 100%);
     }
-    .gh-hero__inner { padding: 0 20px 24px; justify-content: flex-start; }
-    .gh-hero__col { max-width: none; width: 100%; }
-    .gh-hero__badge { font-size: 10px; letter-spacing: 0.2em; margin-bottom: 16px; }
-    .gh-hero__dot { width: 6px; height: 6px; }
-    .gh-hero__h1 { line-height: 1.08; margin-bottom: 14px; }
-    .gh-hero__h1-accent { font-weight: inherit; }
-    .gh-hero__sub { font-size: 16px; margin-bottom: 24px; }
-    .gh-hero__council { font-size: 13px; margin-bottom: 24px; }
-    .gh-hero__coords { display: none; }
-
-    /* Plans become minimal hairline rows */
-    .gh-hero__plans { display: block; margin: 0 0 18px; border-top: 1px solid rgba(214,224,226,.16); }
-    .gh-hero__plan {
-      display: flex; width: 100%; align-items: center; gap: 14px;
-      padding: 15px 2px;
-      border-bottom: 1px solid rgba(214,224,226,.16);
-      text-transform: none; letter-spacing: 0;
-    }
-    .gh-hero__plan-time { font: 400 12px/1 var(--gh-mono); letter-spacing: 0.08em; color: var(--gh-muted); }
-    .gh-hero__plan-name { flex: 1; font: 300 17px/1.25 var(--gh-sans); color: var(--gh-light); }
-    .gh-hero__plan-price { font: 400 16px/1 var(--gh-mono); color: var(--gh-light); }
-    .gh-hero__plan-price::before { content: ""; }
-
-    .gh-hero__actions { width: 100%; }
-    .gh-btn--solid { width: 100%; justify-content: center; }
+    .gh-hero__inner { left: 22px; right: 22px; bottom: 26px; width: auto; max-width: none; }
+    .gh-hero__h1 { font-size: 38px; line-height: 1.05; margin-top: 18px; }
+    .gh-hero__sub { font-size: 15px; margin: 16px 0 22px; }
+    .gh-hero__plans { flex-wrap: wrap; gap: 10px 18px; margin-bottom: 22px; }
+    .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
   }
 {% endstylesheet %}
 
