@@ -36,9 +36,9 @@
         "plan_long"
       ],
       "settings": {
-        "image": "shopify://shop_images/COMING_SOON_1.png",
+        "image": "shopify://shop_images/desktop_2.jpg",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
-        "image_mobile": "shopify://shop_images/mobile_5.jpg",
+        "image_mobile": "shopify://shop_images/mobile_6.jpg",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#092e2b",
