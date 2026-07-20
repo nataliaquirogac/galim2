@@ -540,5 +540,26 @@
       "expanded": "Formulario del destinatario de la tarjeta de regalo expandido",
       "collapsed": "Formulario del destinatario de tarjeta de regalo contraído"
     }
+  },
+  "waitlist": {
+    "eyebrow": "ÚNETE A LA LISTA DE ESPERA",
+    "title": "Ya casi.",
+    "subtitle": "Unos datos y guardamos tu lugar.",
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "phone": "Celular",
+    "email": "Correo",
+    "source_label": "¿Cómo te enteraste de nosotros?",
+    "source_doctor": "Un doctor",
+    "source_nutritionist": "Un nutriólogo",
+    "source_instagram": "Instagram",
+    "source_friend": "Amigo o familiar",
+    "source_google": "Google",
+    "source_location": "Vi la ubicación",
+    "source_other": "Otro",
+    "other_label": "Especifica",
+    "other_placeholder": "Dinos dónde…",
+    "submit": "Únete a la lista →",
+    "success": "¡Listo! Guardamos tu lugar. Te contactaremos pronto."
   }
 }

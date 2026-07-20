@@ -274,7 +274,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -529,5 +528,26 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "waitlist": {
+    "eyebrow": "JOIN THE WAITLIST",
+    "title": "You're close.",
+    "subtitle": "A few details, and we'll save your spot.",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "phone": "Phone",
+    "email": "Email",
+    "source_label": "How did you hear about us?",
+    "source_doctor": "A doctor",
+    "source_nutritionist": "A nutritionist",
+    "source_instagram": "Instagram",
+    "source_friend": "Friend or family",
+    "source_google": "Google",
+    "source_location": "I saw the location",
+    "source_other": "Other",
+    "other_label": "Please specify",
+    "other_placeholder": "Tell us where…",
+    "submit": "Join the waiting list →",
+    "success": "Done! Your spot is saved. We'll be in touch soon."
   }
 }
