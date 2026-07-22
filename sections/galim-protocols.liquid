@@ -88,7 +88,7 @@
   /* Bold in the heading = animated light->green gradient text (echoes the BQ bar) */
   .gh-protocols__h2 strong {
     font-weight: 500;
-    background: linear-gradient(90deg, #D6E0E2, #8CBF8A 45%, #D6E0E2 90%);
+    background: linear-gradient(90deg, #F7F5F3, #A8C2C8 45%, #F7F5F3 90%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -109,25 +109,25 @@
   }
   .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.35); }
   .gh-pkg.is-featured {
-    border-color: rgba(140,191,138,.4);
+    border-color: rgba(19, 94, 115,.4);
     background: linear-gradient(180deg, var(--gh-teal-700), var(--gh-teal-770));
-    box-shadow: 0 0 0 1px rgba(140,191,138,.12), 0 18px 50px rgba(0,0,0,.3);
+    box-shadow: 0 0 0 1px rgba(19, 94, 115,.12), 0 18px 50px rgba(0,0,0,.3);
   }
-  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(140,191,138,.3), 0 28px 70px rgba(0,0,0,.4); }
+  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(19, 94, 115,.3), 0 28px 70px rgba(0,0,0,.4); }
   .gh-pkg__badge {
     position: absolute; top: 20px; right: 20px; z-index: 2;
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-bg);
     background: var(--gh-green); padding: 6px 11px; border-radius: 2px;
   }
-  .gh-pkg__head { position: relative; padding: 32px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(140,191,138,.16), transparent 60%); }
-  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(140,191,138,.2), transparent 60%); }
+  .gh-pkg__head { position: relative; padding: 32px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(19, 94, 115,.16), transparent 60%); }
+  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(19, 94, 115,.2), transparent 60%); }
   .gh-pkg__head-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
   .gh-pkg__icon {
     width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
-    background: rgba(140,191,138,.14); border: 1px solid rgba(140,191,138,.35);
+    background: rgba(19, 94, 115,.14); border: 1px solid rgba(19, 94, 115,.35);
     display: inline-flex; align-items: center; justify-content: center; color: var(--gh-green);
   }
-  .gh-pkg.is-featured .gh-pkg__icon { background: rgba(140,191,138,.18); border-color: rgba(140,191,138,.45); }
+  .gh-pkg.is-featured .gh-pkg__icon { background: rgba(19, 94, 115,.18); border-color: rgba(19, 94, 115,.45); }
   .gh-pkg__title-wrap { display: flex; flex-direction: column; gap: 2px; }
   .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; }
   .gh-pkg__subtitle { font: 300 13px/1.3 var(--gh-sans); color: var(--gh-muted); margin: 0; padding: 0; }
@@ -153,13 +153,13 @@
   .gh-pkg__addons-title { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-green); margin-bottom: 2px; }
   .gh-pkg__addon-row {
     display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-    background: rgba(140,191,138,.08);
-    border: 1px solid rgba(140,191,138,.25);
+    background: rgba(19, 94, 115,.08);
+    border: 1px solid rgba(19, 94, 115,.25);
     border-radius: 8px;
     padding: 12px 14px;
     transition: border-color 0.25s ease, background 0.25s ease;
   }
-  .gh-pkg__addon-row:hover { border-color: rgba(140,191,138,.5); background: rgba(140,191,138,.12); }
+  .gh-pkg__addon-row:hover { border-color: rgba(19, 94, 115,.5); background: rgba(19, 94, 115,.12); }
   .gh-pkg__addon-plus { color: var(--gh-green); font: 600 15px/1 var(--gh-sans); }
   .gh-pkg__addon-name { font: 500 15px/1.3 var(--gh-sans); color: var(--gh-white); }
   .gh-pkg__addon-desc { font: 300 14px/1.3 var(--gh-sans); color: var(--gh-muted); }
@@ -202,7 +202,7 @@
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "plans" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 / PROTOCOLS" },
     { "type": "richtext", "id": "heading", "label": "Heading (bold = animated gradient)", "default": "<p>Choose your measurement.</p>" },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A2F38" },
     { "type": "header", "content": "GLP-1 note" },
     { "type": "text", "id": "glp_glyph", "label": "Glyph", "default": "◈" },
     { "type": "text", "id": "glp_title", "label": "Title", "default": "¿Estás en GLP-1?" },

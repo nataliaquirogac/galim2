@@ -12,7 +12,7 @@
   endif
 -%}
 
-<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-side-color: {{ s.side_color | default: '#092e2b' }}; --gh-side-width: {{ s.side_width | default: 22 }}%;">
+<section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-side-color: {{ s.side_color | default: '#0D3B46' }}; --gh-side-width: {{ s.side_width | default: 22 }}%;">
   {%- liquid
     assign desktop_src = ''
     if s.image != blank
@@ -127,15 +127,15 @@
     object-fit: cover; object-position: 0% 30%;
   }
   /* Optional teal tint over the full photo (customizer slider) */
-  .gh-hero__tint { position: absolute; inset: 0; background: rgb(9 46 43 / var(--gh-hero-tint, 0.2)); pointer-events: none; }
+  .gh-hero__tint { position: absolute; inset: 0; background: rgb(13 59 70 / var(--gh-hero-tint, 0.2)); pointer-events: none; }
   /* THE EFFECT: diagonal scrim over the photo */
   .gh-hero__grad-h {
     position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(305deg,
-      rgba(9, 46, 43, 0.97) 0%,
-      rgba(9, 46, 43, 0.85) 26%,
-      rgba(9, 46, 43, 0.35) 52%,
-      rgba(9, 46, 43, 0) 72%);
+      rgba(13, 59, 70, 0.97) 0%,
+      rgba(13, 59, 70, 0.85) 26%,
+      rgba(13, 59, 70, 0.35) 52%,
+      rgba(13, 59, 70, 0) 72%);
   }
   .gh-hero__grad-v { position: absolute; inset: 0; display: none; pointer-events: none; }
   .gh-hero__grid { display: none; }
@@ -151,11 +151,11 @@
   }
   .gh-hero__sides::before {
     left: 0;
-    background: linear-gradient(to right, var(--gh-side-color, #092e2b), rgba(9,46,43,0));
+    background: linear-gradient(to right, var(--gh-side-color, #0D3B46), rgba(9,46,43,0));
   }
   .gh-hero__sides::after {
     right: 0;
-    background: linear-gradient(to left, var(--gh-side-color, #092e2b), rgba(9,46,43,0));
+    background: linear-gradient(to left, var(--gh-side-color, #0D3B46), rgba(9,46,43,0));
   }
 
   /* Content: absolute bottom-right on desktop */
@@ -220,15 +220,15 @@
   /* Solid cream button */
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
   .gh-hero .gh-btn--solid {
-    background: #eeecdf;
-    color: #0c3a37;
+    background: #F7F5F3;
+    color: #0D3B46;
     padding: 16px 28px;
     border-radius: 3px;
     font: 400 16px/1 var(--gh-sans);
     letter-spacing: 0;
     text-shadow: none;
   }
-  .gh-hero .gh-btn--solid:hover { background: #f6f5ee; color: #0c3a37; }
+  .gh-hero .gh-btn--solid:hover { background: #f6f5ee; color: #0D3B46; }
 
   /* MOBILE (5c): vertical scrim + bottom-left content */
   @media (max-width: 768px) {
@@ -242,10 +242,10 @@
     .gh-hero__grad-v {
       display: block;
       background: linear-gradient(180deg,
-        rgba(9, 46, 43, 0.5) 0%,
-        rgba(9, 46, 43, 0) 38%,
-        rgba(9, 46, 43, 0.8) 66%,
-        rgba(9, 46, 43, 0.98) 100%);
+        rgba(13, 59, 70, 0.5) 0%,
+        rgba(13, 59, 70, 0) 38%,
+        rgba(13, 59, 70, 0.8) 66%,
+        rgba(13, 59, 70, 0.98) 100%);
     }
     .gh-hero__inner { left: 20px; right: 20px; bottom: 24px; width: auto; max-width: none; }
     .gh-hero__h1 { font-size: 38px; line-height: 1.05; margin-top: 16px; }
@@ -267,7 +267,7 @@
     { "type": "image_picker", "id": "image_mobile", "label": "Hero image (mobile)", "info": "Shown below 768px. If empty, the desktop image is used." },
     { "type": "text", "id": "image_url_mobile", "label": "…or mobile image URL" },
     { "type": "range", "id": "overlay_strength", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Image overlay strength (desktop)", "info": "Teal tint over the whole photo. Keep low so the photo shows; the diagonal scrim already darkens the text side.", "default": 20 },
-    { "type": "color", "id": "side_color", "label": "Side fade color", "info": "Color that fades in from the left and right edges over the photo.", "default": "#092e2b" },
+    { "type": "color", "id": "side_color", "label": "Side fade color", "info": "Color that fades in from the left and right edges over the photo.", "default": "#0D3B46" },
     { "type": "range", "id": "side_width", "min": 0, "max": 40, "step": 2, "unit": "%", "label": "Side fade width", "default": 22 },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },

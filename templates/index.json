@@ -41,7 +41,7 @@
         "image_mobile": "shopify://shop_images/mobile_8.jpg",
         "image_url_mobile": "",
         "overlay_strength": 35,
-        "side_color": "#092e2b",
+        "side_color": "#0D3B46",
         "side_width": 22,
         "anchor_id": "top",
         "heading_size": 52,
@@ -183,9 +183,9 @@
       "settings": {
         "eyebrow": "01 / WHAT WE MEASURE",
         "heading": "Every system, one clear picture.",
-        "bg_color": "#082d36",
+        "bg_color": "#0A2F38",
         "speed": 45,
-        "side_color": "#082d36",
+        "side_color": "#0A2F38",
         "side_width": 12
       }
     },
@@ -197,7 +197,7 @@
         "chip_label": "GALIM MEASURES",
         "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
         "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
-        "bg_color": "#082d36"
+        "bg_color": "#0A2F38"
       }
     },
     "steps": {
@@ -358,7 +358,7 @@
       ],
       "settings": {
         "eyebrow": "03 / TWO AXES",
-        "bg_color": "#0c3b46",
+        "bg_color": "#0D3B46",
         "bq_label": "One score that measures how your body performs",
         "bq_number": "",
         "bq_number_caption": "We call it your Body Quotient (BQ)",
@@ -415,7 +415,7 @@
         "anchor_id": "plans",
         "eyebrow": "04 / PROTOCOLS",
         "heading": "<p>The precision once reserved for elite clinics.<br/><strong>Now within reach.</strong></p>",
-        "bg_color": "#082d36",
+        "bg_color": "#0A2F38",
         "glp_glyph": "◈",
         "glp_title": "",
         "glp_body": ""
@@ -461,7 +461,7 @@
         "eyebrow": "05 / ADVANCED DIAGNOSTICS",
         "heading": "For those who want to optimize even further.",
         "subheading": "Optional · Available separately · Tailored to your age, family history, goals, and Galim results.",
-        "bg_color": "#0c3b46"
+        "bg_color": "#0D3B46"
       }
     },
     "method": {
@@ -474,8 +474,8 @@
         "body_2": "With every visit, we measure again. And the plan evolves with you.",
         "button_label": "Discover the method",
         "button_link": "",
-        "bg_top": "#082d36",
-        "bg_bottom": "#0c3b46"
+        "bg_top": "#0A2F38",
+        "bg_bottom": "#0D3B46"
       }
     },
     "final_cta": {

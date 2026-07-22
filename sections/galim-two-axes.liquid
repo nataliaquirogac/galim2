@@ -71,7 +71,7 @@
   /* When alone, the card gets a tighter max width so it doesn't feel oversized */
   .gh-axes__cards:has(.gh-axes__card:only-child) { grid-template-columns: 1fr; }
   .gh-axes__card:only-child { max-width: 760px; }
-  .gh-axes__glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(140,191,138,.25), transparent 65%); filter: blur(20px); }
+  .gh-axes__glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(19, 94, 115,.25), transparent 65%); filter: blur(20px); }
   .gh-axes__card-eyebrow { position: relative; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-muted); margin-bottom: 24px; }
   .gh-axes__card-h3 { position: relative; font: 300 34px/1.15 var(--gh-sans); color: var(--gh-white); margin-bottom: 20px; }
   .gh-axes__card-body { position: relative; font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); }
@@ -79,8 +79,8 @@
     position: relative;
     margin-top: 24px;
     padding: 16px 20px;
-    background: rgba(140, 191, 138, 0.08);
-    border: 1px solid rgba(140, 191, 138, 0.25);
+    background: rgba(19, 94, 115, 0.08);
+    border: 1px solid rgba(19, 94, 115, 0.25);
     border-radius: 10px;
   }
   .gh-axes__note-title { font: 500 16px/1.3 var(--gh-sans); color: var(--gh-white); margin-bottom: 8px; }
@@ -101,7 +101,7 @@
   .gh-axes__bq-copy { font: 400 14px/1.7 var(--gh-mono); color: var(--gh-muted); max-width: 440px; }
   .gh-axes__bar {
     margin-top: 24px; height: 5px; border-radius: 3px; max-width: 440px;
-    background: linear-gradient(90deg, #6E8897, #A8C2C8 60%, #8CBF8A);
+    background: linear-gradient(90deg, #6E8897, #A8C2C8 60%, #A8C2C8);
     background-size: 200% 100%; animation: gh-sweep 5s linear infinite;
   }
   .gh-axes__bar--mobile { display: none; }
@@ -151,7 +151,7 @@
   "class": "gh-section-full",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 / TWO AXES" },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0C3B46" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0D3B46" },
     { "type": "header", "content": "BQ panel" },
     { "type": "text", "id": "bq_label", "label": "Panel label", "default": "THE BQ, EXPLAINED" },
     { "type": "text", "id": "bq_number", "label": "Big number (optional)", "info": "Leave blank to hide." },

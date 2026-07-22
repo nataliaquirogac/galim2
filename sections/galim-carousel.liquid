@@ -10,7 +10,7 @@
   assign duration = s.speed | default: 45
 -%}
 
-<section class="gh-mq gh-section" data-gh-section="carousel" style="background: {{ s.bg_color }}; --gh-mq-duration: {{ duration }}s; --gh-side-color: {{ s.side_color | default: '#082d36' }}; --gh-side-width: {{ s.side_width | default: 12 }}%;">
+<section class="gh-mq gh-section" data-gh-section="carousel" style="background: {{ s.bg_color }}; --gh-mq-duration: {{ duration }}s; --gh-side-color: {{ s.side_color | default: '#0A2F38' }}; --gh-side-width: {{ s.side_width | default: 12 }}%;">
   <div class="gh-container">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-mq__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
     {%- if s.heading != blank -%}<h2 class="gh-mq__h2">{{ s.heading }}</h2>{%- endif -%}
@@ -99,14 +99,14 @@
     scroll-snap-align: start;
     transition: border-color 0.25s ease;
   }
-  .gh-mq__card:hover { border-color: rgba(140, 191, 138, 0.4); }
+  .gh-mq__card:hover { border-color: rgba(19, 94, 115, 0.4); }
 
   /* Icon + name on the same line */
   .gh-mq__head { display: flex; align-items: center; gap: 8px; }
   .gh-mq__icon {
     width: 26px; height: 26px; border-radius: 6px;
-    background: rgba(140, 191, 138, 0.14);
-    border: 1px solid rgba(140, 191, 138, 0.3);
+    background: rgba(19, 94, 115, 0.14);
+    border: 1px solid rgba(19, 94, 115, 0.3);
     display: inline-flex; align-items: center; justify-content: center;
     color: var(--gh-green);
     flex-shrink: 0;
@@ -125,11 +125,11 @@
   }
   .gh-mq__sides::before {
     left: 0;
-    background: linear-gradient(to right, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
+    background: linear-gradient(to right, var(--gh-side-color, #0A2F38), rgba(8, 45, 54, 0));
   }
   .gh-mq__sides::after {
     right: 0;
-    background: linear-gradient(to left, var(--gh-side-color, #082d36), rgba(8, 45, 54, 0));
+    background: linear-gradient(to left, var(--gh-side-color, #0A2F38), rgba(8, 45, 54, 0));
   }
 
   /* Interactive scrubber: click/drag to navigate, prev/next arrows, counter */
@@ -181,13 +181,13 @@
     position: absolute; left: 0; top: 50%;
     height: 6px;
     width: 0%;
-    min-width: 16px;   /* green nub always visible, even at position 0 */
-    background: linear-gradient(90deg, #9ccf9a, var(--gh-green));
+    min-width: 16px;   /* accent nub always visible, even at position 0 */
+    background: linear-gradient(90deg, var(--gh-brand, #135E73), var(--gh-accent, #A8C2C8));
     border-radius: 999px;
     transform: translateY(-50%);
     transition: width 0.15s ease-out, background 0.25s ease;
     pointer-events: none;
-    box-shadow: 0 0 10px rgba(140, 191, 138, 0.8), 0 0 24px rgba(140, 191, 138, 0.35);
+    box-shadow: 0 0 10px rgba(168, 194, 200, 0.7), 0 0 24px rgba(168, 194, 200, 0.3);
   }
   .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
   .gh-mq__progress-thumb {
@@ -200,13 +200,13 @@
     transform: translate(-50%, -50%);
     transition: left 0.15s ease-out, transform 0.15s ease-out;
     pointer-events: none;
-    box-shadow: 0 0 0 3px rgba(140, 191, 138, 0.25), 0 2px 8px rgba(6, 31, 38, 0.5);
+    box-shadow: 0 0 0 3px rgba(168, 194, 200, 0.28), 0 2px 8px rgba(6, 31, 38, 0.5);
   }
   .gh-mq__progress:hover .gh-mq__progress-thumb,
   .gh-mq__progress.is-dragging .gh-mq__progress-thumb { transform: translate(-50%, -50%) scale(1.25); }
   .gh-mq__progress.is-dragging { cursor: grabbing; }
   .gh-mq__progress:focus-visible { outline: none; }
-  .gh-mq__progress:focus-visible .gh-mq__progress-thumb { box-shadow: 0 0 0 4px rgba(140, 191, 138, 0.35); }
+  .gh-mq__progress:focus-visible .gh-mq__progress-thumb { box-shadow: 0 0 0 4px rgba(168, 194, 200, 0.35); }
 
   @media (max-width: 768px) {
     .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
@@ -229,10 +229,10 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "WHAT WE MEASURE" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Every system, in one visit." },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#082d36" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A2F38" },
     { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Loop duration", "info": "Time for one full pass. Higher = slower.", "default": 45 },
     { "type": "header", "content": "Side fades" },
-    { "type": "color", "id": "side_color", "label": "Side fade color", "default": "#082d36" },
+    { "type": "color", "id": "side_color", "label": "Side fade color", "default": "#0A2F38" },
     { "type": "range", "id": "side_width", "min": 0, "max": 30, "step": 2, "unit": "%", "label": "Side fade width", "default": 12 }
   ],
   "blocks": [

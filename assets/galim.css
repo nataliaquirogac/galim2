@@ -5,28 +5,33 @@
    ============================================================ */
 
 :root {
+  /* Brand palette (2026): #135E73 base · #0D3B46 · #6E8897 · #A8C2C8 · #000 · #F7F5F3 */
   /* Backgrounds */
-  --gh-bg: #0C3B46;        /* primary background */
-  --gh-bg-900: #082d36;    /* alternating sections, hero base */
-  --gh-bg-950: #061f26;    /* footer */
-  /* Card gradient stops */
-  --gh-teal-700: #12505d;
-  --gh-teal-750: #103f4a;
-  --gh-teal-760: #0e4653;
-  --gh-teal-770: #0b3a45;
+  --gh-bg: #0D3B46;        /* primary background (dark teal) */
+  --gh-bg-900: #0A2F38;    /* alternating sections, hero base (darker) */
+  --gh-bg-950: #061f26;    /* footer (darkest) */
+  /* Brand teal — brighter surface: card tops, glows, icon tiles */
+  --gh-brand: #135E73;
+  --gh-teal-700: #135E73;
+  --gh-teal-750: #0D3B46;
+  --gh-teal-760: #0D3B46;
+  --gh-teal-770: #0A2F38;
   /* Text */
-  --gh-light: #D6E0E2;     /* primary text / light buttons / headline accents */
-  --gh-muted: #A8C2C8;     /* secondary body text */
+  --gh-light: #F7F5F3;     /* primary text / light buttons / headlines (cream) */
+  --gh-muted: #A8C2C8;     /* secondary body text (light blue) */
   --gh-slate: #6E8897;     /* tertiary text, mono labels, bullets */
-  --gh-white: #ffffff;
-  /* Accent — use sparingly */
-  --gh-green: #8CBF8A;
+  --gh-white: #F7F5F3;
+  --gh-black: #000000;
+  /* Accent that pops on the dark teal (dots, bars, icons, small labels).
+     --gh-green kept as the variable name for backwards compat = light accent. */
+  --gh-green: #A8C2C8;
+  --gh-accent: #A8C2C8;
   /* Common alphas */
   --gh-border: rgba(168, 194, 200, 0.16);
   --gh-border-strong: rgba(168, 194, 200, 0.22);
   --gh-hairline: rgba(168, 194, 200, 0.12);
-  --gh-green-tint: rgba(140, 191, 138, 0.14);
-  --gh-light-tint: rgba(214, 224, 226, 0.05);
+  --gh-green-tint: rgba(19, 94, 115, 0.14);
+  --gh-light-tint: rgba(247, 245, 243, 0.05);
 
   --gh-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --gh-sans: 'Fustat', system-ui, -apple-system, sans-serif;
@@ -114,7 +119,7 @@ section[id],
 footer[id] { scroll-margin-top: 84px; }
 
 /* Brand text selection & keyboard focus ----------------------------------- */
-::selection { background: rgba(140, 191, 138, 0.4); color: #fff; }
+::selection { background: rgba(19, 94, 115, 0.4); color: #F7F5F3; }
 .gh-btn:focus-visible,
 .gh-header a:focus-visible,
 .gh-footer a:focus-visible,
