@@ -141,8 +141,10 @@
     background: linear-gradient(90deg, var(--gh-brand, #135E73), var(--gh-accent, #A8C2C8));
   }
   /* Column header row */
-  .gh-axes__tier--head { border-bottom: 1px solid rgba(168,194,200,.18); padding-bottom: 12px; }
-  .gh-axes__tier--head .gh-axes__tier-range { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gh-slate); }
+  /* Header row: escape the narrow grid so "AGE PERCENTILE" stays one line, right-aligned */
+  .gh-axes__tier--head { display: flex; justify-content: flex-end; border-bottom: 1px solid rgba(168,194,200,.18); padding-bottom: 12px; }
+  .gh-axes__tier--head > span:not(.gh-axes__tier-range) { display: none; }
+  .gh-axes__tier--head .gh-axes__tier-range { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gh-slate); white-space: nowrap; text-align: right; }
   /* Active tier — glows and pops */
   .gh-axes__tier.is-highlight {
     background: rgba(19, 94, 115, 0.28);
