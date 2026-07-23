@@ -44,13 +44,33 @@
         <div class="gh-axes__bar gh-axes__bar--desktop"></div>
       </div>
       <div class="gh-axes__bq-right">
+        {%- comment -%} Count real tier rows (label present) to size the level meters {%- endcomment -%}
+        {%- assign tier_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tier' and block.settings.label != blank -%}{%- assign tier_count = tier_count | plus: 1 -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if tier_count == 0 -%}{%- assign tier_count = 1 -%}{%- endif -%}
+
+        {%- assign tier_i = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'tier' -%}
-            <div class="gh-axes__tier{% if block.settings.highlight %} is-highlight{% endif %}" {{ block.shopify_attributes }}>
-              <span class="gh-axes__tier-num gh-c-{{ block.settings.numeral_color }}">{{ block.settings.numeral }}</span>
-              <span class="gh-axes__tier-label gh-c-{{ block.settings.label_color }}">{{ block.settings.label }}</span>
-              <span class="gh-axes__tier-range gh-c-{{ block.settings.range_color }}">{{ block.settings.range }}</span>
-            </div>
+            {%- if block.settings.label == blank -%}
+              {%- comment -%} Header row (e.g. "AGE PERCENTILE") — no meter {%- endcomment -%}
+              <div class="gh-axes__tier gh-axes__tier--head" {{ block.shopify_attributes }}>
+                <span class="gh-axes__tier-label"></span>
+                <span></span>
+                <span class="gh-axes__tier-range">{{ block.settings.range }}</span>
+              </div>
+            {%- else -%}
+              {%- assign rank = tier_count | minus: tier_i -%}
+              {%- assign fill = rank | times: 100 | divided_by: tier_count -%}
+              <div class="gh-axes__tier{% if block.settings.highlight %} is-highlight{% endif %}" {{ block.shopify_attributes }}>
+                <span class="gh-axes__tier-label">{{ block.settings.label }}</span>
+                <span class="gh-axes__tier-meter"><i style="width: {{ fill }}%;"></i></span>
+                <span class="gh-axes__tier-range">{{ block.settings.range }}</span>
+              </div>
+              {%- assign tier_i = tier_i | plus: 1 -%}
+            {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
         <div class="gh-axes__bar gh-axes__bar--mobile"></div>
@@ -106,15 +126,34 @@
   }
   .gh-axes__bar--mobile { display: none; }
   .gh-axes__bq-right { display: flex; flex-direction: column; }
+  /* Level meter: each tier gets a bar that grows Base -> Apex */
   .gh-axes__tier {
-    display: grid; grid-template-columns: 1fr auto; align-items: center;
-    padding: 12px 4px; border-bottom: 1px solid rgba(168,194,200,.14);
+    display: grid; grid-template-columns: 120px 1fr 60px; align-items: center; gap: 20px;
+    padding: 13px 0; border-bottom: 1px solid rgba(168,194,200,.1);
   }
   .gh-axes__tier:last-child { border-bottom: 0; }
-  .gh-axes__tier.is-highlight { background: rgba(214,224,226,.05); }
   .gh-axes__tier-num { display: none; }
-  .gh-axes__tier-label { font: 400 18px/1 var(--gh-sans); }
-  .gh-axes__tier-range { font: 400 16px/1 var(--gh-mono); }
+  .gh-axes__tier-label { font: 400 17px/1.1 var(--gh-sans); color: var(--gh-light); }
+  .gh-axes__tier-range { font: 400 14px/1 var(--gh-mono); color: var(--gh-muted); text-align: right; letter-spacing: 0.02em; }
+  .gh-axes__tier-meter { position: relative; height: 6px; border-radius: 999px; background: rgba(168,194,200,.1); overflow: hidden; }
+  .gh-axes__tier-meter i {
+    position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px;
+    background: linear-gradient(90deg, var(--gh-brand, #135E73), var(--gh-accent, #A8C2C8));
+  }
+  /* Column header row */
+  .gh-axes__tier--head { border-bottom: 1px solid rgba(168,194,200,.18); padding-bottom: 12px; }
+  .gh-axes__tier--head .gh-axes__tier-range { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gh-slate); }
+  /* Active tier — glows and pops */
+  .gh-axes__tier.is-highlight {
+    background: rgba(19, 94, 115, 0.28);
+    border-bottom-color: transparent;
+    border-radius: 8px;
+    margin: 2px -14px; padding: 13px 14px;
+    box-shadow: inset 0 0 0 1px rgba(168,194,200,.28);
+  }
+  .gh-axes__tier.is-highlight .gh-axes__tier-label { color: var(--gh-white); font-weight: 500; }
+  .gh-axes__tier.is-highlight .gh-axes__tier-range { color: var(--gh-light); }
+  .gh-axes__tier.is-highlight .gh-axes__tier-meter i { box-shadow: 0 0 12px rgba(168,194,200,.7); }
 
   .gh-c-green { color: var(--gh-green); }
   .gh-c-light { color: var(--gh-light); }
@@ -138,10 +177,12 @@
     .gh-axes__bar--desktop { display: none; }
     .gh-axes__bar--mobile { display: block; margin-top: 18px; max-width: none; }
     .gh-axes__bq-right { margin-top: 0; }
-    .gh-axes__tier { grid-template-columns: 1fr auto; padding: 12px 2px; }
+    .gh-axes__tier { grid-template-columns: 96px 1fr 52px; gap: 12px; padding: 12px 0; }
+    .gh-axes__tier.is-highlight { margin: 2px -12px; padding: 12px; }
     .gh-axes__bq-label { font-size: 13px; letter-spacing: 0.22em; margin-bottom: 20px; }
-    .gh-axes__tier-label { font-size: 16px; }
-    .gh-axes__tier-range { font-size: 14px; }
+    .gh-axes__tier-label { font-size: 15px; }
+    .gh-axes__tier-range { font-size: 13px; }
+    .gh-axes__tier-meter { height: 5px; }
   }
 {% endstylesheet %}
 
