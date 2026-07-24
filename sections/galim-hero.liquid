@@ -192,8 +192,8 @@
     max-width: 46%; pointer-events: none;
   }
   .gh-hero__soon-text {
-    font: 200 clamp(52px, 7vw, 104px)/0.95 var(--gh-sans);
-    letter-spacing: -0.04em; text-transform: uppercase;
+    font: 200 clamp(52px, 7vw, 104px)/1.04 var(--gh-sans);
+    letter-spacing: -0.02em; text-transform: uppercase;
     color: #F7F5F3;
     text-shadow: 0 2px 40px rgba(6, 31, 38, 0.5);
   }
@@ -212,8 +212,8 @@
 
   .gh-hero__h1 {
     margin: 24px 0 0;
-    font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.02 var(--gh-sans);
-    letter-spacing: -0.025em;
+    font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.14 var(--gh-sans);
+    letter-spacing: -0.015em;
     color: #f6f5ee;
   }
   .gh-hero__h1-accent { font-weight: 500; }
@@ -286,10 +286,10 @@
     .gh-hero__inner { left: 20px; right: 20px; bottom: 24px; width: auto; max-width: none; }
     /* COMING SOON sits at the top on mobile so it doesn't overlap the copy */
     .gh-hero__soon { left: 20px; right: 20px; top: 12%; transform: none; max-width: none; }
-    .gh-hero__soon-text { font-size: clamp(40px, 15vw, 68px); }
+    .gh-hero__soon-text { font-size: clamp(40px, 15vw, 68px); line-height: 1.06; }
     .gh-hero__soon-sub { font-size: 10px; letter-spacing: 0.2em; }
-    .gh-hero__h1 { font-size: 38px; line-height: 1.05; margin-top: 16px; }
-    .gh-hero__sub { font-size: 15px; margin: 16px 0 20px; }
+    .gh-hero__h1 { font-size: 38px; line-height: 1.2; margin-top: 16px; }
+    .gh-hero__sub { font-size: 15px; line-height: 1.6; margin: 18px 0 22px; }
     .gh-hero__plans { flex-wrap: wrap; gap: 8px 16px; margin-bottom: 20px; }
     .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
     .gh-hero__coords { display: none; }
