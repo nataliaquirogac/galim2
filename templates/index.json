@@ -38,7 +38,7 @@
       "settings": {
         "image": "shopify://shop_images/desktop_6.jpg",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
-        "image_mobile": "shopify://shop_images/mobile_8.jpg",
+        "image_mobile": "shopify://shop_images/desktop_6.jpg",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#0d3b46",
@@ -46,6 +46,8 @@
         "anchor_id": "top",
         "heading_size": 52,
         "heading_size_mobile": 34,
+        "coming_soon": "COMING SOON",
+        "coming_soon_sub": "NOVEMBER 1ST",
         "badge": "PREVENTIVE HEALTHCARE",
         "heading": "Understand your body.",
         "heading_accent": "Protect your future health.",
@@ -54,9 +56,7 @@
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
         "button_link": "",
-        "coords": "CALZADA DEL VALLE , MONTERREY MX",
-        "coming_soon": "COMING SOON",
-        "coming_soon_sub": "NOVEMBER 1ST"
+        "coords": "CALZADA DEL VALLE , MONTERREY MX"
       }
     },
     "carousel": {
