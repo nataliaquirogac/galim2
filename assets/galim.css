@@ -33,8 +33,8 @@
   --gh-green-tint: rgba(19, 94, 115, 0.14);
   --gh-light-tint: rgba(247, 245, 243, 0.05);
 
-  --gh-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --gh-sans: 'Fustat', system-ui, -apple-system, sans-serif;
+  --gh-mono: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --gh-sans: 'Chillax', system-ui, -apple-system, sans-serif;
 
   /* Layout — spacing follows a 4/8pt scale */
   --gh-max: 1440px;
@@ -49,7 +49,7 @@
   }
 }
 
-/* Landing pages use the dark canvas + Fustat everywhere.
+/* Landing pages use the dark canvas + Chillax everywhere.
    Scoped to the body so Dawn's cart/account/product pages keep their own styling. */
 .gh-page {
   background: var(--gh-bg);

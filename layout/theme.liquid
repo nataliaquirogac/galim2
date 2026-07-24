@@ -16,17 +16,20 @@
     {%- endunless -%}
 
     {%- comment -%} Galim Health — fonts & global tokens {%- endcomment -%}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="font" type="font/ttf" href="{{ 'Fustat-ExtraLight.ttf' | asset_url }}" crossorigin>
-    <link rel="preload" as="font" type="font/ttf" href="{{ 'Fustat-Light.ttf' | asset_url }}" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preload" as="font" type="font/otf" href="{{ 'Chillax-Extralight.otf' | asset_url }}" crossorigin>
+    <link rel="preload" as="font" type="font/otf" href="{{ 'Chillax-Light.otf' | asset_url }}" crossorigin>
+    <link rel="preload" as="font" type="font/ttf" href="{{ 'DMSans-Regular.ttf' | asset_url }}" crossorigin>
     {% style %}
-      @font-face { font-family: 'Fustat'; src: url({{ 'Fustat-ExtraLight.ttf' | asset_url }}) format('truetype'); font-weight: 200; font-display: swap; }
-      @font-face { font-family: 'Fustat'; src: url({{ 'Fustat-Light.ttf' | asset_url }}) format('truetype'); font-weight: 300; font-display: swap; }
-      @font-face { font-family: 'Fustat'; src: url({{ 'Fustat-Regular.ttf' | asset_url }}) format('truetype'); font-weight: 400; font-display: swap; }
-      @font-face { font-family: 'Fustat'; src: url({{ 'Fustat-Medium.ttf' | asset_url }}) format('truetype'); font-weight: 500; font-display: swap; }
-      @font-face { font-family: 'Fustat'; src: url({{ 'Fustat-SemiBold.ttf' | asset_url }}) format('truetype'); font-weight: 600; font-display: swap; }
+      /* Chillax — brand display + text sans (var(--gh-sans)) */
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Extralight.otf' | asset_url }}) format('opentype'); font-weight: 200; font-display: swap; }
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Light.otf' | asset_url }}) format('opentype'); font-weight: 300; font-display: swap; }
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Regular.otf' | asset_url }}) format('opentype'); font-weight: 400; font-display: swap; }
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Medium.otf' | asset_url }}) format('opentype'); font-weight: 500; font-display: swap; }
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Semibold.otf' | asset_url }}) format('opentype'); font-weight: 600; font-display: swap; }
+      @font-face { font-family: 'Chillax'; src: url({{ 'Chillax-Bold.otf' | asset_url }}) format('opentype'); font-weight: 700; font-display: swap; }
+      /* DM Sans — technical labels / eyebrows / prices (var(--gh-mono)) */
+      @font-face { font-family: 'DM Sans'; src: url({{ 'DMSans-Regular.ttf' | asset_url }}) format('truetype'); font-weight: 400; font-display: swap; }
+      @font-face { font-family: 'DM Sans'; src: url({{ 'DMSans-Medium.ttf' | asset_url }}) format('truetype'); font-weight: 500; font-display: swap; }
     {% endstyle %}
     {{ 'galim.css' | asset_url | stylesheet_tag }}
 
