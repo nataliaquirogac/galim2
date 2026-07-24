@@ -54,7 +54,9 @@
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
         "button_link": "",
-        "coords": "CALZADA DEL VALLE , MONTERREY MX"
+        "coords": "CALZADA DEL VALLE , MONTERREY MX",
+        "coming_soon": "COMING SOON",
+        "coming_soon_sub": "NOVEMBER 1ST"
       }
     },
     "carousel": {

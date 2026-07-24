@@ -59,6 +59,13 @@
     <div class="gh-hero__sides" aria-hidden="true"></div>
   </div>
 
+  {%- if s.coming_soon != blank -%}
+    <div class="gh-hero__soon" aria-hidden="true">
+      <span class="gh-hero__soon-text">{{ s.coming_soon }}</span>
+      {%- if s.coming_soon_sub != blank -%}<span class="gh-hero__soon-sub">{{ s.coming_soon_sub }}</span>{%- endif -%}
+    </div>
+  {%- endif -%}
+
   <div class="gh-hero__inner">
     <div class="gh-hero__col">
       {%- if s.badge != blank -%}
@@ -178,6 +185,23 @@
   }
   .gh-hero__col { display: block; }
 
+  /* COMING SOON — big statement in the empty left area (desktop) */
+  .gh-hero__soon {
+    position: absolute; left: 56px; top: 50%; transform: translateY(-50%);
+    z-index: 3; display: flex; flex-direction: column; gap: 14px;
+    max-width: 46%; pointer-events: none;
+  }
+  .gh-hero__soon-text {
+    font: 200 clamp(52px, 7vw, 104px)/0.95 var(--gh-sans);
+    letter-spacing: -0.04em; text-transform: uppercase;
+    color: #F7F5F3;
+    text-shadow: 0 2px 40px rgba(6, 31, 38, 0.5);
+  }
+  .gh-hero__soon-sub {
+    font: 500 12px/1.4 var(--gh-mono); letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--gh-muted); padding-left: 4px;
+  }
+
   .gh-hero__badge {
     display: inline-flex; align-items: center; gap: 9px;
     font: 500 12px/1 var(--gh-mono);
@@ -260,6 +284,10 @@
         rgba(13, 59, 70, 0.98) 100%);
     }
     .gh-hero__inner { left: 20px; right: 20px; bottom: 24px; width: auto; max-width: none; }
+    /* COMING SOON sits at the top on mobile so it doesn't overlap the copy */
+    .gh-hero__soon { left: 20px; right: 20px; top: 12%; transform: none; max-width: none; }
+    .gh-hero__soon-text { font-size: clamp(40px, 15vw, 68px); }
+    .gh-hero__soon-sub { font-size: 10px; letter-spacing: 0.2em; }
     .gh-hero__h1 { font-size: 38px; line-height: 1.05; margin-top: 16px; }
     .gh-hero__sub { font-size: 15px; margin: 16px 0 20px; }
     .gh-hero__plans { flex-wrap: wrap; gap: 8px 16px; margin-bottom: 20px; }
@@ -285,6 +313,8 @@
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
     { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
     { "type": "range", "id": "heading_size_mobile", "min": 22, "max": 46, "step": 2, "unit": "px", "label": "Heading size (mobile)", "default": 30 },
+    { "type": "text", "id": "coming_soon", "label": "Coming soon (big, left)", "info": "Large statement on the empty side of the hero. Leave blank to hide.", "default": "COMING SOON" },
+    { "type": "text", "id": "coming_soon_sub", "label": "Coming soon subline", "default": "NOVEMBER 1ST" },
     { "type": "text", "id": "badge", "label": "Badge (mono)", "default": "PREVENTIVE HEALTHCARE · MEDICAL COUNCIL" },
     { "type": "textarea", "id": "heading", "label": "Headline", "default": "Understand your body." },
     { "type": "text", "id": "heading_accent", "label": "Headline accent (bolder line)", "default": "Protect your future." },
