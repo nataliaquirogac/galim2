@@ -14,30 +14,42 @@
 
 <section id="{{ s.anchor_id | default: 'top' }}" class="gh-hero" data-gh-section="hero" style="--gh-hero-h1-max: {{ s.heading_size | default: 52 }}px; --gh-hero-h1-min: {{ s.heading_size_mobile | default: 30 }}px; --gh-hero-tint: {{ s.overlay_strength | default: 45 | divided_by: 100.0 }}; --gh-side-color: {{ s.side_color | default: '#0D3B46' }}; --gh-side-width: {{ s.side_width | default: 22 }}%;">
   {%- liquid
-    assign desktop_src = ''
-    if s.image != blank
-      assign desktop_src = s.image | image_url: width: 1800
+    assign desktop_img = s.image
+    assign mobile_img = s.image_mobile
+    if mobile_img == blank
+      assign mobile_img = desktop_img
+    endif
+    assign fallback_src = ''
+    if desktop_img != blank
+      assign fallback_src = desktop_img | image_url: width: 2400
     elsif s.image_url != blank
-      assign desktop_src = s.image_url
-    endif
-    assign mobile_src = ''
-    if s.image_mobile != blank
-      assign mobile_src = s.image_mobile | image_url: width: 700
+      assign fallback_src = s.image_url
     elsif s.image_url_mobile != blank
-      assign mobile_src = s.image_url_mobile
-    endif
-    assign main_src = desktop_src
-    if main_src == blank
-      assign main_src = mobile_src
+      assign fallback_src = s.image_url_mobile
     endif
   -%}
   <div class="gh-hero__media">
-    {%- if main_src != blank -%}
+    {%- if desktop_img != blank or mobile_img != blank or fallback_src != blank -%}
       <picture>
-        {%- if mobile_src != blank and desktop_src != blank -%}
-          <source media="(max-width: 768px)" srcset="{{ mobile_src }}">
+        {%- comment -%} Mobile: portrait-ish, retina-ready (up to ~3x of 800px) {%- endcomment -%}
+        {%- if mobile_img != blank -%}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ mobile_img | image_url: width: 800 }} 800w, {{ mobile_img | image_url: width: 1200 }} 1200w, {{ mobile_img | image_url: width: 1600 }} 1600w"
+            sizes="100vw">
+        {%- elsif s.image_url_mobile != blank -%}
+          <source media="(max-width: 767px)" srcset="{{ s.image_url_mobile }}">
         {%- endif -%}
-        <img class="gh-hero__img" src="{{ main_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" fetchpriority="high" onerror="this.style.display='none'">
+        {%- comment -%} Desktop: full-bleed, retina-ready up to 3200w {%- endcomment -%}
+        {%- if desktop_img != blank -%}
+          <source
+            media="(min-width: 768px)"
+            srcset="{{ desktop_img | image_url: width: 1600 }} 1600w, {{ desktop_img | image_url: width: 2000 }} 2000w, {{ desktop_img | image_url: width: 2600 }} 2600w, {{ desktop_img | image_url: width: 3200 }} 3200w"
+            sizes="100vw">
+        {%- elsif s.image_url != blank -%}
+          <source media="(min-width: 768px)" srcset="{{ s.image_url }}">
+        {%- endif -%}
+        <img class="gh-hero__img" src="{{ fallback_src }}" alt="{{ s.image.alt | escape | default: shop.name }}" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
       </picture>
     {%- endif -%}
     <div class="gh-hero__tint"></div>
