@@ -23,23 +23,34 @@
             </div>
             <div class="gh-pkg__body">
               {%- if b.intro != blank -%}<p class="gh-pkg__intro">{{ b.intro }}</p>{%- endif -%}
-              {%- if b.features != blank -%}<div class="gh-pkg__features">{{ b.features }}</div>{%- endif -%}
-              {%- if b.outro != blank -%}<div class="gh-pkg__outro">{{ b.outro }}</div>{%- endif -%}
-              {%- if b.addon_line != blank -%}
-                <div class="gh-pkg__addons">
-                  <div class="gh-pkg__addons-title">{{ b.addon_title | default: 'ADD-ONS' }}</div>
-                  {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
-                  {%- for row in addon_rows -%}
-                    {%- assign row_clean = row | strip_html | strip -%}
-                    {%- if row_clean != blank -%}<p class="gh-pkg__addon">{{ row_clean }}</p>{%- endif -%}
-                  {%- endfor -%}
+
+              {%- if b.features != blank -%}
+                <div class="gh-pkg__section">
+                  <div class="gh-pkg__label">{{ b.features_label | default: 'WHAT WE MEASURE' }}</div>
+                  <div class="gh-pkg__features">{{ b.features }}</div>
                 </div>
               {%- endif -%}
+
+              {%- if b.outro != blank -%}<div class="gh-pkg__note">{{ b.outro }}</div>{%- endif -%}
+
+              {%- if b.addon_line != blank -%}
+                <div class="gh-pkg__section gh-pkg__addons">
+                  <div class="gh-pkg__label">{{ b.addon_title | default: 'ADD-ONS' }}</div>
+                  <div class="gh-pkg__addon-list">
+                    {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
+                    {%- for row in addon_rows -%}
+                      {%- assign row_clean = row | strip_html | strip -%}
+                      {%- if row_clean != blank -%}<div class="gh-pkg__addon">{{ row_clean }}</div>{%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+
               {%- if b.button_label != blank -%}
                 {%- if b.button_link != blank -%}
-                  <a href="{{ b.button_link }}" class="gh-pkg__cta">[ {{ b.button_label }} ]</a>
+                  <a href="{{ b.button_link }}" class="gh-btn gh-btn--solid gh-pkg__cta">{{ b.button_label }} →</a>
                 {%- else -%}
-                  <a href="#" class="gh-pkg__cta" data-gh-waitlist-open>[ {{ b.button_label }} ]</a>
+                  <a href="#" class="gh-btn gh-btn--solid gh-pkg__cta" data-gh-waitlist-open>{{ b.button_label }} →</a>
                 {%- endif -%}
               {%- endif -%}
             </div>
@@ -105,28 +116,37 @@
   .gh-pkg__price { font: 500 26px/1 var(--gh-sans); color: var(--gh-price); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 20px; }
 
-  .gh-pkg__body { padding: 26px 34px 32px; }
-  .gh-pkg__intro { font: 300 15px/1.55 var(--gh-sans); color: var(--gh-muted); margin: 0 0 24px; }
-  .gh-pkg__features ul { list-style: none; margin: 0 0 24px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
-  .gh-pkg__features li { font: 300 15px/1.5 var(--gh-sans); color: var(--gh-muted); }
-  .gh-pkg__features strong { font-weight: 600; color: var(--gh-light); }
+  .gh-pkg__body { padding: 28px 34px 32px; }
+  /* Lead line */
+  .gh-pkg__intro { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-light); margin: 0 0 26px; }
+  /* Each block is a labelled section split by a hairline divider */
+  .gh-pkg__section { padding-top: 24px; border-top: 1px solid rgba(168,194,200,.14); margin-bottom: 24px; }
+  .gh-pkg__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 18px; }
+  /* Feature rows: bold term on its own line, description under it (no dashes) */
+  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .gh-pkg__features li { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-muted); padding: 14px 0; border-bottom: 1px solid rgba(168,194,200,.08); }
+  .gh-pkg__features li:first-child { padding-top: 0; }
+  .gh-pkg__features li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .gh-pkg__features strong { display: block; font: 600 15px/1.3 var(--gh-sans); color: var(--gh-white); margin-bottom: 4px; }
   .gh-pkg__features p { margin: 0; }
-  .gh-pkg__outro { display: flex; flex-direction: column; gap: 14px; margin-bottom: 4px; }
-  .gh-pkg__outro p { font: 300 15px/1.55 var(--gh-sans); color: var(--gh-muted); margin: 0; }
-  .gh-pkg__addons {
-    margin-top: 26px; padding-top: 22px;
-    border-top: 1px dashed rgba(168,194,200,.18);
-    display: flex; flex-direction: column; gap: 12px;
+  /* Closing note as a highlighted callout, not loose text */
+  .gh-pkg__note {
+    background: rgba(19, 94, 115, 0.12); border: 1px solid rgba(19, 94, 115, 0.3);
+    border-left: 3px solid var(--gh-price); border-radius: 10px;
+    padding: 18px 20px; margin-bottom: 24px;
+    display: flex; flex-direction: column; gap: 10px;
   }
-  .gh-pkg__addons-title { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.18em; color: var(--gh-slate); margin-bottom: 2px; }
-  .gh-pkg__addon { font: 300 14px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0; }
-  .gh-pkg__cta {
-    display: inline-block; margin-top: 30px;
-    font: 500 14px/1 var(--gh-sans); letter-spacing: 0.06em;
-    color: var(--gh-light); text-transform: uppercase;
-    transition: color 0.25s ease, letter-spacing 0.25s ease;
+  .gh-pkg__note p { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-light); margin: 0; }
+  /* Add-ons as bordered rows */
+  .gh-pkg__addons { margin-bottom: 0; }
+  .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 8px; }
+  .gh-pkg__addon {
+    font: 400 13px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0;
+    padding: 12px 14px; border-radius: 8px;
+    background: rgba(168,194,200,.05); border: 1px solid rgba(168,194,200,.14);
   }
-  .gh-pkg__cta:hover { color: var(--gh-price); letter-spacing: 0.12em; }
+  /* Real solid button, full width */
+  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: 28px; font: 500 14px/1 var(--gh-sans); letter-spacing: 0.06em; text-transform: uppercase; padding: 17px 24px; }
 
   .gh-glp {
     margin-top: 28px; border-radius: 14px; background: rgba(168,194,200,.06);
@@ -184,7 +204,8 @@
         { "type": "checkbox", "id": "featured", "label": "Featured (green border + badge)", "default": false },
         { "type": "text", "id": "badge_label", "label": "Badge label", "default": "FULL PICTURE" },
         { "type": "text", "id": "intro", "label": "Intro line (under price)", "default": "Your BQ — where your body ranks, and what to train next." },
-        { "type": "richtext", "id": "features", "label": "Features (list, bold = highlighted term)", "default": "<ul><li><strong>Muscle & fat</strong> — kilo by kilo, not an estimate</li><li><strong>Strength</strong> — how you rank for your age</li><li><strong>VO₂ max</strong> — the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> — the restriction that will injure you</li><li><strong>Metabolic health</strong> — how efficiently you burn fuel</li></ul>" },
+        { "type": "text", "id": "features_label", "label": "Features section label", "default": "WHAT WE MEASURE" },
+        { "type": "richtext", "id": "features", "label": "Features (list, bold = term on top, rest under it)", "default": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>" },
         { "type": "richtext", "id": "outro", "label": "Closing lines (after list)", "default": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>" },
         { "type": "text", "id": "addon_title", "label": "Add-ons title (mono)", "default": "ADD-ONS" },
         { "type": "textarea", "id": "addon_line", "label": "Add-ons (one per line, optional)", "default": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones\nGalim AI — your plan, adjusted daily" },
@@ -197,8 +218,8 @@
     {
       "name": "Galim · Protocols",
       "blocks": [
-        { "type": "package", "settings": { "name": "Performance", "subtitle": "25 minutes. Six systems. One number.", "price": "$1,499", "price_unit": "MXN", "featured": false, "intro": "Your BQ — where your body ranks, and what to train next.", "features": "<ul><li><strong>Muscle & fat</strong> — kilo by kilo, not an estimate</li><li><strong>Strength</strong> — how you rank for your age</li><li><strong>VO₂ max</strong> — the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> — the restriction that will injure you</li><li><strong>Metabolic health</strong> — how efficiently you burn fuel</li></ul>", "outro": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones\nGalim AI — your plan, adjusted daily", "button_label": "BOOK YOUR BQ" } },
-        { "type": "package", "settings": { "name": "Prevention", "subtitle": "50 minutes. Every system. Your biological age.", "price": "$4,999", "price_unit": "MXN", "featured": false, "intro": "Performance tells you where you stand today. Prevention tells you what's coming.", "features": "<ul><li><strong>Heart & arteries</strong> — arterial age, plaque risk. The #1 killer, found early.</li><li><strong>Brain</strong> — cognition, retina, vascular risk</li><li><strong>Organs & metabolism</strong> — blood, liver, kidney, thyroid, hormones</li><li><strong>Structure</strong> — bone density, lung function</li><li><strong>Senses & skin</strong> — vision, hearing, skin age</li></ul>", "outro": "<p>You leave with a biological age for each system, the gap against your real age, and what to do about the worst one.</p><p>Once a year. Watch the gap close.</p><p>Includes everything in Performance. Includes Galim AI.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones", "button_label": "BOOK YOUR PREVENTION VISIT" } }
+        { "type": "package", "settings": { "name": "Performance", "subtitle": "25 minutes. Six systems. One number.", "price": "$1,499", "price_unit": "MXN", "featured": false, "intro": "Your BQ — where your body ranks, and what to train next.", "features_label": "WHAT WE MEASURE", "features": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>", "outro": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones\nGalim AI — your plan, adjusted daily", "button_label": "BOOK YOUR BQ" } },
+        { "type": "package", "settings": { "name": "Prevention", "subtitle": "50 minutes. Every system. Your biological age.", "price": "$4,999", "price_unit": "MXN", "featured": false, "intro": "Performance tells you where you stand today. Prevention tells you what's coming.", "features_label": "WHAT WE SCREEN", "features": "<ul><li><strong>Heart & arteries</strong> arterial age, plaque risk. The #1 killer, found early.</li><li><strong>Brain</strong> cognition, retina, vascular risk</li><li><strong>Organs & metabolism</strong> blood, liver, kidney, thyroid, hormones</li><li><strong>Structure</strong> bone density, lung function</li><li><strong>Senses & skin</strong> vision, hearing, skin age</li></ul>", "outro": "<p>You leave with a biological age for each system, the gap against your real age, and what to do about the worst one.</p><p>Once a year. Watch the gap close.</p><p>Includes everything in Performance. Includes Galim AI.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones", "button_label": "BOOK YOUR PREVENTION VISIT" } }
       ]
     }
   ]
