@@ -51,21 +51,29 @@
 
 /* Landing pages use the dark canvas + Chillax everywhere.
    Scoped to the body so Dawn's cart/account/product pages keep their own styling. */
+/* Solid dark fallback (beats Dawn's light `.gradient` on the body via the
+   body.gh-page specificity) so the page is never white if the layer fails. */
+body.gh-page { background: #082B34 !important; }
 .gh-page {
-  /* Page-wide diagonal gradient with brand glow (fixed to the viewport so it
-     "breathes" as you scroll). Deep teal core keeps text readable; green + aqua
-     bloom in the corners echo the Galim brand banners. Sections below are
-     transparent so this single wash shows through the whole page. */
-  background:
-    radial-gradient(78% 70% at 88% 10%, rgba(92, 178, 74, 0.30), rgba(92, 178, 74, 0) 55%),
-    radial-gradient(80% 78% at 6% 94%, rgba(40, 165, 128, 0.28), rgba(40, 165, 128, 0) 55%),
-    radial-gradient(70% 62% at 55% 48%, rgba(19, 94, 115, 0.32), rgba(19, 94, 115, 0) 62%),
-    linear-gradient(135deg, #082B34 0%, #0D3B46 42%, #0B3A40 68%, #06222A 100%);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
   color: var(--gh-light);
   font-family: var(--gh-sans);
   -webkit-font-smoothing: antialiased;
+}
+/* Page-wide diagonal gradient with brand glow, painted on a fixed layer behind
+   ALL content (independent of Dawn's body background). Deep teal core keeps
+   text readable; green + aqua bloom in the corners echo the Galim banners.
+   It "breathes" as you scroll because it's fixed to the viewport. */
+.gh-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(78% 70% at 88% 10%, rgba(92, 178, 74, 0.32), rgba(92, 178, 74, 0) 55%),
+    radial-gradient(80% 78% at 6% 94%, rgba(40, 165, 128, 0.30), rgba(40, 165, 128, 0) 55%),
+    radial-gradient(70% 62% at 55% 48%, rgba(19, 94, 115, 0.32), rgba(19, 94, 115, 0) 62%),
+    linear-gradient(135deg, #082B34 0%, #0D3B46 42%, #0B3A40 68%, #06222A 100%);
 }
 /* Reveal the page gradient: interior sections go transparent (this also
    neutralizes the per-section bg color pickers, which is intended). The hero
