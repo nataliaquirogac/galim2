@@ -525,7 +525,6 @@
   },
   "order": [
     "hero",
-    "statement_intro",
     "carousel",
     "gap",
     "steps",
@@ -533,7 +532,6 @@
     "protocols",
     "diagnostics",
     "method",
-    "statement_precision",
     "final_cta"
   ]
 }
