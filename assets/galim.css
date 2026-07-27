@@ -26,6 +26,7 @@
      --gh-green kept as the variable name for backwards compat = light accent. */
   --gh-green: #A8C2C8;
   --gh-accent: #A8C2C8;
+  --gh-price: #5FBF88;      /* mint green for prices (pops on dark teal) */
   /* Common alphas */
   --gh-border: rgba(168, 194, 200, 0.16);
   --gh-border-strong: rgba(168, 194, 200, 0.22);
