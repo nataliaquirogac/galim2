@@ -315,7 +315,7 @@
           "settings": {
             "numeral": "III",
             "label": "Fit",
-            "range": "20–29%",
+            "range": "20-29%",
             "numeral_color": "light",
             "label_color": "white",
             "range_color": "light",
