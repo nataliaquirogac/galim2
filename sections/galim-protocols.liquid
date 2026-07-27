@@ -109,44 +109,44 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: var(--gh-bg);
     background: var(--gh-green); padding: 6px 11px; border-radius: 2px;
   }
-  .gh-pkg__head { position: relative; padding: 32px 34px 28px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(19, 94, 115,.16), transparent 60%); }
+  .gh-pkg__head { position: relative; padding: 26px 30px 20px; border-bottom: 1px solid rgba(168,194,200,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(19, 94, 115,.16), transparent 60%); }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(19, 94, 115,.2), transparent 60%); }
-  .gh-pkg__name { font: 600 30px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0 0 6px; padding: 0; letter-spacing: -0.01em; }
-  .gh-pkg__subtitle { font: 300 15px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0 0 18px; padding: 0; }
-  .gh-pkg__price { font: 500 26px/1 var(--gh-sans); color: var(--gh-price); letter-spacing: 0; }
-  .gh-pkg__unit { font-size: 20px; }
+  .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0 0 3px; padding: 0; letter-spacing: -0.01em; }
+  .gh-pkg__subtitle { font: 300 14px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0 0 12px; padding: 0; }
+  .gh-pkg__price { font: 500 24px/1 var(--gh-sans); color: var(--gh-price); letter-spacing: 0; }
+  .gh-pkg__unit { font-size: 18px; }
 
-  .gh-pkg__body { padding: 28px 34px 32px; }
+  .gh-pkg__body { padding: 20px 30px 24px; }
   /* Lead line */
-  .gh-pkg__intro { font: 400 16px/1.5 var(--gh-sans); color: var(--gh-light); margin: 0 0 26px; }
+  .gh-pkg__intro { font: 400 15px/1.45 var(--gh-sans); color: var(--gh-light); margin: 0 0 18px; }
   /* Each block is a labelled section split by a hairline divider */
-  .gh-pkg__section { padding-top: 24px; border-top: 1px solid rgba(168,194,200,.14); margin-bottom: 24px; }
-  .gh-pkg__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 18px; }
+  .gh-pkg__section { padding-top: 16px; border-top: 1px solid rgba(168,194,200,.14); margin-bottom: 16px; }
+  .gh-pkg__label { font: 500 10px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 12px; }
   /* Feature rows: bold term on its own line, description under it (no dashes) */
   .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-  .gh-pkg__features li { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-muted); padding: 14px 0; border-bottom: 1px solid rgba(168,194,200,.08); }
+  .gh-pkg__features li { font: 300 13px/1.4 var(--gh-sans); color: var(--gh-muted); padding: 9px 0; border-bottom: 1px solid rgba(168,194,200,.08); }
   .gh-pkg__features li:first-child { padding-top: 0; }
   .gh-pkg__features li:last-child { border-bottom: 0; padding-bottom: 0; }
-  .gh-pkg__features strong { display: block; font: 600 15px/1.3 var(--gh-sans); color: var(--gh-white); margin-bottom: 4px; }
+  .gh-pkg__features strong { display: block; font: 600 14px/1.25 var(--gh-sans); color: var(--gh-white); margin-bottom: 1px; }
   .gh-pkg__features p { margin: 0; }
   /* Closing note as a highlighted callout, not loose text */
   .gh-pkg__note {
     background: rgba(19, 94, 115, 0.12); border: 1px solid rgba(19, 94, 115, 0.3);
     border-left: 3px solid var(--gh-price); border-radius: 10px;
-    padding: 18px 20px; margin-bottom: 24px;
-    display: flex; flex-direction: column; gap: 10px;
+    padding: 14px 16px; margin-bottom: 16px;
+    display: flex; flex-direction: column; gap: 7px;
   }
-  .gh-pkg__note p { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-light); margin: 0; }
+  .gh-pkg__note p { font: 300 13px/1.45 var(--gh-sans); color: var(--gh-light); margin: 0; }
   /* Add-ons as bordered rows */
   .gh-pkg__addons { margin-bottom: 0; }
-  .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 8px; }
+  .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 6px; }
   .gh-pkg__addon {
-    font: 400 13px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0;
-    padding: 12px 14px; border-radius: 8px;
+    font: 400 13px/1.35 var(--gh-sans); color: var(--gh-muted); margin: 0;
+    padding: 9px 12px; border-radius: 7px;
     background: rgba(168,194,200,.05); border: 1px solid rgba(168,194,200,.14);
   }
   /* Real solid button, full width */
-  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: 28px; font: 500 14px/1 var(--gh-sans); letter-spacing: 0.06em; text-transform: uppercase; padding: 17px 24px; }
+  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: 20px; font: 500 14px/1 var(--gh-sans); letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 24px; }
 
   .gh-glp {
     margin-top: 28px; border-radius: 14px; background: rgba(168,194,200,.06);
@@ -162,15 +162,11 @@
     .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
-    .gh-pkg__head { padding: 24px 22px 22px; }
-    .gh-pkg__name { font-size: 26px; }
-    .gh-pkg__subtitle { font-size: 14px; margin-bottom: 14px; }
-    .gh-pkg__price { font-size: 23px; }
-    .gh-pkg__unit { font-size: 17px; }
-    .gh-pkg__body { padding: 22px 22px 26px; }
-    .gh-pkg__intro { font-size: 14px; margin-bottom: 20px; }
-    .gh-pkg__features li { font-size: 14px; }
-    .gh-pkg__outro p { font-size: 14px; }
+    .gh-pkg__head { padding: 22px 20px 18px; }
+    .gh-pkg__name { font-size: 24px; }
+    .gh-pkg__price { font-size: 22px; }
+    .gh-pkg__unit { font-size: 16px; }
+    .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
     .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
