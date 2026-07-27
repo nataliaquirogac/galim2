@@ -66,7 +66,15 @@
 </section>
 
 {% stylesheet %}
-  .gh-mq { padding: var(--gh-pad-y) 0; overflow: hidden; }
+  .gh-mq { position: relative; padding: var(--gh-pad-y) 0; overflow: hidden; }
+  /* Green/teal ambient glow behind the cards (brand look) */
+  .gh-mq::before {
+    content: ""; position: absolute; left: 14%; top: 52%;
+    width: 760px; height: 460px; transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, rgba(92, 178, 74, 0.26), rgba(40, 165, 128, 0.16) 42%, rgba(19, 94, 115, 0) 72%);
+    filter: blur(44px); pointer-events: none; z-index: 0;
+  }
+  .gh-mq > * { position: relative; z-index: 1; }
   .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
   .gh-mq__eyebrow { margin-bottom: 12px; }
   .gh-mq__h2 { font: 200 28px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 24px; max-width: 720px; }
