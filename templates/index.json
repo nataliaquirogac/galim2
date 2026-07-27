@@ -491,10 +491,36 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
+    },
+    "statement_intro": {
+      "type": "galim-statement",
+      "settings": {
+        "eyebrow": "UNA NUEVA FORMA DE CONOCER TU CUERPO",
+        "heading": "Medimos tu cuerpo, te mostramos resultados en tiempo real y te damos un plan concreto para mejorar.",
+        "body": "Un centro de chequeos preventivos — rápido, con tecnología de precisión médica y respaldado por médicos especialistas de primer nivel.",
+        "button_opens_modal": true,
+        "bg_color": "#F7F5F3",
+        "text_color": "#135E73",
+        "body_color": "#1C4E5A"
+      }
+    },
+    "statement_precision": {
+      "type": "galim-statement",
+      "settings": {
+        "eyebrow": "",
+        "heading": "The precision once reserved for elite clinics.\n<strong>Now within reach.</strong>",
+        "body": "",
+        "button_label": "Visit us",
+        "button_opens_modal": true,
+        "bg_color": "#F7F5F3",
+        "text_color": "#135E73",
+        "body_color": "#1C4E5A"
+      }
     }
   },
   "order": [
     "hero",
+    "statement_intro",
     "carousel",
     "gap",
     "steps",
@@ -502,6 +528,7 @@
     "protocols",
     "diagnostics",
     "method",
+    "statement_precision",
     "final_cta"
   ]
 }
