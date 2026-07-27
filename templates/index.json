@@ -59,6 +59,21 @@
         "coords": "CALZADA DEL VALLE , MONTERREY MX"
       }
     },
+    "statement_intro": {
+      "type": "galim-statement",
+      "settings": {
+        "anchor_id": "",
+        "eyebrow": "",
+        "heading": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year",
+        "body": "",
+        "button_label": "",
+        "button_opens_modal": true,
+        "button_link": "",
+        "bg_color": "#f7f5f3",
+        "text_color": "#135e73",
+        "body_color": "#1c4e5a"
+      }
+    },
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
@@ -480,6 +495,21 @@
         "bg_bottom": "#0d3b46"
       }
     },
+    "statement_precision": {
+      "type": "galim-statement",
+      "settings": {
+        "anchor_id": "",
+        "eyebrow": "",
+        "heading": "The precision once reserved for elite clinics.\n<strong>Now within reach.</strong>",
+        "body": "",
+        "button_label": "Visit us",
+        "button_opens_modal": true,
+        "button_link": "",
+        "bg_color": "#f7f5f3",
+        "text_color": "#135e73",
+        "body_color": "#1c4e5a"
+      }
+    },
     "final_cta": {
       "type": "galim-final-cta",
       "settings": {
@@ -490,31 +520,6 @@
         "button_opens_modal": true,
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
-      }
-    },
-    "statement_intro": {
-      "type": "galim-statement",
-      "settings": {
-        "eyebrow": "UNA NUEVA FORMA DE CONOCER TU CUERPO",
-        "heading": "Medimos tu cuerpo, te mostramos resultados en tiempo real y te damos un plan concreto para mejorar.",
-        "body": "Un centro de chequeos preventivos — rápido, con tecnología de precisión médica y respaldado por médicos especialistas de primer nivel.",
-        "button_opens_modal": true,
-        "bg_color": "#F7F5F3",
-        "text_color": "#135E73",
-        "body_color": "#1C4E5A"
-      }
-    },
-    "statement_precision": {
-      "type": "galim-statement",
-      "settings": {
-        "eyebrow": "",
-        "heading": "The precision once reserved for elite clinics.\n<strong>Now within reach.</strong>",
-        "body": "",
-        "button_label": "Visit us",
-        "button_opens_modal": true,
-        "bg_color": "#F7F5F3",
-        "text_color": "#135E73",
-        "body_color": "#1C4E5A"
       }
     }
   },
