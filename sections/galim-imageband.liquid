@@ -1,0 +1,101 @@
+{%- comment -%}
+  Galim Health — Image band
+  Full-bleed cinematic image (e.g. the clinic render) with soft top/bottom fades
+  so it reveals between the dark sections. Optional overlay caption + button.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign img = s.image
+  assign src = ''
+  if img != blank
+    assign src = img | image_url: width: 2600
+  elsif s.image_url != blank
+    assign src = s.image_url
+  else
+    assign src = 'render-clinic.jpg' | asset_url
+  endif
+-%}
+
+<section
+  {% if s.anchor_id != blank %}id="{{ s.anchor_id }}"{% endif %}
+  class="gh-band"
+  data-gh-section="imageband"
+  style="--gh-band-h: {{ s.height | default: 62 }}vh; --gh-band-h-mobile: {{ s.height_mobile | default: 52 }}vh;">
+  {%- if img != blank -%}
+    <img class="gh-band__img"
+      src="{{ img | image_url: width: 2600 }}"
+      srcset="{{ img | image_url: width: 1400 }} 1400w, {{ img | image_url: width: 2000 }} 2000w, {{ img | image_url: width: 2600 }} 2600w, {{ img | image_url: width: 3200 }} 3200w"
+      sizes="100vw"
+      alt="{{ img.alt | escape | default: shop.name }}" loading="lazy" decoding="async">
+  {%- else -%}
+    <img class="gh-band__img" src="{{ src }}" alt="{{ shop.name }}" loading="lazy" decoding="async">
+  {%- endif -%}
+
+  {%- if s.top_fade or s.bottom_fade -%}
+    <div class="gh-band__fade{% if s.top_fade %} is-top{% endif %}{% if s.bottom_fade %} is-bottom{% endif %}" aria-hidden="true"></div>
+  {%- endif -%}
+
+  {%- if s.eyebrow != blank or s.heading != blank or s.button_label != blank -%}
+    <div class="gh-band__overlay">
+      <div class="gh-container gh-band__inner">
+        {%- if s.eyebrow != blank -%}<p class="gh-band__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="gh-band__h2">{{ s.heading | newline_to_br }}</h2>{%- endif -%}
+        {%- if s.button_label != blank -%}
+          {%- if s.button_opens_modal -%}
+            <a href="#" class="gh-btn gh-btn--solid gh-band__btn" data-gh-waitlist-open>{{ s.button_label }} →</a>
+          {%- else -%}
+            <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid gh-band__btn">{{ s.button_label }} →</a>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .gh-band { position: relative; width: 100%; height: var(--gh-band-h, 62vh); overflow: hidden; background: var(--gh-bg-900); }
+  .gh-band__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  /* Soft fades to blend into the dark sections above/below */
+  .gh-band__fade { position: absolute; inset: 0; pointer-events: none; }
+  .gh-band__fade.is-top { background: linear-gradient(180deg, var(--gh-bg, #0D3B46) 0%, rgba(13,59,70,0) 22%); }
+  .gh-band__fade.is-bottom { background: linear-gradient(0deg, var(--gh-bg, #0D3B46) 0%, rgba(13,59,70,0) 22%); }
+  .gh-band__fade.is-top.is-bottom {
+    background:
+      linear-gradient(180deg, var(--gh-bg, #0D3B46) 0%, rgba(13,59,70,0) 20%),
+      linear-gradient(0deg, var(--gh-bg, #0D3B46) 0%, rgba(13,59,70,0) 20%);
+  }
+  .gh-band__overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+  .gh-band__inner { width: 100%; padding: 0 var(--gh-pad-x) 48px; }
+  .gh-band__eyebrow { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gh-light); margin: 0 0 14px; opacity: 0.9; }
+  .gh-band__h2 { font: 300 clamp(26px, 3.4vw, 42px)/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0; max-width: 640px; text-shadow: 0 2px 30px rgba(0,0,0,.4); }
+  .gh-band__btn { margin-top: 26px; }
+
+  @media (max-width: 768px) {
+    .gh-band { height: var(--gh-band-h-mobile, 52vh); }
+    .gh-band__inner { padding: 0 var(--gh-pad-x) 28px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Image band",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the clinic render if empty." },
+    { "type": "text", "id": "image_url", "label": "…or image URL" },
+    { "type": "range", "id": "height", "min": 30, "max": 90, "step": 2, "unit": "vh", "label": "Height (desktop)", "default": 62 },
+    { "type": "range", "id": "height_mobile", "min": 30, "max": 90, "step": 2, "unit": "vh", "label": "Height (mobile)", "default": 52 },
+    { "type": "checkbox", "id": "top_fade", "label": "Fade top into background", "default": true },
+    { "type": "checkbox", "id": "bottom_fade", "label": "Fade bottom into background", "default": true },
+    { "type": "header", "content": "Overlay (optional)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
+    { "type": "url", "id": "button_link", "label": "Button link (if not modal)" }
+  ],
+  "presets": [{ "name": "Galim · Image band" }]
+}
+{% endschema %}
