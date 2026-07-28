@@ -36,13 +36,13 @@
         "plan_long"
       ],
       "settings": {
-        "image": "",
-        "image_url": "",
+        "image": "shopify://shop_images/desktop_9.jpg",
+        "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
         "image_mobile": "shopify://shop_images/mobile_9.jpg",
         "image_url_mobile": "",
-        "overlay_strength": 12,
+        "overlay_strength": 35,
         "side_color": "#0d3b46",
-        "side_width": 8,
+        "side_width": 22,
         "anchor_id": "top",
         "heading_size": 52,
         "heading_size_mobile": 34,
@@ -491,16 +491,6 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
-    },
-    "clinic_band": {
-      "type": "galim-imageband",
-      "settings": {
-        "height": 62,
-        "height_mobile": 52,
-        "top_fade": true,
-        "bottom_fade": true,
-        "button_opens_modal": true
-      }
     }
   },
   "order": [
@@ -512,7 +502,6 @@
     "protocols",
     "diagnostics",
     "method",
-    "clinic_band",
     "final_cta"
   ]
 }
