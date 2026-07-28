@@ -31,6 +31,11 @@
     endif
   -%}
   <div class="gh-hero__media">
+    {%- comment -%} Blurred copy of the image fills the sides edge-to-edge so the
+      contained (full) figure never shows a seam against the background. {%- endcomment -%}
+    {%- if fallback_src != blank -%}
+      <div class="gh-hero__backdrop" aria-hidden="true" style="background-image: url({{ fallback_src }});"></div>
+    {%- endif -%}
     {%- if desktop_img != blank or mobile_img != blank or fallback_src != blank -%}
       <picture>
         {%- comment -%} Mobile: portrait-ish, retina-ready (up to ~3x of 800px) {%- endcomment -%}
@@ -147,10 +152,18 @@
       linear-gradient(135deg, #082B34 0%, #0D3B46 45%, #06222A 100%);
   }
   .gh-hero__media { position: absolute; inset: 0; overflow: hidden; }
+  /* Blurred, scaled copy of the same photo — fills the whole hero so the
+     contained figure has no visible letterbox/seam on wide screens. */
+  .gh-hero__backdrop {
+    position: absolute; inset: 0; z-index: 0;
+    background-size: cover; background-position: center;
+    filter: blur(42px) brightness(0.72) saturate(1.15);
+    transform: scale(1.18);
+  }
   .gh-hero__img {
-    position: absolute; inset: 0;
+    position: absolute; inset: 0; z-index: 1;
     width: 100%; height: 100%;
-    /* Show the FULL figure (no crop); blends via the matching background */
+    /* Show the FULL figure (no crop); the blurred backdrop fills the sides */
     object-fit: contain; object-position: center;
   }
   /* Optional teal tint over the full photo (customizer slider) */
@@ -278,7 +291,8 @@
     /* Mobile: COMING SOON and the copy flow in one normal column (no
        absolute overlap). Height grows with content; the image fills behind. */
     .gh-hero { min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 20px 28px; }
-    /* Mobile uses the portrait image, cropped to fill (cover) */
+    /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
+    .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
     .gh-hero__tint { display: none; }
     .gh-hero__grad-h { display: none; }
