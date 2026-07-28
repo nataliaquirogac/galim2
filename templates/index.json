@@ -36,7 +36,7 @@
         "plan_long"
       ],
       "settings": {
-        "image": "shopify://shop_images/desktop_6.jpg",
+        "image": "shopify://shop_images/desktop_7.jpg",
         "image_url": "https://galimhealth.com/cdn/shop/files/Escena_65.png?v=1784139814&width=1600",
         "image_mobile": "shopify://shop_images/mobile_9.jpg",
         "image_url_mobile": "",
@@ -57,21 +57,6 @@
         "button_opens_modal": true,
         "button_link": "",
         "coords": "CALZADA DEL VALLE , MONTERREY MX"
-      }
-    },
-    "statement_intro": {
-      "type": "galim-statement",
-      "settings": {
-        "anchor_id": "",
-        "eyebrow": "",
-        "heading": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year",
-        "body": "",
-        "button_label": "",
-        "button_opens_modal": true,
-        "button_link": "",
-        "bg_color": "#f7f5f3",
-        "text_color": "#135e73",
-        "body_color": "#1c4e5a"
       }
     },
     "carousel": {
@@ -493,21 +478,6 @@
         "button_link": "",
         "bg_top": "#0a2f38",
         "bg_bottom": "#0d3b46"
-      }
-    },
-    "statement_precision": {
-      "type": "galim-statement",
-      "settings": {
-        "anchor_id": "",
-        "eyebrow": "",
-        "heading": "The precision once reserved for elite clinics.\n<strong>Now within reach.</strong>",
-        "body": "",
-        "button_label": "Visit us",
-        "button_opens_modal": true,
-        "button_link": "",
-        "bg_color": "#f7f5f3",
-        "text_color": "#135e73",
-        "body_color": "#1c4e5a"
       }
     },
     "final_cta": {
