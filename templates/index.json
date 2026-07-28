@@ -491,6 +491,16 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
+    },
+    "clinic_band": {
+      "type": "galim-imageband",
+      "settings": {
+        "height": 62,
+        "height_mobile": 52,
+        "top_fade": true,
+        "bottom_fade": true,
+        "button_opens_modal": true
+      }
     }
   },
   "order": [
@@ -502,6 +512,7 @@
     "protocols",
     "diagnostics",
     "method",
+    "clinic_band",
     "final_cta"
   ]
 }
