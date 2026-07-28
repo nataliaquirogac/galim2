@@ -199,7 +199,7 @@
 
   /* Content: absolute bottom-right on desktop */
   .gh-hero__inner {
-    position: absolute; right: 56px; bottom: 56px;
+    position: absolute; right: 56px; bottom: 56px; z-index: 4;
     width: 440px; max-width: calc(100% - 80px);
     color: #f6f5ee;
   }
@@ -308,8 +308,8 @@
         rgba(13, 59, 70, 0.98) 100%);
     }
     /* Both blocks static so they stack instead of overlapping */
-    .gh-hero__inner { position: static; left: auto; right: auto; bottom: auto; width: auto; max-width: none; }
-    .gh-hero__soon { position: static; left: auto; right: auto; top: auto; transform: none; max-width: none; margin-bottom: 28px; gap: 10px; }
+    .gh-hero__inner { position: relative; z-index: 4; left: auto; right: auto; bottom: auto; width: auto; max-width: none; }
+    .gh-hero__soon { position: relative; z-index: 4; left: auto; right: auto; top: auto; transform: none; max-width: none; margin-bottom: 28px; gap: 10px; }
     .gh-hero__soon-text { font-size: clamp(40px, 15vw, 64px); line-height: 1.06; }
     .gh-hero__soon-sub { font-size: 10px; letter-spacing: 0.2em; }
     .gh-hero__h1 { font-size: 38px; line-height: 1.2; margin-top: 16px; }
