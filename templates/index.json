@@ -238,6 +238,23 @@
         "bg_color": "#124753"
       }
     },
+    "image_banner_KyMCgD": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/room_1.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
     "two_axes": {
       "type": "galim-two-axes",
       "blocks": {
@@ -498,6 +515,7 @@
     "carousel",
     "gap",
     "steps",
+    "image_banner_KyMCgD",
     "two_axes",
     "protocols",
     "diagnostics",
