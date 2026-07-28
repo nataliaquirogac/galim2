@@ -27,7 +27,7 @@
     elsif s.image_url_mobile != blank
       assign fallback_src = s.image_url_mobile
     else
-      assign fallback_src = 'hero-desktop.jpg' | asset_url
+      assign fallback_src = 'hero-large.jpg' | asset_url
     endif
   -%}
   <div class="gh-hero__media">
@@ -137,15 +137,21 @@
 
   .gh-hero {
     position: relative;
-    min-height: 704px;
+    min-height: 92vh;
     overflow: hidden;
-    background: var(--gh-bg-900);
+    /* Matches the figure image's own teal/green gradient so the (contained)
+       photo blends edge-to-edge with no visible letterbox. */
+    background:
+      radial-gradient(70% 60% at 88% 8%, rgba(92, 178, 74, 0.30), rgba(92, 178, 74, 0) 55%),
+      radial-gradient(70% 70% at 8% 96%, rgba(40, 165, 128, 0.26), rgba(40, 165, 128, 0) 55%),
+      linear-gradient(135deg, #082B34 0%, #0D3B46 45%, #06222A 100%);
   }
   .gh-hero__media { position: absolute; inset: 0; overflow: hidden; }
   .gh-hero__img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover; object-position: 50% 22%;
+    /* Show the FULL figure (no crop); blends via the matching background */
+    object-fit: contain; object-position: center;
   }
   /* Optional teal tint over the full photo (customizer slider) */
   .gh-hero__tint { position: absolute; inset: 0; background: rgb(13 59 70 / var(--gh-hero-tint, 0.2)); pointer-events: none; }
@@ -154,12 +160,8 @@
   .gh-hero__grad-h {
     position: absolute; inset: 0; pointer-events: none;
     background:
-      radial-gradient(70% 80% at 88% 82%, rgba(8, 43, 52, 0.85), rgba(8, 43, 52, 0) 60%),
-      linear-gradient(270deg,
-        rgba(8, 43, 52, 0.97) 0%,
-        rgba(8, 43, 52, 0.90) 26%,
-        rgba(8, 43, 52, 0.55) 46%,
-        rgba(8, 43, 52, 0) 66%);
+      linear-gradient(270deg, rgba(8, 43, 52, 0.55) 0%, rgba(8, 43, 52, 0) 34%),
+      linear-gradient(90deg, rgba(8, 43, 52, 0.45) 0%, rgba(8, 43, 52, 0) 30%);
   }
   .gh-hero__grad-v { position: absolute; inset: 0; display: none; pointer-events: none; }
   .gh-hero__grid { display: none; }
@@ -185,16 +187,16 @@
   /* Content: absolute bottom-right on desktop */
   .gh-hero__inner {
     position: absolute; right: 56px; bottom: 56px;
-    width: 540px; max-width: calc(100% - 80px);
+    width: 440px; max-width: calc(100% - 80px);
     color: #f6f5ee;
   }
   .gh-hero__col { display: block; }
 
   /* COMING SOON — big statement in the empty left area (desktop) */
   .gh-hero__soon {
-    position: absolute; left: 56px; top: 46%; transform: translateY(-50%);
+    position: absolute; left: 56px; top: 44%; transform: translateY(-50%);
     z-index: 3; display: flex; flex-direction: column; gap: 12px;
-    max-width: 32%; pointer-events: none;
+    max-width: 28%; pointer-events: none;
   }
   .gh-hero__soon-text {
     font: 200 clamp(44px, 4.6vw, 82px)/1.0 var(--gh-sans);
@@ -276,7 +278,8 @@
     /* Mobile: COMING SOON and the copy flow in one normal column (no
        absolute overlap). Height grows with content; the image fills behind. */
     .gh-hero { min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 20px 28px; }
-    .gh-hero__img { object-position: 20% 25%; }
+    /* Mobile uses the portrait image, cropped to fill (cover) */
+    .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
     .gh-hero__tint { display: none; }
     .gh-hero__grad-h { display: none; }
     /* Narrower side fades on mobile so the photo shows more */
