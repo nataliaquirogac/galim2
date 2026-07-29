@@ -1,13 +1,19 @@
 {%- comment -%}
   Galim Health — Book your visit (place gallery)
-  Horizontal swipe carousel of the clinic renders. Desktop shows the landscape
-  shots; mobile shows the portrait shots (two tracks toggled by CSS).
+  Horizontal swipe carousel of the clinic photos.
+
+  Each photo is an editable BLOCK: pick a landscape shot for desktop and an
+  optional portrait shot for mobile. A single track renders a <picture> per
+  slide, so block order stays identical across breakpoints.
+
+  Any block left without an image falls back to the bundled render that used to
+  be hardcoded here, so the section never shows an empty slot.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
-  assign d_imgs = 'place-1.jpg,place-2.jpg,place-3.jpg,place-4.jpg' | split: ','
-  assign m_imgs = 'place-m1.jpg,place-m2.jpg,place-m3.jpg' | split: ','
+  assign d_fallback = 'place-1.jpg,place-2.jpg,place-3.jpg,place-4.jpg' | split: ','
+  assign m_fallback = 'place-m1.jpg,place-m2.jpg,place-m3.jpg' | split: ','
 -%}
 
 <section
@@ -25,20 +31,47 @@
     </div>
   </div>
 
-  {%- comment -%} Desktop: landscape shots {%- endcomment -%}
-  <div class="gh-gallery__track gh-gallery__track--d" data-gh-g-track>
-    {%- for img in d_imgs -%}
-      <figure class="gh-gallery__slide">
-        <img src="{{ img | asset_url }}" alt="{{ shop.name }} — space" loading="lazy" decoding="async">
-      </figure>
-    {%- endfor -%}
-  </div>
+  <div class="gh-gallery__track" data-gh-g-track>
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign b = block.settings
 
-  {%- comment -%} Mobile: portrait shots {%- endcomment -%}
-  <div class="gh-gallery__track gh-gallery__track--m" data-gh-g-track>
-    {%- for img in m_imgs -%}
-      <figure class="gh-gallery__slide">
-        <img src="{{ img | asset_url }}" alt="{{ shop.name }} — space" loading="lazy" decoding="async">
+        # Fall back to the bundled renders (cycled) when a picker is empty
+        assign di = forloop.index0 | modulo: d_fallback.size
+        assign mi = forloop.index0 | modulo: m_fallback.size
+        assign d_src = d_fallback[di] | asset_url
+        assign m_src = m_fallback[mi] | asset_url
+
+        assign alt = b.alt | default: s.heading | default: shop.name
+      -%}
+      <figure class="gh-gallery__slide" {{ block.shopify_attributes }}>
+        <picture>
+          {%- comment -%} Mobile: portrait shot (falls back to the desktop one) {%- endcomment -%}
+          {%- if b.image_mobile != blank -%}
+            <source media="(max-width: 768px)"
+              srcset="{{ b.image_mobile | image_url: width: 800 }} 800w, {{ b.image_mobile | image_url: width: 1200 }} 1200w, {{ b.image_mobile | image_url: width: 1600 }} 1600w"
+              sizes="78vw">
+          {%- elsif b.image != blank -%}
+            <source media="(max-width: 768px)"
+              srcset="{{ b.image | image_url: width: 800 }} 800w, {{ b.image | image_url: width: 1200 }} 1200w"
+              sizes="78vw">
+          {%- else -%}
+            <source media="(max-width: 768px)" srcset="{{ m_src }}">
+          {%- endif -%}
+
+          {%- comment -%} Desktop: landscape shot {%- endcomment -%}
+          {%- if b.image != blank -%}
+            <source media="(min-width: 769px)"
+              srcset="{{ b.image | image_url: width: 900 }} 900w, {{ b.image | image_url: width: 1400 }} 1400w, {{ b.image | image_url: width: 1800 }} 1800w"
+              sizes="min(72vw, 860px)">
+          {%- else -%}
+            <source media="(min-width: 769px)" srcset="{{ d_src }}">
+          {%- endif -%}
+
+          <img
+            src="{% if b.image != blank %}{{ b.image | image_url: width: 1400 }}{% else %}{{ d_src }}{% endif %}"
+            alt="{{ alt | escape }}" loading="lazy" decoding="async">
+        </picture>
       </figure>
     {%- endfor -%}
   </div>
@@ -90,20 +123,16 @@
   .gh-gallery__slide img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1); }
   .gh-gallery__slide:hover img { transform: scale(1.05); }
 
-  /* Desktop = landscape track */
-  .gh-gallery__track--d { display: flex; }
-  .gh-gallery__track--m { display: none; }
-  .gh-gallery__track--d .gh-gallery__slide { width: min(72vw, 860px); aspect-ratio: 1439 / 1110; }
+  /* One track; the slide frame switches shape per breakpoint and <picture>
+     serves the matching crop. */
+  .gh-gallery__slide { width: min(72vw, 860px); aspect-ratio: 1439 / 1110; }
 
   .gh-gallery__cta { margin-top: 32px; }
 
   @media (max-width: 768px) {
     .gh-gallery__head { margin-bottom: 20px; }
     .gh-gallery__nav { display: none; }
-    /* Mobile = portrait track */
-    .gh-gallery__track--d { display: none; }
-    .gh-gallery__track--m { display: flex; }
-    .gh-gallery__track--m .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
+    .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
     .gh-gallery__cta { margin-top: 24px; }
     .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
   }
@@ -113,13 +142,8 @@
   (function () {
     var root = document.currentScript.closest('[data-gh-gallery-root]');
     if (!root) return;
-    function activeTrack() {
-      var tracks = root.querySelectorAll('[data-gh-g-track]');
-      for (var i = 0; i < tracks.length; i++) { if (tracks[i].offsetParent !== null) return tracks[i]; }
-      return tracks[0];
-    }
     function step(dir) {
-      var t = activeTrack(); if (!t) return;
+      var t = root.querySelector('[data-gh-g-track]'); if (!t) return;
       var slide = t.querySelector('.gh-gallery__slide');
       var by = slide ? slide.getBoundingClientRect().width + 16 : t.clientWidth * 0.8;
       t.scrollBy({ left: dir * by, behavior: 'smooth' });
@@ -143,6 +167,25 @@
     { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
     { "type": "url", "id": "button_link", "label": "Button link (if not modal)" }
   ],
-  "presets": [{ "name": "Galim · Gallery" }]
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo (desktop — landscape)", "info": "Leave empty to keep the bundled clinic render." },
+        { "type": "image_picker", "id": "image_mobile", "label": "Photo (mobile — portrait)", "info": "Optional. If empty, the desktop photo is used." },
+        { "type": "text", "id": "alt", "label": "Alt text (accessibility)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Galim · Gallery",
+      "blocks": [
+        { "type": "photo" }, { "type": "photo" }, { "type": "photo" }, { "type": "photo" }
+      ]
+    }
+  ]
 }
 {% endschema %}

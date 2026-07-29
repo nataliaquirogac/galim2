@@ -247,7 +247,47 @@
         "button_label": "",
         "button_opens_modal": false,
         "button_link": ""
-      }
+      },
+      "blocks": {
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "image": "",
+            "image_mobile": "",
+            "alt": ""
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "",
+            "image_mobile": "",
+            "alt": ""
+          }
+        },
+        "photo_3": {
+          "type": "photo",
+          "settings": {
+            "image": "",
+            "image_mobile": "",
+            "alt": ""
+          }
+        },
+        "photo_4": {
+          "type": "photo",
+          "settings": {
+            "image": "",
+            "image_mobile": "",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "photo_1",
+        "photo_2",
+        "photo_3",
+        "photo_4"
+      ]
     },
     "protocols": {
       "type": "galim-protocols",
