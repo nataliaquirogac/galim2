@@ -38,7 +38,7 @@
       "settings": {
         "image": "shopify://shop_images/desktop_16.jpg",
         "image_url": "",
-        "image_mobile": "shopify://shop_images/mobile2.png",
+        "image_mobile": "shopify://shop_images/mobile2_1.png",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#0d3b46",
@@ -236,6 +236,17 @@
         "eyebrow": "02 / ONE VISIT",
         "body": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year.",
         "bg_color": "#124753"
+      }
+    },
+    "visit_gallery": {
+      "type": "galim-gallery",
+      "settings": {
+        "anchor_id": "visit",
+        "eyebrow": "THE SPACE",
+        "heading": "Book your visit",
+        "button_label": "",
+        "button_opens_modal": false,
+        "button_link": ""
       }
     },
     "two_axes": {
@@ -494,17 +505,6 @@
         "ios_link": ""
       }
     },
-    "visit_gallery": {
-      "type": "galim-gallery",
-      "settings": {
-        "anchor_id": "visit",
-        "eyebrow": "THE SPACE",
-        "heading": "Book your visit",
-        "button_label": "",
-        "button_opens_modal": false,
-        "button_link": ""
-      }
-    },
     "final_cta": {
       "type": "galim-final-cta",
       "settings": {
@@ -527,8 +527,8 @@
     "two_axes",
     "protocols",
     "diagnostics",
-    "app_cta",
     "method",
+    "app_cta",
     "final_cta"
   ]
 }
