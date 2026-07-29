@@ -300,7 +300,7 @@
     /* Mobile: COMING SOON and the copy flow in one normal column (no
        absolute overlap). Height grows with content; the image fills behind. */
     /* Mobile keeps the content-driven tall layout (not the cinematic ratio) */
-    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 20px 28px; }
+    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 96px 20px 28px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
@@ -318,13 +318,15 @@
         rgba(13, 59, 70, 0.98) 100%);
     }
     /* Both blocks static so they stack instead of overlapping */
-    .gh-hero__inner { position: relative; z-index: 4; left: auto; right: auto; bottom: auto; width: auto; max-width: none; }
-    .gh-hero__soon { position: relative; z-index: 4; left: auto; right: auto; top: auto; transform: none; max-width: none; margin-bottom: 28px; gap: 10px; }
-    .gh-hero__soon-text { font-size: clamp(40px, 15vw, 64px); line-height: 1.06; }
+    .gh-hero__inner { position: relative; z-index: 4; left: auto; right: auto; bottom: auto; width: auto; max-width: none; text-align: center; }
+    .gh-hero__soon { position: relative; z-index: 4; left: auto; right: auto; top: auto; transform: none; max-width: none; margin-bottom: 24px; gap: 8px; align-items: center; text-align: center; }
+    .gh-hero__soon-text { font-size: clamp(34px, 11vw, 52px); line-height: 1.04; }
     .gh-hero__soon-sub { font-size: 10px; letter-spacing: 0.2em; }
-    .gh-hero__h1 { font-size: 38px; line-height: 1.2; margin-top: 16px; }
-    .gh-hero__sub { font-size: 15px; line-height: 1.6; margin: 18px 0 22px; }
-    .gh-hero__plans { flex-wrap: wrap; gap: 8px 16px; margin-bottom: 20px; }
+    .gh-hero__badge { justify-content: center; }
+    .gh-hero__h1 { font-size: 30px; line-height: 1.22; margin-top: 14px; }
+    .gh-hero__sub { font-size: 15px; line-height: 1.55; margin: 16px auto 22px; max-width: 340px; }
+    .gh-hero__plans { flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 20px; }
+    .gh-hero__actions { justify-content: center; }
     .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
     .gh-hero__coords { display: none; }
   }
