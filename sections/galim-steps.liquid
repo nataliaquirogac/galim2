@@ -4,9 +4,18 @@
   followed by a supporting paragraph. Words are repeatable blocks.
 {%- endcomment -%}
 
-{%- liquid assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+  assign inv = false
+  if s.bg_color contains '#'
+    assign _b = s.bg_color | color_brightness
+    if _b < 130
+      assign inv = true
+    endif
+  endif
+-%}
 
-<section class="gh-steps gh-section" data-gh-section="steps" style="background: {{ s.bg_color }}; --gh-steps-count: {{ section.blocks.size | at_least: 1 }};">
+<section class="gh-steps gh-section{% if inv %} gh-inv{% endif %}" data-gh-section="steps" style="background: {{ s.bg_color }}; --gh-steps-count: {{ section.blocks.size | at_least: 1 }};">
   <div class="gh-container">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-steps__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
 
@@ -33,10 +42,12 @@
     content: "";
     position: absolute; left: 50%; top: 50%;
     width: 900px; height: 620px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.5), rgba(19, 94, 115, 0) 68%);
+    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.12), rgba(19, 94, 115, 0) 68%);
     filter: blur(20px);
     pointer-events: none;
   }
+  /* Stronger glow only when the section background is dark */
+  .gh-steps.gh-inv::before { background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.5), rgba(19, 94, 115, 0) 68%); }
   .gh-steps .gh-container { position: relative; max-width: 920px; }
   .gh-steps__eyebrow { margin: 0 0 28px; }
 
@@ -63,8 +74,8 @@
     letter-spacing: -0.02em;
     color: var(--gh-light);
     max-width: 900px; margin: 0 auto;
-    text-shadow: 0 2px 30px rgba(6, 31, 38, 0.4);
   }
+  .gh-steps.gh-inv .gh-steps__body { text-shadow: 0 2px 30px rgba(6, 31, 38, 0.4); }
 
   @media (max-width: 768px) {
     .gh-steps { padding: 56px 20px; }

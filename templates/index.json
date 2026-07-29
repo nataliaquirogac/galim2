@@ -514,7 +514,8 @@
         "button_label": "Join the waiting list",
         "button_opens_modal": true,
         "button_link": "",
-        "note": "OPENING NOVEMBER 1ST"
+        "note": "OPENING NOVEMBER 1ST",
+        "bg_color": "#0D3B46"
       }
     }
   },

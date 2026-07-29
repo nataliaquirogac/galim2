@@ -3,9 +3,18 @@
   Centered, dotted bg, eyebrow, wt200 headline (bold second line), light button (opens modal).
 {%- endcomment -%}
 
-{%- liquid assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+  assign inv = false
+  if s.bg_color contains '#'
+    assign _b = s.bg_color | color_brightness
+    if _b < 130
+      assign inv = true
+    endif
+  endif
+-%}
 
-<section id="{{ s.anchor_id | default: 'waitlist' }}" class="gh-cta gh-section" data-gh-section="final-cta">
+<section id="{{ s.anchor_id | default: 'waitlist' }}" class="gh-cta gh-section{% if inv %} gh-inv{% endif %}" data-gh-section="final-cta" style="background: {{ s.bg_color }};">
   <div class="gh-cta__dots"></div>
   <div class="gh-cta__inner">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-cta__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
@@ -22,14 +31,17 @@
 </section>
 
 {% stylesheet %}
-  .gh-cta { position: relative; padding: 120px 40px; text-align: center; overflow: hidden; background: transparent; border-top: 1px solid rgba(168,194,200,.12); }
-  .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(214,224,226,.06) 1.4px, transparent 1.4px); background-size: 22px 22px; }
+  .gh-cta { position: relative; padding: 120px 40px; text-align: center; overflow: hidden; border-top: 1px solid rgba(19,94,115,.08); }
+  .gh-cta.gh-inv { border-top-color: rgba(168,194,200,.12); }
+  .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(19,94,115,.05) 1.4px, transparent 1.4px); background-size: 22px 22px; }
+  .gh-cta.gh-inv .gh-cta__dots { background-image: radial-gradient(rgba(214,224,226,.06) 1.4px, transparent 1.4px); }
   .gh-cta::after {
     content: ""; position: absolute; left: 50%; top: 50%;
     width: 760px; height: 560px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.55), rgba(19, 94, 115, 0) 70%);
+    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.12), rgba(19, 94, 115, 0) 70%);
     filter: blur(30px); pointer-events: none;
   }
+  .gh-cta.gh-inv::after { background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.55), rgba(19, 94, 115, 0) 70%); }
   .gh-cta__inner { position: relative; z-index: 1; }
   .gh-cta__eyebrow { color: var(--gh-green); letter-spacing: 0.28em; margin-bottom: 24px; }
   .gh-cta__h2 { font: 200 76px/1.08 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 40px; }
@@ -56,7 +68,8 @@
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Join the waiting list" },
     { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
     { "type": "url", "id": "button_link", "label": "Button link (if not modal)" },
-    { "type": "text", "id": "note", "label": "Note (mono)", "default": "OPENING NOVEMBER 1ST · UNOS DATOS, Y GUARDAMOS TU LUGAR" }
+    { "type": "text", "id": "note", "label": "Note (mono)", "default": "OPENING NOVEMBER 1ST · UNOS DATOS, Y GUARDAMOS TU LUGAR" },
+    { "type": "color", "id": "bg_color", "label": "Background", "info": "Pick a dark color for a dramatic closing (text turns light automatically), or a light one to blend with the page.", "default": "#0D3B46" }
   ],
   "presets": [{ "name": "Galim · Final CTA" }]
 }
