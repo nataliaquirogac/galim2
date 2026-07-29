@@ -38,7 +38,7 @@
       "settings": {
         "image": "shopify://shop_images/desktop_16.jpg",
         "image_url": "",
-        "image_mobile": "shopify://shop_images/mobile2_1.png",
+        "image_mobile": "shopify://shop_images/banner_mobile.png",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#0d3b46",
