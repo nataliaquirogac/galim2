@@ -5,34 +5,33 @@
    ============================================================ */
 
 :root {
-  /* Brand palette (2026): #135E73 base · #0D3B46 · #6E8897 · #A8C2C8 · #000 · #F7F5F3 */
-  /* Backgrounds */
-  --gh-bg: #0D3B46;        /* primary background (dark teal) */
-  --gh-bg-900: #0A2F38;    /* alternating sections, hero base (darker) */
-  --gh-bg-950: #061f26;    /* footer (darkest) */
-  /* Brand teal — brighter surface: card tops, glows, icon tiles */
+  /* Brand palette (2026) — LIGHT theme: #135E73 base · #0D3B46 ink · #F7F5F3 bg */
+  /* Backgrounds (light) */
+  --gh-bg: #F7F5F3;        /* primary background (off-white) */
+  --gh-bg-900: #FFFFFF;    /* cards / surfaces (white) */
+  --gh-bg-950: #135E73;    /* footer (teal block) */
+  /* Brand teal — accent for buttons, eyebrows, dots, icons */
   --gh-brand: #135E73;
   --gh-teal-700: #135E73;
-  --gh-teal-750: #0D3B46;
-  --gh-teal-760: #0D3B46;
-  --gh-teal-770: #0A2F38;
-  /* Text */
-  --gh-light: #F7F5F3;     /* primary text / light buttons / headlines (cream) */
-  --gh-muted: #A8C2C8;     /* secondary body text (light blue) */
-  --gh-slate: #6E8897;     /* tertiary text, mono labels, bullets */
-  --gh-white: #F7F5F3;
+  --gh-teal-750: #F1EFEC;  /* card surface top (light) */
+  --gh-teal-760: #F7F5F3;
+  --gh-teal-770: #EDEBE7;  /* card surface bottom (light) */
+  /* Text (dark on light) */
+  --gh-light: #0D3B46;     /* primary text / headlines (dark teal ink) */
+  --gh-muted: #4C6670;     /* secondary body text (muted teal-gray) */
+  --gh-slate: #6E8897;     /* tertiary text, mono labels */
+  --gh-white: #0D3B46;     /* headings (was white → now dark ink) */
   --gh-black: #000000;
-  /* Accent that pops on the dark teal (dots, bars, icons, small labels).
-     --gh-green kept as the variable name for backwards compat = light accent. */
-  --gh-green: #A8C2C8;
-  --gh-accent: #A8C2C8;
-  --gh-price: #5FBF88;      /* mint green for prices (pops on dark teal) */
-  /* Common alphas */
-  --gh-border: rgba(168, 194, 200, 0.16);
-  --gh-border-strong: rgba(168, 194, 200, 0.22);
-  --gh-hairline: rgba(168, 194, 200, 0.12);
-  --gh-green-tint: rgba(19, 94, 115, 0.14);
-  --gh-light-tint: rgba(247, 245, 243, 0.05);
+  /* Accent (dots, bars, small labels, eyebrows) = brand teal on white */
+  --gh-green: #135E73;
+  --gh-accent: #135E73;
+  --gh-price: #135E73;      /* prices in brand teal */
+  /* Common alphas (dark hairlines on white) */
+  --gh-border: rgba(19, 94, 115, 0.16);
+  --gh-border-strong: rgba(19, 94, 115, 0.24);
+  --gh-hairline: rgba(19, 94, 115, 0.12);
+  --gh-green-tint: rgba(19, 94, 115, 0.08);
+  --gh-light-tint: rgba(19, 94, 115, 0.04);
 
   --gh-mono: 'DM Sans', system-ui, -apple-system, sans-serif;
   --gh-sans: 'Chillax', system-ui, -apple-system, sans-serif;
@@ -50,35 +49,17 @@
   }
 }
 
-/* Landing pages use the dark canvas + Chillax everywhere.
+/* Light theme: off-white canvas + Chillax everywhere.
    Scoped to the body so Dawn's cart/account/product pages keep their own styling. */
-/* Solid dark fallback (beats Dawn's light `.gradient` on the body via the
-   body.gh-page specificity) so the page is never white if the layer fails. */
-body.gh-page { background: #082B34 !important; }
+body.gh-page { background: var(--gh-bg) !important; }
 .gh-page {
+  background: var(--gh-bg);
   color: var(--gh-light);
   font-family: var(--gh-sans);
   -webkit-font-smoothing: antialiased;
 }
-/* Page-wide diagonal gradient with brand glow, painted on a fixed layer behind
-   ALL content (independent of Dawn's body background). Deep teal core keeps
-   text readable; green + aqua bloom in the corners echo the Galim banners.
-   It "breathes" as you scroll because it's fixed to the viewport. */
-.gh-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(78% 70% at 88% 10%, rgba(92, 178, 74, 0.32), rgba(92, 178, 74, 0) 55%),
-    radial-gradient(80% 78% at 6% 94%, rgba(40, 165, 128, 0.30), rgba(40, 165, 128, 0) 55%),
-    radial-gradient(70% 62% at 55% 48%, rgba(19, 94, 115, 0.32), rgba(19, 94, 115, 0) 62%),
-    linear-gradient(135deg, #082B34 0%, #0D3B46 42%, #0B3A40 68%, #06222A 100%);
-}
-/* Reveal the page gradient: interior sections go transparent (this also
-   neutralizes the per-section bg color pickers, which is intended). The hero
-   keeps its photo and the header/announcement stay opaque for legibility. */
+/* Interior content sections are transparent so they inherit the white canvas.
+   Footer keeps its own (teal) background. */
 .gh-page .gh-diag,
 .gh-page .gh-mq,
 .gh-page .gh-axes,
@@ -86,8 +67,7 @@ body.gh-page { background: #082B34 !important; }
 .gh-page .gh-steps,
 .gh-page .gh-gap,
 .gh-page .gh-method,
-.gh-page .gh-cta,
-.gh-page .gh-footer { background: transparent !important; }
+.gh-page .gh-cta { background: transparent !important; }
 .gh-page a:not(.gh-btn) { color: inherit; text-decoration: none; }
 .gh-page a:not(.gh-btn):hover { color: var(--gh-green); }
 
@@ -95,7 +75,7 @@ body.gh-page { background: #082B34 !important; }
 .gh-eyebrow {
   font: 500 11px/1 var(--gh-mono);
   letter-spacing: 0.28em;
-  color: var(--gh-slate);
+  color: var(--gh-brand);
   text-transform: uppercase;
 }
 .gh-section {
@@ -119,21 +99,23 @@ body.gh-page { background: #082B34 !important; }
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 .gh-btn--solid {
-  background: var(--gh-light);
-  color: var(--gh-bg);
+  background: var(--gh-brand);
+  color: #F7F5F3;
   font: 500 15px/1 var(--gh-sans);
   letter-spacing: 0.02em;
   padding: 18px 32px;
+  border-radius: 999px;
 }
-.gh-btn--solid:hover { color: var(--gh-bg); transform: translateY(-1px); }
+.gh-btn--solid:hover { background: #0F4E60; color: #F7F5F3; transform: translateY(-1px); }
 .gh-btn--outline {
-  border: 1px solid rgba(214, 224, 226, 0.4);
-  color: var(--gh-light);
+  border: 1px solid var(--gh-brand);
+  color: var(--gh-brand);
   font: 500 14px/1 var(--gh-sans);
   padding: 16px 28px;
   background: transparent;
+  border-radius: 999px;
 }
-.gh-btn--outline:hover { border-color: rgba(214, 224, 226, 0.8); color: var(--gh-light); }
+.gh-btn--outline:hover { background: var(--gh-brand); color: #F7F5F3; }
 
 /* Keyframes --------------------------------------------------------------- */
 @keyframes gh-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }

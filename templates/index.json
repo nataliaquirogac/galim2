@@ -501,6 +501,16 @@
         "button_label": "Join the waitlist",
         "button_opens_modal": true
       }
+    },
+    "app_cta": {
+      "type": "galim-appcta",
+      "settings": {
+        "anchor_id": "app",
+        "eyebrow": "GET THE APP",
+        "heading": "Your health. Your data.\nYour next move.",
+        "android_label": "Android",
+        "ios_label": "iOS"
+      }
     }
   },
   "order": [
@@ -513,6 +523,7 @@
     "diagnostics",
     "method",
     "visit_gallery",
+    "app_cta",
     "final_cta"
   ]
 }

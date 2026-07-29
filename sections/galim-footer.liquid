@@ -62,7 +62,11 @@
 </footer>
 
 {% stylesheet %}
-  .gh-footer { background: var(--gh-bg-950); color: var(--gh-light); padding: 70px 40px 40px; font-family: var(--gh-sans); }
+  .gh-footer {
+    /* Teal block on the light site — keep text/links light */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8; --gh-green: #A8C2C8;
+    background: var(--gh-bg-950); color: var(--gh-light); padding: 70px 40px 40px; font-family: var(--gh-sans);
+  }
   .gh-footer a { color: var(--gh-muted); }
   .gh-footer a:hover { color: var(--gh-green); }
   .gh-footer__top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; padding-bottom: 48px; border-bottom: 1px solid rgba(168,194,200,.12); }

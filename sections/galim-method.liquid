@@ -27,15 +27,12 @@
     position: relative;
     padding: 120px 40px;
     overflow: hidden;
-    color: #F7F5F3;
-    /* Hex fallback so the section always has a dark background even if the
-       inline style (customizer-driven) isn't in the served HTML yet
-       (Shopify HTML CDN cache can lag behind theme file updates). */
-    background: linear-gradient(160deg, #0A2F38 0%, #0D3B46 100%);
+    color: var(--gh-light);
+    background: transparent;
   }
   .gh-method__grid {
     position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(168,194,200,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(168,194,200,.05) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(19,94,115,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(19,94,115,.05) 1px, transparent 1px);
     background-size: 64px 64px;
     -webkit-mask-image: radial-gradient(80% 70% at 30% 40%, #000, transparent);
     mask-image: radial-gradient(80% 70% at 30% 40%, #000, transparent);
@@ -44,12 +41,12 @@
   .gh-method::after {
     content: ""; position: absolute; left: 18%; top: 42%;
     width: 640px; height: 520px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.5), rgba(19, 94, 115, 0) 70%);
+    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.12), rgba(19, 94, 115, 0) 70%);
     filter: blur(28px); pointer-events: none; z-index: 0;
   }
   .gh-method__inner { z-index: 1; }
   .gh-method__inner { position: relative; max-width: 900px; }
-  .gh-method__eyebrow { color: var(--gh-muted); margin-bottom: 24px; }
+  .gh-method__eyebrow { color: var(--gh-brand); margin-bottom: 24px; }
   .gh-method__h2 { font: 200 52px/1.1 var(--gh-sans); letter-spacing: -0.025em; color: var(--gh-white); margin-bottom: 28px; }
   .gh-method__h2 strong { color: var(--gh-light); font-weight: 500; }
   .gh-method__p { font: 300 20px/1.6 var(--gh-sans); }

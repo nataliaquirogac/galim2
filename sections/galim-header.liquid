@@ -15,17 +15,11 @@
 <header class="gh-header" data-gh-header>
   <div class="gh-header__inner">
     <a href="{{ routes.root_url }}" class="gh-header__logo" aria-label="{{ shop.name }}">
+      {%- comment -%} Light theme: pick the teal/black logo in the customizer (the white one is invisible on white). {%- endcomment -%}
       {%- if s.logo != blank -%}
-        <img
-          src="{{ s.logo | image_url: width: 400 }}"
-          alt="{{ shop.name }}"
-          width="{{ s.logo.width }}"
-          height="{{ s.logo.height }}"
-          style="height: {{ s.logo_height }}px;"
-          loading="eager"
-        >
+        <img src="{{ s.logo | image_url: width: 400 }}" alt="{{ shop.name }}" width="{{ s.logo.width }}" height="{{ s.logo.height }}" style="height: {{ s.logo_height }}px;" loading="eager">
       {%- else -%}
-        <img src="{{ 'logo_galimhealth_white.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;" loading="eager">
+        <img src="{{ 'logo_galimhealth.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;" loading="eager">
       {%- endif -%}
     </a>
 
@@ -107,7 +101,7 @@
   }
   .gh-header {
     background: var(--gh-bg);
-    border-bottom: 1px solid rgba(168, 194, 200, 0.14);
+    border-bottom: 1px solid rgba(19, 94, 115, 0.12);
     transition: padding 0.25s ease;
   }
   .gh-header__inner {

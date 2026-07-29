@@ -22,12 +22,12 @@
 </section>
 
 {% stylesheet %}
-  .gh-cta { position: relative; padding: 120px 40px; text-align: center; overflow: hidden; background: linear-gradient(160deg, var(--gh-teal-760), var(--gh-bg-900)); border-top: 1px solid rgba(168,194,200,.12); }
-  .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(214,224,226,.06) 1.4px, transparent 1.4px); background-size: 22px 22px; }
+  .gh-cta { position: relative; padding: 120px 40px; text-align: center; overflow: hidden; background: transparent; border-top: 1px solid rgba(19,94,115,.1); }
+  .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(19,94,115,.05) 1.4px, transparent 1.4px); background-size: 22px 22px; }
   .gh-cta::after {
     content: ""; position: absolute; left: 50%; top: 50%;
     width: 760px; height: 560px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.55), rgba(19, 94, 115, 0) 70%);
+    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.10), rgba(19, 94, 115, 0) 70%);
     filter: blur(30px); pointer-events: none;
   }
   .gh-cta__inner { position: relative; z-index: 1; }
