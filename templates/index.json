@@ -183,7 +183,7 @@
         "m3"
       ],
       "settings": {
-        "eyebrow": "01 / WHAT WE MEASURE",
+        "eyebrow": "WHAT WE MEASURE",
         "heading": "Every system, one clear picture.",
         "bg_color": "#0a2f38",
         "speed": 45,
@@ -233,7 +233,7 @@
         "w3"
       ],
       "settings": {
-        "eyebrow": "02 / ONE VISIT",
+        "eyebrow": "ONE VISIT",
         "body": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year.",
         "bg_color": "#124753"
       }
@@ -477,20 +477,6 @@
         "bg_color": "#0d3b46"
       }
     },
-    "method": {
-      "type": "galim-method",
-      "settings": {
-        "anchor_id": "method",
-        "eyebrow": "THE GALIM METHOD",
-        "heading": "<p>We don't just measure. <strong>We optimize</strong> exactly to your body.</p>",
-        "body_1": "A scan is a starting point, not a product. Our method turns every data point: your heart, your blood, your composition, your mobility, into a plan made only for you.",
-        "body_2": "With every visit, we measure again. And the plan evolves with you.",
-        "button_label": "Discover the method",
-        "button_link": "",
-        "bg_top": "#0a2f38",
-        "bg_bottom": "#0d3b46"
-      }
-    },
     "app_cta": {
       "type": "galim-appcta",
       "settings": {
@@ -503,6 +489,20 @@
         "android_link": "",
         "ios_label": "iOS",
         "ios_link": ""
+      }
+    },
+    "method": {
+      "type": "galim-method",
+      "settings": {
+        "anchor_id": "method",
+        "eyebrow": "THE GALIM METHOD",
+        "heading": "<p>We don't just measure. <strong>We optimize</strong> exactly to your body.</p>",
+        "body_1": "A scan is a starting point, not a product. Our method turns every data point: your heart, your blood, your composition, your mobility, into a plan made only for you.",
+        "body_2": "With every visit, we measure again. And the plan evolves with you.",
+        "button_label": "Discover the method",
+        "button_link": "",
+        "bg_top": "#0a2f38",
+        "bg_bottom": "#0d3b46"
       }
     },
     "final_cta": {
