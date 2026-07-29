@@ -491,6 +491,16 @@
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
       }
+    },
+    "visit_gallery": {
+      "type": "galim-gallery",
+      "settings": {
+        "anchor_id": "visit",
+        "eyebrow": "THE SPACE",
+        "heading": "Book your visit",
+        "button_label": "Join the waitlist",
+        "button_opens_modal": true
+      }
     }
   },
   "order": [
@@ -502,6 +512,7 @@
     "protocols",
     "diagnostics",
     "method",
+    "visit_gallery",
     "final_cta"
   ]
 }

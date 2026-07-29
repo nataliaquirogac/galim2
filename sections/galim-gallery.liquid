@@ -1,0 +1,144 @@
+{%- comment -%}
+  Galim Health — Book your visit (place gallery)
+  Horizontal swipe carousel of the clinic renders. Desktop shows the landscape
+  shots; mobile shows the portrait shots (two tracks toggled by CSS).
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign d_imgs = 'place-1.jpg,place-2.jpg,place-3.jpg,place-4.jpg' | split: ','
+  assign m_imgs = 'place-m1.jpg,place-m2.jpg,place-m3.jpg' | split: ','
+-%}
+
+<section
+  {% if s.anchor_id != blank %}id="{{ s.anchor_id }}"{% endif %}
+  class="gh-gallery gh-section"
+  data-gh-section="gallery" data-gh-gallery-root>
+  <div class="gh-container gh-gallery__head">
+    <div>
+      {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-gallery__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 class="gh-gallery__h2">{{ s.heading }}</h2>{%- endif -%}
+    </div>
+    <div class="gh-gallery__nav" aria-hidden="true">
+      <button type="button" class="gh-gallery__arrow" data-gh-g-prev aria-label="Previous">‹</button>
+      <button type="button" class="gh-gallery__arrow" data-gh-g-next aria-label="Next">›</button>
+    </div>
+  </div>
+
+  {%- comment -%} Desktop: landscape shots {%- endcomment -%}
+  <div class="gh-gallery__track gh-gallery__track--d" data-gh-g-track>
+    {%- for img in d_imgs -%}
+      <figure class="gh-gallery__slide">
+        <img src="{{ img | asset_url }}" alt="{{ shop.name }} — space" loading="lazy" decoding="async">
+      </figure>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Mobile: portrait shots {%- endcomment -%}
+  <div class="gh-gallery__track gh-gallery__track--m" data-gh-g-track>
+    {%- for img in m_imgs -%}
+      <figure class="gh-gallery__slide">
+        <img src="{{ img | asset_url }}" alt="{{ shop.name }} — space" loading="lazy" decoding="async">
+      </figure>
+    {%- endfor -%}
+  </div>
+
+  {%- if s.button_label != blank -%}
+    <div class="gh-container gh-gallery__cta">
+      {%- if s.button_opens_modal -%}
+        <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
+      {%- else -%}
+        <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .gh-gallery { position: relative; z-index: 1; padding-left: 0; padding-right: 0; }
+  .gh-gallery__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-left: var(--gh-pad-x); padding-right: var(--gh-pad-x); margin-bottom: 28px; }
+  .gh-gallery__eyebrow { margin-bottom: 12px; }
+  .gh-gallery__h2 { font: 200 clamp(30px, 4vw, 52px)/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0; }
+
+  .gh-gallery__nav { display: flex; gap: 10px; flex-shrink: 0; }
+  .gh-gallery__arrow {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 1px solid var(--gh-border-strong); background: transparent;
+    color: var(--gh-light); font-size: 22px; line-height: 1; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .gh-gallery__arrow:hover { border-color: var(--gh-accent); background: rgba(168,194,200,.08); }
+
+  .gh-gallery__track {
+    display: flex; gap: 16px;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding: 4px var(--gh-pad-x);
+    scroll-padding-left: var(--gh-pad-x);
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .gh-gallery__track::-webkit-scrollbar { display: none; }
+  .gh-gallery__slide {
+    flex: 0 0 auto; margin: 0; scroll-snap-align: start;
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--gh-border);
+    background: var(--gh-bg-900);
+  }
+  .gh-gallery__slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Desktop = landscape track */
+  .gh-gallery__track--d { display: flex; }
+  .gh-gallery__track--m { display: none; }
+  .gh-gallery__track--d .gh-gallery__slide { width: min(72vw, 860px); aspect-ratio: 1439 / 1110; }
+
+  .gh-gallery__cta { margin-top: 32px; }
+
+  @media (max-width: 768px) {
+    .gh-gallery__head { margin-bottom: 20px; }
+    .gh-gallery__nav { display: none; }
+    /* Mobile = portrait track */
+    .gh-gallery__track--d { display: none; }
+    .gh-gallery__track--m { display: flex; }
+    .gh-gallery__track--m .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
+    .gh-gallery__cta { margin-top: 24px; }
+    .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
+  }
+{% endstylesheet %}
+
+<script>
+  (function () {
+    var root = document.currentScript.closest('[data-gh-gallery-root]');
+    if (!root) return;
+    function activeTrack() {
+      var tracks = root.querySelectorAll('[data-gh-g-track]');
+      for (var i = 0; i < tracks.length; i++) { if (tracks[i].offsetParent !== null) return tracks[i]; }
+      return tracks[0];
+    }
+    function step(dir) {
+      var t = activeTrack(); if (!t) return;
+      var slide = t.querySelector('.gh-gallery__slide');
+      var by = slide ? slide.getBoundingClientRect().width + 16 : t.clientWidth * 0.8;
+      t.scrollBy({ left: dir * by, behavior: 'smooth' });
+    }
+    var prev = root.querySelector('[data-gh-g-prev]');
+    var next = root.querySelector('[data-gh-g-next]');
+    if (prev) prev.addEventListener('click', function () { step(-1); });
+    if (next) next.addEventListener('click', function () { step(1); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Galim · Gallery",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "visit" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE SPACE" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Book your visit" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join the waitlist" },
+    { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
+    { "type": "url", "id": "button_link", "label": "Button link (if not modal)" }
+  ],
+  "presets": [{ "name": "Galim · Gallery" }]
+}
+{% endschema %}
