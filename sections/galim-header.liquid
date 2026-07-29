@@ -136,15 +136,17 @@
   }
   .gh-header__login:hover { opacity: 1; color: var(--gh-green); }
   .gh-header__cta {
-    border: 1px solid rgba(214, 224, 226, 0.35);
-    color: var(--gh-light);
-    padding: 9px 16px;
-    border-radius: 2px;
-    font: 400 11px/1 var(--gh-mono);
+    border: 1px solid var(--gh-brand);
+    background: var(--gh-brand);
+    color: #F7F5F3;
+    padding: 11px 20px;
+    border-radius: 999px;
+    font: 500 11px/1 var(--gh-mono);
     letter-spacing: 0.12em;
     white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
   }
-  .gh-header__cta:hover { border-color: var(--gh-green); color: var(--gh-green); }
+  .gh-header__cta:hover { background: #0F4E60; border-color: #0F4E60; color: #F7F5F3; transform: translateY(-1px); }
 
   .gh-header__lang {
     display: inline-flex;
