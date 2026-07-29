@@ -245,7 +245,10 @@
       document.querySelectorAll(
         '.gh-gap .gh-container, .gh-steps .gh-container, .gh-method__inner, .gh-cta__inner, ' +
         '.gh-axes__card, .gh-axes__bq, .gh-pkg, .gh-glp, .gh-diag__row, ' +
-        '.gh-protocols__eyebrow, .gh-protocols__h2, .gh-diag__eyebrow, .gh-diag__h2, .gh-diag__sub, .gh-axes__eyebrow'
+        '.gh-protocols__eyebrow, .gh-protocols__h2, .gh-diag__eyebrow, .gh-diag__h2, .gh-diag__sub, .gh-axes__eyebrow, ' +
+        '.gh-mq__eyebrow, .gh-mq__h2, .gh-mq__card, ' +
+        '.gh-gallery__eyebrow, .gh-gallery__h2, .gh-gallery__nav, .gh-gallery__slide, ' +
+        '.gh-app__text, .gh-app__media, .gh-app__btns'
       )
     );
     if (!els.length) return;

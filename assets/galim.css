@@ -74,9 +74,9 @@ body.gh-page { background: var(--gh-bg) !important; }
   --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #A8C2C8; --gh-slate: #8FA9AE;
   --gh-green: #A8C2C8; --gh-accent: #A8C2C8; --gh-brand: #A8C2C8;
 }
-/* Cream button pops on the dark closing section */
-.gh-page .gh-cta .gh-btn--solid { background: #F7F5F3; color: #135E73; }
-.gh-page .gh-cta .gh-btn--solid:hover { background: #FFFFFF; color: #0F4E60; }
+/* Waitlist button on the dark closing section: brighter teal + white text */
+.gh-page .gh-cta .gh-btn--solid { background: #1B7186; color: #F7F5F3; }
+.gh-page .gh-cta .gh-btn--solid:hover { background: #2185A0; color: #F7F5F3; }
 .gh-page a:not(.gh-btn) { color: inherit; text-decoration: none; }
 .gh-page a:not(.gh-btn):hover { color: var(--gh-green); }
 
