@@ -297,7 +297,7 @@
       ],
       "settings": {
         "anchor_id": "plans",
-        "eyebrow": "04 / PROTOCOLS",
+        "eyebrow": "PROTOCOLS",
         "heading": "<p>The precision once reserved for elite clinics.<br/><strong>Now within reach.</strong></p>",
         "bg_color": "#0a2f38",
         "glp_glyph": "◈",
@@ -426,7 +426,7 @@
         "tier_6"
       ],
       "settings": {
-        "eyebrow": "03 / TWO AXES",
+        "eyebrow": "",
         "bg_color": "#0d3b46",
         "bq_label": "One score that measures how your body performs",
         "bq_number": "",
