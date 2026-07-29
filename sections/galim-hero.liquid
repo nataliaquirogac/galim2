@@ -142,7 +142,9 @@
 
   .gh-hero {
     position: relative;
-    min-height: 92vh;
+    /* Cinematic hero sized to the 4503×1851 artwork (~2.43:1) */
+    aspect-ratio: 4503 / 1851;
+    min-height: 560px;
     overflow: hidden;
     /* Matches the figure image's own teal/green gradient so the (contained)
        photo blends edge-to-edge with no visible letterbox. */
@@ -290,7 +292,8 @@
   @media (max-width: 768px) {
     /* Mobile: COMING SOON and the copy flow in one normal column (no
        absolute overlap). Height grows with content; the image fills behind. */
-    .gh-hero { min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 20px 28px; }
+    /* Mobile keeps the content-driven tall layout (not the cinematic ratio) */
+    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; padding: 96px 20px 28px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
