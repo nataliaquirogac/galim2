@@ -31,29 +31,29 @@
 </section>
 
 {% stylesheet %}
-  .gh-cta { position: relative; padding: 120px 40px; text-align: center; overflow: hidden; border-top: 1px solid rgba(19,94,115,.08); }
+  .gh-cta { position: relative; padding: 76px 40px; text-align: center; overflow: hidden; border-top: 1px solid rgba(19,94,115,.08); }
   .gh-cta.gh-inv { border-top-color: rgba(168,194,200,.12); }
   .gh-cta__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(19,94,115,.05) 1.4px, transparent 1.4px); background-size: 22px 22px; }
   .gh-cta.gh-inv .gh-cta__dots { background-image: radial-gradient(rgba(214,224,226,.06) 1.4px, transparent 1.4px); }
   .gh-cta::after {
     content: ""; position: absolute; left: 50%; top: 50%;
-    width: 760px; height: 560px; transform: translate(-50%, -50%);
+    width: 620px; height: 420px; transform: translate(-50%, -50%);
     background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.12), rgba(19, 94, 115, 0) 70%);
     filter: blur(30px); pointer-events: none;
   }
   .gh-cta.gh-inv::after { background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.55), rgba(19, 94, 115, 0) 70%); }
   .gh-cta__inner { position: relative; z-index: 1; }
-  .gh-cta__eyebrow { color: var(--gh-green); letter-spacing: 0.28em; margin-bottom: 24px; }
-  .gh-cta__h2 { font: 200 76px/1.08 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 40px; }
+  .gh-cta__eyebrow { color: var(--gh-green); letter-spacing: 0.28em; margin-bottom: 18px; }
+  .gh-cta__h2 { font: 200 60px/1.06 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin-bottom: 28px; }
   .gh-cta__h2 strong { font-weight: 600; }
   .gh-cta__btn { font-size: 16px; letter-spacing: 0.04em; padding: 20px 44px; }
-  .gh-cta__note { font: 400 12px/1 var(--gh-mono); color: var(--gh-slate); margin-top: 24px; letter-spacing: 0.04em; }
+  .gh-cta__note { font: 400 12px/1 var(--gh-mono); color: var(--gh-slate); margin-top: 16px; letter-spacing: 0.04em; }
 
   @media (max-width: 768px) {
-    .gh-cta { padding: 56px 20px; }
-    .gh-cta__eyebrow { margin-bottom: 22px; letter-spacing: 0.22em; font-size: 10px; }
-    .gh-cta__h2 { font-size: 42px; margin-bottom: 28px; }
-    .gh-cta__btn { font-size: 15px; padding: 17px 36px; }
+    .gh-cta { padding: 40px 20px 34px; }
+    .gh-cta__eyebrow { margin-bottom: 14px; letter-spacing: 0.22em; font-size: 10px; }
+    .gh-cta__h2 { font-size: 34px; margin-bottom: 20px; }
+    .gh-cta__btn { font-size: 15px; padding: 15px 32px; }
   }
 {% endstylesheet %}
 
