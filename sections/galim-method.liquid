@@ -14,9 +14,9 @@
     {%- if s.body_2 != blank -%}<p class="gh-method__p gh-method__p--light">{{ s.body_2 }}</p>{%- endif -%}
     {%- if s.button_label != blank -%}
       {%- if s.button_link != blank -%}
-        <a href="{{ s.button_link }}" class="gh-btn gh-btn--outline">{{ s.button_label }} →</a>
+        <a href="{{ s.button_link }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
       {%- else -%}
-        <a href="#" class="gh-btn gh-btn--outline" data-gh-waitlist-open>{{ s.button_label }} →</a>
+        <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
       {%- endif -%}
     {%- endif -%}
   </div>
