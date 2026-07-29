@@ -285,10 +285,10 @@
             "badge_label": "FULL PICTURE",
             "intro": "Your BQ: where your body ranks, and what to train next.",
             "features_label": "WHAT WE MEASURE",
-            "features": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>",
+            "features": "<ul><li><strong>Body composition</strong> DEXA-measured. AI-analyzed.</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li></ul><p></p>",
             "outro": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>",
             "addon_title": "ADD-ONS",
-            "addon_line": "RMR - your real calorie number $700\nLactate Threshold - your exact training zones $1300\nGalim AI - your plan, adjusted daily",
+            "addon_line": "RMR - your real metabolic health $700\nLactate Threshold - your exact training zones $1300\nGalim AI - your plan, adjusted daily",
             "button_label": "BOOK YOUR BQ",
             "button_link": ""
           }
@@ -307,7 +307,7 @@
             "features": "<ul><li><strong>Heart & arteries</strong> arterial age, plaque risk. The #1 killer, found early.</li><li><strong>Brain</strong> cognition, retina, vascular risk</li><li><strong>Organs & metabolism</strong> blood, liver, kidney, thyroid, hormones</li><li><strong>Structure</strong> bone density, lung function</li><li><strong>Senses & skin</strong> vision, hearing, skin age</li></ul>",
             "outro": "<p>You leave with a biological age for each system, the gap against your real age, and what to do about the worst one.</p><p>Once a year. Watch the gap close.</p><p>Includes everything in Performance. Includes Galim AI.</p>",
             "addon_title": "ADD-ONS",
-            "addon_line": "RMR - your real calorie number $700\nLactate Threshold - your exact training zones $1300",
+            "addon_line": "RMR - your real metabolic health $700\nLactate Threshold - your exact training zones $1300",
             "button_label": "BOOK YOUR PREVENTION VISIT",
             "button_link": ""
           }
