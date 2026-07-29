@@ -480,17 +480,6 @@
         "bg_bottom": "#0d3b46"
       }
     },
-    "visit_gallery": {
-      "type": "galim-gallery",
-      "settings": {
-        "anchor_id": "visit",
-        "eyebrow": "THE SPACE",
-        "heading": "Book your visit",
-        "button_label": "",
-        "button_opens_modal": false,
-        "button_link": ""
-      }
-    },
     "app_cta": {
       "type": "galim-appcta",
       "settings": {
@@ -503,6 +492,17 @@
         "android_link": "",
         "ios_label": "iOS",
         "ios_link": ""
+      }
+    },
+    "visit_gallery": {
+      "type": "galim-gallery",
+      "settings": {
+        "anchor_id": "visit",
+        "eyebrow": "THE SPACE",
+        "heading": "Book your visit",
+        "button_label": "",
+        "button_opens_modal": false,
+        "button_link": ""
       }
     },
     "final_cta": {
@@ -523,12 +523,12 @@
     "carousel",
     "gap",
     "steps",
+    "visit_gallery",
     "two_axes",
     "protocols",
     "diagnostics",
-    "method",
-    "visit_gallery",
     "app_cta",
+    "method",
     "final_cta"
   ]
 }
