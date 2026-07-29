@@ -235,7 +235,7 @@
       "settings": {
         "eyebrow": "ONE VISIT",
         "body": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year.",
-        "bg_color": "#135E73"
+        "bg_color": "#F7F5F3"
       }
     },
     "visit_gallery": {
@@ -515,7 +515,7 @@
         "button_opens_modal": true,
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST",
-        "bg_color": "#0D3B46"
+        "bg_color": "#0d3b46"
       }
     }
   },
