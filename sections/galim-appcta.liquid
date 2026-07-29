@@ -40,14 +40,15 @@
 </section>
 
 {% stylesheet %}
-  .gh-app__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .gh-app__grid { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 44px; }
+  .gh-app__text { display: flex; flex-direction: column; align-items: center; }
   .gh-app__eyebrow { margin-bottom: 28px; }
   .gh-app__h2 { font: 300 clamp(30px, 3.6vw, 46px)/1.16 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-light); margin: 0; }
-  .gh-app__body { font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); margin: 20px 0 0; max-width: 420px; }
-  .gh-app__btns { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 44px; }
+  .gh-app__body { font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); margin: 20px auto 0; max-width: 480px; }
+  .gh-app__btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
   .gh-app__btn { min-width: 180px; justify-content: center; }
   .gh-app__media { display: flex; justify-content: center; }
-  .gh-app__img { display: block; width: 100%; max-width: 440px; height: auto; border-radius: 20px; }
+  .gh-app__img { display: block; width: 100%; max-width: 360px; height: auto; border-radius: 20px; }
 
   @media (max-width: 768px) {
     .gh-app__grid { grid-template-columns: 1fr; gap: 36px; }
