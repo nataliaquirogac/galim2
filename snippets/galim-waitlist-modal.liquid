@@ -1,6 +1,9 @@
 {%- comment -%}
   Galim Health — Waitlist modal
-  Rendered once globally by the header. Opened via [data-gh-waitlist-open].
+  Rendered once globally, as the LAST direct child of <body> (see theme.liquid)
+  — not nested inside the header — so its position:fixed panel always anchors
+  to the real viewport instead of a transformed/filtered ancestor. Opened via
+  [data-gh-waitlist-open] from anywhere on the page.
   Fields: nombre, apellido, celular, email, ¿cómo te enteraste de nosotros?
 
   Wiring:

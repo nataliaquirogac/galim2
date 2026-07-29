@@ -419,5 +419,16 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {%- comment -%}
+      Rendered as the LAST direct child of <body> (a "portal"), not nested
+      inside the header/header-group. A position:fixed element loses its
+      viewport-relative behavior and instead anchors to the nearest ancestor
+      that has a transform/filter/perspective/will-change/contain property —
+      Dawn's header/announcement wrappers can carry exactly that for their own
+      sticky/scroll animations. Being a direct child of body sidesteps that
+      entirely, guaranteeing the modal is truly fixed to the viewport.
+    {%- endcomment -%}
+    {%- render 'galim-waitlist-modal' -%}
   </body>
 </html>
