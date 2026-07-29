@@ -85,14 +85,16 @@
   .gh-axes__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
   .gh-axes__card {
     position: relative; border-radius: 14px; padding: 32px;
-    background: #FFFFFF;
-    border: 1px solid var(--gh-border); overflow: hidden;
-    box-shadow: 0 10px 30px rgba(19, 94, 115, 0.06);
+    /* Teal island with white text */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8; --gh-green: #A8C2C8;
+    background: linear-gradient(160deg, #17677D, #104E60);
+    border: 1px solid rgba(255,255,255,0.10); overflow: hidden;
+    box-shadow: 0 16px 44px rgba(19, 94, 115, 0.18);
   }
   /* When alone, the card gets a tighter max width so it doesn't feel oversized */
   .gh-axes__cards:has(.gh-axes__card:only-child) { grid-template-columns: 1fr; }
   .gh-axes__card:only-child { max-width: 760px; }
-  .gh-axes__glow { position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(19, 94, 115,.10), transparent 68%); filter: blur(28px); }
+  .gh-axes__glow { position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.08), transparent 68%); filter: blur(28px); }
   .gh-axes__card-eyebrow { position: relative; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.16em; color: var(--gh-muted); margin-bottom: 24px; }
   .gh-axes__card-h3 { position: relative; font: 300 34px/1.15 var(--gh-sans); color: var(--gh-white); margin-bottom: 20px; }
   .gh-axes__card-body { position: relative; font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); }
@@ -100,8 +102,8 @@
     position: relative;
     margin-top: 24px;
     padding: 16px 20px;
-    background: rgba(19, 94, 115, 0.08);
-    border: 1px solid rgba(19, 94, 115, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 10px;
   }
   .gh-axes__note-title { font: 500 16px/1.3 var(--gh-sans); color: var(--gh-white); margin-bottom: 8px; }
@@ -111,8 +113,9 @@
 
   .gh-axes__bq {
     margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-    border-radius: 14px; background: #FFFFFF; border: 1px solid var(--gh-border-strong); padding: 40px;
-    overflow: hidden; position: relative; box-shadow: 0 12px 36px rgba(19, 94, 115, 0.07);
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8; --gh-green: #A8C2C8;
+    border-radius: 14px; background: linear-gradient(160deg, #17677D, #104E60); border: 1px solid rgba(255,255,255,0.10); padding: 40px;
+    overflow: hidden; position: relative; box-shadow: 0 16px 44px rgba(19, 94, 115, 0.18);
   }
   .gh-axes__bq-label { font: 500 15px/1.2 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-light); text-transform: uppercase; margin-bottom: 24px; }
   .gh-axes__bq-num-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
@@ -122,7 +125,7 @@
   .gh-axes__bq-copy { font: 400 14px/1.7 var(--gh-mono); color: var(--gh-muted); max-width: 440px; }
   .gh-axes__bar {
     margin-top: 24px; height: 5px; border-radius: 3px; max-width: 440px;
-    background: linear-gradient(90deg, #135E73, #57B98A 60%, #135E73);
+    background: linear-gradient(90deg, #9FE0BE, #F7F5F3 60%, #9FE0BE);
     background-size: 200% 100%; animation: gh-sweep 5s linear infinite;
   }
   .gh-axes__bar--mobile { display: none; }
@@ -130,33 +133,33 @@
   /* Level meter: each tier gets a bar that grows Base -> Apex */
   .gh-axes__tier {
     display: grid; grid-template-columns: 120px 1fr 60px; align-items: center; gap: 20px;
-    padding: 13px 0; border-bottom: 1px solid rgba(19,94,115,.12);
+    padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.14);
   }
   .gh-axes__tier:last-child { border-bottom: 0; }
   .gh-axes__tier-num { display: none; }
   .gh-axes__tier-label { font: 400 17px/1.1 var(--gh-sans); color: var(--gh-light); }
   .gh-axes__tier-range { font: 400 14px/1 var(--gh-mono); color: var(--gh-muted); text-align: right; letter-spacing: 0.02em; }
-  .gh-axes__tier-meter { position: relative; height: 6px; border-radius: 999px; background: rgba(19,94,115,.1); overflow: hidden; }
+  .gh-axes__tier-meter { position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden; }
   .gh-axes__tier-meter i {
     position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px;
-    background: linear-gradient(90deg, #135E73, #57B98A);
+    background: linear-gradient(90deg, #9FE0BE, #F7F5F3);
   }
   /* Column header row */
   /* Header row: escape the narrow grid so "AGE PERCENTILE" stays one line, right-aligned */
-  .gh-axes__tier--head { display: flex; justify-content: flex-end; border-bottom: 1px solid rgba(19,94,115,.18); padding-bottom: 12px; }
+  .gh-axes__tier--head { display: flex; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,.18); padding-bottom: 12px; }
   .gh-axes__tier--head > span:not(.gh-axes__tier-range) { display: none; }
   .gh-axes__tier--head .gh-axes__tier-range { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gh-slate); white-space: nowrap; text-align: right; }
   /* Active tier — glows and pops */
   .gh-axes__tier.is-highlight {
-    background: rgba(19, 94, 115, 0.10);
+    background: rgba(255, 255, 255, 0.12);
     border-bottom-color: transparent;
     border-radius: 8px;
     margin: 2px -14px; padding: 13px 14px;
-    box-shadow: inset 0 0 0 1px rgba(19,94,115,.22);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.28);
   }
-  .gh-axes__tier.is-highlight .gh-axes__tier-label { color: var(--gh-brand); font-weight: 600; }
-  .gh-axes__tier.is-highlight .gh-axes__tier-range { color: var(--gh-light); }
-  .gh-axes__tier.is-highlight .gh-axes__tier-meter i { box-shadow: 0 0 12px rgba(19,94,115,.4); }
+  .gh-axes__tier.is-highlight .gh-axes__tier-label { color: #F7F5F3; font-weight: 600; }
+  .gh-axes__tier.is-highlight .gh-axes__tier-range { color: #F7F5F3; }
+  .gh-axes__tier.is-highlight .gh-axes__tier-meter i { box-shadow: 0 0 12px rgba(255,255,255,.5); }
 
   .gh-c-green { color: var(--gh-green); }
   .gh-c-light { color: var(--gh-light); }

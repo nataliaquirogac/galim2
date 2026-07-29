@@ -47,21 +47,24 @@
   .gh-diag__rows { display: flex; flex-direction: column; gap: 12px; }
   .gh-diag__row {
     display: grid; grid-template-columns: auto 64px 1fr auto; align-items: center; gap: 24px;
-    border: 1px solid var(--gh-border); border-radius: 14px; padding: 24px 32px;
-    background: linear-gradient(90deg, rgba(19, 94, 115,.08), rgba(168,194,200,.02) 40%);
-    transition: transform 0.3s, border-color 0.3s; color: inherit;
+    /* Teal island with white text */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8; --gh-green: #A8C2C8;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 24px 32px;
+    background: linear-gradient(120deg, #17677D, #104E60);
+    box-shadow: 0 12px 32px rgba(19, 94, 115, 0.12);
+    transition: transform 0.3s, border-color 0.3s; color: var(--gh-light);
   }
-  .gh-diag__row:hover { transform: translateX(8px); border-color: rgba(19, 94, 115,.5); color: inherit; }
+  .gh-diag__row:hover { transform: translateX(8px); border-color: rgba(255,255,255,.35); color: var(--gh-light); }
   .gh-diag__icon {
     width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
-    background: rgba(19, 94, 115,.14); border: 1px solid rgba(19, 94, 115,.3);
-    display: inline-flex; align-items: center; justify-content: center; color: var(--gh-green);
+    background: rgba(255, 255, 255,.12); border: 1px solid rgba(255, 255, 255,.22);
+    display: inline-flex; align-items: center; justify-content: center; color: #F7F5F3;
   }
-  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(19, 94, 115,.45); }
+  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(255, 255, 255,.5); }
   .gh-diag__text { display: flex; flex-direction: column; gap: 4px; }
   .gh-diag__name { font: 500 24px/1.1 var(--gh-sans); color: var(--gh-white); }
   .gh-diag__desc { font: 300 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
-  .gh-diag__arrow { font: 400 22px/1 var(--gh-sans); color: var(--gh-slate); }
+  .gh-diag__arrow { font: 400 22px/1 var(--gh-sans); color: #CDE0E4; }
 
   @media (max-width: 768px) {
     .gh-diag__h2 { font-size: 28px; margin-bottom: 10px; }
