@@ -65,7 +65,13 @@ body.gh-page { background: var(--gh-bg) !important; }
 .gh-page .gh-axes,
 .gh-page .gh-protocols,
 .gh-page .gh-gap,
-.gh-page .gh-method { background: transparent !important; }
+.gh-page .gh-method,
+.gh-page .gh-gallery,
+.gh-page .gh-app { background: transparent !important; }
+/* The gallery slides are opaque cards; on mobile a portrait shot is ~120vw tall
+   and was hiding the field for the whole "Book your visit" section. Letting the
+   slide surface stay transparent keeps the gradient reading behind the photos. */
+.gh-page .gh-gallery__slide { background: transparent; }
 /* Auto-contrast: any section whose chosen background is dark gets the
    .gh-inv class (added in Liquid from the color's brightness) → light text.
    This keeps the customizer background picker fully functional. */

@@ -11,13 +11,13 @@
   - Static teal/aqua radial washes  -> CSS (cheap, crisp, no repaint cost)
   - Animated contour lines/particles -> <canvas> (only the moving parts)
 
-  The centre is masked out so headlines stay perfectly readable; lines are only
-  present toward the edges and fade away behind text.
+  The field covers the full page (no centre cut-out) so the gradient reads
+  edge to edge; line opacity stays low enough for copy to sit on top.
 
   Accessibility / performance:
   - prefers-reduced-motion  -> renders ONE static frame, no rAF loop
   - touch devices           -> no cursor parallax/glow (pointer:coarse)
-  - mobile                  -> one cluster, fewer rings/particles, coarser arcs
+  - mobile                  -> fewer particles, coarser line sampling
   - pauses when the tab is hidden; DPR capped at 2
 {%- endcomment -%}
 
@@ -36,8 +36,7 @@
     overflow: hidden;
   }
 
-  /* Teal → blue washes over the light page. Strong enough to read clearly as a
-     tinted, technological field; the mask below keeps the middle clean. */
+  /* Teal → blue washes over the light page, full-bleed across the viewport. */
   .gh-field__wash {
     position: absolute;
     inset: -10%;
@@ -52,9 +51,6 @@
       radial-gradient(50% 54% at 4% 88%, rgba(19, 94, 115, 0.34), rgba(19, 94, 115, 0) 74%),
       /* broad diagonal blue gradient tying it all together */
       linear-gradient(135deg, rgba(19, 94, 115, 0.16) 0%, rgba(27, 182, 201, 0.10) 45%, rgba(125, 227, 232, 0.14) 100%);
-    /* Clear the middle where headlines live, full strength toward the edges */
-    -webkit-mask-image: radial-gradient(110% 84% at 50% 46%, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.55) 38%, #000 62%);
-    mask-image: radial-gradient(110% 84% at 50% 46%, transparent 0%, transparent 15%, rgba(0, 0, 0, 0.55) 38%, #000 62%);
   }
 
   /* Fine technical grid — reads as instrumentation / scan readout. Sits between
@@ -66,8 +62,6 @@
       linear-gradient(rgba(19, 94, 115, 0.16) 1px, transparent 1px),
       linear-gradient(90deg, rgba(19, 94, 115, 0.16) 1px, transparent 1px);
     background-size: 72px 72px;
-    -webkit-mask-image: radial-gradient(105% 80% at 50% 46%, transparent 0%, transparent 20%, rgba(0, 0, 0, 0.42) 44%, #000 72%);
-    mask-image: radial-gradient(105% 80% at 50% 46%, transparent 0%, transparent 20%, rgba(0, 0, 0, 0.42) 44%, #000 72%);
   }
 
   .gh-field__canvas {
@@ -76,19 +70,9 @@
     width: 100%;
     height: 100%;
     display: block;
-    /* Same centre cut-out, slightly tighter, so contour lines never cross text */
-    -webkit-mask-image: radial-gradient(108% 82% at 50% 46%, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.5) 40%, #000 66%);
-    mask-image: radial-gradient(108% 82% at 50% 46%, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.5) 40%, #000 66%);
   }
 
   @media (max-width: 768px) {
-    /* Mobile: wider clear centre (text occupies proportionally more screen) */
-    .gh-field__wash,
-    .gh-field__grid,
-    .gh-field__canvas {
-      -webkit-mask-image: radial-gradient(120% 78% at 50% 44%, transparent 0%, transparent 26%, rgba(0, 0, 0, 0.45) 48%, #000 76%);
-      mask-image: radial-gradient(120% 78% at 50% 44%, transparent 0%, transparent 26%, rgba(0, 0, 0, 0.45) 48%, #000 76%);
-    }
     .gh-field__grid { background-size: 54px 54px; }
   }
 {% endstyle %}
@@ -111,7 +95,7 @@
     var CYAN = [125, 227, 232];  /* #7DE3E8 soft cyan glow    */
 
     var w = 0, h = 0, dpr = 1, mobile = false;
-    var rings = 0, seg = 0, clusters = [], particles = [];
+    var lines = 0, step = 0, particles = [];
 
     /* Pointer state — lerped toward the target for buttery parallax */
     var pTargetX = 0.5, pTargetY = 0.5;   /* normalised 0..1 */
@@ -136,19 +120,11 @@
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      /* Simplified on mobile: fewer rings, coarser angular sampling */
-      rings = mobile ? 13 : 19;
-      seg = mobile ? 44 : 72;
-
-      /* Contour clusters sit toward the edges, so the middle of the screen —
-         where headlines live — stays clean. Each is an invisible body-like
-         mass the contour rings wrap around. */
-      clusters = mobile
-        ? [{ x: 0.50, y: 0.30, s: 1.00, ph: 0.0 }]
-        : [
-            { x: 0.13, y: 0.38, s: 1.00, ph: 0.0 },
-            { x: 0.88, y: 0.62, s: 0.84, ph: 2.1 }
-          ];
+      /* Open contour lines spanning the full width. Mobile keeps a healthy
+         count (they read as strata, not as a few stray curves) but samples
+         more coarsely to stay cheap. */
+      lines = mobile ? 22 : 30;
+      step = mobile ? 14 : 10;
 
       var count = mobile ? 6 : 14;
       particles = [];
@@ -165,61 +141,51 @@
       }
     }
 
-    /* One cluster of concentric topographic contours wrapping an invisible,
-       body-like mass — the biometric-scan motif from the brand imagery.
-       Rings are organic blobs (not circles): the radius is modulated by a few
-       low-frequency sines that drift over time, so the whole field flows. */
-    function drawCluster(cl, time, breathe) {
-      var cx = cl.x * w;
-      var cy = cl.y * h;
-      var unit = Math.min(w, h);
-      var base = unit * 0.055 * cl.s;
-      var gap = unit * 0.0225 * cl.s;
+    /* One open contour line spanning the full width. Neighbouring lines share
+       most of their phase (the `t` term is scaled small), so they bend together
+       into coherent flowing strata — a topographic map, not isolated ripples,
+       and deliberately never closed circles. */
+    function drawFlow(i, time, breathe) {
+      var t = lines > 1 ? i / (lines - 1) : 0.5;
+      /* Slight vertical overscan so lines run off both edges */
+      var baseY = h * (-0.06 + 1.12 * t);
 
-      /* The cluster brightens gently when the cursor is near it */
+      /* Brighten the strata passing near the cursor */
       var boost = 1;
       if (hasPointer) {
-        var dx = (pX * w - cx) / (unit * 0.45);
-        var dy = (pY * h - cy) / (unit * 0.45);
-        boost = 1 + 0.5 * Math.exp(-(dx * dx + dy * dy));
+        var dy = (pY * h - baseY) / (h * 0.22);
+        boost = 1 + 0.55 * Math.exp(-dy * dy);
       }
 
-      for (var k = 0; k < rings; k++) {
-        /* Breathing: the whole stack expands and contracts very slowly */
-        var rr = (base + k * gap) * (1 + 0.045 * breathe);
+      /* Slow, per-line opacity breathing */
+      var s = Math.sin(time * 0.14 + t * 5.5);
+      var fade = 0.45 + 0.55 * (s * s);
+      var alpha = (0.22 + 0.26 * (1 - Math.abs(t - 0.5) * 2)) * fade * boost;
+      if (alpha < 0.005) return;
 
-        /* Each ring fades in and out on its own slow cycle */
-        var s = Math.sin(time * 0.15 + k * 0.5 + cl.ph);
-        var fade = 0.32 + 0.68 * (s * s);
+      /* Colour drifts teal -> aqua -> cyan down the page */
+      var col = t < 0.34 ? TEAL : (t < 0.7 ? AQUA : CYAN);
 
-        /* Inner rings read strongest; outer ones dissolve into the page */
-        var inner = 1 - k / rings;
-        var alpha = (0.14 + 0.44 * inner) * fade * boost;
-        if (alpha < 0.005) continue;
+      /* Amplitude swells and settles with the breathing envelope */
+      var amp = 1 + 0.18 * breathe;
 
-        /* Colour ramps deep teal (core) -> aqua -> soft cyan (outer) */
-        var col = inner > 0.62 ? TEAL : (inner > 0.28 ? AQUA : CYAN);
+      ctx.beginPath();
+      var first = true;
+      for (var x = -step; x <= w + step; x += step) {
+        /* Three octaves; the small `t` coefficients keep adjacent lines
+           correlated so the field flows as layered bands. */
+        var y = baseY
+          + Math.sin(x * 0.0016 + time * 0.16 + t * 2.2) * 34 * amp
+          + Math.sin(x * 0.0034 - time * 0.11 + t * 3.1) * 17 * amp
+          + Math.sin(x * 0.0072 + time * 0.08 + t * 1.4) * 7 * amp;
 
-        ctx.beginPath();
-        for (var a = 0; a <= seg; a++) {
-          var th = (a / seg) * Math.PI * 2;
-          var mod = 1
-            + 0.135 * Math.sin(3 * th + time * 0.26 + k * 0.18 + cl.ph)
-            + 0.080 * Math.sin(5 * th - time * 0.20 + k * 0.11)
-            + 0.050 * Math.sin(2 * th + time * 0.12 + cl.ph);
-          var r = rr * mod;
-          var x = cx + Math.cos(th) * r;
-          /* Vertical elongation → the mass reads as a standing figure */
-          var y = cy + Math.sin(th) * r * 1.52;
-          if (a === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-
-        ctx.strokeStyle = rgba(col, alpha);
-        ctx.lineWidth = mobile ? 0.9 : 1;
-        ctx.stroke();
+        if (first) { ctx.moveTo(x, y); first = false; }
+        else { ctx.lineTo(x, y); }
       }
+
+      ctx.strokeStyle = rgba(col, alpha);
+      ctx.lineWidth = mobile ? 1 : 1.1;
+      ctx.stroke();
     }
 
     function drawParticles(time) {
@@ -268,7 +234,7 @@
         ctx.translate((pX - 0.5) * 2 * MAX_PARALLAX, (pY - 0.5) * 2 * MAX_PARALLAX);
       }
       drawGlow();
-      for (var i = 0; i < clusters.length; i++) drawCluster(clusters[i], time, breathe);
+      for (var i = 0; i < lines; i++) drawFlow(i, time, breathe);
       drawParticles(time);
       ctx.restore();
     }
