@@ -21,14 +21,14 @@
   - pauses when the tab is hidden; DPR capped at 2
 {%- endcomment -%}
 
-<div class="gh-field" aria-hidden="true" data-gh-field>
-  <div class="gh-field__wash"></div>
-  <div class="gh-field__grid"></div>
-  <canvas class="gh-field__canvas" data-gh-field-canvas></canvas>
+<div class="gh-bgfield" aria-hidden="true" data-gh-bgfield>
+  <div class="gh-bgfield__wash"></div>
+  <div class="gh-bgfield__grid"></div>
+  <canvas class="gh-bgfield__canvas" data-gh-bgfield-canvas></canvas>
 </div>
 
 {% style %}
-  .gh-field {
+  .gh-bgfield {
     position: fixed;
     inset: 0;
     z-index: -1;
@@ -37,7 +37,7 @@
   }
 
   /* Teal → blue washes over the light page, full-bleed across the viewport. */
-  .gh-field__wash {
+  .gh-bgfield__wash {
     position: absolute;
     inset: -10%;
     background:
@@ -55,7 +55,7 @@
 
   /* Fine technical grid — reads as instrumentation / scan readout. Sits between
      the wash and the contour lines. */
-  .gh-field__grid {
+  .gh-bgfield__grid {
     position: absolute;
     inset: 0;
     background-image:
@@ -64,7 +64,7 @@
     background-size: 72px 72px;
   }
 
-  .gh-field__canvas {
+  .gh-bgfield__canvas {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -73,7 +73,7 @@
   }
 
   @media (max-width: 768px) {
-    .gh-field__grid { background-size: 54px 54px; }
+    .gh-bgfield__grid { background-size: 54px 54px; }
   }
 {% endstyle %}
 
@@ -81,8 +81,8 @@
   (function () {
     'use strict';
 
-    var root = document.querySelector('[data-gh-field]');
-    var canvas = root && root.querySelector('[data-gh-field-canvas]');
+    var root = document.querySelector('[data-gh-bgfield]');
+    var canvas = root && root.querySelector('[data-gh-bgfield-canvas]');
     if (!canvas || !canvas.getContext) return;
 
     var ctx = canvas.getContext('2d');
