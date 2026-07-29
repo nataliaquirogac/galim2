@@ -14,10 +14,10 @@
     "galim_announcement": {
       "type": "galim-announcement",
       "settings": {
-        "text": "CALZADA DEL VALLE, MONTERREY MX",
+        "text": "CALZADA DEL VALLE, SSPG",
         "show_glyphs": true,
-        "bg_color": "#135E73",
-        "text_color": "#F7F5F3"
+        "bg_color": "#135e73",
+        "text_color": "#f7f5f3"
       }
     },
     "galim_header": {

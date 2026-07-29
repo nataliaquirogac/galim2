@@ -14,6 +14,7 @@
       "blocks": {
         "plan_perf": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "25 MIN",
             "name": "Body Performance",
@@ -23,6 +24,7 @@
         },
         "plan_long": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "50 MIN",
             "name": "Body Performance + Prevention",
@@ -48,10 +50,10 @@
         "heading_size_mobile": 34,
         "coming_soon": "COMING SOON",
         "coming_soon_sub": "NOVEMBER 1ST",
-        "badge": "PREVENTIVE HEALTHCARE",
-        "heading": "Understand your body.",
-        "heading_accent": "Protect your future health.",
-        "subheading": "Body scan powered by the world’s most advanced health measurement technology, millions of health data points, AI, and physician expertise",
+        "badge": "",
+        "heading": "Body Scan powered by",
+        "heading_accent": "Advanced health technology",
+        "subheading": "",
         "council_line": "OUR PLANS",
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
