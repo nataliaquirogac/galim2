@@ -115,8 +115,11 @@
     max-width: 480px;
     max-height: calc(100vh - 48px);
     overflow-y: auto;
-    background: linear-gradient(160deg, var(--gh-teal-700), var(--gh-bg-900));
-    border: 1px solid var(--gh-border-strong);
+    /* Teal island with white text */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8;
+    --gh-green: #A8C2C8; --gh-border: rgba(255,255,255,0.18); --gh-border-strong: rgba(255,255,255,0.24);
+    background: linear-gradient(160deg, #1A6B80 0%, #0F4E60 100%);
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: 16px;
     padding: 44px 40px 40px;
     transform: translateY(12px) scale(0.98);
@@ -145,19 +148,21 @@
   .gh-field__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gh-slate); }
   .gh-field input,
   .gh-field select {
-    background: rgba(6, 31, 38, 0.5);
-    border: 1px solid var(--gh-border);
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     padding: 13px 14px;
-    color: var(--gh-light);
+    color: #F7F5F3;
     font: 400 15px/1.2 var(--gh-sans);
     width: 100%;
   }
-  .gh-field input::placeholder { color: var(--gh-slate); }
+  .gh-field input::placeholder { color: rgba(247, 245, 243, 0.55); }
+  .gh-field select option { color: #0D3B46; }
   .gh-field input:focus,
-  .gh-field select:focus { outline: none; border-color: var(--gh-green); }
+  .gh-field select:focus { outline: none; border-color: rgba(255, 255, 255, 0.6); }
   .gh-field select { appearance: none; cursor: pointer; }
-  .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; }
+  .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; background: #F7F5F3; color: #135E73; }
+  .gh-modal__submit:hover { background: #FFFFFF; color: #0F4E60; }
   .gh-modal__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
   .gh-modal__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
   @media (max-width: 768px) {
