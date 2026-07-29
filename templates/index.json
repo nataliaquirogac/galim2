@@ -486,8 +486,8 @@
         "anchor_id": "visit",
         "eyebrow": "THE SPACE",
         "heading": "Book your visit",
-        "button_label": "Join the waitlist",
-        "button_opens_modal": true,
+        "button_label": "",
+        "button_opens_modal": false,
         "button_link": ""
       }
     },
