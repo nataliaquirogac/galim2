@@ -15,7 +15,12 @@
   endif
 -%}
 
-<section class="gh-steps gh-section{% if inv %} gh-inv{% endif %}" data-gh-section="steps" style="background: {{ s.bg_color }}; --gh-steps-count: {{ section.blocks.size | at_least: 1 }};">
+{%- comment -%}
+  Only emit a background when an actual colour is picked. Cleared/transparent
+  (Shopify returns rgba(0,0,0,0)) leaves the section see-through so the ambient
+  page field shows behind it — and the colour picker keeps working as before.
+{%- endcomment -%}
+<section class="gh-steps gh-section{% if inv %} gh-inv{% endif %}" data-gh-section="steps" style="{% if s.bg_color != blank and s.bg_color != 'rgba(0,0,0,0)' %}background: {{ s.bg_color }};{% endif %} --gh-steps-count: {{ section.blocks.size | at_least: 1 }};">
   <div class="gh-container">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-steps__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
 

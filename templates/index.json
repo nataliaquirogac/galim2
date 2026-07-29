@@ -235,7 +235,7 @@
       "settings": {
         "eyebrow": "ONE VISIT",
         "body": "In one visit, understand your body more clearly than ever before, know exactly what to improve next, and track how you change year after year.",
-        "bg_color": "#F2F2F2"
+        "bg_color": "rgba(0,0,0,0)"
       }
     },
     "visit_gallery": {
