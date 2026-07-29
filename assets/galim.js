@@ -18,8 +18,17 @@
     document.documentElement.style.overflow = 'hidden';
     requestAnimationFrame(function () {
       modal.classList.add('is-open');
-      var field = modal.querySelector('input, select, button');
-      if (field) field.focus();
+      /* Delay autofocus until the opacity transition has finished. Focusing
+         an input immediately triggers the mobile keyboard, which resizes the
+         viewport WHILE the fixed-position panel is still mid-transition —
+         iOS Safari's compositor can glitch in that window, leaving a "ghost"
+         of the page behind painted through the modal. Waiting the same
+         duration as the CSS transition (see .gh-modal { transition }) avoids
+         the race entirely. */
+      window.setTimeout(function () {
+        var field = modal.querySelector('input, select, button');
+        if (field) field.focus({ preventScroll: true });
+      }, 300);
     });
   }
 
