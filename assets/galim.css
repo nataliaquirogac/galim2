@@ -7,7 +7,7 @@
 :root {
   /* Brand palette (2026) — LIGHT theme: #135E73 base · #0D3B46 ink · #F7F5F3 bg */
   /* Backgrounds (light) */
-  --gh-bg: #F7F5F3;        /* primary background (off-white) */
+  --gh-bg: #f2f2f2;        /* primary background (light gray) */
   --gh-bg-900: #FFFFFF;    /* cards / surfaces (white) */
   --gh-bg-950: #135E73;    /* footer (teal block) */
   /* Brand teal — accent for buttons, eyebrows, dots, icons */
