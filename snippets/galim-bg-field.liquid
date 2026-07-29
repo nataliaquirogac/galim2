@@ -1,0 +1,312 @@
+{%- comment -%}
+  Galim Health — Biometric contour field (ambient page background)
+  ---------------------------------------------------------------
+  Reusable background component. Renders as a FIXED layer with z-index:-1 as a
+  direct child of <body>, so it paints above the root background color but
+  BELOW every in-flow section — no stacking-context risk, no effect on layout.
+  (Same proven pattern used elsewhere in this theme; a negative-z-index child of
+  body sits above the propagated body background but under normal content.)
+
+  Composition:
+  - Static teal/aqua radial washes  -> CSS (cheap, crisp, no repaint cost)
+  - Animated contour lines/particles -> <canvas> (only the moving parts)
+
+  The centre is masked out so headlines stay perfectly readable; lines are only
+  present toward the edges and fade away behind text.
+
+  Accessibility / performance:
+  - prefers-reduced-motion  -> renders ONE static frame, no rAF loop
+  - touch devices           -> no cursor parallax/glow (pointer:coarse)
+  - mobile                  -> one cluster, fewer rings/particles, coarser arcs
+  - pauses when the tab is hidden; DPR capped at 2
+{%- endcomment -%}
+
+<div class="gh-field" aria-hidden="true" data-gh-field>
+  <div class="gh-field__wash"></div>
+  <canvas class="gh-field__canvas" data-gh-field-canvas></canvas>
+</div>
+
+{% style %}
+  .gh-field {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Soft teal / aqua / cyan washes over the warm off-white page.
+     Kept very low alpha so it reads as light, not as colour blocking. */
+  .gh-field__wash {
+    position: absolute;
+    inset: -10%;
+    background:
+      radial-gradient(38% 46% at 12% 18%, rgba(27, 182, 201, 0.10), rgba(27, 182, 201, 0) 70%),
+      radial-gradient(42% 50% at 88% 26%, rgba(125, 227, 232, 0.13), rgba(125, 227, 232, 0) 72%),
+      radial-gradient(46% 42% at 78% 88%, rgba(19, 94, 115, 0.09), rgba(19, 94, 115, 0) 70%),
+      radial-gradient(40% 44% at 8% 82%, rgba(27, 182, 201, 0.07), rgba(27, 182, 201, 0) 72%);
+    /* Fade the wash away from the middle of the screen where copy lives */
+    -webkit-mask-image: radial-gradient(115% 88% at 50% 46%, transparent 0%, transparent 24%, rgba(0, 0, 0, 0.5) 50%, #000 76%);
+    mask-image: radial-gradient(115% 88% at 50% 46%, transparent 0%, transparent 24%, rgba(0, 0, 0, 0.5) 50%, #000 76%);
+  }
+
+  .gh-field__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Same centre cut-out, slightly tighter, so contour lines never cross text */
+    -webkit-mask-image: radial-gradient(112% 86% at 50% 46%, transparent 0%, transparent 27%, rgba(0, 0, 0, 0.45) 51%, #000 74%);
+    mask-image: radial-gradient(112% 86% at 50% 46%, transparent 0%, transparent 27%, rgba(0, 0, 0, 0.45) 51%, #000 74%);
+  }
+
+  @media (max-width: 768px) {
+    /* Mobile: pull the wash in and widen the clear centre (smaller viewport,
+       text occupies proportionally more of the screen). */
+    .gh-field__wash,
+    .gh-field__canvas {
+      -webkit-mask-image: radial-gradient(120% 80% at 50% 44%, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.4) 58%, #000 82%);
+      mask-image: radial-gradient(120% 80% at 50% 44%, transparent 0%, transparent 34%, rgba(0, 0, 0, 0.4) 58%, #000 82%);
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    'use strict';
+
+    var root = document.querySelector('[data-gh-field]');
+    var canvas = root && root.querySelector('[data-gh-field-canvas]');
+    if (!canvas || !canvas.getContext) return;
+
+    var ctx = canvas.getContext('2d');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var coarse = window.matchMedia('(pointer: coarse)').matches;
+
+    /* Brand palette (visual direction) */
+    var TEAL = [19, 94, 115];    /* #135E73 deep medical teal */
+    var AQUA = [27, 182, 201];   /* #1BB6C9 aqua accent       */
+    var CYAN = [125, 227, 232];  /* #7DE3E8 soft cyan glow    */
+
+    var w = 0, h = 0, dpr = 1, mobile = false;
+    var rings = 0, seg = 0, clusters = [], particles = [];
+
+    /* Pointer state — lerped toward the target for buttery parallax */
+    var pTargetX = 0.5, pTargetY = 0.5;   /* normalised 0..1 */
+    var pX = 0.5, pY = 0.5;
+    var hasPointer = false;
+
+    var MAX_PARALLAX = 6;   /* px — spec: 4–8px */
+    var BREATH = 15;        /* seconds — spec: 12–18s */
+
+    function rgba(c, a) {
+      return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+    }
+
+    function resize() {
+      var rect = root.getBoundingClientRect();
+      w = Math.max(1, Math.round(rect.width));
+      h = Math.max(1, Math.round(rect.height));
+      mobile = w < 768;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      /* Simplified on mobile: fewer rings, coarser angular sampling */
+      rings = mobile ? 13 : 19;
+      seg = mobile ? 44 : 72;
+
+      /* Contour clusters sit toward the edges, so the middle of the screen —
+         where headlines live — stays clean. Each is an invisible body-like
+         mass the contour rings wrap around. */
+      clusters = mobile
+        ? [{ x: 0.50, y: 0.30, s: 1.00, ph: 0.0 }]
+        : [
+            { x: 0.13, y: 0.38, s: 1.00, ph: 0.0 },
+            { x: 0.88, y: 0.62, s: 0.84, ph: 2.1 }
+          ];
+
+      var count = mobile ? 6 : 14;
+      particles = [];
+      for (var i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 0.7 + Math.random() * 1.3,
+          vx: (-0.5 + Math.random()) * 0.05,
+          vy: -0.04 - Math.random() * 0.05,
+          a: 0.10 + Math.random() * 0.18,
+          ph: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    /* One cluster of concentric topographic contours wrapping an invisible,
+       body-like mass — the biometric-scan motif from the brand imagery.
+       Rings are organic blobs (not circles): the radius is modulated by a few
+       low-frequency sines that drift over time, so the whole field flows. */
+    function drawCluster(cl, time, breathe) {
+      var cx = cl.x * w;
+      var cy = cl.y * h;
+      var unit = Math.min(w, h);
+      var base = unit * 0.055 * cl.s;
+      var gap = unit * 0.0225 * cl.s;
+
+      /* The cluster brightens gently when the cursor is near it */
+      var boost = 1;
+      if (hasPointer) {
+        var dx = (pX * w - cx) / (unit * 0.45);
+        var dy = (pY * h - cy) / (unit * 0.45);
+        boost = 1 + 0.5 * Math.exp(-(dx * dx + dy * dy));
+      }
+
+      for (var k = 0; k < rings; k++) {
+        /* Breathing: the whole stack expands and contracts very slowly */
+        var rr = (base + k * gap) * (1 + 0.045 * breathe);
+
+        /* Each ring fades in and out on its own slow cycle */
+        var s = Math.sin(time * 0.15 + k * 0.5 + cl.ph);
+        var fade = 0.32 + 0.68 * (s * s);
+
+        /* Inner rings read strongest; outer ones dissolve into the page */
+        var inner = 1 - k / rings;
+        var alpha = (0.05 + 0.20 * inner) * fade * boost;
+        if (alpha < 0.005) continue;
+
+        /* Colour ramps deep teal (core) -> aqua -> soft cyan (outer) */
+        var col = inner > 0.62 ? TEAL : (inner > 0.28 ? AQUA : CYAN);
+
+        ctx.beginPath();
+        for (var a = 0; a <= seg; a++) {
+          var th = (a / seg) * Math.PI * 2;
+          var mod = 1
+            + 0.135 * Math.sin(3 * th + time * 0.26 + k * 0.18 + cl.ph)
+            + 0.080 * Math.sin(5 * th - time * 0.20 + k * 0.11)
+            + 0.050 * Math.sin(2 * th + time * 0.12 + cl.ph);
+          var r = rr * mod;
+          var x = cx + Math.cos(th) * r;
+          /* Vertical elongation → the mass reads as a standing figure */
+          var y = cy + Math.sin(th) * r * 1.52;
+          if (a === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+
+        ctx.strokeStyle = rgba(col, alpha);
+        ctx.lineWidth = mobile ? 0.9 : 1;
+        ctx.stroke();
+      }
+    }
+
+    function drawParticles(time) {
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+        if (p.x < -10) p.x = w + 10;
+        if (p.x > w + 10) p.x = -10;
+
+        var tw = 0.55 + 0.45 * Math.sin(time * 0.5 + p.ph);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(AQUA, p.a * tw);
+        ctx.fill();
+      }
+    }
+
+    /* Soft glow that follows the cursor at a distance — reads as the field
+       responding to presence, not as a cursor follower. */
+    function drawGlow() {
+      if (!hasPointer) return;
+      var gx = pX * w, gy = pY * h;
+      var r = Math.min(w, h) * 0.30;
+      var g = ctx.createRadialGradient(gx, gy, 0, gx, gy, r);
+      g.addColorStop(0, rgba(CYAN, 0.075));
+      g.addColorStop(0.55, rgba(AQUA, 0.028));
+      g.addColorStop(1, rgba(AQUA, 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(gx - r, gy - r, r * 2, r * 2);
+    }
+
+    function frame(time) {
+      ctx.clearRect(0, 0, w, h);
+
+      /* Breathing envelope: one full cycle every BREATH seconds */
+      var breathe = Math.sin((time / BREATH) * Math.PI * 2);
+
+      /* Ease the pointer, then translate the whole field a few px */
+      pX += (pTargetX - pX) * 0.045;
+      pY += (pTargetY - pY) * 0.045;
+
+      ctx.save();
+      if (hasPointer) {
+        ctx.translate((pX - 0.5) * 2 * MAX_PARALLAX, (pY - 0.5) * 2 * MAX_PARALLAX);
+      }
+      drawGlow();
+      for (var i = 0; i < clusters.length; i++) drawCluster(clusters[i], time, breathe);
+      drawParticles(time);
+      ctx.restore();
+    }
+
+    /* ---- Boot ---- */
+    resize();
+
+    /* Paint one frame synchronously so the field is already composed on first
+       paint (no blank flash), and so it still renders in embedded webviews that
+       throttle or suspend requestAnimationFrame — same defensive reasoning as
+       the reveal-on-scroll logic in galim.js. */
+    frame(0);
+
+    if (!reduced) {
+      var start = null;
+      var raf = null;
+
+      function loop(ts) {
+        if (start === null) start = ts;
+        frame((ts - start) / 1000);
+        raf = window.requestAnimationFrame(loop);
+      }
+      raf = window.requestAnimationFrame(loop);
+
+      /* Don't burn cycles in a background tab */
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          if (raf) { window.cancelAnimationFrame(raf); raf = null; }
+        } else if (!raf) {
+          start = null;
+          raf = window.requestAnimationFrame(loop);
+        }
+      });
+
+      /* Cursor interaction: pointer devices only */
+      if (!coarse) {
+        window.addEventListener('pointermove', function (e) {
+          if (e.pointerType === 'touch') return;
+          hasPointer = true;
+          pTargetX = e.clientX / Math.max(1, window.innerWidth);
+          pTargetY = e.clientY / Math.max(1, window.innerHeight);
+        }, { passive: true });
+
+        document.addEventListener('pointerleave', function () {
+          hasPointer = false;
+          pTargetX = 0.5;
+          pTargetY = 0.5;
+        });
+      }
+    }
+
+    /* Debounced resize */
+    var rt = null;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(function () {
+        resize();
+        if (reduced) frame(0);
+      }, 150);
+    }, { passive: true });
+  })();
+</script>

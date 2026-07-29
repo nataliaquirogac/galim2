@@ -344,6 +344,15 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
+    {%- comment -%}
+      Ambient biometric contour field behind the whole landing page. Must be a
+      direct child of <body> so its fixed / z-index:-1 layer sits above the page
+      background but below every section. Landing only.
+    {%- endcomment -%}
+    {%- if request.page_type == 'index' -%}
+      {%- render 'galim-bg-field' -%}
+    {%- endif -%}
+
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
