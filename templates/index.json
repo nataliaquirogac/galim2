@@ -38,7 +38,7 @@
       "settings": {
         "image": "shopify://shop_images/desktop_16.jpg",
         "image_url": "",
-        "image_mobile": "shopify://shop_images/mobile_9.jpg",
+        "image_mobile": "shopify://shop_images/mobile2.png",
         "image_url_mobile": "",
         "overlay_strength": 35,
         "side_color": "#0d3b46",
@@ -480,6 +480,31 @@
         "bg_bottom": "#0d3b46"
       }
     },
+    "visit_gallery": {
+      "type": "galim-gallery",
+      "settings": {
+        "anchor_id": "visit",
+        "eyebrow": "THE SPACE",
+        "heading": "Book your visit",
+        "button_label": "Join the waitlist",
+        "button_opens_modal": true,
+        "button_link": ""
+      }
+    },
+    "app_cta": {
+      "type": "galim-appcta",
+      "settings": {
+        "anchor_id": "app",
+        "eyebrow": "GET THE APP",
+        "heading": "Your health. Your data.\nYour next move.",
+        "body": "",
+        "image_url": "",
+        "android_label": "Android",
+        "android_link": "",
+        "ios_label": "iOS",
+        "ios_link": ""
+      }
+    },
     "final_cta": {
       "type": "galim-final-cta",
       "settings": {
@@ -490,26 +515,6 @@
         "button_opens_modal": true,
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST"
-      }
-    },
-    "visit_gallery": {
-      "type": "galim-gallery",
-      "settings": {
-        "anchor_id": "visit",
-        "eyebrow": "THE SPACE",
-        "heading": "Book your visit",
-        "button_label": "Join the waitlist",
-        "button_opens_modal": true
-      }
-    },
-    "app_cta": {
-      "type": "galim-appcta",
-      "settings": {
-        "anchor_id": "app",
-        "eyebrow": "GET THE APP",
-        "heading": "Your health. Your data.\nYour next move.",
-        "android_label": "Android",
-        "ios_label": "iOS"
       }
     }
   },
