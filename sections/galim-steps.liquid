@@ -36,7 +36,11 @@
       </h2>
     {%- endif -%}
 
-    {%- if s.body != blank -%}<p class="gh-steps__body">{{ s.body }}</p>{%- endif -%}
+    {%- comment -%}
+      newline_to_br so line breaks typed in the Body textarea actually render —
+      without it, pressing Enter in the customizer had no effect.
+    {%- endcomment -%}
+    {%- if s.body != blank -%}<p class="gh-steps__body">{{ s.body | newline_to_br }}</p>{%- endif -%}
   </div>
 </section>
 
