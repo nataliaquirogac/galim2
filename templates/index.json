@@ -29,11 +29,21 @@
             "price": "$4,999",
             "link": ""
           }
+        },
+        "plan_pgPUHw": {
+          "type": "plan",
+          "settings": {
+            "time": "",
+            "name": "FOUNDING MEMBER PRICING",
+            "price": "",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "plan_perf",
-        "plan_long"
+        "plan_long",
+        "plan_pgPUHw"
       ],
       "settings": {
         "image": "shopify://shop_images/desktop_jpg.png",
