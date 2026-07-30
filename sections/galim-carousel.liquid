@@ -77,7 +77,14 @@
   .gh-mq > * { position: relative; z-index: 1; }
   .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
   .gh-mq__eyebrow { margin-bottom: 12px; text-align: center; }
-  .gh-mq__h2 { font: 200 28px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0 auto 24px; max-width: 720px; text-align: center; }
+  /* Kept on a single line. Measured: the headline is ~18.5x the font-size wide,
+     so 28px needs ~598px of viewport — always fine from 769px up. Narrower
+     viewports scale the size down instead of wrapping (see the mobile rule). */
+  .gh-mq__h2 {
+    font: 200 28px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white);
+    margin: 0 auto 24px; text-align: center;
+    white-space: nowrap;
+  }
 
   /* Swipeable scroll container (no more auto-marquee) */
   .gh-mq__viewport { position: relative; }
@@ -220,7 +227,7 @@
   .gh-mq__progress:focus-visible .gh-mq__progress-thumb { box-shadow: 0 0 0 4px rgba(168, 194, 200, 0.35); }
 
   @media (max-width: 768px) {
-    .gh-mq__h2 { font-size: 22px; margin-bottom: 16px; }
+    .gh-mq__h2 { font-size: min(22px, 4.6vw); margin-bottom: 16px; }
     .gh-mq__card { width: 160px; padding: 12px; }
     .gh-mq__icon { width: 24px; height: 24px; border-radius: 6px; }
     .gh-mq__icon svg { width: 14px; height: 14px; }
