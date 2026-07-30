@@ -312,7 +312,11 @@
     /* Mobile: COMING SOON and the copy flow in one normal column (no
        absolute overlap). Height grows with content; the image fills behind. */
     /* Mobile keeps the content-driven tall layout (not the cinematic ratio) */
-    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 96px 20px 28px; }
+    /* Top padding sets where COMING SOON sits (it's the first flex child and the
+       header is in normal flow, so this space is purely internal). Lowered from
+       96px to lift the block and open ~80px of breathing room between
+       NOVEMBER 1ST and the figure's head. */
+    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 52px 20px 28px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
