@@ -13,6 +13,29 @@
       assign inv = true
     endif
   endif
+
+  # Split the Body textarea on its line breaks: the FIRST line is the lead
+  # statement (large, Chillax) and everything after it is supporting copy
+  # (smaller, DM Sans). Blank lines are ignored so a stray double-Enter in the
+  # customizer can't open a gap. No need to re-enter the copy anywhere.
+  assign lead = ''
+  assign rest = ''
+  if s.body != blank
+    assign _lines = s.body | strip | newline_to_br | split: '<br />'
+    for _l in _lines
+      assign _t = _l | strip
+      if _t == blank
+        continue
+      endif
+      if lead == ''
+        assign lead = _t
+      elsif rest == ''
+        assign rest = _t
+      else
+        assign rest = rest | append: '<br />' | append: _t
+      endif
+    endfor
+  endif
 -%}
 
 {%- comment -%}
@@ -36,11 +59,9 @@
       </h2>
     {%- endif -%}
 
-    {%- comment -%}
-      newline_to_br so line breaks typed in the Body textarea actually render —
-      without it, pressing Enter in the customizer had no effect.
-    {%- endcomment -%}
-    {%- if s.body != blank -%}<p class="gh-steps__body">{{ s.body | newline_to_br }}</p>{%- endif -%}
+    {%- comment -%} First line = lead statement; the rest = supporting copy {%- endcomment -%}
+    {%- if lead != blank -%}<p class="gh-steps__body">{{ lead }}</p>{%- endif -%}
+    {%- if rest != blank -%}<p class="gh-steps__sub">{{ rest }}</p>{%- endif -%}
   </div>
 </section>
 
@@ -86,6 +107,17 @@
   }
   .gh-steps.gh-inv .gh-steps__body { text-shadow: 0 2px 30px rgba(6, 31, 38, 0.4); }
 
+  /* Supporting lines: DM Sans, noticeably smaller than the lead so the block
+     reads as one harmonious unit instead of three competing statements. */
+  .gh-steps__sub {
+    font: 400 clamp(15px, 1.55vw, 19px)/1.6 var(--gh-mono);
+    letter-spacing: 0.01em;
+    color: var(--gh-muted);
+    max-width: 620px;
+    margin: 18px auto 0;
+  }
+  .gh-steps.gh-inv .gh-steps__sub { color: #CDE0E4; }
+
   @media (max-width: 768px) {
     .gh-steps { padding: 56px 20px; }
     .gh-steps::before { width: 520px; height: 420px; }
@@ -94,6 +126,7 @@
     .gh-steps__word { gap: 12px; line-height: 1.18; }
     .gh-steps__num { font-size: 11px; }
     .gh-steps__body { font-size: 24px; line-height: 1.3; }
+    .gh-steps__sub { font-size: 15px; line-height: 1.55; margin-top: 14px; max-width: 330px; }
   }
 {% endstylesheet %}
 
@@ -103,7 +136,7 @@
   "class": "gh-section-full",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 / ONE VISIT" },
-    { "type": "textarea", "id": "body", "label": "Body", "default": "In one visit, you'll understand your body more clearly than ever before — and leave knowing exactly what to improve next." },
+    { "type": "textarea", "id": "body", "label": "Body", "info": "First line = large lead statement. Every line after it becomes smaller supporting copy (DM Sans). Press Enter to split.", "default": "In one visit, you'll understand your body more clearly than ever before — and leave knowing exactly what to improve next." },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#0D3B46" }
   ],
   "blocks": [
