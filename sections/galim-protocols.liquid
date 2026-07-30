@@ -116,7 +116,9 @@
   }
   .gh-pkg__head { position: relative; padding: 26px 30px 20px; border-bottom: 1px solid rgba(255,255,255,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.06), transparent 60%); }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.08), transparent 60%); }
-  .gh-pkg__name { font: 600 26px/1.1 var(--gh-mono); color: var(--gh-white); margin: 0 0 3px; padding: 0; letter-spacing: -0.01em; }
+  /* Package titles stay in Chillax (brand display face); everything else in the
+     card is DM Sans. */
+  .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0 0 3px; padding: 0; letter-spacing: -0.01em; }
   .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0 0 12px; padding: 0; }
   .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 18px; }
