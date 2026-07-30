@@ -36,7 +36,7 @@
         "plan_long"
       ],
       "settings": {
-        "image": "shopify://shop_images/desktop_16.jpg",
+        "image": "shopify://shop_images/desktop_jpg.png",
         "image_url": "",
         "image_mobile": "shopify://shop_images/banner_mobile2.png",
         "image_url_mobile": "",
