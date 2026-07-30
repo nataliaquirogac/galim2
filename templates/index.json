@@ -30,6 +30,15 @@
             "link": ""
           }
         },
+        "plan_F7teJU": {
+          "type": "plan",
+          "settings": {
+            "time": "",
+            "name": ".",
+            "price": "",
+            "link": ""
+          }
+        },
         "plan_pgPUHw": {
           "type": "plan",
           "settings": {
@@ -43,7 +52,7 @@
           "type": "plan",
           "settings": {
             "time": "",
-            "name": "Exclusive launch pricing for the first 500 members.",
+            "name": "Exclusive launch pricing for the first 500 members",
             "price": "",
             "link": ""
           }
@@ -52,6 +61,7 @@
       "block_order": [
         "plan_perf",
         "plan_long",
+        "plan_F7teJU",
         "plan_pgPUHw",
         "plan_launch"
       ],
