@@ -282,6 +282,18 @@
   .gh-hero__plan-price { color: inherit; white-space: nowrap; }
   .gh-hero__plan-price:not(:first-child)::before { content: " · "; color: inherit; }
 
+  /* Note-style chip: when the name is the chip's ONLY part (no time, no price)
+     it's a sentence, not a label — so tighten the tracking and size it down a
+     touch to hold ONE row. Measured at 375px (335px usable): the sentence is
+     337px at 11px with the default 0.06em tracking (2px too wide), but ~310px
+     at 0.01em. Scales with the viewport so it also fits 320px phones.
+     Selector is semantic, not positional, so reordering chips can't break it. */
+  .gh-hero__plan-name:only-child {
+    font-size: min(11.5px, 3vw);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
   /* Solid cream button */
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
   .gh-hero .gh-btn--solid {
