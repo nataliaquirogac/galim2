@@ -38,12 +38,22 @@
             "price": "",
             "link": ""
           }
+        },
+        "plan_launch": {
+          "type": "plan",
+          "settings": {
+            "time": "",
+            "name": "Exclusive launch pricing for the first 500 members.",
+            "price": "",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "plan_perf",
         "plan_long",
-        "plan_pgPUHw"
+        "plan_pgPUHw",
+        "plan_launch"
       ],
       "settings": {
         "image": "shopify://shop_images/desktop_jpg.png",

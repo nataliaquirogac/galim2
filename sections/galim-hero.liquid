@@ -278,9 +278,9 @@
   .gh-hero__plan:hover { color: #f6f5ee; }
   .gh-hero__plan-time { color: var(--gh-green); text-transform: uppercase; white-space: nowrap; }
   .gh-hero__plan-name { color: inherit; text-transform: uppercase; }
-  .gh-hero__plan-name::before { content: " · "; color: inherit; }
+  .gh-hero__plan-name:not(:first-child)::before { content: " · "; color: inherit; }
   .gh-hero__plan-price { color: inherit; white-space: nowrap; }
-  .gh-hero__plan-price::before { content: " · "; color: inherit; }
+  .gh-hero__plan-price:not(:first-child)::before { content: " · "; color: inherit; }
 
   /* Solid cream button */
   .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
@@ -394,7 +394,7 @@
     {
       "type": "plan",
       "name": "Plan chip",
-      "limit": 3,
+      "limit": 6,
       "settings": [
         { "type": "text", "id": "time", "label": "Time (mono)", "default": "25 MIN" },
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
