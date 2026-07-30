@@ -56,6 +56,15 @@
             "price": "",
             "link": ""
           }
+        },
+        "plan_EKdNBT": {
+          "type": "plan",
+          "settings": {
+            "time": "",
+            "name": "",
+            "price": "",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -63,7 +72,8 @@
         "plan_long",
         "plan_F7teJU",
         "plan_pgPUHw",
-        "plan_launch"
+        "plan_launch",
+        "plan_EKdNBT"
       ],
       "settings": {
         "image": "shopify://shop_images/desktop_jpg.png",
