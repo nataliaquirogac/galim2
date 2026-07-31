@@ -4,15 +4,17 @@
   — not nested inside the header — so its position:fixed panel always anchors
   to the real viewport instead of a transformed/filtered ancestor. Opened via
   [data-gh-waitlist-open] from anywhere on the page.
-  Fields: nombre, apellido, celular, email, ¿cómo te enteraste de nosotros?
+  Fields: nombre, apellido paterno, apellido materno, celular, email,
+  ¿cómo te enteraste de nosotros?
 
   Wiring:
   - If settings.waitlist_form_action is blank -> Shopify native customer form.
-    Creates the customer with first/last name + email; the referral source is
+    Creates the customer with first name + both apellidos merged into last_name
+    + email; the referral source is
     saved as a tag (e.g. "waitlist, un-doctor") and, together with the phone,
     into the customer note (packed by galim.js on submit).
   - If a URL is provided -> a plain form posts there
-    (fields: name, last_name, phone, email, source).
+    (fields: name, last_name, last_name_2, phone, email, source).
 {%- endcomment -%}
 
 {%- comment -%}
@@ -35,14 +37,33 @@
     <p class="gh-modal__sub">{{ 'waitlist.subtitle' | t }}</p>
 
     {%- capture fields -%}
+      <label class="gh-field">
+        <span class="gh-field__label">{{ 'waitlist.first_name' | t }}</span>
+        <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
+      </label>
+      {%- comment -%}
+        Two apellidos (MX convention). Shopify's customer object only has ONE
+        last_name, so on the native path the first field carries
+        contact[last_name] and galim.js appends the second one to it on submit
+        (same packing approach already used for phone). On an external endpoint
+        both post on their own as last_name / last_name_2.
+      {%- endcomment -%}
+      {%- if action == blank -%}
+        {%- comment -%}
+          Both visible inputs are name-less and the merged value goes into this
+          hidden field. Mutating the visible input instead would double-append
+          the second apellido if the customer re-submits after a failed post.
+        {%- endcomment -%}
+        <input type="hidden" name="contact[last_name]" data-gh-lastname>
+      {%- endif -%}
       <div class="gh-field-row">
         <label class="gh-field">
-          <span class="gh-field__label">{{ 'waitlist.first_name' | t }}</span>
-          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
+          <span class="gh-field__label">{{ 'waitlist.last_name' | t }}</span>
+          <input type="text" {% if action == blank %}data-gh-last1{% else %}name="last_name"{% endif %} required autocomplete="family-name">
         </label>
         <label class="gh-field">
-          <span class="gh-field__label">{{ 'waitlist.last_name' | t }}</span>
-          <input type="text" name="{% if action == blank %}contact[last_name]{% else %}last_name{% endif %}" required autocomplete="family-name">
+          <span class="gh-field__label">{{ 'waitlist.last_name_2' | t }}</span>
+          <input type="text" {% if action == blank %}data-gh-last2{% else %}name="last_name_2"{% endif %} autocomplete="additional-name">
         </label>
       </div>
       <label class="gh-field">
@@ -148,9 +169,16 @@
   .gh-modal__form { display: flex; flex-direction: column; gap: 16px; }
   .gh-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .gh-field { display: flex; flex-direction: column; gap: 7px; }
+  /* display:flex above beats the hidden attribute's UA display:none, so the
+     "please specify" field would otherwise always show. */
+  .gh-field[hidden] { display: none; }
   .gh-field__label { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gh-slate); }
   .gh-field input,
   .gh-field select {
+    /* The theme has no global border-box reset, so width:100% + padding would
+       make every input 30px wider than its column — which made the two
+       apellidos overlap in the 2-up row. */
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.10);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;

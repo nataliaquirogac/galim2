@@ -85,10 +85,27 @@
       syncOther();
     }
 
-    /* Pack phone + referral source into the customer note before the native form posts */
+    /* Pack phone + referral source into the customer note before the native form
+       posts, and merge the two apellidos into Shopify's single last_name field. */
     modalForm.addEventListener('submit', function () {
       var note = modalForm.querySelector('[data-gh-note]');
       if (!note) return; // external endpoint: fields post with their own names
+
+      /* Shopify's customer object has only one last_name, so combine
+         "apellido paterno" + "apellido materno" into a hidden field. Writing to
+         a hidden field (instead of mutating the visible input) keeps this
+         idempotent: if the post fails and the customer submits again, the
+         apellido isn't appended twice. */
+      var lastName = modalForm.querySelector('[data-gh-lastname]');
+      var last1 = modalForm.querySelector('[data-gh-last1]');
+      var last2 = modalForm.querySelector('[data-gh-last2]');
+      if (lastName) {
+        lastName.value = [
+          last1 ? last1.value.trim() : '',
+          last2 ? last2.value.trim() : ''
+        ].filter(Boolean).join(' ');
+      }
+
       var phone = modalForm.querySelector('[data-gh-phone]');
       var parts = ['Galim waitlist'];
       if (phone && phone.value) parts.push('Phone: ' + phone.value);
