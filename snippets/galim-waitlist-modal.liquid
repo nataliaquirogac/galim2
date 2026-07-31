@@ -63,7 +63,7 @@
         </label>
         <label class="gh-field">
           <span class="gh-field__label">{{ 'waitlist.last_name_2' | t }}</span>
-          <input type="text" {% if action == blank %}data-gh-last2{% else %}name="last_name_2"{% endif %} autocomplete="additional-name">
+          <input type="text" {% if action == blank %}data-gh-last2{% else %}name="last_name_2"{% endif %} required autocomplete="additional-name">
         </label>
       </div>
       <label class="gh-field">
