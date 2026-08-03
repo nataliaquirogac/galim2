@@ -106,8 +106,12 @@
         ].filter(Boolean).join(' ');
       }
 
+      /* Age and phone have no home on the Shopify customer object either, so
+         they ride along in the note next to the referral source. */
+      var age = modalForm.querySelector('[data-gh-age]');
       var phone = modalForm.querySelector('[data-gh-phone]');
       var parts = ['Galim waitlist'];
+      if (age && age.value) parts.push('Age: ' + age.value.trim());
       if (phone && phone.value) parts.push('Phone: ' + phone.value);
       if (sourceSelect && sourceSelect.selectedIndex >= 0) {
         var label = sourceSelect.options[sourceSelect.selectedIndex].text;

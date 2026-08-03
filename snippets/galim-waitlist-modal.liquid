@@ -4,17 +4,17 @@
   — not nested inside the header — so its position:fixed panel always anchors
   to the real viewport instead of a transformed/filtered ancestor. Opened via
   [data-gh-waitlist-open] from anywhere on the page.
-  Fields: nombre, apellido paterno, apellido materno, celular, email,
+  Fields: nombre, apellido paterno, apellido materno, edad, celular, email,
   ¿cómo te enteraste de nosotros?
 
   Wiring:
   - If settings.waitlist_form_action is blank -> Shopify native customer form.
     Creates the customer with first name + both apellidos merged into last_name
-    + email; the referral source is
-    saved as a tag (e.g. "waitlist, un-doctor") and, together with the phone,
-    into the customer note (packed by galim.js on submit).
+    + email; the referral source is saved as a tag (e.g. "waitlist, doctor").
+    Age and phone have no field on the customer object, so galim.js packs them
+    into the customer note on submit alongside the source label.
   - If a URL is provided -> a plain form posts there
-    (fields: name, last_name, last_name_2, phone, email, source).
+    (fields: name, last_name, last_name_2, age, phone, email, source).
 {%- endcomment -%}
 
 {%- comment -%}
@@ -66,10 +66,20 @@
           <input type="text" {% if action == blank %}data-gh-last2{% else %}name="last_name_2"{% endif %} required autocomplete="additional-name">
         </label>
       </div>
-      <label class="gh-field">
-        <span class="gh-field__label">{{ 'waitlist.phone' | t }}</span>
-        <input type="tel" {% if action == blank %}data-gh-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
-      </label>
+      <div class="gh-field-row gh-field-row--age">
+        <label class="gh-field">
+          <span class="gh-field__label">{{ 'waitlist.age' | t }}</span>
+          {%- comment -%}
+            Bounds are sanity checks, not a policy — they only stop typos like
+            "999". Raise the min if the clinic sets an age requirement.
+          {%- endcomment -%}
+          <input type="number" {% if action == blank %}data-gh-age{% else %}name="age"{% endif %} required inputmode="numeric" min="1" max="120" step="1" placeholder="34">
+        </label>
+        <label class="gh-field">
+          <span class="gh-field__label">{{ 'waitlist.phone' | t }}</span>
+          <input type="tel" {% if action == blank %}data-gh-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
+        </label>
+      </div>
       <label class="gh-field">
         <span class="gh-field__label">{{ 'waitlist.email' | t }}</span>
         <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
@@ -77,12 +87,20 @@
       <label class="gh-field">
         <span class="gh-field__label">{{ 'waitlist.source_label' | t }}</span>
         <select {% if action == blank %}name="contact[tags]" data-gh-source{% else %}name="source"{% endif %}>
-          <option value="{% if action == blank %}waitlist, doctor{% else %}A doctor{% endif %}">{{ 'waitlist.source_doctor' | t }}</option>
-          <option value="{% if action == blank %}waitlist, nutritionist{% else %}A nutritionist{% endif %}">{{ 'waitlist.source_nutritionist' | t }}</option>
-          <option value="{% if action == blank %}waitlist, instagram{% else %}Instagram{% endif %}">{{ 'waitlist.source_instagram' | t }}</option>
-          <option value="{% if action == blank %}waitlist, friend{% else %}Friend or family{% endif %}">{{ 'waitlist.source_friend' | t }}</option>
+          {%- comment -%}
+            Ordered shortest label first (measured on the Spanish copy, the
+            market's language — the markup order is shared by every locale, so
+            it can't be ascending in both). "Otro" stays pinned last: it's the
+            catch-all, and as the first option it would be preselected and pop
+            the "specify" field open on load. Referrals from nutritionists now
+            fall under "doctor" — that option was removed, not renamed, since a
+            second "doctor" entry would just be a duplicate.
+          {%- endcomment -%}
           <option value="{% if action == blank %}waitlist, google{% else %}Google{% endif %}">{{ 'waitlist.source_google' | t }}</option>
+          <option value="{% if action == blank %}waitlist, doctor{% else %}A doctor{% endif %}">{{ 'waitlist.source_doctor' | t }}</option>
+          <option value="{% if action == blank %}waitlist, instagram{% else %}Instagram{% endif %}">{{ 'waitlist.source_instagram' | t }}</option>
           <option value="{% if action == blank %}waitlist, location{% else %}I saw the location{% endif %}">{{ 'waitlist.source_location' | t }}</option>
+          <option value="{% if action == blank %}waitlist, friend{% else %}Friend or family{% endif %}">{{ 'waitlist.source_friend' | t }}</option>
           <option value="{% if action == blank %}waitlist, other{% else %}Other{% endif %}" data-gh-other>{{ 'waitlist.source_other' | t }}</option>
         </select>
       </label>
@@ -192,6 +210,13 @@
   .gh-field input:focus,
   .gh-field select:focus { outline: none; border-color: rgba(255, 255, 255, 0.6); }
   .gh-field select { appearance: none; cursor: pointer; }
+  /* Age: keep the numeric keypad on mobile but drop the desktop spinner arrows,
+     which break the flat field styling. */
+  .gh-field input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+  .gh-field input[type="number"]::-webkit-outer-spin-button,
+  .gh-field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  /* Age needs far less room than a phone number. */
+  .gh-field-row--age { grid-template-columns: minmax(84px, 0.5fr) 1fr; }
   .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; background: #F7F5F3; color: #135E73; }
   .gh-modal__submit:hover { background: #FFFFFF; color: #0F4E60; }
   .gh-modal__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
@@ -201,5 +226,9 @@
     .gh-modal__panel { padding: 36px 22px 28px; }
     .gh-modal__title { font-size: 28px; }
     .gh-field-row { grid-template-columns: 1fr; gap: 16px; }
+    /* Age + phone stay side by side: the form is 8 fields deep and a two-digit
+       age doesn't earn a full row. Measured at 320px the phone input still has
+       118px of inner width for a 95px placeholder. */
+    .gh-field-row--age { grid-template-columns: minmax(76px, 0.42fr) 1fr; gap: 12px; }
   }
 {% endstylesheet %}
