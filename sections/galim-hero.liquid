@@ -1,7 +1,9 @@
 {%- comment -%}
   Galim Health — Hero
-  Full-bleed image + layered dark gradients + faint grid. Text bottom-left (desktop),
-  bottom over image (mobile). Primary CTA opens the waitlist modal.
+  Full-bleed image + layered dark gradients + faint grid. All copy in one column
+  (bottom-right on desktop, bottom-centre on mobile), ordered outcome first:
+  what it is -> the promise -> the technology that backs it -> the offer that
+  makes it worth booking now. Primary CTA opens the waitlist modal.
 {%- endcomment -%}
 
 {%- liquid
@@ -66,13 +68,6 @@
     <div class="gh-hero__sides" aria-hidden="true"></div>
   </div>
 
-  {%- if s.coming_soon != blank -%}
-    <div class="gh-hero__soon" aria-hidden="true">
-      <span class="gh-hero__soon-text">{{ s.coming_soon }}</span>
-      {%- if s.coming_soon_sub != blank -%}<span class="gh-hero__soon-sub">{{ s.coming_soon_sub }}</span>{%- endif -%}
-    </div>
-  {%- endif -%}
-
   <div class="gh-hero__inner">
     <div class="gh-hero__col">
       {%- if s.badge != blank -%}
@@ -99,23 +94,45 @@
         <p class="gh-hero__council">{{ s.council_line }}</p>
       {%- endif -%}
 
-      {%- if section.blocks.size > 0 -%}
-        <div class="gh-hero__plans">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'plan' -%}
-              {%- liquid
-                assign plan_href = block.settings.link
-                if plan_href == blank
-                  assign plan_href = '#plans'
-                endif
-              -%}
-              <a href="{{ plan_href }}" class="gh-hero__plan" {{ block.shopify_attributes }}>
-                {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
-                {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
-                {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
-              </a>
-            {%- endif -%}
-          {%- endfor -%}
+      {%- comment -%}
+        "Why book today" group: the launch stamp and the founding-member price
+        table read as one offer, separated from the pitch above by a hairline.
+        COMING SOON / the date used to be a display headline floating on its own
+        over the figure, which made the announcement — not the customer's
+        outcome — the biggest thing on the page. Here it's the dated reason to
+        act on the offer it sits with. It also drops the old aria-hidden: the
+        opening date is information, not decoration.
+      {%- endcomment -%}
+      {%- if s.coming_soon != blank or section.blocks.size > 0 -%}
+        <div class="gh-hero__offer">
+          {%- if s.coming_soon != blank -%}
+            <p class="gh-hero__stamp">
+              <span class="gh-hero__stamp-label">{{ s.coming_soon }}</span>
+              {%- if s.coming_soon_sub != blank -%}
+                <span class="gh-hero__stamp-date">{{ s.coming_soon_sub }}</span>
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+
+          {%- if section.blocks.size > 0 -%}
+            <div class="gh-hero__plans">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'plan' -%}
+                  {%- liquid
+                    assign plan_href = block.settings.link
+                    if plan_href == blank
+                      assign plan_href = '#plans'
+                    endif
+                  -%}
+                  <a href="{{ plan_href }}" class="gh-hero__plan" {{ block.shopify_attributes }}>
+                    {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
+                    {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
+                    {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -149,10 +166,22 @@
     --gh-slate: #A8C2C8;
     --gh-green: #A8C2C8;
     --gh-accent: #A8C2C8;
-    /* Cinematic hero sized to the 4503×1851 artwork (~2.43:1) */
-    aspect-ratio: 4503 / 1851;
-    min-height: 560px;
+    /* Cinematic hero sized to the 4503×1851 artwork (~2.43:1), but expressed as
+       a MINIMUM height rather than aspect-ratio. aspect-ratio fixes the height
+       from the width, so the taller copy column would be clipped by the
+       overflow:hidden below at the widths where the ratio's height falls under
+       the copy's (measured: 15px of headroom left at 1380px). As a minimum, the
+       hero keeps the exact ratio whenever the copy fits and grows instead of
+       cropping when it doesn't. 41.11vw = 1851/4503. */
+    min-height: max(560px, 41.11vw);
     overflow: hidden;
+    /* Copy sits bottom-right in normal flow — that's what lets the hero grow. */
+    display: flex; justify-content: flex-end; align-items: flex-end;
+    padding: 56px;
+    /* The theme ships no global border-box reset, so without this min-height
+       would size the CONTENT box and the padding would push the hero 112px past
+       the ratio. */
+    box-sizing: border-box;
     /* Matches the figure image's own teal/green gradient so the (contained)
        photo blends edge-to-edge with no visible letterbox. */
     background:
@@ -206,30 +235,28 @@
     background: linear-gradient(to left, var(--gh-side-color, #0D3B46), rgba(9,46,43,0));
   }
 
-  /* Content: absolute bottom-right on desktop */
+  /* Content: absolute bottom-right on desktop. One column, not two competing
+     focal points — the copy carries the whole message and the left of the frame
+     stays pure image. */
   .gh-hero__inner {
-    position: absolute; right: 56px; bottom: 56px; z-index: 4;
-    width: 440px; max-width: calc(100% - 80px);
+    position: relative; z-index: 4;
+    width: 520px; max-width: 100%;
     color: #f6f5ee;
   }
   .gh-hero__col { display: block; }
 
-  /* COMING SOON — big statement in the empty left area (desktop) */
-  .gh-hero__soon {
-    position: absolute; left: 56px; top: 44%; transform: translateY(-50%);
-    z-index: 3; display: flex; flex-direction: column; gap: 12px;
-    max-width: 28%; pointer-events: none;
-  }
-  .gh-hero__soon-text {
-    font: 200 clamp(44px, 4.6vw, 82px)/1.0 var(--gh-sans);
-    letter-spacing: -0.02em; text-transform: uppercase;
+  /* Launch stamp: the dated reason to act, sized as a caption rather than a
+     headline so the outcome above it stays the largest thing in the frame. */
+  .gh-hero__stamp {
+    display: inline-flex; align-items: center; margin: 0 0 18px; padding: 8px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.30); border-radius: 999px;
+    font: 500 11px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase;
     color: #F7F5F3;
-    text-shadow: 0 2px 40px rgba(6, 31, 38, 0.5);
+    background: rgba(6, 31, 38, 0.28);
+    text-shadow: 0 1px 10px rgba(6, 31, 38, 0.5);
   }
-  .gh-hero__soon-sub {
-    font: 500 12px/1.4 var(--gh-mono); letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--gh-muted); padding-left: 4px;
-  }
+  .gh-hero__stamp-date { color: var(--gh-green); }
+  .gh-hero__stamp-date::before { content: "·"; margin: 0 8px; opacity: 0.55; color: #F7F5F3; }
 
   .gh-hero__badge {
     display: inline-flex; align-items: center; gap: 9px;
@@ -239,17 +266,30 @@
   }
   .gh-hero__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gh-green); display: inline-block; }
 
+  /* The outcome, and the biggest thing on the page. Tighter leading and tracking
+     than before so it reads as one statement at this size instead of a stack of
+     loose lines. */
   .gh-hero__h1 {
-    margin: 24px 0 0;
-    font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.14 var(--gh-sans);
-    letter-spacing: -0.015em;
+    margin: 14px 0 0;
+    font: 300 clamp(var(--gh-hero-h1-min, 30px), 4.6vw, var(--gh-hero-h1-max, 56px))/1.04 var(--gh-sans);
+    letter-spacing: -0.025em;
     color: #f6f5ee;
+    text-wrap: balance;
   }
   .gh-hero__h1-accent { font-weight: 500; }
+  /* Supporting proof, deliberately a third of the headline's size: the
+     technology explains the promise, it doesn't lead it. */
   .gh-hero__sub {
-    margin: 20px 0 28px; max-width: 430px;
-    font: 300 18px/1.5 var(--gh-sans);
-    color: rgba(246, 245, 238, 0.82);
+    margin: 18px 0 0; max-width: 400px;
+    font: 300 17px/1.55 var(--gh-sans);
+    color: rgba(246, 245, 238, 0.78);
+  }
+
+  /* Offer group — everything that answers "why book now", fenced off from the
+     pitch above by a hairline. */
+  .gh-hero__offer {
+    margin-top: 26px; padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
   }
   .gh-hero__council { display: none; }
   .gh-hero__coords {
@@ -267,7 +307,7 @@
      share a left edge and the prices line up in their own column — centring
      each row independently (the old flex layout) left them ragged. */
   .gh-hero__plans {
-    list-style: none; margin: 0 0 24px; padding: 0;
+    list-style: none; margin: 14px 0 0; padding: 0;
     display: grid;
     grid-template-columns: max-content minmax(0, max-content) max-content;
     justify-content: start;
@@ -326,7 +366,7 @@
   }
 
   /* Solid cream button */
-  .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .gh-hero__actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-top: 24px; }
   .gh-hero .gh-btn--solid {
     background: #F7F5F3;
     color: #135E73;
@@ -340,14 +380,10 @@
 
   /* MOBILE (5c): vertical scrim + bottom-left content */
   @media (max-width: 768px) {
-    /* Mobile: COMING SOON and the copy flow in one normal column (no
-       absolute overlap). Height grows with content; the image fills behind. */
-    /* Mobile keeps the content-driven tall layout (not the cinematic ratio) */
-    /* Top padding sets where COMING SOON sits (it's the first flex child and the
-       header is in normal flow, so this space is purely internal). Lowered from
-       96px to lift the block and open ~80px of breathing room between
-       NOVEMBER 1ST and the figure's head. */
-    .gh-hero { aspect-ratio: auto; min-height: 82svh; min-height: 82vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; padding: 52px 20px 28px; }
+    /* One column of copy anchored to the bottom, image above it. flex-end, not
+       space-between: the copy is now the only child in flow, so space-between
+       would pin it to the top of the frame. */
+    .gh-hero { min-height: 82svh; min-height: 82vh; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 28px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
@@ -369,34 +405,36 @@
     }
     /* Both blocks static so they stack instead of overlapping */
     .gh-hero__inner {
-      position: relative; z-index: 4;
-      left: auto; right: auto; bottom: auto; width: auto; max-width: none;
+      width: 100%; max-width: none;
       text-align: center;
     }
     /* Soft halo directly behind the copy block: lifts the text off the figure
        without drawing a visible box. */
     .gh-hero__inner::before {
       content: "";
-      position: absolute; left: -20px; right: -20px; top: -28px; bottom: -20px;
-      background: radial-gradient(70% 62% at 50% 52%, rgba(6, 31, 38, 0.62), rgba(6, 31, 38, 0) 72%);
+      position: absolute; left: -20px; right: -20px; top: -34px; bottom: -20px;
+      /* Stronger than before: the copy block is taller now, so its top edge sits
+         higher up the figure where the contour lines are still bright. */
+      background: radial-gradient(74% 66% at 50% 52%, rgba(6, 31, 38, 0.72), rgba(6, 31, 38, 0) 74%);
       filter: blur(6px);
       pointer-events: none;
       z-index: -1;
     }
-    .gh-hero__soon { position: relative; z-index: 4; left: auto; right: auto; top: auto; transform: none; max-width: none; margin-bottom: 24px; gap: 8px; align-items: center; text-align: center; }
-    .gh-hero__soon-text { font-size: clamp(34px, 11vw, 52px); line-height: 1.04; text-shadow: 0 2px 26px rgba(6, 31, 38, 0.55); }
-    .gh-hero__soon-sub { font-size: 10px; letter-spacing: 0.2em; text-shadow: 0 1px 12px rgba(6, 31, 38, 0.6); }
-    .gh-hero__badge { justify-content: center; margin-bottom: 12px; }
-    /* Scales down on narrow phones instead of running into the edges */
-    .gh-hero__h1 { font-size: clamp(25px, 7.6vw, 30px); line-height: 1.22; margin-top: 0; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
+    .gh-hero__badge { justify-content: center; margin-bottom: 0; font-size: 10px; }
+    /* Scales down on narrow phones instead of running into the edges. Now the
+       dominant element — the old size (25-30px) sat below COMING SOON's 34-52px,
+       which buried the outcome under the announcement. */
+    .gh-hero__h1 { font-size: clamp(30px, 8.8vw, 38px); line-height: 1.06; margin-top: 10px; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
     /* Slightly narrower measure = fewer, better-balanced lines */
-    .gh-hero__sub { font-size: 14.5px; line-height: 1.5; margin: 14px auto 18px; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
+    .gh-hero__sub { font-size: 14.5px; line-height: 1.5; margin: 13px auto 0; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
+    .gh-hero__offer { margin-top: 20px; padding-top: 17px; }
+    .gh-hero__stamp { margin: 0 auto 4px; padding: 7px 13px; font-size: 10px; letter-spacing: 0.18em; }
     /* The table itself is centred in the hero, but its rows stay left-aligned
        inside it — that's what keeps "25 MIN" and "50 MIN" on a shared edge
        instead of each row being centred on its own width. */
     .gh-hero__plans {
       justify-content: center;
-      row-gap: 7px; column-gap: 10px; margin-bottom: 18px;
+      row-gap: 7px; column-gap: 10px; margin: 13px 0 0;
       max-width: 100%;
       /* Sized so the longest row holds ONE line from 360px up (measured: 330px
          of table in 335px of usable width at 375px). Below that the package
@@ -407,7 +445,7 @@
     }
     /* Label/footnote rows read as centred captions above and below the table. */
     .gh-hero__plan-name:only-child { text-align: center; }
-    .gh-hero__actions { justify-content: center; }
+    .gh-hero__actions { justify-content: center; margin-top: 20px; }
     .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
     .gh-hero__coords { display: none; }
   }
@@ -428,8 +466,8 @@
     { "type": "range", "id": "side_width", "min": 0, "max": 40, "step": 2, "unit": "%", "label": "Side fade width", "default": 22 },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "top" },
-    { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 52 },
-    { "type": "range", "id": "heading_size_mobile", "min": 22, "max": 46, "step": 2, "unit": "px", "label": "Heading size (mobile)", "default": 30 },
+    { "type": "range", "id": "heading_size", "min": 36, "max": 88, "step": 2, "unit": "px", "label": "Heading size (desktop)", "default": 64 },
+    { "type": "range", "id": "heading_size_mobile", "min": 22, "max": 46, "step": 2, "unit": "px", "label": "Heading size (mobile)", "default": 38 },
     { "type": "text", "id": "coming_soon", "label": "Coming soon (big, left)", "info": "Large statement on the empty side of the hero. Leave blank to hide.", "default": "COMING SOON" },
     { "type": "text", "id": "coming_soon_sub", "label": "Coming soon subline", "default": "NOVEMBER 1ST" },
     { "type": "text", "id": "badge", "label": "Badge (mono)", "default": "PREVENTIVE HEALTHCARE · MEDICAL COUNCIL" },
