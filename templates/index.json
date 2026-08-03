@@ -307,6 +307,7 @@
         "perf": {
           "type": "package",
           "settings": {
+            "icon": "bolt",
             "name": "Body Performance Scan",
             "subtitle": "25 minutes. Six systems. One number.",
             "price": "$1,499",
@@ -326,6 +327,7 @@
         "long": {
           "type": "package",
           "settings": {
+            "icon": "heartbeat",
             "name": "Prevention",
             "subtitle": "50 minutes. Every system. Your biological age.",
             "price": "$4,999",
