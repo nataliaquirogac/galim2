@@ -12,6 +12,15 @@
     "hero": {
       "type": "galim-hero",
       "blocks": {
+        "plan_pgPUHw": {
+          "type": "plan",
+          "settings": {
+            "time": "",
+            "name": "FOUNDING MEMBER PRICING",
+            "price": "",
+            "link": ""
+          }
+        },
         "plan_perf": {
           "type": "plan",
           "settings": {
@@ -27,24 +36,6 @@
             "time": "50 MIN",
             "name": "Body Performance + Prevention",
             "price": "$4,999",
-            "link": ""
-          }
-        },
-        "plan_F7teJU": {
-          "type": "plan",
-          "settings": {
-            "time": "",
-            "name": "<br>",
-            "price": "",
-            "link": ""
-          }
-        },
-        "plan_pgPUHw": {
-          "type": "plan",
-          "settings": {
-            "time": "",
-            "name": "FOUNDING MEMBER PRICING",
-            "price": "",
             "link": ""
           }
         },
@@ -68,10 +59,9 @@
         }
       },
       "block_order": [
+        "plan_pgPUHw",
         "plan_perf",
         "plan_long",
-        "plan_F7teJU",
-        "plan_pgPUHw",
         "plan_launch",
         "plan_EKdNBT"
       ],
