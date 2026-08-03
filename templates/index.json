@@ -124,6 +124,14 @@
             "description": "True force output, not just what you lift."
           }
         },
+        "item_3zaLMx": {
+          "type": "item",
+          "settings": {
+            "icon": "balance",
+            "name": "AI Body Measurements",
+            "description": ""
+          }
+        },
         "m12": {
           "type": "item",
           "settings": {
@@ -202,6 +210,7 @@
         "m11",
         "m4",
         "m10",
+        "item_3zaLMx",
         "m12",
         "m6",
         "item_6WJCYy",
