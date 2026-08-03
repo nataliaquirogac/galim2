@@ -262,25 +262,49 @@
     border-left: 1px solid rgba(174, 191, 152, 0.4);
   }
 
-  /* Plans as one mono line with `·` separators */
+  /* Plans as a 3-column price table: duration | package | price.
+     Every row is a subgrid of the same three tracks, so "25 MIN"/"50 MIN"
+     share a left edge and the prices line up in their own column — centring
+     each row independently (the old flex layout) left them ragged. */
   .gh-hero__plans {
     list-style: none; margin: 0 0 24px; padding: 0;
-    display: flex; flex-wrap: wrap; gap: 8px 20px;
+    display: grid;
+    grid-template-columns: max-content minmax(0, max-content) max-content;
+    justify-content: start;
+    row-gap: 8px; column-gap: 18px;
     font: 400 12px/1 var(--gh-mono);
     letter-spacing: 0.06em;
     color: rgba(246, 245, 238, 0.75);
   }
   .gh-hero__plan {
-    display: inline-flex; align-items: baseline; gap: 8px;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: baseline;
     color: inherit;
     transition: color 0.2s ease;
   }
   .gh-hero__plan:hover { color: #f6f5ee; }
-  .gh-hero__plan-time { color: var(--gh-green); text-transform: uppercase; white-space: nowrap; }
-  .gh-hero__plan-name { color: inherit; text-transform: uppercase; }
-  .gh-hero__plan-name:not(:first-child)::before { content: " · "; color: inherit; }
-  .gh-hero__plan-price { color: inherit; white-space: nowrap; }
-  .gh-hero__plan-price:not(:first-child)::before { content: " · "; color: inherit; }
+  /* Explicit tracks: a row that omits its duration must leave that cell empty
+     rather than sliding the package name into the first column. */
+  /* text-align:left is explicit because the mobile hero centres its copy, which
+     would otherwise centre each cell inside its track and undo the alignment. */
+  .gh-hero__plan-time { grid-column: 1; text-align: left; color: var(--gh-green); text-transform: uppercase; white-space: nowrap; }
+  .gh-hero__plan-name { grid-column: 2; text-align: left; color: inherit; text-transform: uppercase; }
+  /* Prices flush right so they end on a shared edge whatever their length. */
+  .gh-hero__plan-price { grid-column: 3; color: inherit; white-space: nowrap; text-align: right; }
+  /* No `·` separators: once the parts sit in real columns the dots read as
+     column dividers and strand a gap between a short package name and its
+     price. The column gutters do the separating now. */
+
+  /* Safari <16 has no subgrid: `grid-template-columns: subgrid` is dropped and
+     each row would collapse to one column, stacking duration/name/price on
+     three lines. Fall back to the previous inline row — unaligned, but intact. */
+  @supports not (grid-template-columns: subgrid) {
+    .gh-hero__plans { display: flex; flex-direction: column; align-items: flex-start; }
+    .gh-hero__plan { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
+    .gh-hero__plan-name:only-child { width: auto; min-width: 0; }
+  }
 
   /* Note-style chip: when the name is the chip's ONLY part (no time, no price)
      it's a sentence, not a label — so tighten the tracking and size it down a
@@ -292,6 +316,13 @@
     font-size: min(11.5px, 3vw);
     letter-spacing: 0.01em;
     white-space: nowrap;
+    /* Spans the whole table so a label/footnote row isn't squeezed into the
+       package column. width:0 + min-width:100% keeps its text OUT of the
+       intrinsic sizing of the three tracks: a long sentence would otherwise
+       stretch them and blow the gutters open on the priced rows. */
+    grid-column: 1 / -1;
+    width: 0;
+    min-width: 100%;
   }
 
   /* Solid cream button */
@@ -360,16 +391,22 @@
     .gh-hero__h1 { font-size: clamp(25px, 7.6vw, 30px); line-height: 1.22; margin-top: 0; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
     /* Slightly narrower measure = fewer, better-balanced lines */
     .gh-hero__sub { font-size: 14.5px; line-height: 1.5; margin: 14px auto 18px; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
-    /* One plan per row: as inline items they wrapped mid-plan and the two plans
-       ran into each other. Deliberately NOT nowrap — at 320px the longer plan
-       is ~338px and was being clipped by the hero's overflow:hidden. */
+    /* The table itself is centred in the hero, but its rows stay left-aligned
+       inside it — that's what keeps "25 MIN" and "50 MIN" on a shared edge
+       instead of each row being centred on its own width. */
     .gh-hero__plans {
-      flex-direction: column; flex-wrap: nowrap; align-items: center;
-      gap: 7px; margin-bottom: 18px;
-      font-size: clamp(10.5px, 3.1vw, 12px);
+      justify-content: center;
+      row-gap: 7px; column-gap: 10px; margin-bottom: 18px;
+      max-width: 100%;
+      /* Sized so the longest row holds ONE line from 360px up (measured: 330px
+         of table in 335px of usable width at 375px). Below that the package
+         column is allowed to shrink and wrap rather than be clipped by the
+         hero's overflow:hidden. */
+      font-size: clamp(10px, 3vw, 11.5px);
       text-shadow: 0 1px 12px rgba(6, 31, 38, 0.7);
     }
-    .gh-hero__plan { max-width: 100%; justify-content: center; flex-wrap: wrap; }
+    /* Label/footnote rows read as centred captions above and below the table. */
+    .gh-hero__plan-name:only-child { text-align: center; }
     .gh-hero__actions { justify-content: center; }
     .gh-hero .gh-btn--solid { width: 100%; justify-content: center; }
     .gh-hero__coords { display: none; }
