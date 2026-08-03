@@ -203,6 +203,10 @@
     --gh-slate: #A8C2C8;
     --gh-green: #A8C2C8;
     --gh-accent: #A8C2C8;
+    /* Cyan accent, scoped to the hero: the glow colour for the status dot, the
+       launch date, the card labels and the pill hairlines. Kept off the global
+       token set so it can't leak into the light sections below. */
+    --gh-cyan: #7DE3E8;
     /* Cinematic hero sized to the 4503×1851 artwork (~2.43:1), but expressed as
        a MINIMUM height rather than aspect-ratio. aspect-ratio fixes the height
        from the width, so the taller copy column would be clipped by the
@@ -319,14 +323,27 @@
        pill let the following label sit on the same line instead of below it. */
     display: flex; width: fit-content;
     align-items: center; margin: 0 auto; padding: 12px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.42); border-radius: 999px;
+    border-radius: 999px;
     font: 500 13px/1 var(--gh-mono); letter-spacing: 0.22em; text-transform: uppercase;
     color: #F7F5F3;
-    background: rgba(6, 31, 38, 0.34);
+    /* Frosted glass: the blur is what separates the pill from the figure behind
+       it without painting an opaque plate over the artwork. */
+    background: rgba(10, 46, 56, 0.40);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid rgba(125, 227, 232, 0.30);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 8px 28px rgba(6, 31, 38, 0.45);
     text-shadow: 0 1px 10px rgba(6, 31, 38, 0.5);
   }
+  /* Without backdrop-filter the translucent fill alone is too weak to hold the
+     text off the contour lines, so fall back to a denser plate. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .gh-hero__stamp { background: rgba(8, 38, 47, 0.82); }
+  }
   .gh-hero__stamp .gh-hero__dot { margin-right: 10px; }
-  .gh-hero__stamp-date { color: var(--gh-green); }
+  .gh-hero__stamp-date { color: var(--gh-cyan); }
   .gh-hero__stamp-date::before { content: "·"; margin: 0 10px; opacity: 0.5; color: #F7F5F3; }
   /* Same pill as the launch stamp, sitting above the package cards. No dot: that
      marks the dated announcement, and repeating it would read as a second
@@ -335,8 +352,8 @@
   .gh-hero__stamp--offer {
     padding: 10px 20px;
     font-size: 11px; letter-spacing: 0.2em;
-    color: var(--gh-green);
-    border-color: rgba(255, 255, 255, 0.26);
+    color: var(--gh-cyan);
+    border-color: rgba(125, 227, 232, 0.22);
   }
 
   .gh-hero__badge {
@@ -345,7 +362,11 @@
     letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--gh-green);
   }
-  .gh-hero__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gh-green); display: inline-block; }
+  .gh-hero__dot {
+    width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+    background: var(--gh-cyan);
+    box-shadow: 0 0 7px rgba(125, 227, 232, 0.9), 0 0 16px rgba(125, 227, 232, 0.45);
+  }
 
   /* The outcome, and the biggest thing on the page — but capped well short of the
      column so it breaks into two comfortable lines instead of stretching edge to
@@ -354,7 +375,7 @@
     /* Bigger gap under the launch pill than the rest of the rhythm: the block is
        bottom-anchored, so this space is what lifts the pill up the frame while
        the headline and everything under it stay put. */
-    margin: 44px auto 0; max-width: 9.6em;
+    margin: 46px auto 0; max-width: 9.6em;
     font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.06 var(--gh-sans);
     letter-spacing: -0.022em;
     color: #f6f5ee;
@@ -363,15 +384,15 @@
   .gh-hero__h1-accent { font-weight: 500; }
   /* Supporting proof: the technology explains the promise, it doesn't lead it. */
   .gh-hero__sub {
-    margin: 26px auto 0; max-width: 400px;
+    margin: 24px auto 0; max-width: 400px;
     font: 300 17px/1.6 var(--gh-sans);
-    color: rgba(246, 245, 238, 0.78);
+    color: rgba(246, 245, 238, 0.86);
   }
 
   /* Offer group — everything that answers "why book now". No rule across the
      top: it read as a division through the middle of the hero and cut the
      composition in half. Space does the separating. */
-  .gh-hero__offer { margin-top: 44px; }
+  .gh-hero__offer { margin-top: 46px; }
   .gh-hero__council { display: none; }
   .gh-hero__coords {
     display: inline-block;
@@ -388,35 +409,48 @@
      before its price and the whole block read as an afterthought. A card gives
      each package its own object and lets the price be the loud part. */
   .gh-hero__plans {
-    list-style: none; margin: 18px auto 0; padding: 0;
+    list-style: none; margin: 20px auto 0; padding: 0;
     /* Grid with equal rows, not a flex column: her longest package name wraps to
        two lines beside the price, and without this the two cards came out
        different heights, which reads as a mistake rather than a pair. */
     display: grid; grid-auto-rows: 1fr; gap: 12px;
     max-width: 440px;
+    /* Sits close under its own pill — they're one unit. */
   }
   .gh-hero__plan {
     box-sizing: border-box;
     display: flex; align-items: center; justify-content: space-between; gap: 18px;
     padding: 15px 22px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.06);
     text-align: left;
     color: inherit;
-    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    background: rgba(255, 255, 255, 0.055);
+    backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.11),
+      0 10px 32px rgba(6, 31, 38, 0.32);
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   }
   .gh-hero__plan:hover {
-    background: rgba(255, 255, 255, 0.11);
-    border-color: rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(125, 227, 232, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 14px 40px rgba(6, 31, 38, 0.42),
+      0 0 24px rgba(125, 227, 232, 0.16);
     transform: translateY(-2px);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .gh-hero__plan { background: rgba(9, 42, 52, 0.72); }
   }
   /* Duration and package name read as one label on a single line. */
   .gh-hero__plan-meta {
     display: block; min-width: 0;
     font: 500 11.5px/1.35 var(--gh-mono);
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--gh-green);
+    color: var(--gh-cyan);
   }
   .gh-hero__plan-time { white-space: nowrap; }
   /* Separator only between two present parts, so a card with just a name has no
@@ -437,7 +471,7 @@
     margin: 0; max-width: 100%;
     font: 500 9.5px/1.5 var(--gh-mono);
     letter-spacing: 0.16em; text-transform: uppercase;
-    color: rgba(246, 245, 238, 0.45);
+    color: rgba(246, 245, 238, 0.55);
   }
 
   /* Solid cream button */
@@ -445,7 +479,7 @@
      even though the row itself was centred. */
   .gh-hero__actions {
     display: flex; flex-direction: column; align-items: center;
-    gap: 18px; margin-top: 40px;
+    gap: 20px; margin-top: 32px;
   }
   .gh-hero .gh-btn--solid {
     background: #F7F5F3;
@@ -462,7 +496,14 @@
     letter-spacing: 0.02em;
     text-shadow: none;
   }
-  .gh-hero .gh-btn--solid:hover { background: #FFFFFF; color: #0F4E60; }
+  .gh-hero .gh-btn--solid {
+    box-shadow: 0 10px 30px rgba(6, 31, 38, 0.42);
+    transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gh-hero .gh-btn--solid:hover {
+    background: #FFFFFF; color: #0F4E60;
+    box-shadow: 0 14px 38px rgba(6, 31, 38, 0.48), 0 0 32px rgba(125, 227, 232, 0.30);
+  }
 
   /* MOBILE (5c): vertical scrim + bottom-left content */
   @media (max-width: 768px) {
@@ -502,17 +543,17 @@
     /* Scales down on narrow phones instead of running into the edges. Now the
        dominant element — the old size (25-30px) sat below COMING SOON's 34-52px,
        which buried the outcome under the announcement. */
-    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 34px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
+    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 36px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
     /* Slightly narrower measure = fewer, better-balanced lines */
-    .gh-hero__sub { font-size: 14.5px; line-height: 1.55; margin: 20px auto 0; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
-    .gh-hero__offer { margin-top: 30px; }
+    .gh-hero__sub { font-size: 14.5px; line-height: 1.55; margin: 18px auto 0; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
+    .gh-hero__offer { margin-top: 36px; }
     .gh-hero__stamp { padding: 10px 18px; font-size: 11px; letter-spacing: 0.18em; }
     .gh-hero__stamp--offer { padding: 9px 16px; font-size: 10px; }
     /* No max-width override here: the base 440px cap already collapses to the
        column width on phones, and forcing 100% made the cards 728px wide at
        768px while the button stayed at 440px. */
     .gh-hero__plans {
-      gap: 10px; margin: 14px auto 0;
+      gap: 10px; margin: 16px auto 0;
       text-shadow: 0 1px 12px rgba(6, 31, 38, 0.7);
     }
     /* Tighter card padding, and the label steps down so the longest one
@@ -521,7 +562,7 @@
     .gh-hero__plan { padding: 13px 16px; gap: 12px; }
     .gh-hero__plan-meta { font-size: clamp(9.5px, 2.9vw, 11px); letter-spacing: 0.16em; }
     .gh-hero__plan-price { font-size: clamp(21px, 6vw, 26px); }
-    .gh-hero__actions { margin-top: 22px; gap: 14px; }
+    .gh-hero__actions { margin-top: 26px; gap: 16px; }
     .gh-hero .gh-btn--solid { padding: 16px 24px; }
     .gh-hero__note { font-size: 9px; letter-spacing: 0.14em; }
     .gh-hero__coords { display: none; }
