@@ -350,7 +350,10 @@
      column so it breaks into two comfortable lines instead of stretching edge to
      edge. */
   .gh-hero__h1 {
-    margin: 24px auto 0; max-width: 9.6em;
+    /* Bigger gap under the launch pill than the rest of the rhythm: the block is
+       bottom-anchored, so this space is what lifts the pill up the frame while
+       the headline and everything under it stay put. */
+    margin: 44px auto 0; max-width: 9.6em;
     font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.06 var(--gh-sans);
     letter-spacing: -0.022em;
     color: #f6f5ee;
@@ -410,8 +413,8 @@
   /* Duration and package name read as one label on a single line. */
   .gh-hero__plan-meta {
     display: block; min-width: 0;
-    font: 500 10.5px/1.35 var(--gh-mono);
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font: 500 11.5px/1.35 var(--gh-mono);
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gh-green);
   }
   .gh-hero__plan-time { white-space: nowrap; }
@@ -420,7 +423,7 @@
   .gh-hero__plan-name:not(:first-child)::before { content: " · "; opacity: 0.6; }
   .gh-hero__plan-price {
     flex: none;
-    font: 500 clamp(22px, 5.6vw, 26px)/1 var(--gh-mono);
+    font: 500 clamp(24px, 6.2vw, 29px)/1 var(--gh-mono);
     letter-spacing: 0;
     color: #F7F5F3;
     font-variant-numeric: tabular-nums;
@@ -498,7 +501,7 @@
     /* Scales down on narrow phones instead of running into the edges. Now the
        dominant element — the old size (25-30px) sat below COMING SOON's 34-52px,
        which buried the outcome under the announcement. */
-    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 18px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
+    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 34px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
     /* Slightly narrower measure = fewer, better-balanced lines */
     .gh-hero__sub { font-size: 14.5px; line-height: 1.55; margin: 20px auto 0; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
     .gh-hero__offer { margin-top: 30px; }
@@ -515,8 +518,8 @@
        ("50 MIN · BODY PERFORMANCE + PREVENTION") stays on one line beside the
        price. It wraps rather than clipping if a name gets longer than that. */
     .gh-hero__plan { padding: 13px 16px; gap: 12px; }
-    .gh-hero__plan-meta { font-size: clamp(8.5px, 2.5vw, 10px); letter-spacing: 0.12em; }
-    .gh-hero__plan-price { font-size: clamp(19px, 5.4vw, 23px); }
+    .gh-hero__plan-meta { font-size: clamp(9.5px, 2.9vw, 11px); letter-spacing: 0.16em; }
+    .gh-hero__plan-price { font-size: clamp(21px, 6vw, 26px); }
     .gh-hero__actions { margin-top: 22px; gap: 14px; }
     .gh-hero .gh-btn--solid { padding: 16px 24px; }
     .gh-hero__note { font-size: 9px; letter-spacing: 0.14em; }

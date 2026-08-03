@@ -25,7 +25,7 @@
           "type": "plan",
           "settings": {
             "time": "25 MIN",
-            "name": "Body Performance",
+            "name": "Performance",
             "price": "$1,499",
             "link": ""
           }
@@ -34,7 +34,7 @@
           "type": "plan",
           "settings": {
             "time": "50 MIN",
-            "name": "Body Performance + Prevention",
+            "name": "+ Prevention",
             "price": "$4,999",
             "link": ""
           }
@@ -43,7 +43,7 @@
           "type": "plan",
           "settings": {
             "time": "",
-            "name": "Exclusive launch pricing for the first 500 members",
+            "name": "First 500 founding members",
             "price": "",
             "link": ""
           }
@@ -78,7 +78,7 @@
         "heading_size_mobile": 33,
         "coming_soon": "COMING SOON",
         "coming_soon_sub": "NOVEMBER 1ST",
-        "badge": "MULTI-SYSTEM BODY SCAN",
+        "badge": "",
         "heading": "",
         "heading_accent": "Protect your future health",
         "subheading": "The world’s most advanced technology for measuring your body and health.",
