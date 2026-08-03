@@ -136,7 +136,18 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
     background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
   }
-  .gh-pkg__head { position: relative; padding: 26px 30px 20px; border-bottom: 1px solid rgba(255,255,255,.14); background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.06), transparent 60%); }
+  /* Icon tile and title share the first row; subtitle and price span the full
+     width underneath. Auto-placement, not explicit columns, so a package with
+     "No icon" puts its title in track 1 and stays flush left instead of
+     inheriting the gutter the missing tile would have left behind. */
+  .gh-pkg__head {
+    position: relative; padding: 26px 30px 20px;
+    display: grid; grid-template-columns: auto 1fr;
+    align-items: center; column-gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+    background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.06), transparent 60%);
+  }
+  .gh-pkg__subtitle, .gh-pkg__price { grid-column: 1 / -1; }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.08), transparent 60%); }
   /* Square icon tile: a small logo-like mark for each package. Frosted glass
      rather than a solid fill, so it reads on both the plain and the featured
@@ -144,7 +155,7 @@
      size is ever changed from one value. */
   .gh-pkg__icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; aspect-ratio: 1; margin: 0 0 14px;
+    width: 44px; aspect-ratio: 1; margin: 0;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.10);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -158,8 +169,9 @@
 
   /* Package titles stay in Chillax (brand display face); everything else in the
      card is DM Sans. */
-  .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0 0 3px; padding: 0; letter-spacing: -0.01em; }
-  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0 0 12px; padding: 0; }
+  .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em; }
+  /* Carries the gap under the icon row now that the title has no bottom margin. */
+  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 11px 0 12px; padding: 0; }
   .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 18px; }
 
@@ -212,7 +224,8 @@
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
     .gh-pkg__head { padding: 22px 20px 18px; }
-    .gh-pkg__icon { width: 38px; border-radius: 9px; margin-bottom: 11px; }
+    .gh-pkg__head { column-gap: 12px; }
+    .gh-pkg__icon { width: 38px; border-radius: 9px; }
     .gh-pkg__name { font-size: 24px; }
     .gh-pkg__price { font-size: 22px; }
     .gh-pkg__unit { font-size: 16px; }
