@@ -291,8 +291,8 @@
         "photo_Jz9AbH": {
           "type": "photo",
           "settings": {
-            "image": "shopify://shop_images/skin_room.png",
-            "image_mobile": "shopify://shop_images/Imagen.png",
+            "image": "shopify://shop_images/skin_room_1.png",
+            "image_mobile": "shopify://shop_images/otro.png",
             "alt": ""
           }
         },
