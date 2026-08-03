@@ -289,14 +289,6 @@
             "alt": ""
           }
         },
-        "photo_NGCTdp": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/skin_room.png",
-            "image_mobile": "shopify://shop_images/Imagen.png",
-            "alt": ""
-          }
-        },
         "photo_2": {
           "type": "photo",
           "settings": {
@@ -308,7 +300,6 @@
       },
       "block_order": [
         "photo_1",
-        "photo_NGCTdp",
         "photo_2"
       ],
       "settings": {
