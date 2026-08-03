@@ -1,8 +1,9 @@
 {%- comment -%}
   Galim Health — Hero
   Full-bleed image + layered dark gradients. One centred column of copy over the
-  figure at every width, ordered outcome first: what it is -> the promise -> the
-  technology that backs it -> the offer that makes it worth booking now.
+  figure at every width:
+    launch pill -> headline -> description -> pricing pill -> package cards ->
+    CTA -> footnote.
   Primary CTA opens the waitlist modal.
 {%- endcomment -%}
 
@@ -68,8 +69,40 @@
     <div class="gh-hero__sides" aria-hidden="true"></div>
   </div>
 
+  {%- comment -%}
+    Plan blocks play three different roles, told apart by which fields are filled
+    rather than by position, so reordering them in the customizer can't break the
+    layout:
+      - time and/or price  -> a package card
+      - name only, first   -> the pill above the cards ("FOUNDING MEMBER PRICING")
+      - name only, after   -> a footnote under the button ("FIRST 500 …")
+    Fully empty blocks are skipped instead of rendering an empty card.
+  {%- endcomment -%}
+  {%- liquid
+    assign pill_index = -1
+    for block in section.blocks
+      if block.type != 'plan'
+        continue
+      endif
+      if block.settings.time == blank and block.settings.price == blank and block.settings.name != blank
+        assign pill_index = forloop.index0
+        break
+      endif
+    endfor
+  -%}
+
   <div class="gh-hero__inner">
     <div class="gh-hero__col">
+      {%- if s.coming_soon != blank -%}
+        <p class="gh-hero__stamp">
+          <span class="gh-hero__dot"></span>
+          <span class="gh-hero__stamp-label">{{ s.coming_soon }}</span>
+          {%- if s.coming_soon_sub != blank -%}
+            <span class="gh-hero__stamp-date">{{ s.coming_soon_sub }}</span>
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+
       {%- if s.badge != blank -%}
         <div class="gh-hero__badge">
           <span class="gh-hero__dot"></span>{{ s.badge }}
@@ -95,45 +128,37 @@
       {%- endif -%}
 
       {%- comment -%}
-        "Why book today" group: the launch stamp and the founding-member price
-        table read as one offer, set apart from the pitch above by space alone.
-        COMING SOON / the date used to be a display headline floating on its own
-        over the figure, which made the announcement — not the customer's
-        outcome — the biggest thing on the page. Here it's the dated reason to
-        act on the offer it sits with, and it outranks the prices below it. It
-        also drops the old aria-hidden: an opening date is information, not
-        decoration.
+        The offer: a pricing pill labelling the package cards below it. Set apart
+        from the pitch above by space alone — a rule here read as a division
+        through the middle of the hero.
       {%- endcomment -%}
-      {%- if s.coming_soon != blank or section.blocks.size > 0 -%}
+      {%- if section.blocks.size > 0 -%}
         <div class="gh-hero__offer">
-          {%- if s.coming_soon != blank -%}
-            <p class="gh-hero__stamp">
-              <span class="gh-hero__stamp-label">{{ s.coming_soon }}</span>
-              {%- if s.coming_soon_sub != blank -%}
-                <span class="gh-hero__stamp-date">{{ s.coming_soon_sub }}</span>
-              {%- endif -%}
-            </p>
-          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'plan' and forloop.index0 == pill_index -%}
+              <p class="gh-hero__stamp gh-hero__stamp--offer" {{ block.shopify_attributes }}>{{ block.settings.name }}</p>
+            {%- endif -%}
+          {%- endfor -%}
 
-          {%- if section.blocks.size > 0 -%}
-            <div class="gh-hero__plans">
-              {%- for block in section.blocks -%}
-                {%- if block.type == 'plan' -%}
-                  {%- liquid
-                    assign plan_href = block.settings.link
-                    if plan_href == blank
-                      assign plan_href = '#plans'
-                    endif
-                  -%}
-                  <a href="{{ plan_href }}" class="gh-hero__plan" {{ block.shopify_attributes }}>
-                    {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
-                    {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
-                    {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
-                  </a>
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
+          <div class="gh-hero__plans">
+            {%- for block in section.blocks -%}
+              {%- if block.type != 'plan' -%}{%- continue -%}{%- endif -%}
+              {%- if block.settings.time == blank and block.settings.price == blank -%}{%- continue -%}{%- endif -%}
+              {%- liquid
+                assign plan_href = block.settings.link
+                if plan_href == blank
+                  assign plan_href = '#plans'
+                endif
+              -%}
+              <a href="{{ plan_href }}" class="gh-hero__plan" {{ block.shopify_attributes }}>
+                <span class="gh-hero__plan-meta">
+                  {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
+                  {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
+                </span>
+                {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
+              </a>
+            {%- endfor -%}
+          </div>
         </div>
       {%- endif -%}
 
@@ -145,6 +170,15 @@
             <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
           {%- endif -%}
         {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'plan' -%}{%- continue -%}{%- endif -%}
+          {%- if block.settings.name == blank -%}{%- continue -%}{%- endif -%}
+          {%- if block.settings.time != blank or block.settings.price != blank -%}{%- continue -%}{%- endif -%}
+          {%- if forloop.index0 == pill_index -%}{%- continue -%}{%- endif -%}
+          <p class="gh-hero__note" {{ block.shopify_attributes }}>{{ block.settings.name }}</p>
+        {%- endfor -%}
+
         {%- if s.coords != blank -%}
           <span class="gh-hero__coords">{{ s.coords }}</span>
         {%- endif -%}
@@ -156,7 +190,8 @@
 {% stylesheet %}
   /* Galim Health — Hero
      Copy is centred and bottom-anchored at every width, over a vertical scrim
-     plus a local halo. The figure stays centred behind it. */
+     plus a local halo. The figure stays centred behind it. The package cards and
+     the CTA share one width so they read as a single block. */
 
   .gh-hero {
     position: relative;
@@ -279,18 +314,32 @@
   /* Launch stamp: the loudest thing after the headline — it's the reason to act,
      so it outranks the price table below it. */
   .gh-hero__stamp {
-    display: inline-flex; align-items: center; margin: 0 auto; padding: 12px 24px;
+    /* Block-level flex with fit-content, not inline-flex: as an inline box the
+       pill let the following label sit on the same line instead of below it. */
+    display: flex; width: fit-content;
+    align-items: center; margin: 0 auto; padding: 12px 24px;
     border: 1px solid rgba(255, 255, 255, 0.42); border-radius: 999px;
     font: 500 13px/1 var(--gh-mono); letter-spacing: 0.22em; text-transform: uppercase;
     color: #F7F5F3;
     background: rgba(6, 31, 38, 0.34);
     text-shadow: 0 1px 10px rgba(6, 31, 38, 0.5);
   }
+  .gh-hero__stamp .gh-hero__dot { margin-right: 10px; }
   .gh-hero__stamp-date { color: var(--gh-green); }
   .gh-hero__stamp-date::before { content: "·"; margin: 0 10px; opacity: 0.5; color: #F7F5F3; }
+  /* Same pill as the launch stamp, sitting above the package cards. No dot: that
+     marks the dated announcement, and repeating it would read as a second
+     status. A shade smaller so it labels the cards rather than competing with
+     the headline's own stamp. */
+  .gh-hero__stamp--offer {
+    padding: 10px 20px;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--gh-green);
+    border-color: rgba(255, 255, 255, 0.26);
+  }
 
   .gh-hero__badge {
-    display: inline-flex; align-items: center; gap: 9px;
+    display: inline-flex; align-items: center; gap: 9px; margin-top: 18px;
     font: 500 12px/1 var(--gh-mono);
     letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--gh-green);
@@ -301,7 +350,7 @@
      column so it breaks into two comfortable lines instead of stretching edge to
      edge. */
   .gh-hero__h1 {
-    margin: 16px auto 0; max-width: 9.6em;
+    margin: 24px auto 0; max-width: 9.6em;
     font: 300 clamp(var(--gh-hero-h1-min, 30px), 4vw, var(--gh-hero-h1-max, 56px))/1.06 var(--gh-sans);
     letter-spacing: -0.022em;
     color: #f6f5ee;
@@ -330,92 +379,61 @@
        row. Stacked and centred, it would read as a stray tick. */
   }
 
-  /* Plans as a 3-column price table: duration | package | price.
-     Every row is a subgrid of the same three tracks, so "25 MIN"/"50 MIN"
-     share a left edge and the prices line up in their own column — centring
-     each row independently (the old flex layout) left them ragged. */
+  /* Plans as package cards: label on the left, price on the right. Replaces the
+     three-column price table — as a table the short package name stranded a gap
+     before its price and the whole block read as an afterthought. A card gives
+     each package its own object and lets the price be the loud part. */
   .gh-hero__plans {
-    list-style: none; margin: 28px 0 0; padding: 0;
-    display: grid;
-    grid-template-columns: max-content minmax(0, max-content) max-content;
-    justify-content: center;
-    row-gap: 9px; column-gap: 16px;
-    /* Quieter and tighter than the stamp above it: this is the detail you read
-       after you've decided, not the reason to decide. Small type also shrinks
-       the gap a short package name strands before its price, which is what made
-       the table look thrown together at the old size. */
-    font: 400 10.5px/1 var(--gh-mono);
-    letter-spacing: 0.07em;
-    color: rgba(246, 245, 238, 0.62);
+    list-style: none; margin: 18px auto 0; padding: 0;
+    /* Grid with equal rows, not a flex column: her longest package name wraps to
+       two lines beside the price, and without this the two cards came out
+       different heights, which reads as a mistake rather than a pair. */
+    display: grid; grid-auto-rows: 1fr; gap: 12px;
+    max-width: 440px;
   }
   .gh-hero__plan {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: subgrid;
-    align-items: baseline;
+    box-sizing: border-box;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    padding: 15px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    text-align: left;
     color: inherit;
-    transition: color 0.2s ease;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
   }
-  .gh-hero__plan:hover { color: #f6f5ee; }
-  /* Explicit tracks: a row that omits its duration must leave that cell empty
-     rather than sliding the package name into the first column. */
-  /* text-align:left is explicit because the mobile hero centres its copy, which
-     would otherwise centre each cell inside its track and undo the alignment. */
-  .gh-hero__plan-time { grid-column: 1; text-align: left; color: var(--gh-green); text-transform: uppercase; white-space: nowrap; }
-  .gh-hero__plan-name { grid-column: 2; text-align: left; color: inherit; text-transform: uppercase; }
-  /* Prices flush right so they end on a shared edge whatever their length, and a
-     shade brighter than the labels — the number is what you're scanning for. */
+  .gh-hero__plan:hover {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.30);
+    transform: translateY(-2px);
+  }
+  /* Duration and package name read as one label on a single line. */
+  .gh-hero__plan-meta {
+    display: block; min-width: 0;
+    font: 500 10.5px/1.35 var(--gh-mono);
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gh-green);
+  }
+  .gh-hero__plan-time { white-space: nowrap; }
+  /* Separator only between two present parts, so a card with just a name has no
+     stray leading dot. */
+  .gh-hero__plan-name:not(:first-child)::before { content: " · "; opacity: 0.6; }
   .gh-hero__plan-price {
-    grid-column: 3; color: rgba(246, 245, 238, 0.92);
-    white-space: nowrap; text-align: right;
+    flex: none;
+    font: 500 clamp(22px, 5.6vw, 26px)/1 var(--gh-mono);
+    letter-spacing: 0;
+    color: #F7F5F3;
     font-variant-numeric: tabular-nums;
   }
-  /* No `·` separators: once the parts sit in real columns the dots read as
-     column dividers and strand a gap between a short package name and its
-     price. The column gutters do the separating now. */
 
-  /* Safari <16 has no subgrid: `grid-template-columns: subgrid` is dropped and
-     each row would collapse to one column, stacking duration/name/price on
-     three lines. Fall back to the previous inline row — unaligned, but intact. */
-  @supports not (grid-template-columns: subgrid) {
-    .gh-hero__plans { display: flex; flex-direction: column; align-items: flex-start; }
-    .gh-hero__plan { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
-    .gh-hero__plan-name:only-child { width: auto; min-width: 0; }
-  }
-
-  /* Note-style chip: when the name is the chip's ONLY part (no time, no price)
-     it's a sentence, not a label — so tighten the tracking and size it down a
-     touch to hold ONE row. Measured at 375px (335px usable): the sentence is
-     337px at 11px with the default 0.06em tracking (2px too wide), but ~310px
-     at 0.01em. Scales with the viewport so it also fits 320px phones.
-     Selector is semantic, not positional, so reordering chips can't break it. */
-  .gh-hero__plan-name:only-child {
-    /* Sized so the 500-members line holds ONE row inside the table's 311px at
-       390px (measured: 328px at 10px, which orphaned "MEMBERS"). Wrapping stays
-       enabled below, so lengthening the copy degrades to two lines rather than
-       being clipped. */
-    font-size: 9.5px;
-    letter-spacing: 0.05em;
-    line-height: 1.5;
-    color: rgba(246, 245, 238, 0.48);
-    text-align: center;
-    /* Deliberately NOT nowrap: these rows span the table and are pinned to its
-       width, so a caption longer than the widest priced row would be clipped by
-       the hero's overflow:hidden rather than wrap. */
-    /* Spans the whole table so a label/footnote row isn't squeezed into the
-       package column. width:0 + min-width:100% keeps its text OUT of the
-       intrinsic sizing of the three tracks: a long sentence would otherwise
-       stretch them and blow the gutters open on the priced rows. */
-    grid-column: 1 / -1;
-    width: 0;
-    min-width: 100%;
-  }
-  /* The first caption row is the price block's heading, so it stays brighter than
-     the footnote rows below the table. Keyed on :first-child rather than on the
-     copy, so reordering the chips in the customizer can't strand the style. */
-  .gh-hero__plan:first-child .gh-hero__plan-name:only-child {
-    color: var(--gh-green);
-    letter-spacing: 0.2em;
+  /* Footnote under the button — the smallest, quietest thing in the hero. */
+  .gh-hero__note {
+    /* Never wider than the column: at 340px with tracking it spilled past the
+       hero's side padding. Wraps instead. */
+    margin: 0; max-width: 100%;
+    font: 500 9.5px/1.5 var(--gh-mono);
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(246, 245, 238, 0.45);
   }
 
   /* Solid cream button */
@@ -428,7 +446,13 @@
   .gh-hero .gh-btn--solid {
     background: #F7F5F3;
     color: #135E73;
-    padding: 15px 34px;
+    /* Same width as the package cards above it: sharing one edge is what makes
+       the cards and the CTA read as a single block rather than loose parts.
+       border-box because the theme has no global reset — width:100% plus padding
+       pushed the button past the hero's side padding and it ran edge to edge. */
+    box-sizing: border-box;
+    width: 100%; max-width: 440px; justify-content: center;
+    padding: 16px 34px;
     border-radius: 999px;
     font: 500 16px/1 var(--gh-sans);
     letter-spacing: 0.02em;
@@ -474,29 +498,28 @@
     /* Scales down on narrow phones instead of running into the edges. Now the
        dominant element — the old size (25-30px) sat below COMING SOON's 34-52px,
        which buried the outcome under the announcement. */
-    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 12px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
+    .gh-hero__h1 { font-size: clamp(27px, 7.8vw, 33px); line-height: 1.1; margin-top: 18px; max-width: 9.2em; text-shadow: 0 2px 20px rgba(6, 31, 38, 0.5); }
     /* Slightly narrower measure = fewer, better-balanced lines */
     .gh-hero__sub { font-size: 14.5px; line-height: 1.55; margin: 20px auto 0; max-width: 300px; text-shadow: 0 1px 14px rgba(6, 31, 38, 0.65); }
-    .gh-hero__offer { margin-top: 34px; }
-    .gh-hero__stamp { padding: 10px 18px; font-size: 11.5px; letter-spacing: 0.18em; }
-    /* The table itself is centred in the hero, but its rows stay left-aligned
-       inside it — that's what keeps "25 MIN" and "50 MIN" on a shared edge
-       instead of each row being centred on its own width. */
+    .gh-hero__offer { margin-top: 30px; }
+    .gh-hero__stamp { padding: 10px 18px; font-size: 11px; letter-spacing: 0.18em; }
+    .gh-hero__stamp--offer { padding: 9px 16px; font-size: 10px; }
+    /* No max-width override here: the base 440px cap already collapses to the
+       column width on phones, and forcing 100% made the cards 728px wide at
+       768px while the button stayed at 440px. */
     .gh-hero__plans {
-      justify-content: center;
-      row-gap: 8px; column-gap: 12px; margin: 22px 0 0;
-      max-width: 100%;
-      /* Kept a comfortable margin inside the 20px hero padding so the table reads
-         as a contained block rather than running edge to edge. Below ~340px the
-         package column shrinks and wraps rather than being clipped by the hero's
-         overflow:hidden. */
-      font-size: clamp(9px, 2.6vw, 10.5px);
+      gap: 10px; margin: 14px auto 0;
       text-shadow: 0 1px 12px rgba(6, 31, 38, 0.7);
     }
-    .gh-hero__actions { margin-top: 34px; }
-    /* Not full-bleed any more — a button spanning the whole screen read as the
-       heaviest thing in the hero. Wide enough to stay an easy tap target. */
-    .gh-hero .gh-btn--solid { width: auto; min-width: 230px; justify-content: center; padding: 15px 30px; }
+    /* Tighter card padding, and the label steps down so the longest one
+       ("50 MIN · BODY PERFORMANCE + PREVENTION") stays on one line beside the
+       price. It wraps rather than clipping if a name gets longer than that. */
+    .gh-hero__plan { padding: 13px 16px; gap: 12px; }
+    .gh-hero__plan-meta { font-size: clamp(8.5px, 2.5vw, 10px); letter-spacing: 0.12em; }
+    .gh-hero__plan-price { font-size: clamp(19px, 5.4vw, 23px); }
+    .gh-hero__actions { margin-top: 22px; gap: 14px; }
+    .gh-hero .gh-btn--solid { padding: 16px 24px; }
+    .gh-hero__note { font-size: 9px; letter-spacing: 0.14em; }
     .gh-hero__coords { display: none; }
   }
 {% endstylesheet %}
