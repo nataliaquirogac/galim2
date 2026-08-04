@@ -280,6 +280,13 @@
     "visit_gallery": {
       "type": "galim-gallery",
       "blocks": {
+        "photo_mQAtJN": {
+          "type": "photo",
+          "settings": {
+            "image_mobile": "shopify://shop_images/skin_room_1_15e1a558-759d-451e-b973-c67f5932518b.png",
+            "alt": ""
+          }
+        },
         "photo_UYhfG9": {
           "type": "photo",
           "settings": {
@@ -322,6 +329,7 @@
         }
       },
       "block_order": [
+        "photo_mQAtJN",
         "photo_UYhfG9",
         "photo_9xWrMp",
         "photo_Jz9AbH",
