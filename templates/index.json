@@ -100,6 +100,14 @@
             "description": "Fat, muscle, and bone - DEXA scan"
           }
         },
+        "item_3zaLMx": {
+          "type": "item",
+          "settings": {
+            "icon": "balance",
+            "name": "AI Body Measurements",
+            "description": "Precise dimensions, posture, and symmetry mapped by AI."
+          }
+        },
         "m11": {
           "type": "item",
           "settings": {
@@ -122,14 +130,6 @@
             "icon": "muscle",
             "name": "Strength",
             "description": "True force output, not just what you lift."
-          }
-        },
-        "item_3zaLMx": {
-          "type": "item",
-          "settings": {
-            "icon": "balance",
-            "name": "AI Body Measurements",
-            "description": "Precise dimensions, posture, and symmetry mapped by AI."
           }
         },
         "m12": {
@@ -207,10 +207,10 @@
       },
       "block_order": [
         "m8",
+        "item_3zaLMx",
         "m11",
         "m4",
         "m10",
-        "item_3zaLMx",
         "m12",
         "m6",
         "item_6WJCYy",
