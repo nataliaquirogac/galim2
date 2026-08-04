@@ -417,7 +417,7 @@
   .gh-hero__plan {
     box-sizing: border-box;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding: 12px 18px;
+    padding: 13px 18px;
     border-radius: 14px;
     text-align: left;
     color: inherit;
@@ -445,8 +445,8 @@
   /* Duration and package name read as one label on a single line. */
   .gh-hero__plan-meta {
     display: block; min-width: 0;
-    font: 500 10px/1.35 var(--gh-mono);
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font: 500 11.5px/1.35 var(--gh-mono);
+    letter-spacing: 0.13em; text-transform: uppercase;
     color: var(--gh-cyan);
   }
   .gh-hero__plan-time { white-space: nowrap; }
@@ -455,7 +455,7 @@
   .gh-hero__plan-name:not(:first-child)::before { content: " · "; opacity: 0.6; }
   .gh-hero__plan-price {
     flex: none;
-    font: 500 clamp(18px, 4.4vw, 21px)/1 var(--gh-mono);
+    font: 500 clamp(15.5px, 3.4vw, 18px)/1 var(--gh-mono);
     letter-spacing: 0;
     color: #F7F5F3;
     font-variant-numeric: tabular-nums;
@@ -559,9 +559,9 @@
     /* Tighter card padding, and the label steps down so the longest one
        ("50 MIN · BODY PERFORMANCE + PREVENTION") stays on one line beside the
        price. It wraps rather than clipping if a name gets longer than that. */
-    .gh-hero__plan { padding: 10px 14px; gap: 10px; }
-    .gh-hero__plan-meta { font-size: clamp(8.5px, 2.5vw, 9.5px); letter-spacing: 0.13em; }
-    .gh-hero__plan-price { font-size: clamp(16px, 4.4vw, 19px); }
+    .gh-hero__plan { padding: 11px 14px; gap: 10px; }
+    .gh-hero__plan-meta { font-size: clamp(9px, 2.7vw, 11px); letter-spacing: 0.1em; }
+    .gh-hero__plan-price { font-size: clamp(13.5px, 3.7vw, 16.5px); }
     .gh-hero__actions { margin-top: 24px; gap: 0; }
     .gh-hero__note + .gh-btn--solid { margin-top: 30px; }
     .gh-hero .gh-btn--solid { padding: 16px 24px; }
