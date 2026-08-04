@@ -2,18 +2,35 @@
   Galim Health — Book your visit (place gallery)
   Horizontal swipe carousel of the clinic photos.
 
-  Each photo is an editable BLOCK: pick a landscape shot for desktop and an
-  optional portrait shot for mobile. A single track renders a <picture> per
-  slide, so block order stays identical across breakpoints.
+  Each photo is an editable BLOCK with an independent landscape shot for desktop
+  and portrait shot for mobile. One track, two <img> per slide (one per
+  breakpoint), so block order stays identical across breakpoints.
 
-  Any block left without an image falls back to the bundled render that used to
-  be hardcoded here, so the section never shows an empty slot.
+  No fallbacks: an empty picker means nothing shows at that breakpoint. A slide
+  with only a desktop photo is hidden on mobile and vice versa, a block with
+  neither is skipped, and if no block has a photo for a breakpoint the whole
+  track is hidden there rather than leaving an empty rail under the heading.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
-  assign d_fallback = 'place-1.jpg,place-2.jpg,place-3.jpg,place-4.jpg' | split: ','
-  assign m_fallback = 'place-m1.jpg,place-m2.jpg,place-m3.jpg' | split: ','
+  assign has_desktop = false
+  assign has_mobile = false
+  for block in section.blocks
+    if block.settings.image != blank
+      assign has_desktop = true
+    endif
+    if block.settings.image_mobile != blank
+      assign has_mobile = true
+    endif
+  endfor
+  assign track_class = ''
+  unless has_desktop
+    assign track_class = track_class | append: ' is-empty-desktop'
+  endunless
+  unless has_mobile
+    assign track_class = track_class | append: ' is-empty-mobile'
+  endunless
 -%}
 
 <section
@@ -31,47 +48,44 @@
     </div>
   </div>
 
-  <div class="gh-gallery__track" data-gh-g-track>
+  <div class="gh-gallery__track{{ track_class }}" data-gh-g-track>
     {%- for block in section.blocks -%}
       {%- liquid
         assign b = block.settings
-
-        # Fall back to the bundled renders (cycled) when a picker is empty
-        assign di = forloop.index0 | modulo: d_fallback.size
-        assign mi = forloop.index0 | modulo: m_fallback.size
-        assign d_src = d_fallback[di] | asset_url
-        assign m_src = m_fallback[mi] | asset_url
-
+        # Nothing to show at all -> no empty frame
+        if b.image == blank and b.image_mobile == blank
+          continue
+        endif
+        # One picker filled -> the slide only exists at that breakpoint
+        assign slide_class = ''
+        if b.image == blank
+          assign slide_class = ' is-mobile-only'
+        elsif b.image_mobile == blank
+          assign slide_class = ' is-desktop-only'
+        endif
         assign alt = b.alt | default: s.heading | default: shop.name
       -%}
-      <figure class="gh-gallery__slide" {{ block.shopify_attributes }}>
-        <picture>
-          {%- comment -%} Mobile: portrait shot (falls back to the desktop one) {%- endcomment -%}
-          {%- if b.image_mobile != blank -%}
-            <source media="(max-width: 768px)"
-              srcset="{{ b.image_mobile | image_url: width: 800 }} 800w, {{ b.image_mobile | image_url: width: 1200 }} 1200w, {{ b.image_mobile | image_url: width: 1600 }} 1600w"
-              sizes="78vw">
-          {%- elsif b.image != blank -%}
-            <source media="(max-width: 768px)"
-              srcset="{{ b.image | image_url: width: 800 }} 800w, {{ b.image | image_url: width: 1200 }} 1200w"
-              sizes="78vw">
-          {%- else -%}
-            <source media="(max-width: 768px)" srcset="{{ m_src }}">
-          {%- endif -%}
-
-          {%- comment -%} Desktop: landscape shot {%- endcomment -%}
-          {%- if b.image != blank -%}
-            <source media="(min-width: 769px)"
-              srcset="{{ b.image | image_url: width: 900 }} 900w, {{ b.image | image_url: width: 1400 }} 1400w, {{ b.image | image_url: width: 1800 }} 1800w"
-              sizes="min(72vw, 860px)">
-          {%- else -%}
-            <source media="(min-width: 769px)" srcset="{{ d_src }}">
-          {%- endif -%}
-
-          <img
-            src="{% if b.image != blank %}{{ b.image | image_url: width: 1400 }}{% else %}{{ d_src }}{% endif %}"
+      <figure class="gh-gallery__slide{{ slide_class }}" {{ block.shopify_attributes }}>
+        {%- comment -%}
+          Two independent <img> elements rather than one <picture>: a picture
+          needs a single fallback <img>, which forces one breakpoint's photo to
+          stand in for the other. Separate images are what make "empty means
+          empty" possible. Both are lazy, so the hidden one is not fetched.
+        {%- endcomment -%}
+        {%- if b.image != blank -%}
+          <img class="gh-gallery__img gh-gallery__img--d"
+            src="{{ b.image | image_url: width: 1400 }}"
+            srcset="{{ b.image | image_url: width: 900 }} 900w, {{ b.image | image_url: width: 1400 }} 1400w, {{ b.image | image_url: width: 1800 }} 1800w"
+            sizes="min(72vw, 860px)"
             alt="{{ alt | escape }}" loading="lazy" decoding="async">
-        </picture>
+        {%- endif -%}
+        {%- if b.image_mobile != blank -%}
+          <img class="gh-gallery__img gh-gallery__img--m"
+            src="{{ b.image_mobile | image_url: width: 1200 }}"
+            srcset="{{ b.image_mobile | image_url: width: 800 }} 800w, {{ b.image_mobile | image_url: width: 1200 }} 1200w, {{ b.image_mobile | image_url: width: 1600 }} 1600w"
+            sizes="78vw"
+            alt="{{ alt | escape }}" loading="lazy" decoding="async">
+        {%- endif -%}
       </figure>
     {%- endfor -%}
   </div>
@@ -120,8 +134,14 @@
     transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.6, 0.2, 1);
   }
   .gh-gallery__slide:hover { transform: translateY(-4px); box-shadow: 0 20px 46px rgba(19, 94, 115, 0.14); }
-  .gh-gallery__slide img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1); }
-  .gh-gallery__slide:hover img { transform: scale(1.05); }
+  .gh-gallery__slide .gh-gallery__img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1); }
+  .gh-gallery__slide:hover .gh-gallery__img { transform: scale(1.05); }
+  /* Desktop shows only the landscape image, and a slide that has no landscape
+     photo does not exist here at all. Two-class selectors so the rule above
+     cannot win on specificity. */
+  .gh-gallery__slide .gh-gallery__img--m { display: none; }
+  .gh-gallery__slide.is-mobile-only { display: none; }
+  .gh-gallery__track.is-empty-desktop { display: none; }
 
   /* One track; the slide frame switches shape per breakpoint and <picture>
      serves the matching crop. */
@@ -133,6 +153,13 @@
     .gh-gallery__head { margin-bottom: 20px; }
     .gh-gallery__nav { display: none; }
     .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
+    /* Mirror image on mobile: portrait photo only, desktop-only slides gone. */
+    .gh-gallery__slide .gh-gallery__img--d { display: none; }
+    .gh-gallery__slide .gh-gallery__img--m { display: block; }
+    .gh-gallery__slide.is-desktop-only { display: none; }
+    .gh-gallery__slide.is-mobile-only { display: block; }
+    .gh-gallery__track.is-empty-desktop { display: flex; }
+    .gh-gallery__track.is-empty-mobile { display: none; }
     .gh-gallery__cta { margin-top: 24px; }
     .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
   }
@@ -173,8 +200,8 @@
       "type": "photo",
       "name": "Photo",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Photo (desktop — landscape)", "info": "Leave empty to keep the bundled clinic render." },
-        { "type": "image_picker", "id": "image_mobile", "label": "Photo (mobile — portrait)", "info": "Optional. If empty, the desktop photo is used." },
+        { "type": "image_picker", "id": "image", "label": "Photo (desktop — landscape)", "info": "Shown on desktop only. Leave empty and this slide will not appear on desktop." },
+        { "type": "image_picker", "id": "image_mobile", "label": "Photo (mobile — portrait)", "info": "Shown on mobile only. Leave empty and this slide will not appear on mobile." },
         { "type": "text", "id": "alt", "label": "Alt text (accessibility)" }
       ]
     }
