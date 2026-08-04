@@ -280,14 +280,6 @@
     "visit_gallery": {
       "type": "galim-gallery",
       "blocks": {
-        "photo_UYhfG9": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/STRENGTH_I_1.png",
-            "image_mobile": "shopify://shop_images/STRENGTH_I.png",
-            "alt": ""
-          }
-        },
         "photo_9xWrMp": {
           "type": "photo",
           "settings": {
@@ -296,19 +288,19 @@
             "alt": ""
           }
         },
-        "photo_2": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/hd_upscale01.png",
-            "image_mobile": "shopify://shop_images/Escena_86.png",
-            "alt": ""
-          }
-        },
         "photo_1": {
           "type": "photo",
           "settings": {
             "image": "shopify://shop_images/Escena_38.png",
             "image_mobile": "shopify://shop_images/Escena_52.png",
+            "alt": ""
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/hd_upscale01.png",
+            "image_mobile": "shopify://shop_images/Escena_86.png",
             "alt": ""
           }
         },
@@ -326,15 +318,23 @@
             "image_mobile": "shopify://shop_images/otro.png",
             "alt": ""
           }
+        },
+        "photo_UYhfG9": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/STRENGTH_I_1.png",
+            "image_mobile": "shopify://shop_images/STRENGTH_I.png",
+            "alt": ""
+          }
         }
       },
       "block_order": [
-        "photo_UYhfG9",
         "photo_9xWrMp",
-        "photo_2",
         "photo_1",
+        "photo_2",
         "photo_mQAtJN",
-        "photo_Jz9AbH"
+        "photo_Jz9AbH",
+        "photo_UYhfG9"
       ],
       "settings": {
         "anchor_id": "visit",
