@@ -99,6 +99,67 @@
       {%- endif -%}
     </div>
   {%- endif -%}
+
+  <script>
+    (function () {
+      /* The script must resolve its own section. closest() only works while it is
+         a DESCENDANT of it — it previously sat after </section> as a sibling, so
+         closest() returned null, the function bailed and the arrows were never
+         wired up at all. The sibling lookup is a belt-and-braces fallback. */
+      var self = document.currentScript;
+      var root = self.closest('[data-gh-gallery-root]')
+              || (self.parentElement && self.parentElement.querySelector('[data-gh-gallery-root]'));
+      if (!root) return;
+      var track = root.querySelector('[data-gh-g-track]');
+      var prev = root.querySelector('[data-gh-g-prev]');
+      var next = root.querySelector('[data-gh-g-next]');
+      if (!track) return;
+
+      /* The first slide in the DOM may be hidden at this breakpoint (a block with
+         only the other breakpoint's photo), and a hidden slide measures 0 wide —
+         which made the arrows step by just the gap and look broken. Always measure
+         the first slide that is actually rendered. */
+      function firstVisibleSlide() {
+        var slides = track.querySelectorAll('.gh-gallery__slide');
+        for (var i = 0; i < slides.length; i++) {
+          if (slides[i].getBoundingClientRect().width > 0) return slides[i];
+        }
+        return null;
+      }
+
+      function gap() {
+        var g = parseFloat(getComputedStyle(track).columnGap);
+        return isNaN(g) ? 16 : g;
+      }
+
+      function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+      /* A dead-looking arrow is worse than no arrow, so reflect what is possible.
+         Takes the position to judge by, because after a click the smooth scroll has
+         not moved scrollLeft yet — reading it there would leave the arrows a scroll
+         event behind and swallow a rapid second click. */
+      function syncAt(pos) {
+        var max = maxScroll();
+        if (prev) prev.disabled = max <= 1 || pos <= 1;
+        if (next) next.disabled = max <= 1 || pos >= max - 1;
+      }
+      function sync() { syncAt(track.scrollLeft); }
+
+      function go(dir) {
+        var slide = firstVisibleSlide();
+        var by = slide ? slide.getBoundingClientRect().width + gap() : track.clientWidth * 0.8;
+        var target = Math.max(0, Math.min(maxScroll(), track.scrollLeft + dir * by));
+        track.scrollBy({ left: dir * by, behavior: 'smooth' });
+        syncAt(target);
+      }
+
+      if (prev) prev.addEventListener('click', function () { go(-1); });
+      if (next) next.addEventListener('click', function () { go(1); });
+      track.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    })();
+  </script>
 </section>
 
 {% stylesheet %}
@@ -167,62 +228,6 @@
     .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
   }
 {% endstylesheet %}
-
-<script>
-  (function () {
-    var root = document.currentScript.closest('[data-gh-gallery-root]');
-    if (!root) return;
-    var track = root.querySelector('[data-gh-g-track]');
-    var prev = root.querySelector('[data-gh-g-prev]');
-    var next = root.querySelector('[data-gh-g-next]');
-    if (!track) return;
-
-    /* The first slide in the DOM may be hidden at this breakpoint (a block with
-       only the other breakpoint's photo), and a hidden slide measures 0 wide —
-       which made the arrows step by just the gap and look broken. Always measure
-       the first slide that is actually rendered. */
-    function firstVisibleSlide() {
-      var slides = track.querySelectorAll('.gh-gallery__slide');
-      for (var i = 0; i < slides.length; i++) {
-        if (slides[i].getBoundingClientRect().width > 0) return slides[i];
-      }
-      return null;
-    }
-
-    function gap() {
-      var g = parseFloat(getComputedStyle(track).columnGap);
-      return isNaN(g) ? 16 : g;
-    }
-
-    function maxScroll() { return track.scrollWidth - track.clientWidth; }
-
-    /* A dead-looking arrow is worse than no arrow, so reflect what is possible.
-       Takes the position to judge by, because after a click the smooth scroll has
-       not moved scrollLeft yet — reading it there would leave the arrows a scroll
-       event behind and swallow a rapid second click. */
-    function syncAt(pos) {
-      var max = maxScroll();
-      if (prev) prev.disabled = max <= 1 || pos <= 1;
-      if (next) next.disabled = max <= 1 || pos >= max - 1;
-    }
-    function sync() { syncAt(track.scrollLeft); }
-
-    function go(dir) {
-      var slide = firstVisibleSlide();
-      var by = slide ? slide.getBoundingClientRect().width + gap() : track.clientWidth * 0.8;
-      var target = Math.max(0, Math.min(maxScroll(), track.scrollLeft + dir * by));
-      track.scrollBy({ left: dir * by, behavior: 'smooth' });
-      syncAt(target);
-    }
-
-    if (prev) prev.addEventListener('click', function () { go(-1); });
-    if (next) next.addEventListener('click', function () { go(1); });
-    track.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    sync();
-  })();
-</script>
-
 {% schema %}
 {
   "name": "Galim · Gallery",
