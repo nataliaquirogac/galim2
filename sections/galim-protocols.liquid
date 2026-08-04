@@ -111,7 +111,12 @@
   @media (prefers-reduced-motion: reduce) {
     .gh-protocols__h2 strong { animation: none; }
   }
-  .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  /* align-items:stretch (the default) is what makes both cards the height of the
+     taller one; `start` had each size to its own content. The card and its body
+     are flex columns so the CTA can be pinned to the bottom of that shared
+     height — otherwise the shorter card just gains dead space under its button. */
+  .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .gh-pkg { display: flex; flex-direction: column; }
 
   /* Package cards = teal islands with white text (on the light page) */
   .gh-pkg {
@@ -175,7 +180,7 @@
   .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 18px; }
 
-  .gh-pkg__body { padding: 20px 30px 24px; }
+  .gh-pkg__body { padding: 20px 30px 24px; flex: 1; display: flex; flex-direction: column; }
   /* Lead line */
   .gh-pkg__intro { font: 400 15px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0 0 18px; }
   /* Each block is a labelled section split by a hairline divider */
@@ -197,7 +202,7 @@
   }
   .gh-pkg__note p { font: 400 13px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0; }
   /* Add-ons as bordered rows */
-  .gh-pkg__addons { margin-bottom: 0; }
+  .gh-pkg__addons { margin-bottom: 20px; }
   .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 6px; }
   .gh-pkg__addon {
     font: 400 13px/1.35 var(--gh-mono); color: var(--gh-muted); margin: 0;
@@ -205,7 +210,7 @@
     background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
   }
   /* Cream button pops on the teal card */
-  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: 20px; font: 500 14px/1 var(--gh-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 24px; }
+  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: auto; font: 500 14px/1 var(--gh-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 24px; }
   .gh-pkg .gh-btn--solid { background: #F7F5F3; color: #135E73; }
   .gh-pkg .gh-btn--solid:hover { background: #FFFFFF; color: #0F4E60; }
 
