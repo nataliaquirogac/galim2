@@ -24,18 +24,18 @@
       assign has_mobile = true
     endif
   endfor
-  assign track_class = ''
+  assign gallery_class = ''
   unless has_desktop
-    assign track_class = track_class | append: ' is-empty-desktop'
+    assign gallery_class = gallery_class | append: ' is-empty-desktop'
   endunless
   unless has_mobile
-    assign track_class = track_class | append: ' is-empty-mobile'
+    assign gallery_class = gallery_class | append: ' is-empty-mobile'
   endunless
 -%}
 
 <section
   {% if s.anchor_id != blank %}id="{{ s.anchor_id }}"{% endif %}
-  class="gh-gallery gh-section"
+  class="gh-gallery gh-section{{ gallery_class }}"
   data-gh-section="gallery" data-gh-gallery-root>
   <div class="gh-container gh-gallery__head">
     <div>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="gh-gallery__track{{ track_class }}" data-gh-g-track>
+  <div class="gh-gallery__track" data-gh-g-track>
     {%- for block in section.blocks -%}
       {%- liquid
         assign b = block.settings
@@ -116,6 +116,8 @@
     transition: border-color .2s ease, background .2s ease;
   }
   .gh-gallery__arrow:hover { border-color: var(--gh-brand); background: rgba(19,94,115,.08); }
+  .gh-gallery__arrow:disabled { opacity: 0.32; cursor: default; }
+  .gh-gallery__arrow:disabled:hover { border-color: var(--gh-border); background: none; }
 
   .gh-gallery__track {
     display: flex; gap: 16px;
@@ -141,7 +143,8 @@
      cannot win on specificity. */
   .gh-gallery__slide .gh-gallery__img--m { display: none; }
   .gh-gallery__slide.is-mobile-only { display: none; }
-  .gh-gallery__track.is-empty-desktop { display: none; }
+  .gh-gallery.is-empty-desktop .gh-gallery__track,
+  .gh-gallery.is-empty-desktop .gh-gallery__nav { display: none; }
 
   /* One track; the slide frame switches shape per breakpoint and <picture>
      serves the matching crop. */
@@ -158,8 +161,8 @@
     .gh-gallery__slide .gh-gallery__img--m { display: block; }
     .gh-gallery__slide.is-desktop-only { display: none; }
     .gh-gallery__slide.is-mobile-only { display: block; }
-    .gh-gallery__track.is-empty-desktop { display: flex; }
-    .gh-gallery__track.is-empty-mobile { display: none; }
+    .gh-gallery.is-empty-desktop .gh-gallery__track { display: flex; }
+    .gh-gallery.is-empty-mobile .gh-gallery__track { display: none; }
     .gh-gallery__cta { margin-top: 24px; }
     .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
   }
@@ -169,16 +172,54 @@
   (function () {
     var root = document.currentScript.closest('[data-gh-gallery-root]');
     if (!root) return;
-    function step(dir) {
-      var t = root.querySelector('[data-gh-g-track]'); if (!t) return;
-      var slide = t.querySelector('.gh-gallery__slide');
-      var by = slide ? slide.getBoundingClientRect().width + 16 : t.clientWidth * 0.8;
-      t.scrollBy({ left: dir * by, behavior: 'smooth' });
-    }
+    var track = root.querySelector('[data-gh-g-track]');
     var prev = root.querySelector('[data-gh-g-prev]');
     var next = root.querySelector('[data-gh-g-next]');
-    if (prev) prev.addEventListener('click', function () { step(-1); });
-    if (next) next.addEventListener('click', function () { step(1); });
+    if (!track) return;
+
+    /* The first slide in the DOM may be hidden at this breakpoint (a block with
+       only the other breakpoint's photo), and a hidden slide measures 0 wide —
+       which made the arrows step by just the gap and look broken. Always measure
+       the first slide that is actually rendered. */
+    function firstVisibleSlide() {
+      var slides = track.querySelectorAll('.gh-gallery__slide');
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].getBoundingClientRect().width > 0) return slides[i];
+      }
+      return null;
+    }
+
+    function gap() {
+      var g = parseFloat(getComputedStyle(track).columnGap);
+      return isNaN(g) ? 16 : g;
+    }
+
+    function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+    /* A dead-looking arrow is worse than no arrow, so reflect what is possible.
+       Takes the position to judge by, because after a click the smooth scroll has
+       not moved scrollLeft yet — reading it there would leave the arrows a scroll
+       event behind and swallow a rapid second click. */
+    function syncAt(pos) {
+      var max = maxScroll();
+      if (prev) prev.disabled = max <= 1 || pos <= 1;
+      if (next) next.disabled = max <= 1 || pos >= max - 1;
+    }
+    function sync() { syncAt(track.scrollLeft); }
+
+    function go(dir) {
+      var slide = firstVisibleSlide();
+      var by = slide ? slide.getBoundingClientRect().width + gap() : track.clientWidth * 0.8;
+      var target = Math.max(0, Math.min(maxScroll(), track.scrollLeft + dir * by));
+      track.scrollBy({ left: dir * by, behavior: 'smooth' });
+      syncAt(target);
+    }
+
+    if (prev) prev.addEventListener('click', function () { go(-1); });
+    if (next) next.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
   })();
 </script>
 
