@@ -316,7 +316,10 @@
   /* Halo behind the copy — darkens the figure locally so the text reads, without
      drawing a visible box. Applies at every width now (it used to be mobile
      only, back when the desktop copy sat off to the side over the dark edge). */
-  .gh-hero__inner::before {
+  /* Only when the hero actually renders copy. With the headline baked into the
+     banner artwork the column holds just the CTA, and the halo showed up as a
+     dark blob around the button with no text to justify it. */
+  .gh-hero__inner:has(.gh-hero__h1, .gh-hero__stamp, .gh-hero__sub, .gh-hero__badge, .gh-hero__plans)::before {
     content: "";
     position: absolute; left: -80px; right: -80px; top: -48px; bottom: -40px;
     /* Two stops: a dense core under the text and a wide soft skirt. A single
@@ -516,13 +519,10 @@
     text-shadow: none;
   }
   .gh-hero .gh-btn--solid {
-    box-shadow: 0 10px 30px rgba(6, 31, 38, 0.42);
-    transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: none;
+    transition: background 0.25s ease, color 0.25s ease;
   }
-  .gh-hero .gh-btn--solid:hover {
-    background: #FFFFFF; color: #0F4E60;
-    box-shadow: 0 14px 38px rgba(6, 31, 38, 0.48), 0 0 32px rgba(125, 227, 232, 0.30);
-  }
+  .gh-hero .gh-btn--solid:hover { background: #FFFFFF; color: #0F4E60; }
 
   /* MOBILE (5c): vertical scrim + bottom-left content */
   @media (max-width: 768px) {
@@ -551,7 +551,7 @@
         rgba(8, 43, 52, 0.97) 100%);
     }
     .gh-hero__inner { width: 100%; max-width: none; }
-    .gh-hero__inner::before {
+    .gh-hero__inner:has(.gh-hero__h1, .gh-hero__stamp, .gh-hero__sub, .gh-hero__badge, .gh-hero__plans)::before {
       left: -30px; right: -30px; top: -34px; bottom: -30px;
       background:
         radial-gradient(70% 58% at 50% 54%, rgba(6, 31, 38, 0.88), rgba(6, 31, 38, 0) 74%),
