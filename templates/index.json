@@ -18,7 +18,6 @@
             "time": "",
             "name": "FOUNDING MEMBER PRICING",
             "price": "",
-            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -26,9 +25,8 @@
           "type": "plan",
           "settings": {
             "time": "25 MIN",
-            "name": "Body Performance Scan",
+            "name": "Body Perfomance Scan",
             "price": "$1,499",
-            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -38,7 +36,6 @@
             "time": "50 MIN",
             "name": "+ Prevention",
             "price": "$4,999",
-            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -48,7 +45,6 @@
             "time": "",
             "name": "First 500 founding members",
             "price": "",
-            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -58,7 +54,6 @@
             "time": "",
             "name": "",
             "price": "",
-            "price_unit": "MXN",
             "link": ""
           }
         }
@@ -86,7 +81,7 @@
         "badge": "",
         "heading": "",
         "heading_accent": "Protect your future health",
-        "subheading": "The world’s most advanced technology to measure, understand, and optimize your body and health",
+        "subheading": "The world’s most advanced technology for measuring your body and health.",
         "council_line": "OUR PLANS",
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
@@ -110,7 +105,7 @@
           "settings": {
             "icon": "balance",
             "name": "AI Body Measurements",
-            "description": "Precise dimensions, posture, and symmetry mapped by AI."
+            "description": "Measure your body with millimeter-level precision using AI"
           }
         },
         "m11": {
@@ -293,6 +288,14 @@
             "alt": ""
           }
         },
+        "photo_Jz9AbH": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/skin_room_1.png",
+            "image_mobile": "shopify://shop_images/otro.png",
+            "alt": ""
+          }
+        },
         "photo_1": {
           "type": "photo",
           "settings": {
@@ -308,38 +311,13 @@
             "image_mobile": "shopify://shop_images/Escena_86.png",
             "alt": ""
           }
-        },
-        "photo_mQAtJN": {
-          "type": "photo",
-          "settings": {
-            "image_mobile": "shopify://shop_images/skin_room_1_15e1a558-759d-451e-b973-c67f5932518b.png",
-            "alt": ""
-          }
-        },
-        "photo_Jz9AbH": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/skin_room_1.png",
-            "image_mobile": "shopify://shop_images/otro.png",
-            "alt": ""
-          }
-        },
-        "photo_UYhfG9": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/STRENGTH_I_1.png",
-            "image_mobile": "shopify://shop_images/STRENGTH_I.png",
-            "alt": ""
-          }
         }
       },
       "block_order": [
         "photo_9xWrMp",
-        "photo_1",
-        "photo_2",
-        "photo_mQAtJN",
         "photo_Jz9AbH",
-        "photo_UYhfG9"
+        "photo_1",
+        "photo_2"
       ],
       "settings": {
         "anchor_id": "visit",
