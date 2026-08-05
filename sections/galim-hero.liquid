@@ -531,7 +531,14 @@
        would pin it to the top of the frame. */
     /* Extra bottom padding lifts the whole block off the bottom edge so the
        button no longer sits almost on the fold. */
-    .gh-hero { min-height: 82svh; min-height: 82vh; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
+    /* 82svh LAST so it actually wins. Written the other way round, the vh
+       fallback overrode it in every browser — and vh resolves against the LARGE
+       viewport (mobile toolbar collapsed), so at the top of the page the hero was
+       taller than the visible area. As Safari animates its toolbar away the
+       visible area grows, the cover crop re-frames and the bottom-anchored button
+       slides up and down. svh is the toolbar-EXPANDED height, so the hero always
+       fits the smallest viewport and nothing shifts while scrolling. */
+    .gh-hero { min-height: 82vh; min-height: 82svh; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }

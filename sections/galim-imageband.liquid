@@ -54,7 +54,9 @@
 </section>
 
 {% stylesheet %}
-  .gh-band { position: relative; width: 100%; height: var(--gh-band-h, 62vh); overflow: hidden; background: var(--gh-bg-900); }
+  /* svh, not vh: vh resolves against the toolbar-collapsed viewport, so the band
+     resizes while a mobile browser animates its chrome away. */
+  .gh-band { position: relative; width: 100%; height: var(--gh-band-h, 62vh); height: var(--gh-band-h, 62svh); overflow: hidden; background: var(--gh-bg-900); }
   .gh-band__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
   /* Soft fades to blend into the dark sections above/below */
   .gh-band__fade { position: absolute; inset: 0; pointer-events: none; }
@@ -72,7 +74,7 @@
   .gh-band__btn { margin-top: 26px; }
 
   @media (max-width: 768px) {
-    .gh-band { height: var(--gh-band-h-mobile, 52vh); }
+    .gh-band { height: var(--gh-band-h-mobile, 52vh); height: var(--gh-band-h-mobile, 52svh); }
     .gh-band__inner { padding: 0 var(--gh-pad-x) 28px; }
   }
 {% endstylesheet %}
