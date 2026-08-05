@@ -97,10 +97,14 @@
   .gh-protocols__eyebrow { margin-bottom: 12px; text-align: center; }
   .gh-protocols__h2 { font: 200 44px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0 auto 36px; max-width: 900px; text-align: center; }
   .gh-protocols__h2 p { margin: 0; }
-  /* Bold in the heading = animated light->green gradient text (echoes the BQ bar) */
+  /* Bold in the heading = animated teal->blue gradient text. The mid stop is drawn
+     from the banner artwork's royal-blue family (sampled #0D3880) rather than
+     picked by eye. It also fixes a contrast failure: the previous green #57B98A
+     sat at 2.15:1 on the light page, under the 3:1 floor even for display type.
+     #1E63A8 reads 5.51:1. */
   .gh-protocols__h2 strong {
     font-weight: 500;
-    background: linear-gradient(90deg, #135E73, #57B98A 45%, #135E73 90%);
+    background: linear-gradient(90deg, #135E73, #1E63A8 45%, #135E73 90%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
