@@ -18,6 +18,7 @@
             "time": "",
             "name": "FOUNDING MEMBER PRICING",
             "price": "",
+            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -25,10 +26,10 @@
           "type": "plan",
           "settings": {
             "time": "25 MIN",
-            "name": "Body Perfomance Scan",
+            "name": "Body Performance Scan",
             "price": "$1,499",
-            "link": "",
-            "price_unit": "MXN"
+            "price_unit": "MXN",
+            "link": ""
           }
         },
         "plan_long": {
@@ -37,8 +38,8 @@
             "time": "50 MIN",
             "name": "+ Prevention",
             "price": "$4,999",
-            "link": "",
-            "price_unit": "MXN"
+            "price_unit": "MXN",
+            "link": ""
           }
         },
         "plan_launch": {
@@ -47,6 +48,7 @@
             "time": "",
             "name": "First 500 founding members",
             "price": "",
+            "price_unit": "MXN",
             "link": ""
           }
         },
@@ -56,6 +58,7 @@
             "time": "",
             "name": "",
             "price": "",
+            "price_unit": "MXN",
             "link": ""
           }
         }
