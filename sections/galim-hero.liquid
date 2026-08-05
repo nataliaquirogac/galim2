@@ -533,17 +533,21 @@
        would pin it to the top of the frame. */
     /* Extra bottom padding lifts the whole block off the bottom edge so the
        button no longer sits almost on the fold. */
-    /* Height comes from the mobile banner's own 1080x1920 (9:16) ratio, not from a
-       viewport unit. Two problems solved at once: no vh/svh means nothing shifts
-       while Safari animates its toolbar away, and a box that matches the artwork
-       means object-fit never crops it — the pricing panel baked into the image
-       lands in the same place on every phone. contain rather than cover so a
-       future banner with a different ratio letterboxes instead of cutting its own
-       text off. */
-    .gh-hero { min-height: calc(100vw * 1920 / 1080); flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
+    /* Height is a fixed multiple of the WIDTH, never a viewport-height unit, so
+       nothing shifts while Safari animates its toolbar away and the crop is
+       identical on every phone.
+       The banner is 1080x1920. Measured on the image: the figure's head starts at
+       15.2% and the pricing panel ends at 80.3%. So 12% comes off the top (dead
+       sky above the head, leaving ~3% of air) and 6% off the bottom (just legs),
+       leaving 82% of 1920 = 1574 — which lifts the CTA about 124px at 390px wide
+       so it clears the fold without scrolling. */
+    .gh-hero { min-height: calc(100vw * 1574 / 1080); flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
-    .gh-hero__img { object-fit: contain; object-position: 50% 50%; }
+    /* cover, since the box is now deliberately shorter than the artwork. 67% puts
+       two thirds of the removed height at the top and one third at the bottom,
+       which is exactly the 12%/6% split above. */
+    .gh-hero__img { object-fit: cover; object-position: 50% 67%; }
     .gh-hero__tint { display: none; }
     .gh-hero__grad-h { display: none; }
     /* Narrower side fades on mobile so the photo shows more */
