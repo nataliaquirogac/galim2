@@ -134,8 +134,10 @@
   }
   .gh-header__login:hover { opacity: 1; color: var(--gh-green); }
   .gh-header__cta {
-    border: 1px solid var(--gh-brand);
-    background: var(--gh-brand);
+    /* Explicit #0D3B46 rather than --gh-brand: brand teal still drives links and
+       accents across the light page, this button just no longer follows it. */
+    border: 1px solid #0D3B46;
+    background: #0D3B46;
     color: #F7F5F3;
     padding: 11px 20px;
     border-radius: 999px;
@@ -144,7 +146,7 @@
     white-space: nowrap;
     transition: background 0.2s ease, transform 0.2s ease;
   }
-  .gh-header__cta:hover { background: #0F4E60; border-color: #0F4E60; color: #F7F5F3; transform: translateY(-1px); }
+  .gh-header__cta:hover { background: #16505F; border-color: #16505F; color: #F7F5F3; transform: translateY(-1px); }
 
   .gh-header__lang {
     display: inline-flex;
