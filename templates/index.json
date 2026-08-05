@@ -525,6 +525,21 @@
         "bq_copy": "A single score built from muscle, cardiovascular fitness, mobility, metabolism, and body composition."
       }
     },
+    "app_cta": {
+      "type": "galim-appcta",
+      "settings": {
+        "anchor_id": "app",
+        "eyebrow": "GET THE APP",
+        "heading": "Your health. Your data.\nYour next move.",
+        "body": "",
+        "image": "shopify://shop_images/app_mockup.png",
+        "image_url": "",
+        "android_label": "Android",
+        "android_link": "",
+        "ios_label": "iOS",
+        "ios_link": ""
+      }
+    },
     "diagnostics": {
       "type": "galim-diagnostics",
       "blocks": {
@@ -568,21 +583,6 @@
         "bg_color": "#0d3b46"
       }
     },
-    "app_cta": {
-      "type": "galim-appcta",
-      "settings": {
-        "anchor_id": "app",
-        "eyebrow": "GET THE APP",
-        "heading": "Your health. Your data.\nYour next move.",
-        "body": "",
-        "image": "shopify://shop_images/app_mockup.png",
-        "image_url": "",
-        "android_label": "Android",
-        "android_link": "",
-        "ios_label": "iOS",
-        "ios_link": ""
-      }
-    },
     "method": {
       "type": "galim-method",
       "settings": {
@@ -619,8 +619,8 @@
     "visit_gallery",
     "protocols",
     "two_axes",
-    "diagnostics",
     "app_cta",
+    "diagnostics",
     "method",
     "final_cta"
   ]
