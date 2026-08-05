@@ -14,6 +14,7 @@
       "blocks": {
         "plan_pgPUHw": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "",
             "name": "FOUNDING MEMBER PRICING",
@@ -24,6 +25,7 @@
         },
         "plan_perf": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "25 MIN",
             "name": "Body Perfomance Scan",
@@ -34,6 +36,7 @@
         },
         "plan_long": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "50 MIN",
             "name": "+ Prevention",
@@ -44,6 +47,7 @@
         },
         "plan_launch": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "",
             "name": "First 500 founding members",
@@ -54,6 +58,7 @@
         },
         "plan_EKdNBT": {
           "type": "plan",
+          "disabled": true,
           "settings": {
             "time": "",
             "name": "",
@@ -71,23 +76,23 @@
         "plan_EKdNBT"
       ],
       "settings": {
-        "image": "shopify://shop_images/desktop_jpg.png",
+        "image": "shopify://shop_images/banner_desktop.png",
         "image_url": "",
-        "image_mobile": "shopify://shop_images/banner_mobile2_1.png",
+        "image_mobile": "shopify://shop_images/banner_mobile_7a9a65ce-2d9f-4195-be4a-7be89914c3ce.png",
         "image_url_mobile": "",
-        "overlay_strength": 35,
+        "overlay_strength": 0,
         "side_color": "#0d3b46",
-        "side_width": 22,
+        "side_width": 0,
         "anchor_id": "top",
-        "heading_size": 52,
+        "heading_size": 44,
         "heading_size_mobile": 34,
-        "coming_soon": "COMING SOON",
-        "coming_soon_sub": "NOVEMBER 1ST",
+        "coming_soon": "",
+        "coming_soon_sub": "",
         "badge": "",
         "heading": "",
-        "heading_accent": "Protect your future health",
-        "subheading": "The world’s most advanced technology to measure, understand, and optimize your body and health",
-        "council_line": "OUR PLANS",
+        "heading_accent": "",
+        "subheading": "",
+        "council_line": "",
         "button_label": "Join the waitlist",
         "button_opens_modal": true,
         "button_link": "",
