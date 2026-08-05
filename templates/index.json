@@ -80,7 +80,7 @@
         "image_url": "",
         "image_mobile": "shopify://shop_images/banner_mobile_7a9a65ce-2d9f-4195-be4a-7be89914c3ce.png",
         "image_url_mobile": "",
-        "overlay_strength": 0,
+        "overlay_strength": 55,
         "side_color": "#0d3b46",
         "side_width": 0,
         "anchor_id": "top",
