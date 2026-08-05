@@ -230,8 +230,12 @@
     /* Copy centred over the figure, in normal flow — flow is what lets the hero
        grow instead of cropping. Bottom padding is generous so the button lands
        clear of the bottom edge rather than pinned to it. */
-    display: flex; justify-content: center; align-items: flex-end;
-    padding: 56px 40px 72px;
+    display: flex; justify-content: flex-start; align-items: flex-end;
+    /* Left padding is a percentage, not 40px: the headline lives inside the
+       banner image, and the image spans the full width, so its text starts at a
+       fixed FRACTION of the viewport (~6.4%). A fixed pixel padding would drift
+       away from it as the window widens. */
+    padding: 56px 40px 72px 6.4%;
     /* The theme ships no global border-box reset, so without this min-height
        would size the CONTENT box and the padding would push the hero 112px past
        the ratio. */
@@ -307,7 +311,7 @@
     position: relative; z-index: 4;
     width: 620px; max-width: 100%;
     color: #f6f5ee;
-    text-align: center;
+    text-align: left;
   }
   /* Halo behind the copy — darkens the figure locally so the text reads, without
      drawing a visible box. Applies at every width now (it used to be mobile
@@ -490,7 +494,7 @@
   /* Stacked, not a row: with the address beside it the button sat left of centre
      even though the row itself was centred. */
   .gh-hero__actions {
-    display: flex; flex-direction: column; align-items: center;
+    display: flex; flex-direction: column; align-items: flex-start;
     gap: 0; margin-top: 30px;
   }
   /* Footnote hugs the pricing above it; the CTA sits clearly below both. */
@@ -527,7 +531,7 @@
        would pin it to the top of the frame. */
     /* Extra bottom padding lifts the whole block off the bottom edge so the
        button no longer sits almost on the fold. */
-    .gh-hero { min-height: 82svh; min-height: 82vh; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 52px; }
+    .gh-hero { min-height: 82svh; min-height: 82vh; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
     /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
     .gh-hero__backdrop { display: none; }
     .gh-hero__img { object-fit: cover; object-position: 50% 25%; }
@@ -580,7 +584,11 @@
     .gh-hero__plan-unit { margin-left: 3px; font-size: 0.62em; }
     .gh-hero__actions { margin-top: 24px; gap: 0; }
     .gh-hero__note + .gh-btn--solid { margin-top: 30px; }
-    .gh-hero .gh-btn--solid { padding: 16px 24px; }
+    /* Smaller and centred: at full column width it sat on top of the pricing
+       rows in the mobile artwork. */
+    .gh-hero .gh-btn--solid { max-width: 250px; padding: 13px 22px; font-size: 14.5px; }
+    .gh-hero__inner { text-align: center; }
+    .gh-hero__actions { align-items: center; }
     .gh-hero__note { font-size: 9px; letter-spacing: 0.14em; }
     .gh-hero__coords { display: none; }
   }
