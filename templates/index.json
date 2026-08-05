@@ -575,6 +575,7 @@
         "eyebrow": "GET THE APP",
         "heading": "Your health. Your data.\nYour next move.",
         "body": "",
+        "image": "shopify://shop_images/app_mockup.png",
         "image_url": "",
         "android_label": "Android",
         "android_link": "",
