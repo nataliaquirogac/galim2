@@ -156,7 +156,14 @@
                   {%- if block.settings.time != blank -%}<span class="gh-hero__plan-time">{{ block.settings.time }}</span>{%- endif -%}
                   {%- if block.settings.name != blank -%}<span class="gh-hero__plan-name">{{ block.settings.name }}</span>{%- endif -%}
                 </span>
-                {%- if block.settings.price != blank -%}<span class="gh-hero__plan-price">{{ block.settings.price }}</span>{%- endif -%}
+                {%- if block.settings.price != blank -%}
+                  <span class="gh-hero__plan-price">
+                    {{- block.settings.price -}}
+                    {%- if block.settings.price_unit != blank -%}
+                      <span class="gh-hero__plan-unit">{{ block.settings.price_unit }}</span>
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
               </a>
             {%- endfor -%}
           </div>
@@ -455,10 +462,18 @@
   .gh-hero__plan-name:not(:first-child)::before { content: " · "; opacity: 0.6; }
   .gh-hero__plan-price {
     flex: none;
-    font: 500 clamp(15.5px, 3.4vw, 18px)/1 var(--gh-mono);
+    font: 500 clamp(13.5px, 2.9vw, 15.5px)/1 var(--gh-mono);
     letter-spacing: 0;
     color: #F7F5F3;
     font-variant-numeric: tabular-nums;
+  }
+  /* Currency rides with the price but steps back so the number stays the figure
+     you read first. */
+  .gh-hero__plan-unit {
+    margin-left: 5px;
+    font-size: 0.68em; font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(246, 245, 238, 0.62);
   }
 
   /* Footnote under the button — the smallest, quietest thing in the hero. */
@@ -560,8 +575,9 @@
        ("50 MIN · BODY PERFORMANCE + PREVENTION") stays on one line beside the
        price. It wraps rather than clipping if a name gets longer than that. */
     .gh-hero__plan { padding: 11px 14px; gap: 10px; }
-    .gh-hero__plan-meta { font-size: clamp(9px, 2.7vw, 11px); letter-spacing: 0.1em; }
-    .gh-hero__plan-price { font-size: clamp(13.5px, 3.7vw, 16.5px); }
+    .gh-hero__plan-meta { font-size: clamp(8.2px, 2.6vw, 11px); letter-spacing: 0.07em; }
+    .gh-hero__plan-price { font-size: clamp(12px, 3.2vw, 14px); }
+    .gh-hero__plan-unit { margin-left: 3px; font-size: 0.62em; }
     .gh-hero__actions { margin-top: 24px; gap: 0; }
     .gh-hero__note + .gh-btn--solid { margin-top: 30px; }
     .gh-hero .gh-btn--solid { padding: 16px 24px; }
@@ -609,6 +625,7 @@
         { "type": "text", "id": "time", "label": "Time (mono)", "default": "25 MIN" },
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
         { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
+        { "type": "text", "id": "price_unit", "label": "Currency", "default": "MXN", "info": "Shown smaller next to the price. Leave empty to hide it." },
         { "type": "url", "id": "link", "label": "Link", "info": "Defaults to the Protocols section (#plans)." }
       ]
     }

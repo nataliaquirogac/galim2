@@ -27,7 +27,8 @@
             "time": "25 MIN",
             "name": "Body Perfomance Scan",
             "price": "$1,499",
-            "link": ""
+            "link": "",
+            "price_unit": "MXN"
           }
         },
         "plan_long": {
@@ -36,7 +37,8 @@
             "time": "50 MIN",
             "name": "+ Prevention",
             "price": "$4,999",
-            "link": ""
+            "link": "",
+            "price_unit": "MXN"
           }
         },
         "plan_launch": {
