@@ -107,26 +107,24 @@
     width: 180px;
     padding: 12px;
     border-radius: 9px;
-    /* Light glass island, same palette as the package cards. Dark text tokens
-       because the ground is light; values measured at the gradient's most
-       demanding point. */
-    --gh-light: #0D3B46; --gh-white: #0D3B46; --gh-muted: #2A5A67; --gh-green: #135E73;
-    border: 1px solid rgba(13,59,70,0.16);
-    background: linear-gradient(160deg, #9FD8EE 0%, #C9D1C3 100%);
+    /* Teal island with white text on the light page */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-green: #A8C2C8;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: #0D3B46;
     color: var(--gh-light);
     display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
     box-shadow: 0 10px 26px rgba(19, 94, 115, 0.14);
     transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
   }
-  .gh-mq__card:hover { border-color: rgba(13,59,70,0.32); transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
+  .gh-mq__card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
 
   /* Icon + name on the same line */
   .gh-mq__head { display: flex; align-items: center; gap: 8px; }
   .gh-mq__icon {
     width: 26px; height: 26px; border-radius: 6px;
-    background: rgba(13, 59, 70, 0.10);
-    border: 1px solid rgba(13, 59, 70, 0.20);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     display: inline-flex; align-items: center; justify-content: center;
     color: #F7F5F3;
     flex-shrink: 0;
