@@ -40,7 +40,7 @@
       {%- if s.show_login -%}
         <a href="{{ login_url }}" class="gh-header__login">{{ s.login_label | default: 'LOG IN' }}</a>
       {%- endif -%}
-      <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- comment -%} Language switch sits before the CTA so the solid pill anchors the right edge. {%- endcomment -%}
       {%- if localization.available_languages.size > 1 -%}
         {%- form 'localization', class: 'gh-header__lang' -%}
           <input type="hidden" name="return_to" value="{{ request.path }}">
@@ -54,6 +54,7 @@
           {%- endfor -%}
         {%- endform -%}
       {%- endif -%}
+      <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
     </div>
 
     <button type="button" class="gh-header__burger" data-gh-drawer-toggle aria-label="Menu" aria-expanded="false" aria-controls="gh-drawer">
@@ -89,31 +90,61 @@
 <script src="{{ 'galim.js' | asset_url }}" defer="defer"></script>
 
 {% stylesheet %}
-  /* Sticky lives on the section wrapper: inside Shopify each section sits in a
-     .shopify-section div exactly as tall as its content, so sticky on the inner
-     element has no room to travel. */
+  /* Floating pill header. The section wrapper is FIXED, so it takes no layout
+     space and the hero starts at the very top of the page with the pill riding
+     over it. The announcement bar stays in normal flow above; galim.js parks the
+     pill just under it and lets it ride up to the edge as that bar scrolls away. */
   .gh-header-section {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: var(--gh-hdr-top, 40px);
+    left: 0;
+    right: 0;
     z-index: 100;
+    display: flex;
+    justify-content: center;
+    padding: 0 24px;
+    /* The transparent gutters either side of the pill must not swallow clicks
+       meant for the hero underneath. */
+    pointer-events: none;
   }
   .gh-header {
-    background: var(--gh-bg);
-    border-bottom: 1px solid rgba(19, 94, 115, 0.12);
-    transition: padding 0.25s ease;
+    pointer-events: auto;
+    width: min(1040px, 100%);
+    border-radius: 999px;
+    background: rgba(247, 245, 243, 0.78);
+    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    backdrop-filter: blur(18px) saturate(1.35);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 10px 34px rgba(13, 59, 70, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    /* #6E8897 tertiary text only reaches 2.9:1 on the glass — darken it here. */
+    --gh-slate: #4C6670;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+  }
+  /* Once page copy (rather than the hero) is passing underneath, the glass goes
+     nearly opaque so text doesn't ghost through the pill. */
+  .gh-header.is-condensed {
+    background: rgba(247, 245, 243, 0.93);
+    box-shadow: 0 8px 24px rgba(13, 59, 70, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
   .gh-header__inner {
-    max-width: var(--gh-max);
-    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 40px;
+    gap: 24px;
+    padding: 10px 12px 10px 24px;
     transition: padding 0.25s ease;
   }
-  .gh-header.is-condensed .gh-header__inner { padding-top: 12px; padding-bottom: 12px; }
-  .gh-header__logo { display: inline-flex; align-items: center; }
+  .gh-header.is-condensed .gh-header__inner { padding-top: 8px; padding-bottom: 8px; }
+  .gh-header__logo { display: inline-flex; align-items: center; flex: 0 0 auto; }
   .gh-header__logo img { width: auto; display: block; }
+
+  /* Only the landing page puts a hero behind the pill. Everywhere else the fixed
+     header would cover the top of the content, so reserve room for it. */
+  body:not(.gh-page) #MainContent { padding-top: 84px; }
+
+  /* Single-page menu items are anchors; without this the target section lands
+     underneath the floating pill. */
+  html { scroll-padding-top: 96px; }
 
   .gh-header__nav {
     display: flex;
@@ -179,8 +210,8 @@
   .gh-header__burger span { height: 1.5px; background: var(--gh-light); border-radius: 2px; }
   .gh-header__burger span:last-child { width: 14px; }
 
-  /* Drawer */
-  .gh-drawer { position: fixed; inset: 0; z-index: 150; }
+  /* Drawer — the fixed pill wrapper is pointer-events: none, so re-enable here. */
+  .gh-drawer { position: fixed; inset: 0; z-index: 150; pointer-events: auto; }
   .gh-drawer__overlay { position: absolute; inset: 0; background: rgba(6, 31, 38, 0.6); }
   .gh-drawer__panel {
     position: absolute;
@@ -205,17 +236,31 @@
   .gh-drawer__login { font: 400 13px/1 var(--gh-mono); letter-spacing: 0.08em; color: var(--gh-muted); }
   .gh-drawer__cta { justify-content: center; }
 
+  /* The pill is capped at 1040px, so with a menu assigned the links only fit from
+     ~1000px up — measured 148px of overflow at 769px, 17px at 900px. Below that the
+     nav hides rather than spilling past the rounded edge (which doesn't clip). */
+  @media (max-width: 999px) {
+    .gh-header__nav { display: none; }
+  }
+  @media (min-width: 1000px) and (max-width: 1120px) {
+    .gh-header__nav { gap: 26px; }
+  }
+
   @media (max-width: 768px) {
-    .gh-header__inner { padding: 14px 20px; }
-    .gh-header__nav,
+    .gh-header-section { top: var(--gh-hdr-top, 34px); padding: 0 12px; }
+    .gh-header__inner { padding: 8px 8px 8px 14px; gap: 12px; }
+    .gh-header.is-condensed .gh-header__inner { padding-top: 7px; padding-bottom: 7px; }
+    body:not(.gh-page) #MainContent { padding-top: 72px; }
+    html { scroll-padding-top: 80px; }
     .gh-header__login,
     .gh-header__burger { display: none; }
     .gh-header__cta { padding: 8px 13px; font-size: 10px; }
     /* With more than one published language, mobile swaps the CTA for ES/EN */
     .gh-header__lang {
-      border: 1px solid rgba(214, 224, 226, 0.35);
-      border-radius: 2px;
-      padding: 8px 12px;
+      /* Pale hairline vanished on the cream glass — use a teal one, pill-shaped. */
+      border: 1px solid rgba(19, 94, 115, 0.22);
+      border-radius: 999px;
+      padding: 7px 12px;
     }
     .gh-header__actions:has(.gh-header__lang) .gh-header__cta { display: none; }
     .gh-header__lang-btn { padding: 0; }

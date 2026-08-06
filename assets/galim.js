@@ -154,13 +154,25 @@
     }
   });
 
-  /* ---- Sticky header condense ---- */
+  /* ---- Floating pill header: condense + park under the announcement bar ----
+     The pill is position: fixed, so it can't know how tall the announcement bar
+     above it is. Measure that bar and let the pill ride up to the screen edge as
+     the bar scrolls away, instead of hard-coding an offset that breaks the moment
+     the announcement text wraps or gets turned off. */
   var header = document.querySelector('.gh-header');
   if (header) {
+    var island = header.closest('.gh-header-section');
+    var announcement = document.querySelector('.gh-announcement');
+    var EDGE_GAP = 10;
     var onScroll = function () {
       header.classList.toggle('is-condensed', window.scrollY > 40);
+      if (!island) return;
+      var rest = announcement ? announcement.offsetHeight : 0;
+      var top = Math.max(EDGE_GAP, rest + EDGE_GAP - window.scrollY);
+      island.style.setProperty('--gh-hdr-top', top + 'px');
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     onScroll();
   }
 
