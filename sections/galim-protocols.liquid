@@ -124,28 +124,37 @@
   .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
   .gh-pkg { display: flex; flex-direction: column; }
 
-  /* Package cards = teal islands with white text (on the light page) */
+  /* Package cards = light glass islands, tuned to the hero's palette */
   .gh-pkg {
     position: relative; border-radius: 16px; overflow: hidden;
-    /* Light text tokens scoped to the teal card */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8;
-    --gh-green: #A8C2C8; --gh-accent: #A8C2C8; --gh-price: #9FE0BE;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: #0D3B46;
-    box-shadow: 0 16px 44px rgba(19, 94, 115, 0.18);
+    /* Dark text tokens, because the card is light now. Measured at the gradient's
+       most demanding point, every level clears 4.5:1 there — titles 7.7, body 4.8,
+       labels 5.3, accent 4.6. Hierarchy comes from size and weight rather than
+       from lightening the text, since the cyan end leaves no room to go lighter. */
+    --gh-light: #0D3B46; --gh-white: #0D3B46; --gh-muted: #2A5A67; --gh-slate: #255460;
+    --gh-green: #135E73; --gh-accent: #135E73; --gh-price: #0D3B46;
+    /* #9FD8EE is a tint of her #2AAFDF; #C9D1C3 is her 75% stop as given. Her
+       gradient could not be used at full strength: against the old cream text it
+       failed 3 of its 4 stops, and at full saturation #2AAFDF admits only ONE
+       readable text tone, which would have flattened the hierarchy. */
+    background: linear-gradient(160deg, #9FD8EE 0%, #C9D1C3 100%);
+    /* The card clears the #f2f2f2 page by only 1.4:1, so its edge must be drawn
+       rather than implied. */
+    border: 1px solid rgba(13,59,70,0.16);
+    box-shadow: 0 16px 44px rgba(19, 94, 115, 0.14);
     transition: transform 0.3s, box-shadow 0.3s;
   }
   .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 64px rgba(19, 94, 115, 0.28); }
   .gh-pkg.is-featured {
-    border-color: rgba(255,255,255,.25);
-    background: #0D3B46;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
+    border-color: rgba(13,59,70,.28);
+    background: linear-gradient(160deg, #8FD2EC 0%, #BFCEC6 100%);
+    box-shadow: 0 0 0 1px rgba(13,59,70,.20), 0 20px 54px rgba(19, 94, 115, 0.20);
   }
-  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.3), 0 30px 74px rgba(19, 94, 115, 0.34); }
+  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(13,59,70,.3), 0 30px 74px rgba(19, 94, 115, 0.26); }
   .gh-pkg__badge {
     position: absolute; top: 20px; right: 20px; z-index: 2;
-    font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
-    background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
+    font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #F7F5F3;
+    background: #0D3B46; padding: 6px 11px; border-radius: 2px;
   }
   /* Icon tile and title share the first row; subtitle and price span the full
      width underneath. Auto-placement, not explicit columns, so a package with
@@ -155,11 +164,11 @@
     position: relative; padding: 26px 30px 20px;
     display: grid; grid-template-columns: auto 1fr;
     align-items: center; column-gap: 14px;
-    border-bottom: 1px solid rgba(255,255,255,.14);
-    background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.06), transparent 60%);
+    border-bottom: 1px solid rgba(13,59,70,.14);
+    background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.34), transparent 60%);
   }
   .gh-pkg__subtitle, .gh-pkg__price { grid-column: 1 / -1; }
-  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.08), transparent 60%); }
+  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.38), transparent 60%); }
   /* Square icon tile: a small logo-like mark for each package. Frosted glass
      rather than a solid fill, so it reads on both the plain and the featured
      card gradient without a second colour. aspect-ratio keeps it square if the
@@ -168,13 +177,13 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 44px; aspect-ratio: 1; margin: 0;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(13, 59, 70, 0.08);
+    border: 1px solid rgba(13, 59, 70, 0.18);
     color: var(--gh-white);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
     transition: background 0.3s, border-color 0.3s;
   }
-  .gh-pkg:hover .gh-pkg__icon { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.30); }
+  .gh-pkg:hover .gh-pkg__icon { background: rgba(13, 59, 70, 0.14); border-color: rgba(13, 59, 70, 0.28); }
   .gh-pkg__icon svg { display: block; }
   /* The featured card's badge sits top-right, so the tile never collides. */
 
@@ -190,19 +199,19 @@
   /* Lead line */
   .gh-pkg__intro { font: 400 15px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0 0 18px; }
   /* Each block is a labelled section split by a hairline divider */
-  .gh-pkg__section { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.14); margin-bottom: 16px; }
+  .gh-pkg__section { padding-top: 16px; border-top: 1px solid rgba(13,59,70,.14); margin-bottom: 16px; }
   .gh-pkg__label { font: 500 10px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 12px; }
   /* Feature rows: bold term on its own line, description under it (no dashes) */
   .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-  .gh-pkg__features li { font: 400 13px/1.4 var(--gh-mono); color: var(--gh-muted); padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .gh-pkg__features li { font: 400 13px/1.4 var(--gh-mono); color: var(--gh-muted); padding: 9px 0; border-bottom: 1px solid rgba(13,59,70,.12); }
   .gh-pkg__features li:first-child { padding-top: 0; }
   .gh-pkg__features li:last-child { border-bottom: 0; padding-bottom: 0; }
   .gh-pkg__features strong { display: block; font: 600 14px/1.25 var(--gh-mono); color: var(--gh-white); margin-bottom: 1px; }
   .gh-pkg__features p { margin: 0; }
   /* Closing note as a highlighted callout, not loose text */
   .gh-pkg__note {
-    background: rgba(255,255,255, 0.08); border: 1px solid rgba(255,255,255, 0.16);
-    border-left: 3px solid #9FE0BE; border-radius: 10px;
+    background: rgba(255,255,255, 0.45); border: 1px solid rgba(13,59,70, 0.12);
+    border-left: 3px solid #135E73; border-radius: 10px;
     padding: 14px 16px; margin-bottom: 16px;
     display: flex; flex-direction: column; gap: 7px;
   }
@@ -213,12 +222,12 @@
   .gh-pkg__addon {
     font: 400 13px/1.35 var(--gh-mono); color: var(--gh-muted); margin: 0;
     padding: 9px 12px; border-radius: 7px;
-    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.45); border: 1px solid rgba(13,59,70,.12);
   }
   /* Cream button pops on the teal card */
   .gh-pkg__cta { width: 100%; justify-content: center; margin-top: auto; font: 500 14px/1 var(--gh-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 24px; }
-  .gh-pkg .gh-btn--solid { background: #F7F5F3; color: #0D3B46; }
-  .gh-pkg .gh-btn--solid:hover { background: #FFFFFF; color: #0D3B46; }
+  .gh-pkg .gh-btn--solid { background: #0D3B46; color: #F7F5F3; }
+  .gh-pkg .gh-btn--solid:hover { background: #16505F; color: #F7F5F3; }
 
   .gh-glp {
     margin-top: 28px; border-radius: 14px; background: rgba(19,94,115,.06);
