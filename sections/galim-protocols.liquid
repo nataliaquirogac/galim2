@@ -134,21 +134,23 @@
        to 3.90:1 and would have failed. */
     --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD;
     --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #A5E4F2;
-    /* #135E73 is her gradient's own 0% stop; #0D3880 is the deepest saturated blue
-       sampled out of the banner artwork. Every text level clears 4.5:1 across the
-       whole sweep — cream 6.7, body 5.4, labels 5.0, price 5.2. */
-    background: linear-gradient(160deg, #135E73 0%, #0D3880 100%);
+    /* Flat #135E73 — the brand teal. Every text level clears 4.5:1 on it: cream
+       6.7, body 5.4, labels 5.0, price 5.2. */
+    background: #135E73;
     border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 16px 44px rgba(13, 56, 128, 0.20);
+    box-shadow: 0 16px 44px rgba(19, 94, 115, 0.20);
     transition: transform 0.3s, box-shadow 0.3s;
   }
   .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 64px rgba(19, 94, 115, 0.28); }
   .gh-pkg.is-featured {
     border-color: rgba(255,255,255,.26);
-    background: linear-gradient(160deg, #17708A 0%, #10429A 100%);
-    box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(13, 56, 128, 0.28);
+    /* Featured goes DARKER, not lighter. #17708A would have read as the obvious
+       lift but drops the label token to 3.84:1; #0F5164 keeps the worst case at
+       6.00:1 while still separating from the plain card. */
+    background: #0F5164;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
   }
-  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(13, 56, 128, 0.34); }
+  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(19, 94, 115, 0.34); }
   .gh-pkg__badge {
     position: absolute; top: 20px; right: 20px; z-index: 2;
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #0D3B46;
