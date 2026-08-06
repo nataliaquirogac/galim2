@@ -47,20 +47,22 @@
   .gh-diag__rows { display: flex; flex-direction: column; gap: 12px; }
   .gh-diag__row {
     display: grid; grid-template-columns: auto 64px 1fr auto; align-items: center; gap: 24px;
-    /* Teal island with white text */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #A8C2C8; --gh-green: #A8C2C8;
-    border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; padding: 24px 32px;
-    background: #0D3B46;
+    /* Light glass island, same palette as the package cards. */
+    --gh-light: #0D3B46; --gh-white: #0D3B46; --gh-muted: #2A5A67; --gh-slate: #255460; --gh-green: #135E73;
+    border: 1px solid rgba(13,59,70,0.16); border-radius: 14px; padding: 24px 32px;
+    background: linear-gradient(160deg, #9FD8EE 0%, #C9D1C3 100%);
     box-shadow: 0 12px 32px rgba(19, 94, 115, 0.12);
     transition: transform 0.3s, border-color 0.3s; color: var(--gh-light);
   }
-  .gh-diag__row:hover { transform: translateX(8px); border-color: rgba(255,255,255,.35); color: var(--gh-light); }
+  .gh-diag__row:hover { transform: translateX(8px); border-color: rgba(13,59,70,.34); color: var(--gh-light); }
   .gh-diag__icon {
     width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
-    background: rgba(255, 255, 255,.12); border: 1px solid rgba(255, 255, 255,.22);
+    background: rgba(13, 59, 70,.10); border: 1px solid rgba(13, 59, 70,.20);
     display: inline-flex; align-items: center; justify-content: center; color: #F7F5F3;
   }
-  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(255, 255, 255,.5); }
+  /* .68 not .42: at .42 the numeral flattened to 2.1:1 over the card, failing even
+     the 3:1 floor for large text. */
+  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(13, 59, 70,.68); }
   .gh-diag__text { display: flex; flex-direction: column; gap: 4px; }
   .gh-diag__name { font: 500 24px/1.1 var(--gh-sans); color: var(--gh-white); }
   .gh-diag__desc { font: 300 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
