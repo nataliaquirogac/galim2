@@ -5,15 +5,27 @@
 
 {%- liquid
   assign s = section.settings
-  assign img = s.image
+
+  # Slide 1 keeps the old fallback chain so an untouched section looks the same.
   assign src = ''
-  if img != blank
-    assign src = img | image_url: width: 1400
+  if s.image != blank
+    assign src = s.image | image_url: width: 1400
   elsif s.image_url != blank
     assign src = s.image_url
   else
     assign src = 'app-phone.jpg' | asset_url
   endif
+
+  # Slide 2 has NO fallback: leaving it empty must mean one photo and no carousel
+  # chrome, not a duplicate of the default render.
+  assign src2 = ''
+  if s.image_2 != blank
+    assign src2 = s.image_2 | image_url: width: 1400
+  elsif s.image_2_url != blank
+    assign src2 = s.image_2_url
+  endif
+
+  assign alt = s.heading | strip_html | escape | default: shop.name
 -%}
 
 <section
@@ -34,9 +46,68 @@
       </div>
     </div>
     <div class="gh-app__media">
-      <img class="gh-app__img" src="{{ src }}" alt="{{ s.heading | strip_html | escape | default: shop.name }}" loading="lazy" decoding="async">
+      {%- if src2 != blank -%}
+        <div class="gh-app__carousel" data-gh-app-carousel>
+          <div class="gh-app__track" data-gh-app-track>
+            <div class="gh-app__slide">
+              <img class="gh-app__img" src="{{ src }}" alt="{{ alt }}" loading="lazy" decoding="async">
+            </div>
+            <div class="gh-app__slide">
+              <img class="gh-app__img" src="{{ src2 }}" alt="{{ alt }}" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <div class="gh-app__dots">
+            <button type="button" class="gh-app__dot is-active" data-gh-app-dot aria-label="Photo 1" aria-current="true"></button>
+            <button type="button" class="gh-app__dot" data-gh-app-dot aria-label="Photo 2" aria-current="false"></button>
+          </div>
+        </div>
+      {%- else -%}
+        <img class="gh-app__img" src="{{ src }}" alt="{{ alt }}" loading="lazy" decoding="async">
+      {%- endif -%}
     </div>
   </div>
+
+  {%- if src2 != blank -%}
+    {%- comment -%}
+      Must stay INSIDE <section>: as a sibling after </section> the script cannot
+      resolve its own section and silently wires up nothing (the bug that killed
+      the gallery arrows).
+    {%- endcomment -%}
+    <script>
+      (function () {
+        var self = document.currentScript;
+        var scope = self.parentElement || document;
+        var root = scope.querySelector('[data-gh-app-carousel]');
+        if (!root) return;
+        var track = root.querySelector('[data-gh-app-track]');
+        var dots = [].slice.call(root.querySelectorAll('[data-gh-app-dot]'));
+        if (!track || dots.length < 2) return;
+
+        function activate(i) {
+          for (var n = 0; n < dots.length; n++) {
+            var on = n === i;
+            dots[n].classList.toggle('is-active', on);
+            dots[n].setAttribute('aria-current', on ? 'true' : 'false');
+          }
+        }
+
+        dots.forEach(function (dot, i) {
+          dot.addEventListener('click', function () {
+            track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+            /* Paint the dot now: the smooth scroll has not moved scrollLeft yet,
+               so waiting for the scroll event leaves the dots a frame behind. */
+            activate(i);
+          });
+        });
+
+        track.addEventListener('scroll', function () {
+          var w = track.clientWidth || 1;
+          var i = Math.round(track.scrollLeft / w);
+          activate(Math.max(0, Math.min(dots.length - 1, i)));
+        }, { passive: true });
+      })();
+    </script>
+  {%- endif -%}
 </section>
 
 {% stylesheet %}
@@ -51,6 +122,38 @@
   .gh-app__media { display: flex; justify-content: center; }
   .gh-app__img { display: block; width: 100%; max-width: 440px; height: auto; border-radius: 20px; }
 
+  /* Carousel — only rendered when a second photo is set. One photo per view with
+     native snap, so swipe works on touch without any JS. */
+  .gh-app__carousel { width: 100%; max-width: 440px; }
+  .gh-app__track {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .gh-app__track::-webkit-scrollbar { display: none; }
+  .gh-app__slide { flex: 0 0 100%; scroll-snap-align: start; }
+  /* The cap lives on the wrapper now; the image fills its own slide. */
+  .gh-app__carousel .gh-app__img { max-width: none; }
+
+  .gh-app__dots { display: flex; gap: 4px; justify-content: center; margin-top: 14px; }
+  .gh-app__dot {
+    width: 28px; height: 28px; padding: 0; border: 0; background: none;
+    cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  }
+  /* Dot drawn on a pseudo-element so the tap target can be 28px without the
+     visible circle growing with it. */
+  .gh-app__dot::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    border: 1px solid var(--gh-brand); background: transparent;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .gh-app__dot:hover::after { background: rgba(19, 94, 115, 0.35); }
+  .gh-app__dot.is-active::after { background: var(--gh-brand); transform: scale(1.3); }
+
   /* Mobile: single centered column */
   @media (max-width: 768px) {
     .gh-app__grid { grid-template-columns: 1fr; gap: 36px; text-align: center; }
@@ -61,6 +164,7 @@
     .gh-app__btn { flex: 1 1 auto; min-width: 0; }
     .gh-app__media { order: 2; }
     .gh-app__img { max-width: 300px; }
+    .gh-app__carousel { max-width: 300px; }
   }
 {% endstylesheet %}
 
@@ -73,8 +177,10 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "GET THE APP" },
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "Your health. Your data.\nYour next move." },
     { "type": "textarea", "id": "body", "label": "Body (optional)" },
-    { "type": "image_picker", "id": "image", "label": "Phone image", "info": "Defaults to the app render if empty." },
-    { "type": "text", "id": "image_url", "label": "…or image URL" },
+    { "type": "image_picker", "id": "image", "label": "Photo 1", "info": "Defaults to the app render if empty." },
+    { "type": "text", "id": "image_url", "label": "…or image 1 URL" },
+    { "type": "image_picker", "id": "image_2", "label": "Photo 2 (optional)", "info": "Add a second photo to turn this into a carousel. Leave empty for a single image." },
+    { "type": "text", "id": "image_2_url", "label": "…or image 2 URL" },
     { "type": "header", "content": "Buttons" },
     { "type": "text", "id": "android_label", "label": "Android label", "default": "Android" },
     { "type": "url", "id": "android_link", "label": "Android link", "info": "Leave blank to open the waitlist modal." },
