@@ -107,26 +107,54 @@
     width: 180px;
     padding: 12px;
     border-radius: 9px;
-    /* Teal island with white text on the light page */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-green: #C3D9DD;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: #135E73;
+    /* Gradient outline, page showing through. No scoped light tokens any more —
+       the interior IS the page, so the card inherits the page's dark ink. */
+    position: relative;
+    border: 0;
+    background: transparent;
     color: var(--gh-light);
     display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
-    box-shadow: 0 10px 26px rgba(19, 94, 115, 0.14);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    /* A tint of the gradient's own cyan rather than a grey drop shadow. */
+    box-shadow: 0 10px 26px rgba(42, 175, 223, 0.16);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
-  .gh-mq__card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
+  /* The ring itself. Painted as a full-bleed gradient and then masked to just the
+     border band: two masks, one clipped to the content box and one to the whole
+     box, composited so only the difference — the band — survives. A padding-box /
+     border-box double background would have needed an OPAQUE fill to hide the
+     gradient, which would have blocked the page texture the card is meant to
+     show. Her 100% stop is transparent, so the ring fades out at one corner,
+     exactly like the reference. */
+  .gh-mq__card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg,
+      #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36,177,217,0) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* Fallback where mask-composite is unavailable: a plain tinted border, so the
+     card still reads as a card instead of losing its edge entirely. */
+  @supports not ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+    .gh-mq__card { border: 1.5px solid rgba(27, 136, 166, 0.55); }
+    .gh-mq__card::before { display: none; }
+  }
+  .gh-mq__card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(42, 175, 223, 0.28); }
 
   /* Icon + name on the same line */
   .gh-mq__head { display: flex; align-items: center; gap: 8px; }
   .gh-mq__icon {
     width: 26px; height: 26px; border-radius: 6px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(19, 94, 115, 0.09);
+    border: 1px solid rgba(19, 94, 115, 0.20);
     display: inline-flex; align-items: center; justify-content: center;
-    color: #F7F5F3;
+    color: var(--gh-brand);
     flex-shrink: 0;
   }
   .gh-mq__icon svg { width: 15px; height: 15px; }
