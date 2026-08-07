@@ -534,6 +534,8 @@
         "body": "",
         "image": "shopify://shop_images/app_mockup.png",
         "image_url": "",
+        "image_2": "shopify://shop_images/app_mockup2.png",
+        "image_2_url": "",
         "android_label": "Android",
         "android_link": "",
         "ios_label": "iOS",
