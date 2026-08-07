@@ -136,18 +136,27 @@
     --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #A5E4F2;
     /* Flat #135E73 — the brand teal. Every text level clears 4.5:1 on it: cream
        6.7, body 5.4, labels 5.0, price 5.2. */
-    background: #135E73;
-    border: 1px solid rgba(255,255,255,0.12);
+    /* Gradient ring, same trick and same 5-stop ramp as the "What we measure"
+       cards: the card's own fill clipped to padding-box, her gradient clipped
+       to border-box behind it, showing through a 3px transparent border. The
+       ramp fades to transparent at 100%, so the right edge intentionally
+       dissolves into the section background rather than closing into a ring. */
+    border: 3px solid transparent;
+    background:
+      linear-gradient(#135E73, #135E73) padding-box,
+      linear-gradient(90deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
     box-shadow: 0 16px 44px rgba(19, 94, 115, 0.20);
     transition: transform 0.3s, box-shadow 0.3s;
   }
   .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 64px rgba(19, 94, 115, 0.28); }
   .gh-pkg.is-featured {
-    border-color: rgba(255,255,255,.26);
     /* Featured goes DARKER, not lighter. #17708A would have read as the obvious
        lift but drops the label token to 3.84:1; #0F5164 keeps the worst case at
-       6.00:1 while still separating from the plain card. */
-    background: #0F5164;
+       6.00:1 while still separating from the plain card. Same gradient ring,
+       just re-paired with the darker fill. */
+    background:
+      linear-gradient(#0F5164, #0F5164) padding-box,
+      linear-gradient(90deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
     box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
   }
   .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(19, 94, 115, 0.34); }
