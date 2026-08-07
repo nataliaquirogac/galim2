@@ -112,14 +112,14 @@
     /* Gradient ring: a transparent border revealing a second background layer
        clipped to border-box, with the card's own teal fill clipped to
        padding-box on top of it — no mask/pseudo-element needed since the fill
-       is opaque. Conic rather than linear: a left-to-right ramp starts and ends
-       on the same teal as the fill, so it goes invisible on the vertical edges;
-       a loop keeps color moving all the way around. Same brand ramp as the
-       Protocols heading. */
+       is opaque. Her 5-stop ramp fades to transparent at the end (24B1D9 @ 0%),
+       so that tail of the ring intentionally shows the section background
+       through instead of closing the loop — a directional glow, not a solid
+       ring on all four sides. */
     border: 3px solid transparent;
     background:
       linear-gradient(#135E73, #135E73) padding-box,
-      conic-gradient(from 180deg, #135E73, #1E63A8, #A97C1F, #135E73) border-box;
+      linear-gradient(90deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
     color: var(--gh-light);
     display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
