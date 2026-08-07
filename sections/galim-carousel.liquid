@@ -109,15 +109,24 @@
     border-radius: 9px;
     /* Teal island with white text on the light page */
     --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-green: #C3D9DD;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: #135E73;
+    /* Gradient ring: a transparent border revealing a second background layer
+       clipped to border-box, with the card's own teal fill clipped to
+       padding-box on top of it — no mask/pseudo-element needed since the fill
+       is opaque. Conic rather than linear: a left-to-right ramp starts and ends
+       on the same teal as the fill, so it goes invisible on the vertical edges;
+       a loop keeps color moving all the way around. Same brand ramp as the
+       Protocols heading. */
+    border: 3px solid transparent;
+    background:
+      linear-gradient(#135E73, #135E73) padding-box,
+      conic-gradient(from 180deg, #135E73, #1E63A8, #A97C1F, #135E73) border-box;
     color: var(--gh-light);
     display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
     box-shadow: 0 10px 26px rgba(19, 94, 115, 0.14);
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
-  .gh-mq__card:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
+  .gh-mq__card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
 
   /* Icon + name on the same line */
   .gh-mq__head { display: flex; align-items: center; gap: 8px; }
