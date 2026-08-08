@@ -112,14 +112,16 @@
     /* Gradient ring: a transparent border revealing a second background layer
        clipped to border-box, with the card's own teal fill clipped to
        padding-box on top of it — no mask/pseudo-element needed since the fill
-       is opaque. Her 5-stop ramp fades to transparent at the end (24B1D9 @ 0%),
-       so that tail of the ring intentionally shows the section background
-       through instead of closing the loop — a directional glow, not a solid
-       ring on all four sides. */
+       is opaque. The ramp loops back to its own starting color rather than
+       fading to transparent, so every edge shows solid color, and the loop
+       lets it pan back and forth (gh-ring-sweep) without a visible jump. */
     border: 3px solid transparent;
     background:
       linear-gradient(#135E73, #135E73) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
+      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+    background-size: 100% 100%, 250% 250%;
+    background-repeat: no-repeat;
+    animation: gh-ring-sweep 6s ease-in-out infinite alternate;
     color: var(--gh-light);
     display: flex; flex-direction: column; gap: 6px;
     scroll-snap-align: start;
@@ -247,6 +249,9 @@
     .gh-mq__progress { max-width: none; }
     .gh-mq__nav { width: 30px; height: 30px; font-size: 18px; }
   }
+  /* gh-ring-sweep respects prefers-reduced-motion via the global
+     [class*="gh-"] { animation: none !important; } catch-all in galim.css —
+     no local override needed. */
 {% endstylesheet %}
 
 {% schema %}

@@ -136,15 +136,19 @@
     --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #A5E4F2;
     /* Flat #135E73 — the brand teal. Every text level clears 4.5:1 on it: cream
        6.7, body 5.4, labels 5.0, price 5.2. */
-    /* Gradient ring, same trick and same 5-stop ramp as the "What we measure"
-       cards: the card's own fill clipped to padding-box, her gradient clipped
-       to border-box behind it, showing through a 3px transparent border. The
-       ramp fades to transparent at 100%, so the right edge intentionally
-       dissolves into the section background rather than closing into a ring. */
+    /* Gradient ring, same trick and same ramp as the "What we measure" cards:
+       the card's own fill clipped to padding-box, the brand ramp clipped to
+       border-box behind it, showing through a 3px transparent border. The
+       ramp loops back to its own starting color instead of fading to
+       transparent, so every edge — including the sides — shows solid color,
+       and the closed loop lets it pan back and forth without a visible jump. */
     border: 3px solid transparent;
     background:
       linear-gradient(#135E73, #135E73) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
+      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+    background-size: 100% 100%, 250% 250%;
+    background-repeat: no-repeat;
+    animation: gh-ring-sweep 6s ease-in-out infinite alternate;
     box-shadow: 0 16px 44px rgba(19, 94, 115, 0.20);
     transition: transform 0.3s, box-shadow 0.3s;
   }
@@ -156,9 +160,14 @@
        just re-paired with the darker fill. */
     background:
       linear-gradient(#0F5164, #0F5164) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
+      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+    background-size: 100% 100%, 250% 250%;
+    background-repeat: no-repeat;
     box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
   }
+  /* gh-ring-sweep respects prefers-reduced-motion via the global
+     [class*="gh-"] { animation: none !important; } catch-all in galim.css —
+     no local override needed. */
   .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(19, 94, 115, 0.34); }
   .gh-pkg__badge {
     position: absolute; top: 20px; right: 20px; z-index: 2;

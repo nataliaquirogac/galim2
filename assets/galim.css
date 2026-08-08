@@ -123,11 +123,17 @@ body.gh-page { background: var(--gh-bg) !important; }
      diagnostics rows: fill clipped to padding-box, the brand ramp clipped to
      border-box behind it, through a 3px transparent border. Diagonal (135deg)
      so the ramp crosses every edge of the pill — including its rounded left
-     and right caps — instead of leaving them as a single flat stop color. */
+     and right caps — instead of leaving them as a single flat stop color. The
+     ramp loops back to its own starting color instead of fading to
+     transparent, so the ring reads as solid color at every point of its
+     sweep, not just where the animation happens to land. */
   border: 3px solid transparent;
   background:
     linear-gradient(#135E73, #135E73) padding-box,
-    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
+    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+  background-size: 100% 100%, 250% 250%;
+  background-repeat: no-repeat;
+  animation: gh-ring-sweep 6s ease-in-out infinite alternate;
   color: #F7F5F3;
   font: 500 15px/1 var(--gh-sans);
   letter-spacing: 0.02em;
@@ -137,7 +143,7 @@ body.gh-page { background: var(--gh-bg) !important; }
 .gh-btn--solid:hover {
   background:
     linear-gradient(#16505F, #16505F) padding-box,
-    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, rgba(36, 177, 217, 0) 100%) border-box;
+    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
   color: #F7F5F3;
   transform: translateY(-1px);
 }
@@ -154,6 +160,13 @@ body.gh-page { background: var(--gh-bg) !important; }
 /* Keyframes --------------------------------------------------------------- */
 @keyframes gh-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 @keyframes gh-sweep { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+/* Shared by every gradient-ring border (cards, package cards, diagnostics rows,
+   solid buttons): the ring layer is painted at 250% size and panned diagonally,
+   the flat fill layer's position (0 0, first in the list) never moves. Ping-pong
+   via `alternate` rather than looping forward, since the ring's start and end
+   positions show different slices of the gradient — jumping straight from 100%
+   back to 0% would read as a visible cut. */
+@keyframes gh-ring-sweep { 0% { background-position: 0 0, 0% 0%; } 100% { background-position: 0 0, 100% 100%; } }
 @keyframes gh-grid  { 0% { background-position: 0 0; } 100% { background-position: 0 64px; } }
 @keyframes gh-pulse { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.06); } }
 @keyframes gh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
