@@ -137,7 +137,12 @@
     flex-shrink: 0;
   }
   .gh-mq__icon svg { width: 15px; height: 15px; }
-  .gh-mq__name { font: 500 13px/1.15 var(--gh-sans); color: var(--gh-white); }
+  /* Dawn's base h1-h5 rule sets word-break: break-word, which is the legacy
+     alias for overflow-wrap: anywhere — it breaks mid-word even when the whole
+     word would fit on the next line, which is exactly what cut "Cardiovascular"
+     to "Cardiovascula" + "r" at this card's width. Overriding to normal wrapping
+     (only breaking a word if it can't fit a line by itself) keeps names intact. */
+  .gh-mq__name { font: 500 13px/1.15 var(--gh-sans); color: var(--gh-white); word-break: normal; overflow-wrap: break-word; }
   .gh-mq__desc { font: 300 11.5px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0; }
 
   /* Side fades */
