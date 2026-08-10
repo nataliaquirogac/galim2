@@ -317,15 +317,16 @@
     .gh-pkg__badge { margin: 16px 16px 0; }
     .gh-pkg__head { padding: 22px 46px 18px 20px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }
-    /* 18px still truncated her actual longest name on real iPhone widths —
-       shrunk both name and price until it stops, re-measured with an exact
-       (not +-1px tolerant) overflow check after a first pass turned out to
-       be off by a pixel. 11px price + 12px name is the best-balanced pairing
-       (largest name a smaller price still allows) with zero truncation all
-       the way down to 375px — every current iPhone, SE included. */
-    .gh-pkg__name { font-size: 12px; }
-    .gh-pkg__price { font-size: 11px; }
-    .gh-pkg__unit { font-size: 7px; }
+    /* Shrinking name/price small enough to zero out truncation (12px/11px)
+       made both smaller than the 14px subtitle sitting right underneath them
+       — backwards hierarchy, reads as broken regardless of whether anything
+       is technically cut off. Restored a title that's clearly the biggest
+       text in the card and a price that still reads as the headline number;
+       her longest name goes back to truncating on narrow phones as a result
+       (see .gh-pkg__name below) — the truncation is the lesser problem. */
+    .gh-pkg__name { font-size: 18px; }
+    .gh-pkg__price { font-size: 16px; }
+    .gh-pkg__unit { font-size: 11px; }
     .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
