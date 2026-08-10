@@ -171,8 +171,13 @@
     box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
   }
   .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(19, 94, 115, 0.34); }
+  /* Normal flow, not absolutely positioned: with the head row now pinned to
+     flex-start (price sits flush with the title's top line, not vertically
+     centered), an absolute top:20px;right:20px badge would land in exactly
+     the same corner as the price and collide at every width, not just narrow
+     ones. Giving it its own row above the head avoids that outright. */
   .gh-pkg__badge {
-    position: absolute; top: 20px; right: 20px; z-index: 2;
+    align-self: flex-end; margin: 20px 20px 0; z-index: 2;
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
     background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
   }
@@ -181,7 +186,10 @@
      longer lives here to span a second row underneath. */
   .gh-pkg__head {
     position: relative; width: 100%; padding: 26px 30px 20px;
-    display: flex; align-items: center; gap: 14px;
+    /* flex-start, not center: pins the icon, price and chevron to the level
+       of the title's first line instead of centering them against the whole
+       (often two-line) heading block. */
+    display: flex; align-items: flex-start; gap: 14px;
     border: 0; border-bottom: 1px solid rgba(255,255,255,.14);
     background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.07), transparent 60%);
     font: inherit; color: inherit; text-align: left; cursor: pointer;
@@ -220,8 +228,12 @@
   .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0; padding: 0; }
   /* Sits in the collapsed header row itself now (icon, heading, price,
      chevron), between the name/subtitle column and the toggle arrow — visible
-     up front so packages are comparable without opening either one. */
-  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; flex-shrink: 0; text-align: right; }
+     up front so packages are comparable without opening either one.
+     margin-left: auto pushes it flush against the chevron regardless of how
+     much the heading actually needs; flex: none + white-space: nowrap keep it
+     from ever shrinking or breaking "$1,499 MXN" onto two lines — the heading
+     is what gives way (min-width: 0 lets it wrap instead). */
+  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; flex: none; margin-left: auto; white-space: nowrap; }
   .gh-pkg__unit { font-size: 18px; }
 
   /* Collapsible panel: grid-template-rows 0fr -> 1fr animates height without
@@ -284,14 +296,31 @@
   .gh-glp__body, .gh-glp__body p { font: 400 17px/1.6 var(--gh-mono); color: var(--gh-light); max-width: 820px; margin: 0; }
   .gh-glp__body strong { font-weight: 600; color: var(--gh-green); }
 
-  /* The 2-column grid doesn't switch to 1 column until 768px, so from 769 to
-     ~840px each card is still only ~330-370px wide — narrow enough that
-     "Prevention" + "MOST POPULAR" collided in verification even though wider
-     2-column cards (900px+) have room to spare. Same fixes as the mobile
-     block below, minus its font/icon size changes — those already fit fine
-     at this width, only the badge and the price/chevron row don't. */
-  @media (min-width: 769px) and (max-width: 840px) {
-    .gh-pkg__badge { position: static; align-self: flex-end; margin: 16px 16px 0; }
+  @media (max-width: 768px) {
+    .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
+    .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
+    .gh-pkg:hover { transform: none; }
+    .gh-pkg__badge { margin: 16px 16px 0; }
+    .gh-pkg__head { padding: 22px 20px 18px; }
+    .gh-pkg__icon { width: 38px; border-radius: 9px; }
+    .gh-pkg__name { font-size: 24px; }
+    .gh-pkg__price { font-size: 22px; }
+    .gh-pkg__unit { font-size: 16px; }
+    .gh-pkg__body { padding: 18px 20px 22px; }
+    .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
+    .gh-glp__glyph { display: none; }
+    .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
+    .gh-glp__body, .gh-glp__body p { font-size: 15px; }
+  }
+
+  /* Same problem, different width band: the 2-column grid doesn't drop to 1
+     column until 768px, so 769-999px viewports still render two cards side
+     by side at only ~330-450px wide EACH — with full desktop font sizes (26px
+     name, 24px price), which squeeze the heading even harder than the mobile
+     block above does. Measured against her actual longest name ("Body
+     Performance Scan," not the schema's shorter placeholder): still
+     overflowing at 990px, clean at exactly 1000px. Same 2-row grid fallback. */
+  @media (min-width: 769px) and (max-width: 999px) {
     .gh-pkg__head {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -301,43 +330,38 @@
     .gh-pkg__icon { grid-area: icon; }
     .gh-pkg__heading { grid-area: heading; }
     .gh-pkg__chevron { grid-area: chevron; }
-    .gh-pkg__price { grid-area: price; text-align: right; }
+    .gh-pkg__price { grid-area: price; }
   }
 
-  @media (max-width: 768px) {
-    .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
-    .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
-    .gh-pkg:hover { transform: none; }
-    /* The badge used to float over a two-row head (icon+name, then subtitle
-       below) with room to spare. The head is a single flex row now, and its
-       new chevron claims the same top-right corner the badge floats over —
-       on a narrow card "MOST POPULAR" and the chevron collide. Drop the badge
-       into normal flow instead, right-aligned above the head, rather than
-       trying to reserve exactly enough padding for text of unknown length. */
-    .gh-pkg__badge { position: static; align-self: flex-end; margin: 16px 16px 0; }
-    /* Icon, heading and chevron sharing one row leaves barely any width for
-       the heading once price joins them too — a longer name like "Body
-       Performance Scan" squeezed the subtitle down to one word per line.
-       Grid instead of flex here: price drops to its own full-width row under
-       the heading rather than fighting it for horizontal space. */
+  /* Below ~480px, icon + heading + price + chevron sharing one row leaves the
+     heading under 100px wide once a longer name is in play — not even enough
+     for a single word like "Performance" to fit, so it overflows its own box
+     instead of wrapping (measured: heading shrinks to 91px at 430px viewport,
+     truly broken; 141px at 480px, fine). Falls back to the same 2-row grid
+     used before price moved into this row — everything else about the
+     single-row layout stays for every wider breakpoint. */
+  @media (max-width: 479px) {
     .gh-pkg__head {
-      padding: 22px 20px 18px;
       display: grid;
       grid-template-columns: auto 1fr auto;
       grid-template-areas: "icon heading chevron" "price price price";
-      column-gap: 12px; row-gap: 10px;
+      row-gap: 10px;
     }
-    .gh-pkg__icon { grid-area: icon; width: 38px; border-radius: 9px; }
+    .gh-pkg__icon { grid-area: icon; }
     .gh-pkg__heading { grid-area: heading; }
     .gh-pkg__chevron { grid-area: chevron; }
-    .gh-pkg__name { font-size: 24px; }
-    .gh-pkg__price { grid-area: price; text-align: right; font-size: 22px; }
-    .gh-pkg__unit { font-size: 16px; }
-    .gh-pkg__body { padding: 18px 20px 22px; }
-    .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
-    .gh-glp__glyph { display: none; }
-    .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
-    .gh-glp__body, .gh-glp__body p { font-size: 15px; }
+    /* margin-left: auto (inherited) still right-aligns it within the
+       full-width "price" track, keeping it under the chevron like every
+       wider breakpoint instead of switching sides just for this one. */
+    .gh-pkg__price { grid-area: price; }
+    /* Measured: at exactly 320px (iPhone SE-class) the heading column left
+       after icon + chevron is ~106px, and a name with a word as long as
+       "Performance" needs ~137px on its own — even this fallback grid isn't
+       always enough. overflow-wrap: break-word (NOT word-break: break-word,
+       the legacy alias that broke words even when they'd have fit on the next
+       line) only breaks a word as a last resort, when it truly can't fit a
+       line by itself — a safety net for this one width, invisible above it. */
+    .gh-pkg__name { overflow-wrap: break-word; }
   }
 {% endstylesheet %}
 
