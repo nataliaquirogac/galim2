@@ -317,12 +317,15 @@
     .gh-pkg__badge { margin: 16px 16px 0; }
     .gh-pkg__head { padding: 22px 46px 18px 20px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }
-    /* At the base 20px, even a short single-word name like "Prevention" was
-       truncating on real iPhone widths (needs 97px at 375px, only 92px
-       available) — 18px is the largest size that still fits it down to
-       375px. Longer names ("Body Performance Scan") still truncate below
-       ~428px regardless of size; that's the icon + price overhead, not this. */
-    .gh-pkg__name { font-size: 18px; }
+    /* 18px still truncated her actual longest name on real iPhone widths —
+       shrunk both name and price until it stops, re-measured with an exact
+       (not +-1px tolerant) overflow check after a first pass turned out to
+       be off by a pixel. 11px price + 12px name is the best-balanced pairing
+       (largest name a smaller price still allows) with zero truncation all
+       the way down to 375px — every current iPhone, SE included. */
+    .gh-pkg__name { font-size: 12px; }
+    .gh-pkg__price { font-size: 11px; }
+    .gh-pkg__unit { font-size: 7px; }
     .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
