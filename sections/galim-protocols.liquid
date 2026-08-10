@@ -227,11 +227,19 @@
   .gh-pkg__icon svg { display: block; }
   /* The featured card's badge sits top-right, so the tile never collides. */
 
-  /* Package titles stay in Chillax (brand display face); everything else in the
-     card is DM Sans. flex: 1 + min-width: 0 is what lets it wrap up to two
-     lines instead of pushing the price out of the card; 20px/1.15 is sized to
-     fit her actual names ("Body Performance Scan") within that. */
-  .gh-pkg__name { flex: 1; min-width: 0; font: 600 20px/1.15 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em; }
+  /* Package titles stay in Chillax (brand display face); everything else in
+     the card is DM Sans. One line, always — white-space: nowrap instead of
+     letting it wrap. min-width: 0 is still what lets it shrink below its own
+     content width in the first place; overflow/text-overflow are the safety
+     net for names that don't fit even then: measured against "Body
+     Performance Scan," the column left after icon + price is only 96-135px
+     at 320-414px wide, and even a 12px title needs 139px — no legible size
+     makes the full string fit there, so it truncates with an ellipsis rather
+     than wrapping or bleeding into the price. Full title shows from ~428px. */
+  .gh-pkg__name {
+    flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font: 600 20px/1.15 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em;
+  }
   /* Full width, on its own line below the top row now — not sharing a column
      with the name, so it can't be the thing that pushes it to three lines. */
   .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 8px 0 0; padding: 0; }
@@ -309,6 +317,12 @@
     .gh-pkg__badge { margin: 16px 16px 0; }
     .gh-pkg__head { padding: 22px 46px 18px 20px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }
+    /* At the base 20px, even a short single-word name like "Prevention" was
+       truncating on real iPhone widths (needs 97px at 375px, only 92px
+       available) — 18px is the largest size that still fits it down to
+       375px. Longer names ("Body Performance Scan") still truncate below
+       ~428px regardless of size; that's the icon + price overhead, not this. */
+    .gh-pkg__name { font-size: 18px; }
     .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
