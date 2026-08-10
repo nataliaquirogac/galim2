@@ -21,33 +21,33 @@
               lives in the panel below, revealed on click.
             {%- endcomment -%}
             <button type="button" class="gh-pkg__head" data-gh-pkg-toggle aria-expanded="false">
-              {%- comment -%}
-                Square icon tile above the title. 'none' lets a package opt out
-                so a card without a fitting icon doesn't get a filler one.
-              {%- endcomment -%}
-              {%- unless b.icon == 'none' -%}
-                <span class="gh-pkg__icon" aria-hidden="true">
-                  {%- case b.icon -%}
-                    {%- when 'muscle' -%}{%- render 'icon-muscle', size: 22 -%}
-                    {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 22 -%}
-                    {%- when 'dna' -%}{%- render 'icon-dna', size: 22 -%}
-                    {%- when 'brain' -%}{%- render 'icon-brain', size: 22 -%}
-                    {%- when 'lung' -%}{%- render 'icon-lung', size: 22 -%}
-                    {%- when 'blood' -%}{%- render 'icon-blood', size: 22 -%}
-                    {%- when 'mri' -%}{%- render 'icon-mri', size: 22 -%}
-                    {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 22 -%}
-                    {%- when 'balance' -%}{%- render 'icon-balance', size: 22 -%}
-                    {%- when 'infinity' -%}{%- render 'icon-infinity', size: 22 -%}
-                    {%- when 'pressure' -%}{%- render 'icon-pressure', size: 22 -%}
-                    {%- else -%}{%- render 'icon-bolt', size: 22 -%}
-                  {%- endcase -%}
-                </span>
-              {%- endunless -%}
-              <span class="gh-pkg__heading">
+              <div class="gh-pkg__toprow">
+                {%- comment -%}
+                  Square icon tile beside the title. 'none' lets a package opt
+                  out so a card without a fitting icon doesn't get a filler one.
+                {%- endcomment -%}
+                {%- unless b.icon == 'none' -%}
+                  <span class="gh-pkg__icon" aria-hidden="true">
+                    {%- case b.icon -%}
+                      {%- when 'muscle' -%}{%- render 'icon-muscle', size: 22 -%}
+                      {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 22 -%}
+                      {%- when 'dna' -%}{%- render 'icon-dna', size: 22 -%}
+                      {%- when 'brain' -%}{%- render 'icon-brain', size: 22 -%}
+                      {%- when 'lung' -%}{%- render 'icon-lung', size: 22 -%}
+                      {%- when 'blood' -%}{%- render 'icon-blood', size: 22 -%}
+                      {%- when 'mri' -%}{%- render 'icon-mri', size: 22 -%}
+                      {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 22 -%}
+                      {%- when 'balance' -%}{%- render 'icon-balance', size: 22 -%}
+                      {%- when 'infinity' -%}{%- render 'icon-infinity', size: 22 -%}
+                      {%- when 'pressure' -%}{%- render 'icon-pressure', size: 22 -%}
+                      {%- else -%}{%- render 'icon-bolt', size: 22 -%}
+                    {%- endcase -%}
+                  </span>
+                {%- endunless -%}
                 {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
-                {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
-              </span>
-              {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
+                {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
+              </div>
+              {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
               <span class="gh-pkg__chevron" aria-hidden="true">{%- render 'icon-chevron-down', size: 20 -%}</span>
             </button>
             <div class="gh-pkg__collapse" data-gh-pkg-panel>
@@ -181,34 +181,29 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
     background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
   }
-  /* The collapsed summary — icon, name + subtitle, chevron — is itself the
-     toggle button. Flex rather than the old icon/title grid, since price no
-     longer lives here to span a second row underneath. */
+  /* The collapsed summary is itself the toggle button. It stacks two things
+     now: the top row (icon, name, price) and the subtitle on its own
+     full-width line beneath it — the subtitle no longer shares a column with
+     the name, so it can't squeeze the name down to a sliver on a narrow card. */
   .gh-pkg__head {
     position: relative; width: 100%;
-    /* Extra right padding reserves room for the chevron, which is positioned
-       absolutely now rather than sitting in the flex row — a 4th item
-       (icon, heading, price, chevron) left too little width for the heading
-       once a longer name was in play. Removing the chevron from the row is
-       what makes the single-row icon/heading/price layout actually fit. */
-    padding: 26px 56px 20px 30px;
-    /* flex-start, not center: pins the icon and price to the level of the
-       title's first line instead of centering them against the whole (often
-       two-line) heading block. */
-    display: flex; align-items: flex-start; gap: 14px;
+    /* Right padding reserves room for the chevron, which is positioned
+       absolutely (below) rather than sitting in the row. */
+    padding: 26px 46px 20px 30px;
     border: 0; border-bottom: 1px solid rgba(255,255,255,.14);
     background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.07), transparent 60%);
     font: inherit; color: inherit; text-align: left; cursor: pointer;
   }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.09), transparent 60%); }
-  .gh-pkg__heading { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1; }
-  /* Absolute, not a flex child: it no longer competes with the heading and
-     price for width in the row, which is the only reason a name as long as
-     "Body Performance Scan" fits with the price still visible up front. Top
-     matches the head's own padding-top, so it lines up with the title exactly
-     where it sat as a flex item before. */
+  /* Icon, name and price share this row. align-items: center (not
+     flex-start) — price sits centered against the whole name block, not
+     pinned to its first line, since the name can run to two lines now. */
+  .gh-pkg__toprow { display: flex; align-items: center; gap: 12px; }
+  /* Absolute, not a flex child, so it doesn't compete with the name/price row
+     for width — top/right match the head's own padding so it lands in the
+     same corner it would have occupied in the row. */
   .gh-pkg__chevron {
-    position: absolute; top: 26px; right: 30px;
+    position: absolute; top: 20px; right: 18px;
     display: inline-flex; color: var(--gh-slate);
     transition: transform 0.3s ease, color 0.3s ease;
   }
@@ -220,7 +215,7 @@
      size is ever changed from one value. */
   .gh-pkg__icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; aspect-ratio: 1; margin: 0;
+    width: 44px; aspect-ratio: 1; margin: 0; flex-shrink: 0;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.10);
     border: 1px solid rgba(255, 255, 255, 0.20);
@@ -233,20 +228,19 @@
   /* The featured card's badge sits top-right, so the tile never collides. */
 
   /* Package titles stay in Chillax (brand display face); everything else in the
-     card is DM Sans. */
-  .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em; }
-  /* Spacing under the name is the .gh-pkg__heading flex gap now, not a margin —
-     subtitle is the last thing shown before the panel is opened. */
-  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0; padding: 0; }
-  /* Sits in the collapsed header row itself now (icon, heading, price,
-     chevron), between the name/subtitle column and the toggle arrow — visible
-     up front so packages are comparable without opening either one.
-     margin-left: auto pushes it flush against the chevron regardless of how
-     much the heading actually needs; flex: none + white-space: nowrap keep it
-     from ever shrinking or breaking "$1,499 MXN" onto two lines — the heading
-     is what gives way (min-width: 0 lets it wrap instead). */
-  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; flex: none; margin-left: auto; white-space: nowrap; }
-  .gh-pkg__unit { font-size: 18px; }
+     card is DM Sans. flex: 1 + min-width: 0 is what lets it wrap up to two
+     lines instead of pushing the price out of the card; 20px/1.15 is sized to
+     fit her actual names ("Body Performance Scan") within that. */
+  .gh-pkg__name { flex: 1; min-width: 0; font: 600 20px/1.15 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em; }
+  /* Full width, on its own line below the top row now — not sharing a column
+     with the name, so it can't be the thing that pushes it to three lines. */
+  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 8px 0 0; padding: 0; }
+  /* flex: none + white-space: nowrap: never shrinks, never breaks "$1,499
+     MXN" onto two lines. The name is what gives way (flex: 1 + min-width: 0
+     above lets it wrap instead). Smaller than before on purpose — at 24-26px
+     the price was what left the name no room to fit at all. */
+  .gh-pkg__price { flex: none; white-space: nowrap; font: 500 22px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
+  .gh-pkg__unit { font-size: 12px; }
 
   /* Collapsible panel: grid-template-rows 0fr -> 1fr animates height without
      JS measuring scrollHeight. The inner wrapper clips overflow during the
@@ -314,64 +308,13 @@
     .gh-pkg:hover { transform: none; }
     .gh-pkg__badge { margin: 16px 16px 0; }
     .gh-pkg__head { padding: 22px 46px 18px 20px; }
-    .gh-pkg__chevron { top: 22px; right: 20px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }
-    /* Smaller than the earlier mobile pass on purpose: icon + heading + price
-       sharing one row needs the heading to have real room, and on an iPhone
-       (the priority here) that only happens if name/price give some of their
-       size back. Measured against her actual name ("Body Performance Scan"):
-       19px name + 17px price is the largest pairing that stays on a single
-       row from 389px up — nearly every current iPhone (12/13/14/15/16 in
-       every size except mini/SE) — without either one shrinking further. */
-    .gh-pkg__name { font-size: 19px; }
-    .gh-pkg__price { font-size: 17px; }
-    .gh-pkg__unit { font-size: 13px; }
     .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
     .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
     .gh-glp__body, .gh-glp__body p { font-size: 15px; }
   }
-
-  /* Taking the chevron out of the row (see .gh-pkg__head above) only nets
-     ~8px of real width for the heading: it removes 20px + a 14px gap from the
-     flex row, but the padding reserved for its new absolute position gives
-     most of that straight back. Across 769-999px (2 cards per row, ~330-410px
-     each, full desktop font sizes) there still isn't room for icon + heading
-     + price on one line — so price drops to its own full-width row there.
-     iPhone width (one card per row) got its own, smaller name/price sizes
-     below instead, since that's the priority: single row down to 389px. */
-  @media (min-width: 769px) and (max-width: 999px) {
-    .gh-pkg__head {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-template-areas: "icon heading" "price price";
-      row-gap: 10px;
-    }
-    .gh-pkg__icon { grid-area: icon; }
-    .gh-pkg__heading { grid-area: heading; }
-    .gh-pkg__price { grid-area: price; }
-  }
-
-  /* iPhone priority: at 19px name / 17px price (set above), single row holds
-     from 389px up — every current iPhone except SE/mini. Below that (SE, old
-     Android phones) even those sizes don't leave the heading enough room, so
-     price still drops to its own row, same technique as the 769-999px band. */
-  @media (max-width: 389px) {
-    .gh-pkg__head {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-template-areas: "icon heading" "price price";
-      row-gap: 10px;
-    }
-    .gh-pkg__icon { grid-area: icon; }
-    .gh-pkg__heading { grid-area: heading; }
-    /* margin-left: auto (inherited) still right-aligns it within the
-       full-width "price" track, under the chevron like every wider
-       breakpoint instead of switching sides just for this one. */
-    .gh-pkg__price { grid-area: price; }
-  }
-
 {% endstylesheet %}
 
 {% schema %}
