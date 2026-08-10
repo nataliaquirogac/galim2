@@ -345,7 +345,7 @@
           "type": "package",
           "settings": {
             "icon": "bolt",
-            "name": "Body Performance Scan",
+            "name": "Body Performance",
             "subtitle": "25 minutes. Six systems. One number.",
             "price": "$1,499",
             "price_unit": "MXN",
