@@ -17,8 +17,8 @@
           <div class="gh-pkg{% if b.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
             {%- if b.featured and b.badge_label != blank -%}<div class="gh-pkg__badge">{{ b.badge_label }}</div>{%- endif -%}
             {%- comment -%}
-              Collapsed by default: name + subtitle only. Everything else
-              (price included) lives in the panel below, revealed on click.
+              Collapsed by default: name, subtitle, price. Everything else
+              lives in the panel below, revealed on click.
             {%- endcomment -%}
             <button type="button" class="gh-pkg__head" data-gh-pkg-toggle aria-expanded="false">
               {%- comment -%}
@@ -47,12 +47,12 @@
                 {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
                 {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
               </span>
+              {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
               <span class="gh-pkg__chevron" aria-hidden="true">{%- render 'icon-chevron-down', size: 20 -%}</span>
             </button>
             <div class="gh-pkg__collapse" data-gh-pkg-panel>
               <div class="gh-pkg__collapse-inner">
                 <div class="gh-pkg__body">
-                  {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
                   {%- if b.intro != blank -%}<p class="gh-pkg__intro">{{ b.intro }}</p>{%- endif -%}
 
                   {%- if b.features != blank -%}
@@ -139,11 +139,12 @@
     position: relative; border-radius: 16px; overflow: hidden;
     /* Deep and saturated rather than pale — the pastel version read as nursery.
        Cream text, so the card rejoins the rest of the site instead of being the
-       one light island. Slate is lifted from #A8C2C8 to #C3D9DD and the price
-       from mint to #A5E4F2, because on the lighter teal end the old values fell
-       to 3.90:1 and would have failed. */
+       one light island. Slate is lifted from #A8C2C8 to #C3D9DD. Price uses the
+       same mint green as the rest of the site's green accents (two-axes, GLP-1
+       note) rather than --gh-accent's blue, since she asked for it in green —
+       4.83:1 on the plain card, 5.83:1 on featured, both clear 4.5:1. */
     --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD;
-    --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #A5E4F2;
+    --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #9FE0BE;
     /* Flat #135E73 — the brand teal. Every text level clears 4.5:1 on it: cream
        6.7, body 5.4, labels 5.0, price 5.2. */
     /* Gradient ring, same trick and same ramp as the "What we measure" cards:
@@ -217,10 +218,10 @@
   /* Spacing under the name is the .gh-pkg__heading flex gap now, not a margin —
      subtitle is the last thing shown before the panel is opened. */
   .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0; padding: 0; }
-  /* Price moved into the panel (collapsed view is name + subtitle only), so it
-     needs its own bottom margin now instead of relying on the old header
-     layout for spacing before the intro line. */
-  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; margin-bottom: 16px; }
+  /* Sits in the collapsed header row itself now (icon, heading, price,
+     chevron), between the name/subtitle column and the toggle arrow — visible
+     up front so packages are comparable without opening either one. */
+  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; flex-shrink: 0; text-align: right; }
   .gh-pkg__unit { font-size: 18px; }
 
   /* Collapsible panel: grid-template-rows 0fr -> 1fr animates height without
@@ -283,6 +284,26 @@
   .gh-glp__body, .gh-glp__body p { font: 400 17px/1.6 var(--gh-mono); color: var(--gh-light); max-width: 820px; margin: 0; }
   .gh-glp__body strong { font-weight: 600; color: var(--gh-green); }
 
+  /* The 2-column grid doesn't switch to 1 column until 768px, so from 769 to
+     ~840px each card is still only ~330-370px wide — narrow enough that
+     "Prevention" + "MOST POPULAR" collided in verification even though wider
+     2-column cards (900px+) have room to spare. Same fixes as the mobile
+     block below, minus its font/icon size changes — those already fit fine
+     at this width, only the badge and the price/chevron row don't. */
+  @media (min-width: 769px) and (max-width: 840px) {
+    .gh-pkg__badge { position: static; align-self: flex-end; margin: 16px 16px 0; }
+    .gh-pkg__head {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: "icon heading chevron" "price price price";
+      row-gap: 10px;
+    }
+    .gh-pkg__icon { grid-area: icon; }
+    .gh-pkg__heading { grid-area: heading; }
+    .gh-pkg__chevron { grid-area: chevron; }
+    .gh-pkg__price { grid-area: price; text-align: left; }
+  }
+
   @media (max-width: 768px) {
     .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
@@ -294,11 +315,23 @@
        into normal flow instead, right-aligned above the head, rather than
        trying to reserve exactly enough padding for text of unknown length. */
     .gh-pkg__badge { position: static; align-self: flex-end; margin: 16px 16px 0; }
-    .gh-pkg__head { padding: 22px 20px 18px; }
-    .gh-pkg__head { column-gap: 12px; }
-    .gh-pkg__icon { width: 38px; border-radius: 9px; }
+    /* Icon, heading and chevron sharing one row leaves barely any width for
+       the heading once price joins them too — a longer name like "Body
+       Performance Scan" squeezed the subtitle down to one word per line.
+       Grid instead of flex here: price drops to its own full-width row under
+       the heading rather than fighting it for horizontal space. */
+    .gh-pkg__head {
+      padding: 22px 20px 18px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: "icon heading chevron" "price price price";
+      column-gap: 12px; row-gap: 10px;
+    }
+    .gh-pkg__icon { grid-area: icon; width: 38px; border-radius: 9px; }
+    .gh-pkg__heading { grid-area: heading; }
+    .gh-pkg__chevron { grid-area: chevron; }
     .gh-pkg__name { font-size: 24px; }
-    .gh-pkg__price { font-size: 22px; }
+    .gh-pkg__price { grid-area: price; text-align: left; font-size: 22px; }
     .gh-pkg__unit { font-size: 16px; }
     .gh-pkg__body { padding: 18px 20px 22px; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
