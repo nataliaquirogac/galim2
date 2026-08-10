@@ -99,6 +99,104 @@
         "coords": "CALZADA DEL VALLE"
       }
     },
+    "gap": {
+      "type": "galim-gap",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "01 / THE GAP",
+        "chip_label": "GALIM MEASURES",
+        "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
+        "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
+        "bg_color": "#0a2f38"
+      }
+    },
+    "steps": {
+      "type": "galim-steps",
+      "blocks": {
+        "w1": {
+          "type": "step",
+          "disabled": true,
+          "settings": {
+            "word": "Measure."
+          }
+        },
+        "w2": {
+          "type": "step",
+          "disabled": true,
+          "settings": {
+            "word": "Understand."
+          }
+        },
+        "w3": {
+          "type": "step",
+          "disabled": true,
+          "settings": {
+            "word": "Improve."
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ],
+      "settings": {
+        "eyebrow": "IN ONE VISIT",
+        "body": "Understand your body better than ever before.\nKnow what to improve next.\nSee how you change year after year.",
+        "bg_color": "rgba(0,0,0,0)"
+      }
+    },
+    "visit_gallery": {
+      "type": "galim-gallery",
+      "blocks": {
+        "photo_9xWrMp": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/HEART-EYES_1.png",
+            "image_mobile": "shopify://shop_images/HEART-EYES_mobile2.png",
+            "alt": ""
+          }
+        },
+        "photo_Jz9AbH": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/skin_room_1.png",
+            "image_mobile": "shopify://shop_images/otro.png",
+            "alt": ""
+          }
+        },
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/Escena_38.png",
+            "image_mobile": "shopify://shop_images/Escena_52.png",
+            "alt": ""
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/hd_upscale01.png",
+            "image_mobile": "shopify://shop_images/Escena_86.png",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "photo_9xWrMp",
+        "photo_Jz9AbH",
+        "photo_1",
+        "photo_2"
+      ],
+      "settings": {
+        "anchor_id": "visit",
+        "eyebrow": "THE SPACE",
+        "heading": "Book your visit",
+        "button_label": "",
+        "button_opens_modal": false,
+        "button_link": ""
+      }
+    },
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
@@ -238,104 +336,6 @@
         "speed": 45,
         "side_color": "#0a2f38",
         "side_width": 12
-      }
-    },
-    "gap": {
-      "type": "galim-gap",
-      "disabled": true,
-      "settings": {
-        "eyebrow": "01 / THE GAP",
-        "chip_label": "GALIM MEASURES",
-        "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
-        "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
-        "bg_color": "#0a2f38"
-      }
-    },
-    "steps": {
-      "type": "galim-steps",
-      "blocks": {
-        "w1": {
-          "type": "step",
-          "disabled": true,
-          "settings": {
-            "word": "Measure."
-          }
-        },
-        "w2": {
-          "type": "step",
-          "disabled": true,
-          "settings": {
-            "word": "Understand."
-          }
-        },
-        "w3": {
-          "type": "step",
-          "disabled": true,
-          "settings": {
-            "word": "Improve."
-          }
-        }
-      },
-      "block_order": [
-        "w1",
-        "w2",
-        "w3"
-      ],
-      "settings": {
-        "eyebrow": "IN ONE VISIT",
-        "body": "Understand your body better than ever before.\nKnow what to improve next.\nSee how you change year after year.",
-        "bg_color": "rgba(0,0,0,0)"
-      }
-    },
-    "visit_gallery": {
-      "type": "galim-gallery",
-      "blocks": {
-        "photo_9xWrMp": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/HEART-EYES_1.png",
-            "image_mobile": "shopify://shop_images/HEART-EYES_mobile2.png",
-            "alt": ""
-          }
-        },
-        "photo_Jz9AbH": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/skin_room_1.png",
-            "image_mobile": "shopify://shop_images/otro.png",
-            "alt": ""
-          }
-        },
-        "photo_1": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/Escena_38.png",
-            "image_mobile": "shopify://shop_images/Escena_52.png",
-            "alt": ""
-          }
-        },
-        "photo_2": {
-          "type": "photo",
-          "settings": {
-            "image": "shopify://shop_images/hd_upscale01.png",
-            "image_mobile": "shopify://shop_images/Escena_86.png",
-            "alt": ""
-          }
-        }
-      },
-      "block_order": [
-        "photo_9xWrMp",
-        "photo_Jz9AbH",
-        "photo_1",
-        "photo_2"
-      ],
-      "settings": {
-        "anchor_id": "visit",
-        "eyebrow": "THE SPACE",
-        "heading": "Book your visit",
-        "button_label": "",
-        "button_opens_modal": false,
-        "button_link": ""
       }
     },
     "protocols": {
@@ -615,10 +615,10 @@
   },
   "order": [
     "hero",
-    "carousel",
     "gap",
     "steps",
     "visit_gallery",
+    "carousel",
     "protocols",
     "two_axes",
     "app_cta",
