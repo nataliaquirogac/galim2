@@ -185,10 +185,16 @@
      toggle button. Flex rather than the old icon/title grid, since price no
      longer lives here to span a second row underneath. */
   .gh-pkg__head {
-    position: relative; width: 100%; padding: 26px 30px 20px;
-    /* flex-start, not center: pins the icon, price and chevron to the level
-       of the title's first line instead of centering them against the whole
-       (often two-line) heading block. */
+    position: relative; width: 100%;
+    /* Extra right padding reserves room for the chevron, which is positioned
+       absolutely now rather than sitting in the flex row — a 4th item
+       (icon, heading, price, chevron) left too little width for the heading
+       once a longer name was in play. Removing the chevron from the row is
+       what makes the single-row icon/heading/price layout actually fit. */
+    padding: 26px 56px 20px 30px;
+    /* flex-start, not center: pins the icon and price to the level of the
+       title's first line instead of centering them against the whole (often
+       two-line) heading block. */
     display: flex; align-items: flex-start; gap: 14px;
     border: 0; border-bottom: 1px solid rgba(255,255,255,.14);
     background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.07), transparent 60%);
@@ -196,8 +202,14 @@
   }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.09), transparent 60%); }
   .gh-pkg__heading { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1; }
+  /* Absolute, not a flex child: it no longer competes with the heading and
+     price for width in the row, which is the only reason a name as long as
+     "Body Performance Scan" fits with the price still visible up front. Top
+     matches the head's own padding-top, so it lines up with the title exactly
+     where it sat as a flex item before. */
   .gh-pkg__chevron {
-    display: inline-flex; flex-shrink: 0; color: var(--gh-slate);
+    position: absolute; top: 26px; right: 30px;
+    display: inline-flex; color: var(--gh-slate);
     transition: transform 0.3s ease, color 0.3s ease;
   }
   .gh-pkg__head[aria-expanded="true"] .gh-pkg__chevron { transform: rotate(180deg); color: var(--gh-white); }
@@ -301,7 +313,8 @@
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
     .gh-pkg__badge { margin: 16px 16px 0; }
-    .gh-pkg__head { padding: 22px 20px 18px; }
+    .gh-pkg__head { padding: 22px 46px 18px 20px; }
+    .gh-pkg__chevron { top: 22px; right: 20px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }
     .gh-pkg__name { font-size: 24px; }
     .gh-pkg__price { font-size: 22px; }
@@ -313,56 +326,52 @@
     .gh-glp__body, .gh-glp__body p { font-size: 15px; }
   }
 
-  /* Same problem, different width band: the 2-column grid doesn't drop to 1
-     column until 768px, so 769-999px viewports still render two cards side
-     by side at only ~330-450px wide EACH — with full desktop font sizes (26px
-     name, 24px price), which squeeze the heading even harder than the mobile
-     block above does. Measured against her actual longest name ("Body
-     Performance Scan," not the schema's shorter placeholder): still
-     overflowing at 990px, clean at exactly 1000px. Same 2-row grid fallback. */
+  /* Taking the chevron out of the row (see .gh-pkg__head above) only nets
+     ~8px of real width for the heading: it removes 20px + a 14px gap from the
+     flex row, but the padding reserved for its new absolute position gives
+     most of that straight back. That's nowhere near enough against a name
+     like "Body Performance Scan" — icon + price + 2 gaps alone run ~150px+ on
+     a narrow card, and "Performance" needs ~137px on its own. Tried shrinking
+     the price instead of the layout: even an unreadably small 14px price only
+     saves ~25px. Below 480px (1 card per row) and across 769-999px (2 cards
+     per row, ~330-410px each) there simply isn't room for icon + heading +
+     price on one line without the price shrinking past what's legible — so
+     price still drops to its own full-width row there. Everything from
+     480-768px and 1000px up keeps the single row exactly as specified. */
   @media (min-width: 769px) and (max-width: 999px) {
     .gh-pkg__head {
       display: grid;
-      grid-template-columns: auto 1fr auto;
-      grid-template-areas: "icon heading chevron" "price price price";
+      grid-template-columns: auto 1fr;
+      grid-template-areas: "icon heading" "price price";
       row-gap: 10px;
     }
     .gh-pkg__icon { grid-area: icon; }
     .gh-pkg__heading { grid-area: heading; }
-    .gh-pkg__chevron { grid-area: chevron; }
     .gh-pkg__price { grid-area: price; }
   }
 
-  /* Below ~480px, icon + heading + price + chevron sharing one row leaves the
-     heading under 100px wide once a longer name is in play — not even enough
-     for a single word like "Performance" to fit, so it overflows its own box
-     instead of wrapping (measured: heading shrinks to 91px at 430px viewport,
-     truly broken; 141px at 480px, fine). Falls back to the same 2-row grid
-     used before price moved into this row — everything else about the
-     single-row layout stays for every wider breakpoint. */
   @media (max-width: 479px) {
     .gh-pkg__head {
       display: grid;
-      grid-template-columns: auto 1fr auto;
-      grid-template-areas: "icon heading chevron" "price price price";
+      grid-template-columns: auto 1fr;
+      grid-template-areas: "icon heading" "price price";
       row-gap: 10px;
     }
     .gh-pkg__icon { grid-area: icon; }
     .gh-pkg__heading { grid-area: heading; }
-    .gh-pkg__chevron { grid-area: chevron; }
     /* margin-left: auto (inherited) still right-aligns it within the
-       full-width "price" track, keeping it under the chevron like every
-       wider breakpoint instead of switching sides just for this one. */
+       full-width "price" track, under the chevron like every wider
+       breakpoint instead of switching sides just for this one. */
     .gh-pkg__price { grid-area: price; }
-    /* Measured: at exactly 320px (iPhone SE-class) the heading column left
-       after icon + chevron is ~106px, and a name with a word as long as
-       "Performance" needs ~137px on its own — even this fallback grid isn't
-       always enough. overflow-wrap: break-word (NOT word-break: break-word,
-       the legacy alias that broke words even when they'd have fit on the next
-       line) only breaks a word as a last resort, when it truly can't fit a
-       line by itself — a safety net for this one width, invisible above it. */
+    /* Measured: at exactly 320px (iPhone SE-class) the heading column is
+       still too narrow for "Performance" as a whole word even on its own
+       row. overflow-wrap: break-word (NOT word-break: break-word, the legacy
+       alias that broke words even when they'd have fit on the next line)
+       only breaks a word as a last resort — a safety net for this one width,
+       invisible above it. */
     .gh-pkg__name { overflow-wrap: break-word; }
   }
+
 {% endstylesheet %}
 
 {% schema %}
