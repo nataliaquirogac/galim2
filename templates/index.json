@@ -99,6 +99,17 @@
         "coords": "CALZADA DEL VALLE"
       }
     },
+    "gap": {
+      "type": "galim-gap",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "01 / THE GAP",
+        "chip_label": "GALIM MEASURES",
+        "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
+        "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
+        "bg_color": "#0a2f38"
+      }
+    },
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
@@ -238,17 +249,6 @@
         "speed": 45,
         "side_color": "#0a2f38",
         "side_width": 12
-      }
-    },
-    "gap": {
-      "type": "galim-gap",
-      "disabled": true,
-      "settings": {
-        "eyebrow": "01 / THE GAP",
-        "chip_label": "GALIM MEASURES",
-        "heading": "<p>Understand how your body <strong>performs today</strong>, where your biggest <strong>future risks</strong> are, and exactly what to do next.</p>",
-        "body": "<p>Developed by our Medical Council of specialists across every major body system.</p>",
-        "bg_color": "#0a2f38"
       }
     },
     "steps": {
@@ -615,9 +615,9 @@
   },
   "order": [
     "hero",
-    "carousel",
     "gap",
     "steps",
+    "carousel",
     "visit_gallery",
     "protocols",
     "two_axes",
