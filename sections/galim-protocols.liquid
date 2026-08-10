@@ -16,7 +16,11 @@
           {%- assign b = block.settings -%}
           <div class="gh-pkg{% if b.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
             {%- if b.featured and b.badge_label != blank -%}<div class="gh-pkg__badge">{{ b.badge_label }}</div>{%- endif -%}
-            <div class="gh-pkg__head">
+            {%- comment -%}
+              Collapsed by default: name + subtitle only. Everything else
+              (price included) lives in the panel below, revealed on click.
+            {%- endcomment -%}
+            <button type="button" class="gh-pkg__head" data-gh-pkg-toggle aria-expanded="false">
               {%- comment -%}
                 Square icon tile above the title. 'none' lets a package opt out
                 so a card without a fitting icon doesn't get a filler one.
@@ -39,42 +43,49 @@
                   {%- endcase -%}
                 </span>
               {%- endunless -%}
-              {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
-              {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
-              {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
-            </div>
-            <div class="gh-pkg__body">
-              {%- if b.intro != blank -%}<p class="gh-pkg__intro">{{ b.intro }}</p>{%- endif -%}
+              <span class="gh-pkg__heading">
+                {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
+                {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
+              </span>
+              <span class="gh-pkg__chevron" aria-hidden="true">{%- render 'icon-chevron-down', size: 20 -%}</span>
+            </button>
+            <div class="gh-pkg__collapse" data-gh-pkg-panel>
+              <div class="gh-pkg__collapse-inner">
+                <div class="gh-pkg__body">
+                  {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
+                  {%- if b.intro != blank -%}<p class="gh-pkg__intro">{{ b.intro }}</p>{%- endif -%}
 
-              {%- if b.features != blank -%}
-                <div class="gh-pkg__section">
-                  <div class="gh-pkg__label">{{ b.features_label | default: 'WHAT WE MEASURE' }}</div>
-                  <div class="gh-pkg__features">{{ b.features }}</div>
+                  {%- if b.features != blank -%}
+                    <div class="gh-pkg__section">
+                      <div class="gh-pkg__label">{{ b.features_label | default: 'WHAT WE MEASURE' }}</div>
+                      <div class="gh-pkg__features">{{ b.features }}</div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if b.outro != blank -%}<div class="gh-pkg__note">{{ b.outro }}</div>{%- endif -%}
+
+                  {%- if b.addon_line != blank -%}
+                    <div class="gh-pkg__section gh-pkg__addons">
+                      <div class="gh-pkg__label">{{ b.addon_title | default: 'ADD-ONS' }}</div>
+                      <div class="gh-pkg__addon-list">
+                        {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
+                        {%- for row in addon_rows -%}
+                          {%- assign row_clean = row | strip_html | strip -%}
+                          {%- if row_clean != blank -%}<div class="gh-pkg__addon">{{ row_clean }}</div>{%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if b.button_label != blank -%}
+                    {%- if b.button_link != blank -%}
+                      <a href="{{ b.button_link }}" class="gh-btn gh-btn--solid gh-pkg__cta">{{ b.button_label }} →</a>
+                    {%- else -%}
+                      <a href="#" class="gh-btn gh-btn--solid gh-pkg__cta" data-gh-waitlist-open>{{ b.button_label }} →</a>
+                    {%- endif -%}
+                  {%- endif -%}
                 </div>
-              {%- endif -%}
-
-              {%- if b.outro != blank -%}<div class="gh-pkg__note">{{ b.outro }}</div>{%- endif -%}
-
-              {%- if b.addon_line != blank -%}
-                <div class="gh-pkg__section gh-pkg__addons">
-                  <div class="gh-pkg__label">{{ b.addon_title | default: 'ADD-ONS' }}</div>
-                  <div class="gh-pkg__addon-list">
-                    {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
-                    {%- for row in addon_rows -%}
-                      {%- assign row_clean = row | strip_html | strip -%}
-                      {%- if row_clean != blank -%}<div class="gh-pkg__addon">{{ row_clean }}</div>{%- endif -%}
-                    {%- endfor -%}
-                  </div>
-                </div>
-              {%- endif -%}
-
-              {%- if b.button_label != blank -%}
-                {%- if b.button_link != blank -%}
-                  <a href="{{ b.button_link }}" class="gh-btn gh-btn--solid gh-pkg__cta">{{ b.button_label }} →</a>
-                {%- else -%}
-                  <a href="#" class="gh-btn gh-btn--solid gh-pkg__cta" data-gh-waitlist-open>{{ b.button_label }} →</a>
-                {%- endif -%}
-              {%- endif -%}
+              </div>
             </div>
           </div>
         {%- endif -%}
@@ -117,11 +128,10 @@
   @media (prefers-reduced-motion: reduce) {
     .gh-protocols__h2 strong { animation: none; }
   }
-  /* align-items:stretch (the default) is what makes both cards the height of the
-     taller one; `start` had each size to its own content. The card and its body
-     are flex columns so the CTA can be pinned to the bottom of that shared
-     height — otherwise the shorter card just gains dead space under its button. */
-  .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  /* align-items: start, not the default stretch — each card is now an
+     independent accordion, so a collapsed card must stay short next to an
+     expanded sibling instead of being stretched to match its height. */
+  .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
   .gh-pkg { display: flex; flex-direction: column; }
 
   /* Package cards = light glass islands, tuned to the hero's palette */
@@ -165,19 +175,24 @@
     font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
     background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
   }
-  /* Icon tile and title share the first row; subtitle and price span the full
-     width underneath. Auto-placement, not explicit columns, so a package with
-     "No icon" puts its title in track 1 and stays flush left instead of
-     inheriting the gutter the missing tile would have left behind. */
+  /* The collapsed summary — icon, name + subtitle, chevron — is itself the
+     toggle button. Flex rather than the old icon/title grid, since price no
+     longer lives here to span a second row underneath. */
   .gh-pkg__head {
-    position: relative; padding: 26px 30px 20px;
-    display: grid; grid-template-columns: auto 1fr;
-    align-items: center; column-gap: 14px;
-    border-bottom: 1px solid rgba(255,255,255,.14);
+    position: relative; width: 100%; padding: 26px 30px 20px;
+    display: flex; align-items: center; gap: 14px;
+    border: 0; border-bottom: 1px solid rgba(255,255,255,.14);
     background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.07), transparent 60%);
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
   }
-  .gh-pkg__subtitle, .gh-pkg__price { grid-column: 1 / -1; }
   .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.09), transparent 60%); }
+  .gh-pkg__heading { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1; }
+  .gh-pkg__chevron {
+    display: inline-flex; flex-shrink: 0; color: var(--gh-slate);
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .gh-pkg__head[aria-expanded="true"] .gh-pkg__chevron { transform: rotate(180deg); color: var(--gh-white); }
+  .gh-pkg__head:hover .gh-pkg__chevron { color: var(--gh-white); }
   /* Square icon tile: a small logo-like mark for each package. Frosted glass
      rather than a solid fill, so it reads on both the plain and the featured
      card gradient without a second colour. aspect-ratio keeps it square if the
@@ -199,12 +214,32 @@
   /* Package titles stay in Chillax (brand display face); everything else in the
      card is DM Sans. */
   .gh-pkg__name { font: 600 26px/1.1 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em; }
-  /* Carries the gap under the icon row now that the title has no bottom margin. */
-  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 11px 0 12px; padding: 0; }
-  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
+  /* Spacing under the name is the .gh-pkg__heading flex gap now, not a margin —
+     subtitle is the last thing shown before the panel is opened. */
+  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 0; padding: 0; }
+  /* Price moved into the panel (collapsed view is name + subtitle only), so it
+     needs its own bottom margin now instead of relying on the old header
+     layout for spacing before the intro line. */
+  .gh-pkg__price { font: 500 24px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; margin-bottom: 16px; }
   .gh-pkg__unit { font-size: 18px; }
 
-  .gh-pkg__body { padding: 20px 30px 24px; flex: 1; display: flex; flex-direction: column; }
+  /* Collapsible panel: grid-template-rows 0fr -> 1fr animates height without
+     JS measuring scrollHeight. The inner wrapper clips overflow during the
+     transition; the fade+lift on gh-pkg__body is what reads as content
+     arriving "little by little" rather than the panel just snapping open. */
+  .gh-pkg__collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .gh-pkg__collapse.is-open { grid-template-rows: 1fr; }
+  .gh-pkg__collapse-inner { overflow: hidden; min-height: 0; }
+  .gh-pkg__body {
+    padding: 20px 30px 24px; flex: 1; display: flex; flex-direction: column;
+    opacity: 0; transform: translateY(-6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .gh-pkg__collapse.is-open .gh-pkg__body { opacity: 1; transform: none; transition-delay: 0.1s; }
   /* Lead line */
   .gh-pkg__intro { font: 400 15px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0 0 18px; }
   /* Each block is a labelled section split by a hairline divider */
@@ -252,6 +287,13 @@
     .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
+    /* The badge used to float over a two-row head (icon+name, then subtitle
+       below) with room to spare. The head is a single flex row now, and its
+       new chevron claims the same top-right corner the badge floats over —
+       on a narrow card "MOST POPULAR" and the chevron collide. Drop the badge
+       into normal flow instead, right-aligned above the head, rather than
+       trying to reserve exactly enough padding for text of unknown length. */
+    .gh-pkg__badge { position: static; align-self: flex-end; margin: 16px 16px 0; }
     .gh-pkg__head { padding: 22px 20px 18px; }
     .gh-pkg__head { column-gap: 12px; }
     .gh-pkg__icon { width: 38px; border-radius: 9px; }

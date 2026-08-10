@@ -3,6 +3,7 @@
    - Mobile nav drawer
    - Waitlist modal (opened from any [data-gh-waitlist-open])
    - Sticky header condense on scroll
+   - Package cards: accordion (collapsed to name + subtitle by default)
    ============================================================ */
 (function () {
   'use strict';
@@ -152,6 +153,26 @@
       e.preventDefault();
       toggleDrawer(false);
     }
+  });
+
+  /* ---- Package cards: accordion ----
+     Each card opens independently (no accordion-style "close the others").
+     The panel's own CSS (grid-template-rows 0fr -> 1fr) does the animated
+     reveal; this just flips the state that CSS reads. inert keeps the CTA
+     link and everything else in a collapsed panel out of the tab order and
+     off screen readers' radar — a 0-height overflow:hidden box still lets a
+     browser tab focus INTO a link inside it, which would otherwise land a
+     keyboard user on a button they can't see. */
+  document.querySelectorAll('[data-gh-pkg-toggle]').forEach(function (toggle) {
+    var panel = toggle.nextElementSibling;
+    if (!panel || !panel.hasAttribute('data-gh-pkg-panel')) return;
+    panel.inert = true;
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      panel.classList.toggle('is-open', open);
+      panel.inert = !open;
+    });
   });
 
   /* ---- Floating pill header: condense + park under the announcement bar ----
