@@ -38,15 +38,13 @@
         {%- if s.legal_menu != blank or s.payment_note != blank -%}
           <div class="gh-footer__col">
             <span class="gh-footer__col-title">{{ s.legal_title | default: 'LEGAL' }}</span>
+            {%- comment -%}
+              Unlike nav_menu, this column is for real destinations (privacy
+              policy, search, external pages) — never same-page anchors — so
+              it always links to link.url regardless of single_page mode.
+            {%- endcomment -%}
             {%- for link in s.legal_menu.links -%}
-              {%- capture anchor -%}{%- render 'galim-anchor', title: link.title -%}{%- endcapture -%}
-              {%- if s.single_page and anchor != blank -%}
-                <a href="{{ anchor }}">{{ link.title }}</a>
-              {%- elsif s.single_page -%}
-                <span class="gh-footer__plain">{{ link.title }}</span>
-              {%- else -%}
-                <a href="{{ link.url }}">{{ link.title }}</a>
-              {%- endif -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
             {%- if s.payment_note != blank -%}<span class="gh-footer__payment">{{ s.payment_note }}</span>{%- endif -%}
           </div>
