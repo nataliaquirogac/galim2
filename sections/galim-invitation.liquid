@@ -4,13 +4,28 @@
   book"). Lives at /invitacion-especial via a URL redirect to this page's
   real Shopify handle. The referrer's name reads from a ?ref= query param
   client-side (Liquid can't see query strings) to personalize "Invitación
-  privada de {name}" and gets packed into the customer note alongside the
-  guest's name on submit — same wiring as the waitlist modal.
+  privada de {name}".
+
+  Two-step booking, titular then guest (+1), each saved as its OWN Shopify
+  customer tagged "invitacion especial" — native path only (no external
+  endpoint set). Two separate {% form 'customer' %} blocks, never nested
+  (nested <form> tags are invalid HTML): step 2 only renders once step 1's
+  own `form.posted_successfully?` is true, captured into `step1_done`
+  before `{% endform %}` closes since `form` is scoped to its own block.
+  Shopify's native form re-renders the SAME url after a successful post (no
+  redirect needed), so this reads as a normal "Next" click to the visitor.
+
+  If an external form endpoint IS set, there's no native one-customer-per-
+  post constraint, so both people post together in one request; "Next" is
+  just a client-side field-group toggle (see [data-gh-invite-next] in
+  galim.js).
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
   assign action = s.form_action
+  assign step1_done = false
+  assign step2_done = false
 -%}
 
 <section id="{{ s.anchor_id | default: 'invitacion' }}" class="gh-invite gh-section" data-gh-section="invitation" style="background: {{ s.bg_color | default: '#0D3B46' }};">
@@ -32,7 +47,10 @@
     </div>
 
     <div class="gh-invite__panel" data-gh-invite-form>
-      {%- capture invite_fields -%}
+
+      {%- comment -%} ---------------- STEP 1: titular ---------------- {%- endcomment -%}
+      {%- capture step1_fields -%}
+        <p class="gh-invite__step-label">{{ s.step1_label | default: 'Paso 1 de 2 · Tus datos' }}</p>
         <label class="gh-field">
           <span class="gh-field__label">Nombre</span>
           <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
@@ -60,26 +78,93 @@
             <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
           </label>
         </div>
-        <label class="gh-field">
-          <span class="gh-field__label">Nombre de tu invitado(a) <span class="gh-invite__optional">(opcional)</span></span>
-          <input type="text" {% if action == blank %}data-gh-invite-guest{% else %}name="guest_name"{% endif %} autocomplete="off" placeholder="¿Quién te acompaña?">
-        </label>
-        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_label | default: 'Reservar mi cita' }} →</button>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit" {% if action != blank %}data-gh-invite-next{% endif %}>{{ s.button_label | default: 'Siguiente: datos de tu invitado(a)' }} →</button>
       {%- endcapture -%}
 
       {%- if action == blank -%}
-        {%- form 'customer', class: 'gh-invite__form' -%}
-          <input type="hidden" name="contact[tags]" value="invitation, gift-card">
-          <input type="hidden" name="contact[note]" data-gh-invite-note>
+        {%- form 'customer', class: 'gh-invite__form', id: 'gh-invite-step1' -%}
+          <input type="hidden" name="contact[tags]" value="invitacion especial">
+          <input type="hidden" name="contact[note]" data-gh-invite-note value="Invitación especial · Titular">
           {%- if form.posted_successfully? -%}
-            <p class="gh-invite__success">{{ s.success_message | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
+            {%- assign step1_done = true -%}
           {%- else -%}
             {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
-            {{ invite_fields }}
+            {{ step1_fields }}
           {%- endif -%}
         {%- endform -%}
-      {%- else -%}
-        <form action="{{ action }}" method="post" class="gh-invite__form" accept-charset="UTF-8">{{ invite_fields }}</form>
+      {%- endif -%}
+
+      {%- comment -%} ---------------- STEP 2: guest (+1) ---------------- {%- endcomment -%}
+      {%- capture step2_fields -%}
+        <p class="gh-invite__step-label">{{ s.step2_label | default: 'Paso 2 de 2 · Datos de tu invitado(a)' }}</p>
+        <label class="gh-field">
+          <span class="gh-field__label">Nombre</span>
+          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}guest[first_name]{% endif %}" {% if action == blank %}required{% endif %} autocomplete="given-name">
+        </label>
+        {%- if action == blank -%}
+          <input type="hidden" name="contact[last_name]" data-gh-invite-guest-lastname>
+        {%- endif -%}
+        <div class="gh-field-row">
+          <label class="gh-field">
+            <span class="gh-field__label">Apellido paterno</span>
+            <input type="text" {% if action == blank %}data-gh-invite-guest-last1 required{% else %}name="guest[last_name]"{% endif %} autocomplete="family-name">
+          </label>
+          <label class="gh-field">
+            <span class="gh-field__label">Apellido materno</span>
+            <input type="text" {% if action == blank %}data-gh-invite-guest-last2 required{% else %}name="guest[last_name_2]"{% endif %} autocomplete="additional-name">
+          </label>
+        </div>
+        <div class="gh-field-row">
+          <label class="gh-field">
+            <span class="gh-field__label">Celular</span>
+            <input type="tel" {% if action == blank %}data-gh-invite-guest-phone required{% else %}name="guest[phone]"{% endif %} autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
+          </label>
+          <label class="gh-field">
+            <span class="gh-field__label">Correo</span>
+            <input type="email" name="{% if action == blank %}contact[email]{% else %}guest[email]{% endif %}" {% if action == blank %}required{% endif %} autocomplete="email">
+          </label>
+        </div>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_guest_label | default: 'Reservar ambas citas' }} →</button>
+        <button type="button" class="gh-invite__skip" data-gh-invite-skip>{{ s.skip_label | default: 'Todavía no sé quién me acompaña, continuar sin invitado(a)' }}</button>
+      {%- endcapture -%}
+
+      {%- if action == blank -%}
+        {%- if step1_done -%}
+          {%- form 'customer', class: 'gh-invite__form gh-invite__form--guest', id: 'gh-invite-step2' -%}
+            <input type="hidden" name="contact[tags]" value="invitacion especial">
+            <input type="hidden" name="contact[note]" data-gh-invite-guest-note value="Invitación especial · Invitado(a) +1">
+            {%- if form.posted_successfully? -%}
+              {%- assign step2_done = true -%}
+            {%- else -%}
+              {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
+              {{ step2_fields }}
+            {%- endif -%}
+          {%- endform -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- comment -%}
+        External endpoint: no native one-customer-per-post constraint, so
+        both people post together in a single form; "Next"/"Skip" are just
+        client-side field-group toggles (see [data-gh-invite-next] /
+        [data-gh-invite-skip] in galim.js), not real submits.
+      {%- endcomment -%}
+      {%- if action != blank -%}
+        <form action="{{ action }}" method="post" class="gh-invite__form" accept-charset="UTF-8">
+          <div data-gh-invite-step="1">{{ step1_fields }}</div>
+          <div data-gh-invite-step="2" hidden>
+            {{ step2_fields }}
+            <input type="hidden" name="guest_skipped" data-gh-invite-guest-skipped value="false">
+          </div>
+        </form>
+      {%- endif -%}
+
+      {%- comment -%} ---------------- Done ---------------- {%- endcomment -%}
+      {%- if step2_done -%}
+        <p class="gh-invite__success">{{ s.success_message | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
+      {%- endif -%}
+      {%- if step1_done and action == blank -%}
+        <p class="gh-invite__success" data-gh-invite-skipped hidden>{{ s.success_message_solo | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita.' }}</p>
       {%- endif -%}
     </div>
   </div>
@@ -120,14 +205,12 @@
   .gh-invite__h1 { margin: 18px 0 0; font: 200 44px/1.1 var(--gh-sans); letter-spacing: -0.02em; color: #F7F5F3; }
   .gh-invite__sub { margin: 16px 0 0; max-width: 440px; font: 300 16px/1.55 var(--gh-sans); color: var(--gh-muted); }
 
-  {%- comment -%}
-    Gradient-ring border, same recipe as the package cards / What-we-measure
-    cards / gh-btn--solid: 3px transparent border, fill clipped to
-    padding-box, the brand ramp clipped to border-box behind it. 135deg so
-    the ramp sweeps every edge (a 90deg gradient leaves flat, invisible
-    vertical edges), looping back to its start color so it reads solid on
-    every side regardless of the card's aspect ratio.
-  {%- endcomment -%}
+  /* Gradient-ring border, same recipe as the package cards / What-we-measure
+     cards / gh-btn--solid: 3px transparent border, fill clipped to
+     padding-box, the brand ramp clipped to border-box behind it. 135deg so
+     the ramp sweeps every edge (a 90deg gradient leaves flat, invisible
+     vertical edges), looping back to its start color so it reads solid on
+     every side regardless of the card's aspect ratio. */
   .gh-invite__offer {
     position: relative; margin-top: 44px; width: 100%; box-sizing: border-box;
     border: 3px solid transparent; border-radius: 20px;
@@ -157,10 +240,22 @@
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
   }
   .gh-invite__form { display: flex; flex-direction: column; gap: 16px; }
-  .gh-invite__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--gh-muted); }
+  .gh-invite__form--guest { margin-top: 28px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.14); }
+  .gh-invite__step-label {
+    margin: 0; font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gh-cyan);
+  }
   .gh-invite__submit { width: 100%; justify-content: center; margin-top: 8px; }
+  .gh-invite__skip {
+    display: block; width: 100%; text-align: center; margin-top: 4px;
+    background: none; border: 0; cursor: pointer;
+    font: 400 13px/1.4 var(--gh-sans); color: var(--gh-muted); text-decoration: underline;
+  }
+  .gh-invite__skip:hover { color: var(--gh-light); }
   .gh-invite__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
+  .gh-invite__success[hidden] { display: none; }
   .gh-invite__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
+  [data-gh-invite-step][hidden] { display: none; }
 
   @media (max-width: 768px) {
     .gh-invite__h1 { font-size: 30px; }
@@ -186,12 +281,19 @@
     { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "2 RMR DE CORTESÍA" },
     { "type": "textarea", "id": "offer_line", "label": "Offer description", "default": "Una evaluación de Tasa Metabólica en Reposo (RMR) para ti, y otra para la persona que quieras invitar." },
     { "type": "text", "id": "value_note", "label": "Value note", "default": "Valor $1,500 MXN por persona · Cortesía, sin costo" },
-    { "type": "header", "content": "Form" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Reservar mi cita" },
-    { "type": "textarea", "id": "success_message", "label": "Success message", "default": "¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a)." },
+    { "type": "header", "content": "Form — step 1 (titular)" },
+    { "type": "text", "id": "step1_label", "label": "Step 1 label", "default": "Paso 1 de 2 · Tus datos" },
+    { "type": "text", "id": "button_label", "label": "Step 1 button label", "default": "Siguiente: datos de tu invitado(a)" },
+    { "type": "header", "content": "Form — step 2 (guest)" },
+    { "type": "text", "id": "step2_label", "label": "Step 2 label", "default": "Paso 2 de 2 · Datos de tu invitado(a)" },
+    { "type": "text", "id": "button_guest_label", "label": "Step 2 button label", "default": "Reservar ambas citas" },
+    { "type": "text", "id": "skip_label", "label": "Skip-guest link label", "default": "Todavía no sé quién me acompaña, continuar sin invitado(a)" },
+    { "type": "header", "content": "Success messages" },
+    { "type": "textarea", "id": "success_message", "label": "Success — both booked", "default": "¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a)." },
+    { "type": "textarea", "id": "success_message_solo", "label": "Success — guest skipped", "default": "¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita." },
     {
       "type": "paragraph",
-      "content": "Leave the endpoint below blank to use Shopify's native customer form (tagged 'invitation, gift-card'); phone, guest name and referrer are packed into the customer note, same as the waitlist."
+      "content": "Leave the endpoint below blank to use Shopify's native customer form: titular and guest are each saved as their OWN customer, tagged 'invitacion especial'. If an external endpoint is set instead, both post together in one request (no native one-customer-per-post constraint), and Next/Skip are just client-side."
     },
     { "type": "url", "id": "form_action", "label": "External form endpoint (optional)" }
   ],

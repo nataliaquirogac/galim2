@@ -135,11 +135,10 @@
 
   /* ---- Private invitation page (/invitacion-especial) ---- */
   var invitePanel = document.querySelector('[data-gh-invite-form]');
-  var inviteForm = invitePanel ? invitePanel.querySelector('form') : null;
-  if (inviteForm) {
+  if (invitePanel) {
     /* Liquid can't read query strings, so the referrer's name ("Private
        Invitation by Michelle Gutierrez" on the physical card) is read from
-       ?ref= client-side and both displayed and packed into the note. */
+       ?ref= client-side and shown above the headline. */
     var refName = new URLSearchParams(window.location.search).get('ref');
     if (refName) {
       var refEl = document.querySelector('[data-gh-invite-ref]');
@@ -149,28 +148,98 @@
       }
     }
 
-    inviteForm.addEventListener('submit', function () {
-      var note = inviteForm.querySelector('[data-gh-invite-note]');
-      if (!note) return; // external endpoint: fields post with their own names
-
-      var lastName = inviteForm.querySelector('[data-gh-invite-lastname]');
-      var last1 = inviteForm.querySelector('[data-gh-invite-last1]');
-      var last2 = inviteForm.querySelector('[data-gh-invite-last2]');
+    /* Shared by both steps/modes: merges the two apellidos into Shopify's
+       single last_name field and packs phone + referrer into the note,
+       same approach as the waitlist modal. */
+    function packInviteNote(scope, noteSel, label, lastNameSel, last1Sel, last2Sel, phoneSel) {
+      var note = scope.querySelector(noteSel);
+      if (!note) return;
+      var lastName = scope.querySelector(lastNameSel);
+      var last1 = scope.querySelector(last1Sel);
+      var last2 = scope.querySelector(last2Sel);
       if (lastName) {
         lastName.value = [
           last1 ? last1.value.trim() : '',
           last2 ? last2.value.trim() : ''
         ].filter(Boolean).join(' ');
       }
-
-      var phone = inviteForm.querySelector('[data-gh-invite-phone]');
-      var guest = inviteForm.querySelector('[data-gh-invite-guest]');
-      var parts = ['Private invitation booking'];
+      var phone = scope.querySelector(phoneSel);
+      var parts = [label];
       if (phone && phone.value) parts.push('Phone: ' + phone.value);
-      if (guest && guest.value.trim()) parts.push('Guest: ' + guest.value.trim());
       if (refName) parts.push('Referred by: ' + refName);
       note.value = parts.join(' · ');
-    });
+    }
+
+    var isExternal = !!invitePanel.querySelector('[data-gh-invite-guest-skipped]');
+
+    if (isExternal) {
+      /* One combined form (no native one-customer-per-post constraint):
+         Next/Skip are client-side field-group toggles, not real submits. */
+      var externalForm = invitePanel.querySelector('form');
+      var step1El = invitePanel.querySelector('[data-gh-invite-step="1"]');
+      var step2El = invitePanel.querySelector('[data-gh-invite-step="2"]');
+      var nextBtn = invitePanel.querySelector('[data-gh-invite-next]');
+      if (nextBtn && step1El && step2El) {
+        nextBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          /* Guest inputs aren't required yet at this point (see below), so
+             this only checks step 1's own fields. */
+          if (!externalForm.checkValidity()) {
+            externalForm.reportValidity();
+            return;
+          }
+          step1El.hidden = true;
+          step2El.hidden = false;
+          /* Only required once actually visible: a still-required field
+             inside a hidden ancestor is NOT reliably exempt from constraint
+             validation in every browser, so toggling this on reveal (and
+             off again on skip, below) is what keeps "Next" from being
+             blocked by the guest fields before the user ever sees them. */
+          step2El.querySelectorAll('input').forEach(function (el) { el.required = true; });
+        });
+      }
+      var skipBtn = invitePanel.querySelector('[data-gh-invite-skip]');
+      var skippedFlag = invitePanel.querySelector('[data-gh-invite-guest-skipped]');
+      if (skipBtn) {
+        skipBtn.addEventListener('click', function () {
+          if (skippedFlag) skippedFlag.value = 'true';
+          if (step2El) {
+            step2El.querySelectorAll('input').forEach(function (el) { el.required = false; });
+            step2El.hidden = true;
+          }
+          externalForm.requestSubmit();
+        });
+      }
+      externalForm.addEventListener('submit', function () {
+        packInviteNote(externalForm, '[data-gh-invite-note]', 'Private invitation booking', '[data-gh-invite-lastname]', '[data-gh-invite-last1]', '[data-gh-invite-last2]', '[data-gh-invite-phone]');
+      });
+    } else {
+      /* Native: two separate {% form 'customer' %} blocks, each a real page
+         submit that creates its own Shopify customer. Shopify re-renders
+         the same URL after a successful post (no redirect), so step 2
+         simply appears once step 1 is done — reads as a normal "Next". */
+      var step1Form = document.getElementById('gh-invite-step1');
+      if (step1Form) {
+        step1Form.addEventListener('submit', function () {
+          packInviteNote(step1Form, '[data-gh-invite-note]', 'Invitación especial · Titular', '[data-gh-invite-lastname]', '[data-gh-invite-last1]', '[data-gh-invite-last2]', '[data-gh-invite-phone]');
+        });
+      }
+
+      var step2Form = document.getElementById('gh-invite-step2');
+      var skippedMsg = invitePanel.querySelector('[data-gh-invite-skipped]');
+      if (step2Form) {
+        step2Form.addEventListener('submit', function () {
+          packInviteNote(step2Form, '[data-gh-invite-guest-note]', 'Invitación especial · Invitado(a) +1', '[data-gh-invite-guest-lastname]', '[data-gh-invite-guest-last1]', '[data-gh-invite-guest-last2]', '[data-gh-invite-guest-phone]');
+        });
+        var skipBtn2 = step2Form.querySelector('[data-gh-invite-skip]');
+        if (skipBtn2) {
+          skipBtn2.addEventListener('click', function () {
+            step2Form.hidden = true;
+            if (skippedMsg) skippedMsg.hidden = false;
+          });
+        }
+      }
+    }
   }
 
   /* ---- Mobile nav drawer ---- */
