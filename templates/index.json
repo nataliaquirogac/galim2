@@ -367,6 +367,7 @@
             "icon": "heartbeat",
             "name": "Prevention",
             "subtitle": "50 minutes. Every system. Your biological age.",
+            "included_note": "Body Performance included",
             "price": "$4,999",
             "price_unit": "MXN",
             "featured": false,

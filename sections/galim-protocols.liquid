@@ -48,6 +48,7 @@
                 {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
               </div>
               {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
+              {%- if b.included_note != blank -%}<p class="gh-pkg__included">{{ b.included_note }}</p>{%- endif -%}
               <span class="gh-pkg__chevron" aria-hidden="true">{%- render 'icon-chevron-down', size: 20 -%}</span>
             </button>
             <div class="gh-pkg__collapse" data-gh-pkg-panel>
@@ -243,6 +244,7 @@
   /* Full width, on its own line below the top row now — not sharing a column
      with the name, so it can't be the thing that pushes it to three lines. */
   .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 8px 0 0; padding: 0; }
+  .gh-pkg__included { font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); margin: 4px 0 0; padding: 0; letter-spacing: 0.02em; }
   /* flex: none + white-space: nowrap: never shrinks, never breaks "$1,499
      MXN" onto two lines. The name is what gives way (flex: 1 + min-width: 0
      above lets it wrap instead). Smaller than before on purpose — at 24-26px
@@ -373,6 +375,7 @@
         },
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
         { "type": "text", "id": "subtitle", "label": "Subtitle (under name)", "default": "25 minutes. Six systems. One number." },
+        { "type": "text", "id": "included_note", "label": "Included note (small, under subtitle)", "info": "E.g. \"Body Performance included\" — leave blank to hide." },
         { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
         { "type": "text", "id": "price_unit", "label": "Price unit", "default": "MXN" },
         { "type": "checkbox", "id": "featured", "label": "Featured (green border + badge)", "default": false },
