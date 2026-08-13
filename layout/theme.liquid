@@ -439,6 +439,15 @@
       sticky/scroll animations. Being a direct child of body sidesteps that
       entirely, guaranteeing the modal is truly fixed to the viewport.
     {%- endcomment -%}
-    {%- render 'galim-waitlist-modal' -%}
+    {%- comment -%}
+      Skipped on the invitation page: that page has its own {% form 'customer' %}
+      block, and Shopify's form.posted_successfully? is true for every
+      'customer'-type form on the page once ANY of them succeeds — not just the
+      one actually submitted. Rendering this modal there made it flash its own
+      "success" state after the invitation form's unrelated submit.
+    {%- endcomment -%}
+    {%- unless template.suffix == 'invitacion-especial' -%}
+      {%- render 'galim-waitlist-modal' -%}
+    {%- endunless -%}
   </body>
 </html>

@@ -214,27 +214,60 @@
         packInviteNote(externalForm, '[data-gh-invite-note]', 'Private invitation booking', '[data-gh-invite-lastname]', '[data-gh-invite-last1]', '[data-gh-invite-last2]', '[data-gh-invite-phone]');
       });
     } else {
-      /* Native: two separate {% form 'customer' %} blocks, each a real page
-         submit that creates its own Shopify customer. Shopify re-renders
-         the same URL after a successful post (no redirect), so step 2
-         simply appears once step 1 is done — reads as a normal "Next". */
-      var step1Form = document.getElementById('gh-invite-step1');
-      if (step1Form) {
-        step1Form.addEventListener('submit', function () {
-          packInviteNote(step1Form, '[data-gh-invite-note]', 'Invitación especial · Titular', '[data-gh-invite-lastname]', '[data-gh-invite-last1]', '[data-gh-invite-last2]', '[data-gh-invite-phone]');
-        });
-      }
+      /* Native: ONE {% form 'customer' %}, reused for both submissions —
+         see the long comment in galim-invitation.liquid for why there
+         can't be two. Step 1 and step 2 share the same contact[...] field
+         names; whichever group is disabled is excluded from what gets
+         submitted (and from constraint validation) regardless of it also
+         being visually hidden. Which group is active, and which "done"
+         message shows, is tracked via a ?step= query param carried across
+         the native form's post-success redirect (the `return_to` hidden
+         field) — Shopify doesn't redirect on a failed submission, so an
+         error naturally reloads the same step the user was already on. */
+      var nativeForm = document.getElementById('gh-invite-form');
+      if (nativeForm) {
+        var nStep1 = nativeForm.querySelector('[data-gh-invite-step="1"]');
+        var nStep2 = nativeForm.querySelector('[data-gh-invite-step="2"]');
+        var doneMsg = invitePanel.querySelector('[data-gh-invite-done]');
+        var skippedMsg = invitePanel.querySelector('[data-gh-invite-skipped]');
+        var returnToInput = nativeForm.querySelector('[data-gh-invite-return]');
 
-      var step2Form = document.getElementById('gh-invite-step2');
-      var skippedMsg = invitePanel.querySelector('[data-gh-invite-skipped]');
-      if (step2Form) {
-        step2Form.addEventListener('submit', function () {
-          packInviteNote(step2Form, '[data-gh-invite-guest-note]', 'Invitación especial · Invitado(a) +1', '[data-gh-invite-guest-lastname]', '[data-gh-invite-guest-last1]', '[data-gh-invite-guest-last2]', '[data-gh-invite-guest-phone]');
-        });
-        var skipBtn2 = step2Form.querySelector('[data-gh-invite-skip]');
-        if (skipBtn2) {
-          skipBtn2.addEventListener('click', function () {
-            step2Form.hidden = true;
+        function setStep(step, disabled) {
+          step.hidden = disabled;
+          step.querySelectorAll('input').forEach(function (el) { el.disabled = disabled; });
+        }
+
+        var currentStep = new URLSearchParams(window.location.search).get('step');
+        if (currentStep === 'done') {
+          nativeForm.hidden = true;
+          if (doneMsg) doneMsg.hidden = false;
+        } else if (currentStep === '2') {
+          setStep(nStep1, true);
+          setStep(nStep2, false);
+        }
+        /* else: default markup already has step 1 enabled, step 2 disabled+hidden */
+
+        if (returnToInput) {
+          nativeForm.addEventListener('submit', function () {
+            var showingStep2 = !nStep2.hidden;
+            var nextStep = showingStep2 ? 'done' : '2';
+            var url = new URL(window.location.pathname, window.location.origin);
+            url.searchParams.set('step', nextStep);
+            if (refName) url.searchParams.set('ref', refName);
+            returnToInput.value = url.pathname + url.search;
+
+            if (showingStep2) {
+              packInviteNote(nativeForm, '[data-gh-invite-note]', 'Invitación especial · Invitado(a) +1', '[data-gh-invite-lastname]', '[data-gh-invite-guest-last1]', '[data-gh-invite-guest-last2]', '[data-gh-invite-guest-phone]');
+            } else {
+              packInviteNote(nativeForm, '[data-gh-invite-note]', 'Invitación especial · Titular', '[data-gh-invite-lastname]', '[data-gh-invite-last1]', '[data-gh-invite-last2]', '[data-gh-invite-phone]');
+            }
+          });
+        }
+
+        var skipBtn = nativeForm.querySelector('[data-gh-invite-skip]');
+        if (skipBtn) {
+          skipBtn.addEventListener('click', function () {
+            nativeForm.hidden = true;
             if (skippedMsg) skippedMsg.hidden = false;
           });
         }

@@ -8,24 +8,36 @@
 
   Two-step booking, titular then guest (+1), each saved as its OWN Shopify
   customer tagged "invitacion especial" — native path only (no external
-  endpoint set). Two separate {% form 'customer' %} blocks, never nested
-  (nested <form> tags are invalid HTML): step 2 only renders once step 1's
-  own `form.posted_successfully?` is true, captured into `step1_done`
-  before `{% endform %}` closes since `form` is scoped to its own block.
-  Shopify's native form re-renders the SAME url after a successful post (no
-  redirect needed), so this reads as a normal "Next" click to the visitor.
+  endpoint set).
+
+  IMPORTANT: this uses a SINGLE {% form 'customer' %} block, not two.
+  Shopify's form.posted_successfully? is true for EVERY 'customer'-type
+  form rendered on the page once ANY of them succeeds — it's scoped to the
+  form TYPE for the request, not to the individual {% form %} tag instance.
+  Two separate {% form 'customer' %} blocks on one page were tested live
+  and both flipped to "successful" from a single submission (and so did
+  the sitewide waitlist modal, elsewhere on the page — see the
+  template.suffix guard around its render in layout/theme.liquid).
+  So instead: one form, two field-groups sharing the same contact[...]
+  names, toggled via `disabled` (which IS reliably exempt from constraint
+  validation, unlike a merely-hidden required field). Which group is
+  active, and which "done" message shows, is tracked in a ?step= query
+  param set via the native `return_to` hidden field on success — Liquid
+  can't read query strings, so this routing is entirely client-side (see
+  the native-mode block in galim.js). form.errors is still shown inline
+  since there's now only one 'customer' form on this page to attribute it
+  to.
 
   If an external form endpoint IS set, there's no native one-customer-per-
-  post constraint, so both people post together in one request; "Next" is
-  just a client-side field-group toggle (see [data-gh-invite-next] in
-  galim.js).
+  post constraint, so both people post together in one request instead;
+  "Next"/"Skip" are client-side field-group toggles there too (see
+  [data-gh-invite-next] in galim.js), but it's a genuinely different code
+  path from the native one described above.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
   assign action = s.form_action
-  assign step1_done = false
-  assign step2_done = false
 -%}
 
 <section id="{{ s.anchor_id | default: 'invitacion' }}" class="gh-invite gh-section" data-gh-section="invitation" style="background: {{ s.bg_color | default: '#0D3B46' }};">
@@ -55,9 +67,6 @@
           <span class="gh-field__label">Nombre</span>
           <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
         </label>
-        {%- if action == blank -%}
-          <input type="hidden" name="contact[last_name]" data-gh-invite-lastname>
-        {%- endif -%}
         <div class="gh-field-row">
           <label class="gh-field">
             <span class="gh-field__label">Apellido paterno</span>
@@ -78,50 +87,34 @@
             <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
           </label>
         </div>
-        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit" {% if action != blank %}data-gh-invite-next{% endif %}>{{ s.button_label | default: 'Siguiente: datos de tu invitado(a)' }} →</button>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit" data-gh-invite-next>{{ s.button_label | default: 'Siguiente: datos de tu invitado(a)' }} →</button>
       {%- endcapture -%}
-
-      {%- if action == blank -%}
-        {%- form 'customer', class: 'gh-invite__form', id: 'gh-invite-step1' -%}
-          <input type="hidden" name="contact[tags]" value="invitacion especial">
-          <input type="hidden" name="contact[note]" data-gh-invite-note value="Invitación especial · Titular">
-          {%- if form.posted_successfully? -%}
-            {%- assign step1_done = true -%}
-          {%- else -%}
-            {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
-            {{ step1_fields }}
-          {%- endif -%}
-        {%- endform -%}
-      {%- endif -%}
 
       {%- comment -%} ---------------- STEP 2: guest (+1) ---------------- {%- endcomment -%}
       {%- capture step2_fields -%}
         <p class="gh-invite__step-label">{{ s.step2_label | default: 'Paso 2 de 2 · Datos de tu invitado(a)' }}</p>
         <label class="gh-field">
           <span class="gh-field__label">Nombre</span>
-          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}guest[first_name]{% endif %}" {% if action == blank %}required{% endif %} autocomplete="given-name">
+          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}guest[first_name]{% endif %}" disabled autocomplete="given-name">
         </label>
-        {%- if action == blank -%}
-          <input type="hidden" name="contact[last_name]" data-gh-invite-guest-lastname>
-        {%- endif -%}
         <div class="gh-field-row">
           <label class="gh-field">
             <span class="gh-field__label">Apellido paterno</span>
-            <input type="text" {% if action == blank %}data-gh-invite-guest-last1 required{% else %}name="guest[last_name]"{% endif %} autocomplete="family-name">
+            <input type="text" {% if action == blank %}data-gh-invite-guest-last1{% else %}name="guest[last_name]"{% endif %} disabled autocomplete="family-name">
           </label>
           <label class="gh-field">
             <span class="gh-field__label">Apellido materno</span>
-            <input type="text" {% if action == blank %}data-gh-invite-guest-last2 required{% else %}name="guest[last_name_2]"{% endif %} autocomplete="additional-name">
+            <input type="text" {% if action == blank %}data-gh-invite-guest-last2{% else %}name="guest[last_name_2]"{% endif %} disabled autocomplete="additional-name">
           </label>
         </div>
         <div class="gh-field-row">
           <label class="gh-field">
             <span class="gh-field__label">Celular</span>
-            <input type="tel" {% if action == blank %}data-gh-invite-guest-phone required{% else %}name="guest[phone]"{% endif %} autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
+            <input type="tel" {% if action == blank %}data-gh-invite-guest-phone{% else %}name="guest[phone]"{% endif %} disabled autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
           </label>
           <label class="gh-field">
             <span class="gh-field__label">Correo</span>
-            <input type="email" name="{% if action == blank %}contact[email]{% else %}guest[email]{% endif %}" {% if action == blank %}required{% endif %} autocomplete="email">
+            <input type="email" name="{% if action == blank %}contact[email]{% else %}guest[email]{% endif %}" disabled autocomplete="email">
           </label>
         </div>
         <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_guest_label | default: 'Reservar ambas citas' }} →</button>
@@ -129,27 +122,22 @@
       {%- endcapture -%}
 
       {%- if action == blank -%}
-        {%- if step1_done -%}
-          {%- form 'customer', class: 'gh-invite__form gh-invite__form--guest', id: 'gh-invite-step2' -%}
-            <input type="hidden" name="contact[tags]" value="invitacion especial">
-            <input type="hidden" name="contact[note]" data-gh-invite-guest-note value="Invitación especial · Invitado(a) +1">
-            {%- if form.posted_successfully? -%}
-              {%- assign step2_done = true -%}
-            {%- else -%}
-              {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
-              {{ step2_fields }}
-            {%- endif -%}
-          {%- endform -%}
-        {%- endif -%}
-      {%- endif -%}
-
-      {%- comment -%}
-        External endpoint: no native one-customer-per-post constraint, so
-        both people post together in a single form; "Next"/"Skip" are just
-        client-side field-group toggles (see [data-gh-invite-next] /
-        [data-gh-invite-skip] in galim.js), not real submits.
-      {%- endcomment -%}
-      {%- if action != blank -%}
+        {%- form 'customer', class: 'gh-invite__form', id: 'gh-invite-form' -%}
+          <input type="hidden" name="contact[tags]" value="invitacion especial">
+          <input type="hidden" name="contact[last_name]" data-gh-invite-lastname>
+          <input type="hidden" name="contact[note]" data-gh-invite-note>
+          <input type="hidden" name="return_to" value="{{ request.path }}" data-gh-invite-return>
+          {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
+          <div data-gh-invite-step="1">{{ step1_fields }}</div>
+          <div class="gh-invite__form--guest" data-gh-invite-step="2" hidden>{{ step2_fields }}</div>
+        {%- endform -%}
+      {%- else -%}
+        {%- comment -%}
+          External endpoint: no native one-customer-per-post constraint, so
+          both people post together in a single request instead; "Next"/
+          "Skip" are client-side field-group toggles here too (see
+          [data-gh-invite-next] / [data-gh-invite-skip] in galim.js).
+        {%- endcomment -%}
         <form action="{{ action }}" method="post" class="gh-invite__form" accept-charset="UTF-8">
           <div data-gh-invite-step="1">{{ step1_fields }}</div>
           <div data-gh-invite-step="2" hidden>
@@ -160,12 +148,8 @@
       {%- endif -%}
 
       {%- comment -%} ---------------- Done ---------------- {%- endcomment -%}
-      {%- if step2_done -%}
-        <p class="gh-invite__success">{{ s.success_message | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
-      {%- endif -%}
-      {%- if step1_done and action == blank -%}
-        <p class="gh-invite__success" data-gh-invite-skipped hidden>{{ s.success_message_solo | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita.' }}</p>
-      {%- endif -%}
+      <p class="gh-invite__success" data-gh-invite-done hidden>{{ s.success_message | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
+      <p class="gh-invite__success" data-gh-invite-skipped hidden>{{ s.success_message_solo | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita.' }}</p>
     </div>
   </div>
 </section>
@@ -240,6 +224,9 @@
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
   }
   .gh-invite__form { display: flex; flex-direction: column; gap: 16px; }
+  /* display:flex above beats the hidden attribute's UA display:none (same
+     fix already needed for .gh-field and .gh-modal). */
+  .gh-invite__form[hidden] { display: none; }
   .gh-invite__form--guest { margin-top: 28px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.14); }
   .gh-invite__step-label {
     margin: 0; font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase;
