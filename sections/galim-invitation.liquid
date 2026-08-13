@@ -1,0 +1,200 @@
+{%- comment -%}
+  Galim Health — Private Invitation
+  Standalone landing page for gift-card QR codes (physical card, "scan to
+  book"). Lives at /invitacion-especial via a URL redirect to this page's
+  real Shopify handle. The referrer's name reads from a ?ref= query param
+  client-side (Liquid can't see query strings) to personalize "Invitación
+  privada de {name}" and gets packed into the customer note alongside the
+  guest's name on submit — same wiring as the waitlist modal.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign action = s.form_action
+-%}
+
+<section id="{{ s.anchor_id | default: 'invitacion' }}" class="gh-invite gh-section" data-gh-section="invitation" style="background: {{ s.bg_color | default: '#0D3B46' }};">
+  <div class="gh-invite__dots" aria-hidden="true"></div>
+  <div class="gh-invite__glow" aria-hidden="true"></div>
+
+  <div class="gh-container gh-invite__inner">
+    <div class="gh-invite__intro">
+      <p class="gh-eyebrow gh-invite__eyebrow">{{ s.eyebrow | default: 'PRIVATE INVITATION' }}</p>
+      <p class="gh-invite__ref" data-gh-invite-ref hidden></p>
+      <h1 class="gh-invite__h1">{{ s.heading | default: 'Conoce tu cuerpo mejor que nunca.' }}</h1>
+      {%- if s.subheading != blank -%}<p class="gh-invite__sub">{{ s.subheading }}</p>{%- endif -%}
+    </div>
+
+    <div class="gh-invite__offer">
+      <span class="gh-invite__offer-badge">{{ s.offer_badge | default: '2 RMR DE CORTESÍA' }}</span>
+      <p class="gh-invite__offer-line">{{ s.offer_line | default: 'Una evaluación de Tasa Metabólica en Reposo (RMR) para ti, y otra para la persona que quieras invitar.' }}</p>
+      <p class="gh-invite__value">{{ s.value_note | default: 'Valor $1,500 MXN por persona · Cortesía, sin costo' }}</p>
+    </div>
+
+    <div class="gh-invite__panel" data-gh-invite-form>
+      {%- capture invite_fields -%}
+        <label class="gh-field">
+          <span class="gh-field__label">Nombre</span>
+          <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
+        </label>
+        {%- if action == blank -%}
+          <input type="hidden" name="contact[last_name]" data-gh-invite-lastname>
+        {%- endif -%}
+        <div class="gh-field-row">
+          <label class="gh-field">
+            <span class="gh-field__label">Apellido paterno</span>
+            <input type="text" {% if action == blank %}data-gh-invite-last1{% else %}name="last_name"{% endif %} required autocomplete="family-name">
+          </label>
+          <label class="gh-field">
+            <span class="gh-field__label">Apellido materno</span>
+            <input type="text" {% if action == blank %}data-gh-invite-last2{% else %}name="last_name_2"{% endif %} required autocomplete="additional-name">
+          </label>
+        </div>
+        <div class="gh-field-row">
+          <label class="gh-field">
+            <span class="gh-field__label">Celular</span>
+            <input type="tel" {% if action == blank %}data-gh-invite-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
+          </label>
+          <label class="gh-field">
+            <span class="gh-field__label">Correo</span>
+            <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
+          </label>
+        </div>
+        <label class="gh-field">
+          <span class="gh-field__label">Nombre de tu invitado(a) <span class="gh-invite__optional">(opcional)</span></span>
+          <input type="text" {% if action == blank %}data-gh-invite-guest{% else %}name="guest_name"{% endif %} autocomplete="off" placeholder="¿Quién te acompaña?">
+        </label>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_label | default: 'Reservar mi cita' }} →</button>
+      {%- endcapture -%}
+
+      {%- if action == blank -%}
+        {%- form 'customer', class: 'gh-invite__form' -%}
+          <input type="hidden" name="contact[tags]" value="invitation, gift-card">
+          <input type="hidden" name="contact[note]" data-gh-invite-note>
+          {%- if form.posted_successfully? -%}
+            <p class="gh-invite__success">{{ s.success_message | default: '¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
+          {%- else -%}
+            {%- if form.errors -%}<p class="gh-invite__error">{{ form.errors | default_errors }}</p>{%- endif -%}
+            {{ invite_fields }}
+          {%- endif -%}
+        {%- endform -%}
+      {%- else -%}
+        <form action="{{ action }}" method="post" class="gh-invite__form" accept-charset="UTF-8">{{ invite_fields }}</form>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .gh-invite {
+    position: relative;
+    overflow: hidden;
+    color: #F7F5F3;
+    /* Dark island: same light-token overrides as the footer/modal so shared
+       classes (.gh-eyebrow, .gh-field, .gh-btn--solid) read correctly here. */
+    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD;
+    --gh-green: #C3D9DD; --gh-accent: #C3D9DD; --gh-brand: #C3D9DD;
+    --gh-cyan: #7DE3E8;
+  }
+  .gh-invite__dots {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,.06) 1.4px, transparent 1.4px);
+    background-size: 22px 22px;
+  }
+  .gh-invite__glow {
+    position: absolute; left: 50%; top: -80px; width: 780px; height: 520px;
+    transform: translateX(-50%); pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(125, 227, 232, 0.18), rgba(125, 227, 232, 0) 70%);
+    filter: blur(30px);
+  }
+  .gh-invite__inner {
+    position: relative; z-index: 1;
+    max-width: 620px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+  .gh-invite__intro { display: flex; flex-direction: column; align-items: center; }
+  .gh-invite__eyebrow { color: var(--gh-cyan); letter-spacing: 0.3em; }
+  .gh-invite__ref { margin: 14px 0 0; font: 400 15px/1.4 var(--gh-sans); color: var(--gh-muted); }
+  .gh-invite__ref[hidden] { display: none; }
+  .gh-invite__h1 { margin: 18px 0 0; font: 200 44px/1.1 var(--gh-sans); letter-spacing: -0.02em; color: #F7F5F3; }
+  .gh-invite__sub { margin: 16px 0 0; max-width: 440px; font: 300 16px/1.55 var(--gh-sans); color: var(--gh-muted); }
+
+  {%- comment -%}
+    Gradient-ring border, same recipe as the package cards / What-we-measure
+    cards / gh-btn--solid: 3px transparent border, fill clipped to
+    padding-box, the brand ramp clipped to border-box behind it. 135deg so
+    the ramp sweeps every edge (a 90deg gradient leaves flat, invisible
+    vertical edges), looping back to its start color so it reads solid on
+    every side regardless of the card's aspect ratio.
+  {%- endcomment -%}
+  .gh-invite__offer {
+    position: relative; margin-top: 44px; width: 100%; box-sizing: border-box;
+    border: 3px solid transparent; border-radius: 20px;
+    background:
+      linear-gradient(rgba(255,255,255,.06), rgba(255,255,255,.06)) padding-box,
+      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    padding: 30px 32px;
+  }
+  .gh-invite__offer-badge {
+    display: inline-block; font: 500 11px/1 var(--gh-mono); letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gh-cyan);
+    background: rgba(125, 227, 232, 0.12); border: 1px solid rgba(125, 227, 232, 0.3);
+    border-radius: 999px; padding: 8px 16px;
+  }
+  .gh-invite__offer-line { margin: 16px 0 0; font: 400 16px/1.55 var(--gh-sans); color: #F7F5F3; }
+  .gh-invite__value { margin: 12px 0 0; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.06em; color: var(--gh-muted); }
+
+  .gh-invite__panel {
+    margin-top: 40px; width: 100%; box-sizing: border-box;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 20px;
+    padding: 36px 34px;
+    text-align: left;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+  }
+  .gh-invite__form { display: flex; flex-direction: column; gap: 16px; }
+  .gh-invite__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--gh-muted); }
+  .gh-invite__submit { width: 100%; justify-content: center; margin-top: 8px; }
+  .gh-invite__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
+  .gh-invite__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
+
+  @media (max-width: 768px) {
+    .gh-invite__h1 { font-size: 30px; }
+    .gh-invite__sub { font-size: 14.5px; }
+    .gh-invite__offer { padding: 22px 20px; margin-top: 32px; }
+    .gh-invite__offer-line { font-size: 14.5px; }
+    .gh-invite__panel { padding: 26px 22px; margin-top: 28px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Galim · Invitation",
+  "class": "gh-section-full",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "invitacion" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0D3B46" },
+    { "type": "header", "content": "Copy" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "PRIVATE INVITATION" },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Conoce tu cuerpo mejor que nunca." },
+    { "type": "textarea", "id": "subheading", "label": "Subheadline", "default": "Fuiste invitado(a) a vivir la experiencia Galim antes que nadie." },
+    { "type": "header", "content": "Offer" },
+    { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "2 RMR DE CORTESÍA" },
+    { "type": "textarea", "id": "offer_line", "label": "Offer description", "default": "Una evaluación de Tasa Metabólica en Reposo (RMR) para ti, y otra para la persona que quieras invitar." },
+    { "type": "text", "id": "value_note", "label": "Value note", "default": "Valor $1,500 MXN por persona · Cortesía, sin costo" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Reservar mi cita" },
+    { "type": "textarea", "id": "success_message", "label": "Success message", "default": "¡Listo! Ya tenemos tus datos — te contactamos para confirmar tu cita y la de tu invitado(a)." },
+    {
+      "type": "paragraph",
+      "content": "Leave the endpoint below blank to use Shopify's native customer form (tagged 'invitation, gift-card'); phone, guest name and referrer are packed into the customer note, same as the waitlist."
+    },
+    { "type": "url", "id": "form_action", "label": "External form endpoint (optional)" }
+  ],
+  "presets": [{ "name": "Galim · Invitation" }]
+}
+{% endschema %}

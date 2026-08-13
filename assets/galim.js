@@ -4,6 +4,7 @@
    - Waitlist modal (opened from any [data-gh-waitlist-open])
    - Sticky header condense on scroll
    - Package cards: accordion (collapsed to name + subtitle by default)
+   - Private invitation page (/invitacion-especial)
    ============================================================ */
 (function () {
   'use strict';
@@ -130,6 +131,46 @@
   /* After the form posts, the page reloads — reopen the modal to show success/errors */
   if (modal && modal.querySelector('.gh-modal__success, .gh-modal__error')) {
     openModal();
+  }
+
+  /* ---- Private invitation page (/invitacion-especial) ---- */
+  var invitePanel = document.querySelector('[data-gh-invite-form]');
+  var inviteForm = invitePanel ? invitePanel.querySelector('form') : null;
+  if (inviteForm) {
+    /* Liquid can't read query strings, so the referrer's name ("Private
+       Invitation by Michelle Gutierrez" on the physical card) is read from
+       ?ref= client-side and both displayed and packed into the note. */
+    var refName = new URLSearchParams(window.location.search).get('ref');
+    if (refName) {
+      var refEl = document.querySelector('[data-gh-invite-ref]');
+      if (refEl) {
+        refEl.textContent = 'Invitación privada de ' + refName;
+        refEl.hidden = false;
+      }
+    }
+
+    inviteForm.addEventListener('submit', function () {
+      var note = inviteForm.querySelector('[data-gh-invite-note]');
+      if (!note) return; // external endpoint: fields post with their own names
+
+      var lastName = inviteForm.querySelector('[data-gh-invite-lastname]');
+      var last1 = inviteForm.querySelector('[data-gh-invite-last1]');
+      var last2 = inviteForm.querySelector('[data-gh-invite-last2]');
+      if (lastName) {
+        lastName.value = [
+          last1 ? last1.value.trim() : '',
+          last2 ? last2.value.trim() : ''
+        ].filter(Boolean).join(' ');
+      }
+
+      var phone = inviteForm.querySelector('[data-gh-invite-phone]');
+      var guest = inviteForm.querySelector('[data-gh-invite-guest]');
+      var parts = ['Private invitation booking'];
+      if (phone && phone.value) parts.push('Phone: ' + phone.value);
+      if (guest && guest.value.trim()) parts.push('Guest: ' + guest.value.trim());
+      if (refName) parts.push('Referred by: ' + refName);
+      note.value = parts.join(' · ');
+    });
   }
 
   /* ---- Mobile nav drawer ---- */

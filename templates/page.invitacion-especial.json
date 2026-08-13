@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "invitation": {
+      "type": "galim-invitation"
+    }
+  },
+  "order": [
+    "invitation"
+  ]
+}
