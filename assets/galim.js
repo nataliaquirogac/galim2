@@ -107,13 +107,15 @@
         ].filter(Boolean).join(' ');
       }
 
-      /* Age and phone have no home on the Shopify customer object either, so
-         they ride along in the note next to the referral source. */
+      /* Age, phone and package have no home on the Shopify customer object
+         either, so they ride along in the note next to the referral source. */
       var age = modalForm.querySelector('[data-gh-age]');
       var phone = modalForm.querySelector('[data-gh-phone]');
+      var pkg = modalForm.querySelector('[data-gh-package]');
       var parts = ['Galim waitlist'];
       if (age && age.value) parts.push('Age: ' + age.value.trim());
       if (phone && phone.value) parts.push('Phone: ' + phone.value);
+      if (pkg && pkg.value) parts.push('Package: ' + pkg.value);
       if (sourceSelect && sourceSelect.selectedIndex >= 0) {
         var label = sourceSelect.options[sourceSelect.selectedIndex].text;
         if (isOtherSelected() && otherInput && otherInput.value.trim()) {

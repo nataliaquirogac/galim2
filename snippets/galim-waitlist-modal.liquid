@@ -5,16 +5,16 @@
   to the real viewport instead of a transformed/filtered ancestor. Opened via
   [data-gh-waitlist-open] from anywhere on the page.
   Fields: nombre, apellido paterno, apellido materno, edad, celular, email,
-  ¿cómo te enteraste de nosotros?
+  paquete de interés, ¿cómo te enteraste de nosotros?
 
   Wiring:
   - If settings.waitlist_form_action is blank -> Shopify native customer form.
     Creates the customer with first name + both apellidos merged into last_name
     + email; the referral source is saved as a tag (e.g. "waitlist, doctor").
-    Age and phone have no field on the customer object, so galim.js packs them
-    into the customer note on submit alongside the source label.
+    Age, phone and package have no field on the customer object, so galim.js
+    packs them into the customer note on submit alongside the source label.
   - If a URL is provided -> a plain form posts there
-    (fields: name, last_name, last_name_2, age, phone, email, source).
+    (fields: name, last_name, last_name_2, age, phone, email, package, source).
 {%- endcomment -%}
 
 {%- comment -%}
@@ -83,6 +83,14 @@
       <label class="gh-field">
         <span class="gh-field__label">{{ 'waitlist.email' | t }}</span>
         <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
+      </label>
+      <label class="gh-field">
+        <span class="gh-field__label">{{ 'waitlist.package_label' | t }}</span>
+        <select {% if action == blank %}data-gh-package{% else %}name="package"{% endif %} required>
+          <option value="" disabled selected>{{ 'waitlist.package_placeholder' | t }}</option>
+          <option value="Body Performance">{{ 'waitlist.package_performance' | t }}</option>
+          <option value="Prevention">{{ 'waitlist.package_prevention' | t }}</option>
+        </select>
       </label>
       <label class="gh-field">
         <span class="gh-field__label">{{ 'waitlist.source_label' | t }}</span>
