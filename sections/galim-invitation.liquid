@@ -223,16 +223,28 @@
     text-align: left;
     box-shadow: 0 30px 80px rgba(0,0,0,0.35);
   }
-  .gh-invite__form { display: flex; flex-direction: column; gap: 16px; }
+  .gh-invite__form { display: flex; flex-direction: column; gap: 20px; }
   /* display:flex above beats the hidden attribute's UA display:none (same
      fix already needed for .gh-field and .gh-modal). */
   .gh-invite__form[hidden] { display: none; }
   .gh-invite__form--guest { margin-top: 28px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.14); }
+  /* The 20px gap above only spaces .gh-invite__form's DIRECT children
+     ([data-gh-invite-step="1|2"]) apart from each other — everything
+     inside one step (label, fields, rows, button) was stacking with no
+     gap of its own, hence "amontonado". This gives every step's own
+     content the same rhythm. */
+  [data-gh-invite-step] { display: flex; flex-direction: column; gap: 20px; }
+  /* Wider than the shared 12px default (galim-waitlist-modal.liquid): this
+     page's fields sit on a plainer dark panel with no card boundary of
+     their own, so the paired columns need more air to read as separate. */
+  .gh-invite .gh-field-row { gap: 16px; }
+  /* Slightly wider than the shared 7px default, snapped to the 4px scale. */
+  .gh-invite .gh-field { gap: 8px; }
   .gh-invite__step-label {
     margin: 0; font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--gh-cyan);
   }
-  .gh-invite__submit { width: 100%; justify-content: center; margin-top: 8px; }
+  .gh-invite__submit { width: 100%; justify-content: center; margin-top: 4px; }
   .gh-invite__skip {
     display: block; width: 100%; text-align: center; margin-top: 4px;
     background: none; border: 0; cursor: pointer;
