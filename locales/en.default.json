@@ -563,5 +563,13 @@
     "other_placeholder": "Tell us where…",
     "submit": "Join the waiting list →",
     "success": "Done! Your spot is saved. We'll be in touch soon."
+  },
+  "invitation": {
+    "first_name": "First name",
+    "last_name": "First last name",
+    "last_name_2": "Second last name",
+    "phone": "Phone",
+    "email": "Email",
+    "referred_by_prefix": "Private invitation from"
   }
 }

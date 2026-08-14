@@ -143,7 +143,8 @@
     if (refName) {
       var refEl = document.querySelector('[data-gh-invite-ref]');
       if (refEl) {
-        refEl.textContent = 'Invitación privada de ' + refName;
+        var refPrefix = refEl.dataset.ghInviteRefPrefix || 'Private invitation from';
+        refEl.textContent = refPrefix + ' ' + refName;
         refEl.hidden = false;
       }
     }

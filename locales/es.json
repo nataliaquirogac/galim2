@@ -575,5 +575,13 @@
     "other_placeholder": "Dinos dónde…",
     "submit": "Únete a la lista →",
     "success": "¡Listo! Guardamos tu lugar. Te contactaremos pronto."
+  },
+  "invitation": {
+    "first_name": "Nombre",
+    "last_name": "Apellido paterno",
+    "last_name_2": "Apellido materno",
+    "phone": "Celular",
+    "email": "Correo",
+    "referred_by_prefix": "Invitación privada de"
   }
 }

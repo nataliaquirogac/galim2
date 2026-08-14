@@ -47,78 +47,78 @@
   <div class="gh-container gh-invite__inner">
     <div class="gh-invite__intro">
       <p class="gh-eyebrow gh-invite__eyebrow">{{ s.eyebrow | default: 'PRIVATE INVITATION' }}</p>
-      <p class="gh-invite__ref" data-gh-invite-ref hidden></p>
-      <h1 class="gh-invite__h1">{{ s.heading | default: 'Conoce tu cuerpo mejor que nunca.' }}</h1>
+      <p class="gh-invite__ref" data-gh-invite-ref data-gh-invite-ref-prefix="{{ 'invitation.referred_by_prefix' | t }}" hidden></p>
+      <h1 class="gh-invite__h1">{{ s.heading | default: 'Know your body better than ever.' }}</h1>
       {%- if s.subheading != blank -%}<p class="gh-invite__sub">{{ s.subheading }}</p>{%- endif -%}
     </div>
 
     <div class="gh-invite__offer">
-      <span class="gh-invite__offer-badge">{{ s.offer_badge | default: '2 RMR DE CORTESÍA' }}</span>
-      <p class="gh-invite__offer-line">{{ s.offer_line | default: 'Una evaluación de Tasa Metabólica en Reposo (RMR) para ti, y otra para la persona que quieras invitar.' }}</p>
-      <p class="gh-invite__value">{{ s.value_note | default: 'Valor $1,500 MXN por persona · Cortesía, sin costo' }}</p>
+      <span class="gh-invite__offer-badge">{{ s.offer_badge | default: '2 COMPLIMENTARY RMR' }}</span>
+      <p class="gh-invite__offer-line">{{ s.offer_line | default: "One Resting Metabolic Rate (RMR) assessment for you, and one for whoever you'd like to bring." }}</p>
+      <p class="gh-invite__value">{{ s.value_note | default: 'Value $1,500 MXN per person · Complimentary, no cost' }}</p>
     </div>
 
     <div class="gh-invite__panel" data-gh-invite-form>
 
       {%- comment -%} ---------------- STEP 1: titular ---------------- {%- endcomment -%}
       {%- capture step1_fields -%}
-        <p class="gh-invite__step-label">{{ s.step1_label | default: 'Paso 1 de 2 · Tus datos' }}</p>
+        <p class="gh-invite__step-label">{{ s.step1_label | default: 'Step 1 of 2 · Your details' }}</p>
         <label class="gh-field">
-          <span class="gh-field__label">Nombre</span>
+          <span class="gh-field__label">{{ 'invitation.first_name' | t }}</span>
           <input type="text" name="{% if action == blank %}contact[first_name]{% else %}name{% endif %}" required autocomplete="given-name">
         </label>
         <div class="gh-field-row">
           <label class="gh-field">
-            <span class="gh-field__label">Apellido paterno</span>
+            <span class="gh-field__label">{{ 'invitation.last_name' | t }}</span>
             <input type="text" {% if action == blank %}data-gh-invite-last1{% else %}name="last_name"{% endif %} required autocomplete="family-name">
           </label>
           <label class="gh-field">
-            <span class="gh-field__label">Apellido materno</span>
+            <span class="gh-field__label">{{ 'invitation.last_name_2' | t }}</span>
             <input type="text" {% if action == blank %}data-gh-invite-last2{% else %}name="last_name_2"{% endif %} required autocomplete="additional-name">
           </label>
         </div>
         <div class="gh-field-row">
           <label class="gh-field">
-            <span class="gh-field__label">Celular</span>
+            <span class="gh-field__label">{{ 'invitation.phone' | t }}</span>
             <input type="tel" {% if action == blank %}data-gh-invite-phone{% else %}name="phone"{% endif %} required autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
           </label>
           <label class="gh-field">
-            <span class="gh-field__label">Correo</span>
+            <span class="gh-field__label">{{ 'invitation.email' | t }}</span>
             <input type="email" name="{% if action == blank %}contact[email]{% else %}email{% endif %}" required autocomplete="email">
           </label>
         </div>
-        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit" data-gh-invite-next>{{ s.button_label | default: 'Siguiente: datos de tu invitado(a)' }} →</button>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit" data-gh-invite-next>{{ s.button_label | default: "Next: your guest's details" }} →</button>
       {%- endcapture -%}
 
       {%- comment -%} ---------------- STEP 2: guest (+1) ---------------- {%- endcomment -%}
       {%- capture step2_fields -%}
-        <p class="gh-invite__step-label">{{ s.step2_label | default: 'Paso 2 de 2 · Datos de tu invitado(a)' }}</p>
+        <p class="gh-invite__step-label">{{ s.step2_label | default: "Step 2 of 2 · Your guest's details" }}</p>
         <label class="gh-field">
-          <span class="gh-field__label">Nombre</span>
+          <span class="gh-field__label">{{ 'invitation.first_name' | t }}</span>
           <input type="text" name="{% if action == blank %}contact[first_name]{% else %}guest[first_name]{% endif %}" disabled autocomplete="given-name">
         </label>
         <div class="gh-field-row">
           <label class="gh-field">
-            <span class="gh-field__label">Apellido paterno</span>
+            <span class="gh-field__label">{{ 'invitation.last_name' | t }}</span>
             <input type="text" {% if action == blank %}data-gh-invite-guest-last1{% else %}name="guest[last_name]"{% endif %} disabled autocomplete="family-name">
           </label>
           <label class="gh-field">
-            <span class="gh-field__label">Apellido materno</span>
+            <span class="gh-field__label">{{ 'invitation.last_name_2' | t }}</span>
             <input type="text" {% if action == blank %}data-gh-invite-guest-last2{% else %}name="guest[last_name_2]"{% endif %} disabled autocomplete="additional-name">
           </label>
         </div>
         <div class="gh-field-row">
           <label class="gh-field">
-            <span class="gh-field__label">Celular</span>
+            <span class="gh-field__label">{{ 'invitation.phone' | t }}</span>
             <input type="tel" {% if action == blank %}data-gh-invite-guest-phone{% else %}name="guest[phone]"{% endif %} disabled autocomplete="tel" inputmode="tel" placeholder="81 1234 5678">
           </label>
           <label class="gh-field">
-            <span class="gh-field__label">Correo</span>
+            <span class="gh-field__label">{{ 'invitation.email' | t }}</span>
             <input type="email" name="{% if action == blank %}contact[email]{% else %}guest[email]{% endif %}" disabled autocomplete="email">
           </label>
         </div>
-        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_guest_label | default: 'Reservar ambas citas' }} →</button>
-        <button type="button" class="gh-invite__skip" data-gh-invite-skip>{{ s.skip_label | default: 'Todavía no sé quién me acompaña, continuar sin invitado(a)' }}</button>
+        <button type="submit" class="gh-btn gh-btn--solid gh-invite__submit">{{ s.button_guest_label | default: 'Book both visits' }} →</button>
+        <button type="button" class="gh-invite__skip" data-gh-invite-skip>{{ s.skip_label | default: "I don't know who's coming yet — continue without a guest" }}</button>
       {%- endcapture -%}
 
       {%- if action == blank -%}
@@ -148,8 +148,8 @@
       {%- endif -%}
 
       {%- comment -%} ---------------- Done ---------------- {%- endcomment -%}
-      <p class="gh-invite__success" data-gh-invite-done hidden>{{ s.success_message | default: '¡Listo! Ya tenemos tus datos. Te contactamos para confirmar tu cita y la de tu invitado(a).' }}</p>
-      <p class="gh-invite__success" data-gh-invite-skipped hidden>{{ s.success_message_solo | default: '¡Listo! Ya tenemos tus datos. Te contactamos para confirmar tu cita.' }}</p>
+      <p class="gh-invite__success" data-gh-invite-done hidden>{{ s.success_message | default: "Done! We have your details — we'll reach out to confirm your visit and your guest's." }}</p>
+      <p class="gh-invite__success" data-gh-invite-skipped hidden>{{ s.success_message_solo | default: "Done! We have your details — we'll reach out to confirm your visit." }}</p>
     </div>
   </div>
 </section>
@@ -274,22 +274,22 @@
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#0D3B46" },
     { "type": "header", "content": "Copy" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "PRIVATE INVITATION" },
-    { "type": "text", "id": "heading", "label": "Headline", "default": "Conoce tu cuerpo mejor que nunca." },
-    { "type": "textarea", "id": "subheading", "label": "Subheadline", "default": "Fuiste invitado(a) a vivir la experiencia Galim antes que nadie." },
+    { "type": "text", "id": "heading", "label": "Headline", "default": "Know your body better than ever." },
+    { "type": "textarea", "id": "subheading", "label": "Subheadline", "default": "You've been invited to experience Galim before anyone else." },
     { "type": "header", "content": "Offer" },
-    { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "2 RMR DE CORTESÍA" },
-    { "type": "textarea", "id": "offer_line", "label": "Offer description", "default": "Una evaluación de Tasa Metabólica en Reposo (RMR) para ti, y otra para la persona que quieras invitar." },
-    { "type": "text", "id": "value_note", "label": "Value note", "default": "Valor $1,500 MXN por persona · Cortesía, sin costo" },
+    { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "2 COMPLIMENTARY RMR" },
+    { "type": "textarea", "id": "offer_line", "label": "Offer description", "default": "One Resting Metabolic Rate (RMR) assessment for you, and one for whoever you'd like to bring." },
+    { "type": "text", "id": "value_note", "label": "Value note", "default": "Value $1,500 MXN per person · Complimentary, no cost" },
     { "type": "header", "content": "Form — step 1 (titular)" },
-    { "type": "text", "id": "step1_label", "label": "Step 1 label", "default": "Paso 1 de 2 · Tus datos" },
-    { "type": "text", "id": "button_label", "label": "Step 1 button label", "default": "Siguiente: datos de tu invitado(a)" },
+    { "type": "text", "id": "step1_label", "label": "Step 1 label", "default": "Step 1 of 2 · Your details" },
+    { "type": "text", "id": "button_label", "label": "Step 1 button label", "default": "Next: your guest's details" },
     { "type": "header", "content": "Form — step 2 (guest)" },
-    { "type": "text", "id": "step2_label", "label": "Step 2 label", "default": "Paso 2 de 2 · Datos de tu invitado(a)" },
-    { "type": "text", "id": "button_guest_label", "label": "Step 2 button label", "default": "Reservar ambas citas" },
-    { "type": "text", "id": "skip_label", "label": "Skip-guest link label", "default": "Todavía no sé quién me acompaña, continuar sin invitado(a)" },
+    { "type": "text", "id": "step2_label", "label": "Step 2 label", "default": "Step 2 of 2 · Your guest's details" },
+    { "type": "text", "id": "button_guest_label", "label": "Step 2 button label", "default": "Book both visits" },
+    { "type": "text", "id": "skip_label", "label": "Skip-guest link label", "default": "I don't know who's coming yet — continue without a guest" },
     { "type": "header", "content": "Success messages" },
-    { "type": "textarea", "id": "success_message", "label": "Success — both booked", "default": "¡Listo! Ya tenemos tus datos. Te contactamos para confirmar tu cita y la de tu invitado(a)." },
-    { "type": "textarea", "id": "success_message_solo", "label": "Success — guest skipped", "default": "¡Listo! Ya tenemos tus datos. Te contactamos para confirmar tu cita." },
+    { "type": "textarea", "id": "success_message", "label": "Success — both booked", "default": "Done! We have your details — we'll reach out to confirm your visit and your guest's." },
+    { "type": "textarea", "id": "success_message_solo", "label": "Success — guest skipped", "default": "Done! We have your details — we'll reach out to confirm your visit." },
     {
       "type": "paragraph",
       "content": "Leave the endpoint below blank to use Shopify's native customer form: titular and guest are each saved as their OWN customer, tagged 'invitacion especial'. If an external endpoint is set instead, both post together in one request (no native one-customer-per-post constraint), and Next/Skip are just client-side."
