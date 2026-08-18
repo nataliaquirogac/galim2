@@ -554,15 +554,13 @@
     .gh-hero__grad-h,
     .gh-hero__grad-v,
     .gh-hero__sides { display: none; }
-    /* Confirmed source photo is 1080×1920: the target button position (from
-       her design tool) is Y 1006 in that frame, i.e. 1006/1920 = 52.4% down
-       from the top — ON the image itself, clear of the pricing card, not
-       after a gap below it. .gh-hero__inner is absolutely positioned rather
-       than in flow, so .gh-hero (which is what top:% resolves against)
-       collapses to exactly the image's own height — nothing added below. */
+    /* Pinned to the last 20px of the photo (.gh-hero__inner is absolutely
+       positioned rather than in flow, so .gh-hero — what bottom: resolves
+       against — collapses to exactly the image's own height, nothing added
+       below it). */
     .gh-hero__inner {
       position: absolute;
-      top: 52.4%; left: 0; right: 0;
+      bottom: 20px; left: 0; right: 0;
       width: 100%; max-width: none;
       margin-top: 0;
       padding: 0 20px;
