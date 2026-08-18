@@ -557,7 +557,12 @@
     .gh-hero__inner {
       position: relative;
       width: 100%; max-width: none;
-      padding: 28px 20px 32px;
+      /* Pulls the button up onto the image's own empty space below its
+         baked-in pricing card, instead of a separate padded block after it.
+         Tied to this specific image's proportions — if the gap looks off,
+         nudge this value (more negative = higher up the photo). */
+      margin-top: -60px;
+      padding: 0 20px 32px;
       box-sizing: border-box;
     }
     /* The halo existed to darken the photo locally behind overlaid text;
