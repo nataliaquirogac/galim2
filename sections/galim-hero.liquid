@@ -554,14 +554,18 @@
     .gh-hero__grad-h,
     .gh-hero__grad-v,
     .gh-hero__sides { display: none; }
+    /* Confirmed source photo is 1080×1920: the target button position (from
+       her design tool) is Y 1006 in that frame, i.e. 1006/1920 = 52.4% down
+       from the top — ON the image itself, clear of the pricing card, not
+       after a gap below it. .gh-hero__inner is absolutely positioned rather
+       than in flow, so .gh-hero (which is what top:% resolves against)
+       collapses to exactly the image's own height — nothing added below. */
     .gh-hero__inner {
-      position: relative;
+      position: absolute;
+      top: 52.4%; left: 0; right: 0;
       width: 100%; max-width: none;
-      /* No gap: the button sits right at the bottom edge of the full,
-         uncropped image, not pulled up over its content and not pushed
-         down after a padded gap. */
       margin-top: 0;
-      padding: 0 20px 32px;
+      padding: 0 20px;
       box-sizing: border-box;
     }
     /* The halo existed to darken the photo locally behind overlaid text;
