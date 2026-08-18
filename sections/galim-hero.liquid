@@ -542,11 +542,17 @@
     .gh-hero { display: block; min-height: 0; padding: 0; }
     .gh-hero__media {
       position: relative; inset: auto;
-      width: 100%; aspect-ratio: 1080 / 1920;
+      /* Cropped shorter than the image's full 1920px height: the extra
+         tail below the pricing card is just empty gradient fade, no
+         content, so trimming it (cover + top-anchored, not contain) removes
+         the leftover dark strip after the button without touching what's
+         actually on the photo. Nudge this shorter/taller if that changes. */
+      width: 100%; aspect-ratio: 1080 / 1700;
       background: var(--gh-side-color, #0D3B46);
+      overflow: hidden;
     }
     .gh-hero__backdrop { display: none; }
-    .gh-hero__img { object-fit: contain; object-position: center; }
+    .gh-hero__img { object-fit: cover; object-position: 50% 0%; }
     /* These scrims existed to keep overlaid text legible against the photo;
        with the copy no longer drawn over the image on mobile, they'd only
        tint the image for no reason. */
@@ -561,7 +567,7 @@
          baked-in pricing card, instead of a separate padded block after it.
          Tied to this specific image's proportions — if the gap looks off,
          nudge this value (more negative = higher up the photo). */
-      margin-top: -60px;
+      margin-top: -100px;
       padding: 0 20px 32px;
       box-sizing: border-box;
     }
