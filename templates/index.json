@@ -539,9 +539,9 @@
         "image_2": "shopify://shop_images/app_mockup2.png",
         "image_2_url": "",
         "android_label": "Android",
-        "android_link": "",
+        "android_link": "https://play.google.com/apps/internaltest/4701049872877601619",
         "ios_label": "iOS",
-        "ios_link": ""
+        "ios_link": "https://www.apple.com/mx/app-store/"
       }
     },
     "diagnostics": {
