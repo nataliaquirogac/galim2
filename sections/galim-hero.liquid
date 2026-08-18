@@ -526,50 +526,44 @@
   }
   .gh-hero .gh-btn--solid:hover { background: #FFFFFF; color: #135E73; }
 
-  /* MOBILE (5c): vertical scrim + bottom-left content */
+  /* MOBILE (5c): full image, content stacked BELOW it — never overlapping.
+     Earlier this cropped the image (object-fit: cover) and anchored the copy
+     over the bottom of it, hand-calibrated to one specific photo's internal
+     layout (head/pricing-panel percentages). That breaks the moment a
+     different image — especially one with its own baked-in headline/pricing
+     graphic, as opposed to a plain photo — has a different internal layout:
+     the overlaid button ends up sitting wherever flex-end lands, regardless
+     of what's actually drawn there in the image. Showing the full image
+     (object-fit: contain, natural aspect-ratio box) with the copy in normal
+     flow after it — not stacked on top via position:absolute — means any
+     image works without per-photo recalibration, at the cost of the image
+     and the copy no longer being able to visually merge into one scene. */
   @media (max-width: 768px) {
-    /* One column of copy anchored to the bottom, image above it. flex-end, not
-       space-between: the copy is now the only child in flow, so space-between
-       would pin it to the top of the frame. */
-    /* Extra bottom padding lifts the whole block off the bottom edge so the
-       button no longer sits almost on the fold. */
-    /* Height is a fixed multiple of the WIDTH, never a viewport-height unit, so
-       nothing shifts while Safari animates its toolbar away and the crop is
-       identical on every phone.
-       The banner is 1080x1920. Measured on the image: the figure's head starts at
-       15.2% and the pricing panel ends at 80.3%. So 12% comes off the top (dead
-       sky above the head, leaving ~3% of air) and 6% off the bottom (just legs),
-       leaving 82% of 1920 = 1574 — which lifts the CTA about 124px at 390px wide
-       so it clears the fold without scrolling. */
-    .gh-hero { min-height: calc(100vw * 1574 / 1080); flex-direction: column; justify-content: flex-end; align-items: center; text-align: center; padding: 40px 20px 18px; }
-    /* Mobile uses the portrait image, cropped to fill (cover) — no backdrop */
-    .gh-hero__backdrop { display: none; }
-    /* cover, since the box is now deliberately shorter than the artwork. 67% puts
-       two thirds of the removed height at the top and one third at the bottom,
-       which is exactly the 12%/6% split above. */
-    .gh-hero__img { object-fit: cover; object-position: 50% 67%; }
-    .gh-hero__tint { display: none; }
-    .gh-hero__grad-h { display: none; }
-    /* Narrower side fades on mobile so the photo shows more */
-    .gh-hero__sides::before,
-    .gh-hero__sides::after { width: 12%; }
-    /* Steeper ramp than desktop: on a portrait crop the copy covers a taller
-       share of the frame, and it sits over the figure's brightest contours. */
-    .gh-hero__grad-v {
-      background: linear-gradient(180deg,
-        rgba(8, 43, 52, 0.55) 0%,
-        rgba(8, 43, 52, 0.12) 22%,
-        rgba(8, 43, 52, 0.58) 42%,
-        rgba(8, 43, 52, 0.90) 62%,
-        rgba(8, 43, 52, 0.97) 100%);
+    .gh-hero { display: block; min-height: 0; padding: 0; }
+    .gh-hero__media {
+      position: relative; inset: auto;
+      width: 100%; aspect-ratio: 1080 / 1920;
+      background: var(--gh-side-color, #0D3B46);
     }
-    .gh-hero__inner { width: 100%; max-width: none; }
+    .gh-hero__backdrop { display: none; }
+    .gh-hero__img { object-fit: contain; object-position: center; }
+    /* These scrims existed to keep overlaid text legible against the photo;
+       with the copy no longer drawn over the image on mobile, they'd only
+       tint the image for no reason. */
+    .gh-hero__tint,
+    .gh-hero__grad-h,
+    .gh-hero__grad-v,
+    .gh-hero__sides { display: none; }
+    .gh-hero__inner {
+      position: relative;
+      width: 100%; max-width: none;
+      padding: 28px 20px 32px;
+      box-sizing: border-box;
+    }
+    /* The halo existed to darken the photo locally behind overlaid text;
+       nothing overlays the image on mobile anymore. */
     .gh-hero__inner:has(.gh-hero__h1, .gh-hero__stamp, .gh-hero__sub, .gh-hero__badge, .gh-hero__plans)::before {
-      left: -30px; right: -30px; top: -34px; bottom: -30px;
-      background:
-        radial-gradient(70% 58% at 50% 54%, rgba(6, 31, 38, 0.88), rgba(6, 31, 38, 0) 74%),
-        radial-gradient(100% 86% at 50% 52%, rgba(6, 31, 38, 0.56), rgba(6, 31, 38, 0) 80%);
-      filter: blur(10px);
+      display: none;
     }
     .gh-hero__badge { justify-content: center; margin-bottom: 0; font-size: 10px; }
     /* Scales down on narrow phones instead of running into the edges. Now the
