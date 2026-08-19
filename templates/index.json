@@ -217,13 +217,15 @@
         "m10": {
           "type": "item",
           "settings": {
-            "name": "Strength"
+            "name": "Strength",
+            "image": "shopify://shop_images/strength.png"
           }
         },
         "m7": {
           "type": "item",
           "settings": {
-            "name": "Brain"
+            "name": "Brain",
+            "image": "shopify://shop_images/brain.png"
           }
         },
         "m4": {
