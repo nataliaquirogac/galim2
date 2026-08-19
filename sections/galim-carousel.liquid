@@ -1,254 +1,261 @@
 {%- comment -%}
-  Galim Health — What we measure (auto-scroll carousel)
-  Marquee-style infinite carousel: each block is one measurement component
-  (Vision, Hearing, Lung Function, etc.). No JS — pure CSS keyframe loop,
-  paused on hover. Items are duplicated in the DOM so the loop is seamless.
+  Galim Health — What we measure (tab-based system navigator)
+  Replaces the old auto-scroll card carousel. One shared row of tabs (one per
+  measurement system); each tab shows/hides its own panel below. A panel is a
+  photo (system name + description overlaid, plus a decorative hotspot dot)
+  next to a results card (biological-age/marker badge, a one-line summary,
+  and up to 3 metrics with a value, a status pill and a progress bar).
+
+  Layout differs by breakpoint rather than just scaling down: on mobile the
+  left intro column ("WHAT WE MEASURE" / headline) is hidden and the panel
+  stacks image-then-card; on desktop each panel is its own 3-column grid
+  (intro | image | card) sitting below the shared tab row. Only 5 systems
+  ship with full badge/summary/metric content (Heart, Skin, Strength, Brain,
+  Blood) — those are what the reference designs specified. The rest render
+  with just their photo/name/description until she fills in the rest via
+  the customizer; a panel with no image falls back to a plain gradient tile
+  so nothing looks broken in the meantime.
 {%- endcomment -%}
 
 {%- liquid
   assign s = section.settings
-  assign duration = s.speed | default: 45
+  assign items = section.blocks | where: 'type', 'item'
+  assign primary_count = 5
 -%}
 
-<section class="gh-mq gh-section" data-gh-section="carousel" style="background: {{ s.bg_color }}; --gh-mq-duration: {{ duration }}s; --gh-side-color: {{ s.side_color | default: '#0A2F38' }}; --gh-side-width: {{ s.side_width | default: 12 }}%;">
+<section class="gh-mq gh-section" data-gh-section="carousel">
   <div class="gh-container">
-    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-mq__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-    {%- if s.heading != blank -%}<h2 class="gh-mq__h2">{{ s.heading }}</h2>{%- endif -%}
-  </div>
-
-  {%- if section.blocks.size > 0 -%}
-    <div class="gh-mq__viewport" data-gh-carousel aria-label="Measurement components">
-      <div class="gh-mq__track" data-gh-track tabindex="0">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'item' -%}
+    {%- if items.size > 0 -%}
+      {%- comment -%} ---------------- Shared tab row ---------------- {%- endcomment -%}
+      <div class="gh-mq__tabs-wrap">
+        <div class="gh-mq__tabs" data-gh-mq-tabs role="tablist" aria-label="Body systems">
+          {%- for block in items -%}
             {%- assign b = block.settings -%}
-            <div class="gh-mq__card" {{ block.shopify_attributes }}>
-              <div class="gh-mq__head">
-                <span class="gh-mq__icon">
-                  {%- case b.icon -%}
-                    {%- when 'eye' -%}{%- render 'icon-eye', size: 20 -%}
-                    {%- when 'ear' -%}{%- render 'icon-ear', size: 20 -%}
-                    {%- when 'lung' -%}{%- render 'icon-lung', size: 20 -%}
-                    {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 20 -%}
-                    {%- when 'brain' -%}{%- render 'icon-brain', size: 20 -%}
-                    {%- when 'muscle' -%}{%- render 'icon-muscle', size: 20 -%}
-                    {%- when 'skin' -%}{%- render 'icon-skin', size: 20 -%}
-                    {%- when 'balance' -%}{%- render 'icon-balance', size: 20 -%}
-                    {%- when 'pressure' -%}{%- render 'icon-pressure', size: 20 -%}
-                    {%- when 'blood' -%}{%- render 'icon-blood', size: 20 -%}
-                    {%- when 'dna' -%}{%- render 'icon-dna', size: 20 -%}
-                    {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 20 -%}
-                    {%- when 'mri' -%}{%- render 'icon-mri', size: 20 -%}
-                    {%- when 'bolt' -%}{%- render 'icon-bolt', size: 18 -%}
-                    {%- else -%}{%- render 'icon-heartbeat', size: 20 -%}
-                  {%- endcase -%}
-                </span>
-                {%- if b.name != blank -%}<h3 class="gh-mq__name">{{ b.name }}</h3>{%- endif -%}
-              </div>
-              {%- if b.description != blank -%}<p class="gh-mq__desc">{{ b.description }}</p>{%- endif -%}
-            </div>
+            {%- if forloop.index0 < primary_count -%}
+              <button type="button" class="gh-mq__tab" data-gh-mq-tab data-gh-mq-index="{{ forloop.index0 }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ b.name }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if items.size > primary_count -%}
+            {%- assign more_count = items.size | minus: primary_count -%}
+            <button type="button" class="gh-mq__tab gh-mq__tab--more" data-gh-mq-more aria-expanded="false" aria-haspopup="listbox">+{{ more_count }} more</button>
           {%- endif -%}
+        </div>
+
+        {%- if items.size > primary_count -%}
+          <div class="gh-mq__overlay" data-gh-mq-overlay hidden>
+            <ul class="gh-mq__overlay-list" role="listbox">
+              {%- for block in items -%}
+                {%- assign b = block.settings -%}
+                {%- if forloop.index0 >= primary_count -%}
+                  <li>
+                    <button type="button" class="gh-mq__overlay-item" data-gh-mq-tab data-gh-mq-index="{{ forloop.index0 }}" role="option">{{ b.name }}</button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------------- Panels ---------------- {%- endcomment -%}
+      <div class="gh-mq__panels">
+        {%- for block in items -%}
+          {%- assign b = block.settings -%}
+          <div class="gh-mq__panel" data-gh-mq-panel data-gh-mq-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+            <div class="gh-mq__intro">
+              {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-mq__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+              {%- if s.heading != blank -%}<h2 class="gh-mq__h2">{{ s.heading }}</h2>{%- endif -%}
+            </div>
+
+            <div class="gh-mq__image" {% if b.image != blank %}style="background-image: url({{ b.image | image_url: width: 900 }});"{% endif %}>
+              <span class="gh-mq__hotspot" style="left: {{ b.hotspot_x | default: 55 }}%; top: {{ b.hotspot_y | default: 45 }}%;" aria-hidden="true"></span>
+              <div class="gh-mq__image-text">
+                {%- if b.name != blank -%}<h3 class="gh-mq__name">{{ b.name }}</h3>{%- endif -%}
+                {%- if b.description != blank -%}<p class="gh-mq__desc">{{ b.description }}</p>{%- endif -%}
+              </div>
+            </div>
+
+            <div class="gh-mq__card">
+              {%- if b.badge == blank and b.summary == blank and b.metric1_label == blank -%}
+                <p class="gh-mq__soon">{{ s.soon_text | default: 'Full results coming soon.' }}</p>
+              {%- endif -%}
+              {%- if b.badge != blank -%}<span class="gh-mq__badge">{{ b.badge }}</span>{%- endif -%}
+              {%- if b.summary != blank -%}<p class="gh-mq__summary">{{ b.summary }}</p>{%- endif -%}
+
+              {%- comment -%} Metric 1 {%- endcomment -%}
+              {%- if b.metric1_label != blank -%}
+                <div class="gh-mq__metric">
+                  <div class="gh-mq__metric-row">
+                    <span class="gh-mq__metric-label">{{ b.metric1_label }}</span>
+                    <span class="gh-mq__metric-value">{{ b.metric1_value }}</span>
+                    {%- if b.metric1_status != blank -%}<span class="gh-mq__pill gh-mq__pill--{{ b.metric1_tone | default: 'good' }}">{{ b.metric1_status }}</span>{%- endif -%}
+                  </div>
+                  <div class="gh-mq__metric-bar"><div class="gh-mq__metric-fill" style="width: {{ b.metric1_percent | default: 60 }}%;"></div></div>
+                </div>
+              {%- endif -%}
+
+              {%- comment -%} Metric 2 {%- endcomment -%}
+              {%- if b.metric2_label != blank -%}
+                <div class="gh-mq__metric">
+                  <div class="gh-mq__metric-row">
+                    <span class="gh-mq__metric-label">{{ b.metric2_label }}</span>
+                    <span class="gh-mq__metric-value">{{ b.metric2_value }}</span>
+                    {%- if b.metric2_status != blank -%}<span class="gh-mq__pill gh-mq__pill--{{ b.metric2_tone | default: 'good' }}">{{ b.metric2_status }}</span>{%- endif -%}
+                  </div>
+                  <div class="gh-mq__metric-bar"><div class="gh-mq__metric-fill" style="width: {{ b.metric2_percent | default: 60 }}%;"></div></div>
+                </div>
+              {%- endif -%}
+
+              {%- comment -%} Metric 3 {%- endcomment -%}
+              {%- if b.metric3_label != blank -%}
+                <div class="gh-mq__metric">
+                  <div class="gh-mq__metric-row">
+                    <span class="gh-mq__metric-label">{{ b.metric3_label }}</span>
+                    <span class="gh-mq__metric-value">{{ b.metric3_value }}</span>
+                    {%- if b.metric3_status != blank -%}<span class="gh-mq__pill gh-mq__pill--{{ b.metric3_tone | default: 'good' }}">{{ b.metric3_status }}</span>{%- endif -%}
+                  </div>
+                  <div class="gh-mq__metric-bar"><div class="gh-mq__metric-fill" style="width: {{ b.metric3_percent | default: 60 }}%;"></div></div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
         {%- endfor -%}
       </div>
-      <div class="gh-mq__sides" aria-hidden="true"></div>
-    </div>
-
-    <div class="gh-container gh-mq__progress-wrap">
-      <button type="button" class="gh-mq__nav" data-gh-nav="prev" aria-label="Previous">‹</button>
-      <div class="gh-mq__progress" data-gh-scrubber role="slider" aria-label="Carousel position" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <div class="gh-mq__progress-bar" data-gh-progress></div>
-        <div class="gh-mq__progress-thumb" data-gh-thumb></div>
-      </div>
-      <button type="button" class="gh-mq__nav" data-gh-nav="next" aria-label="Next">›</button>
-      <span class="gh-mq__count"><b data-gh-count>01</b>&nbsp;/&nbsp;{{ section.blocks.size | prepend: '0' | slice: -2, 2 }}</span>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  </div>
 </section>
 
 {% stylesheet %}
-  .gh-mq { position: relative; padding: var(--gh-pad-y) 0; overflow: hidden; }
-  /* Green/teal ambient glow behind the cards (brand look) */
-  .gh-mq::before {
-    content: ""; position: absolute; left: 14%; top: 52%;
-    width: 760px; height: 460px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(92, 178, 74, 0.10), rgba(40, 165, 128, 0.06) 42%, rgba(19, 94, 115, 0) 72%);
-    filter: blur(44px); pointer-events: none; z-index: 0;
-  }
-  .gh-mq > * { position: relative; z-index: 1; }
+  .gh-mq { position: relative; padding: var(--gh-pad-y) 0; background: #FBFAF8; overflow: hidden; }
   .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
-  .gh-mq__eyebrow { margin-bottom: 12px; text-align: center; }
-  /* Kept on a single line. Measured: the headline is ~18.5x the font-size wide,
-     so 28px needs ~598px of viewport — always fine from 769px up. Narrower
-     viewports scale the size down instead of wrapping (see the mobile rule). */
-  .gh-mq__h2 {
-    font: 200 28px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white);
-    margin: 0 auto 24px; text-align: center;
-    white-space: nowrap;
-  }
 
-  /* Swipeable scroll container (no more auto-marquee) */
-  .gh-mq__viewport { position: relative; }
-  .gh-mq__track {
-    display: flex;
-    gap: 12px;
-    padding: 4px var(--gh-pad-x);
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: var(--gh-pad-x);
+  /* ---------------- Tabs ---------------- */
+  .gh-mq__tabs-wrap { position: relative; }
+  .gh-mq__tabs {
+    display: flex; align-items: flex-end; gap: 36px;
+    overflow-x: auto; overflow-y: hidden;
+    white-space: nowrap;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gh-hairline);
   }
-  .gh-mq__track::-webkit-scrollbar { display: none; }
-  .gh-mq__track:focus-visible { outline: 2px solid var(--gh-green); outline-offset: 4px; border-radius: 4px; }
+  .gh-mq__tabs::-webkit-scrollbar { display: none; }
+  .gh-mq__tab {
+    position: relative;
+    flex: 0 0 auto;
+    background: none; border: 0; padding: 0 0 16px; margin: 0 0 -17px;
+    font: 300 22px/1 var(--gh-sans); color: var(--gh-slate);
+    cursor: pointer;
+    transition: color 0.25s ease;
+  }
+  .gh-mq__tab:hover { color: var(--gh-light); }
+  .gh-mq__tab[aria-selected="true"] { color: var(--gh-brand); font-weight: 500; }
+  /* Short, thick indicator centred under the label — not full tab width. */
+  .gh-mq__tab[aria-selected="true"]::after {
+    content: ""; position: absolute; left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    width: 28px; height: 3px; border-radius: 2px;
+    background: var(--gh-brand);
+  }
+  .gh-mq__tab--more { color: var(--gh-slate); font: 300 16px/1 var(--gh-mono); letter-spacing: 0.04em; }
+  .gh-mq__tab--more:hover { color: var(--gh-brand); }
+
+  .gh-mq__overlay {
+    position: absolute; z-index: 5; top: 100%; right: var(--gh-pad-x); margin-top: 8px;
+    background: #FFFFFF; border: 1px solid var(--gh-border); border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(13, 59, 70, 0.16);
+    padding: 10px; min-width: 220px; max-height: 320px; overflow-y: auto;
+  }
+  .gh-mq__overlay[hidden] { display: none; }
+  .gh-mq__overlay-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .gh-mq__overlay-item {
+    display: block; width: 100%; text-align: left;
+    background: none; border: 0; border-radius: 8px; padding: 10px 12px;
+    font: 300 15px/1.2 var(--gh-sans); color: var(--gh-light); cursor: pointer;
+  }
+  .gh-mq__overlay-item:hover { background: var(--gh-light-tint); color: var(--gh-brand); }
+
+  /* ---------------- Panel ---------------- */
+  @keyframes gh-mq-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .gh-mq__panel[hidden] { display: none; }
+  .gh-mq__panel:not([hidden]) { animation: gh-mq-fade 0.4s ease; }
+  .gh-mq__panel {
+    display: grid;
+    grid-template-columns: minmax(200px, 260px) minmax(280px, 1fr) minmax(280px, 1fr);
+    gap: 40px;
+    align-items: start;
+    padding-top: 48px;
+  }
+  .gh-mq__intro { padding-top: 4px; }
+  .gh-mq__eyebrow { margin-bottom: 16px; }
+  .gh-mq__h2 { font: 300 30px/1.2 var(--gh-sans); letter-spacing: -0.01em; color: var(--gh-light); margin: 0; max-width: 16ch; }
+
+  .gh-mq__image {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #175E73 0%, #0D3B46 100%);
+    background-size: cover;
+    background-position: center;
+  }
+  .gh-mq__hotspot {
+    position: absolute; width: 34px; height: 34px; border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.28);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gh-mq__hotspot::after {
+    content: ""; width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF;
+  }
+  .gh-mq__image-text {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 28px 26px;
+    background: linear-gradient(180deg, rgba(6,31,38,0) 0%, rgba(6,31,38,0.55) 55%, rgba(6,31,38,0.82) 100%);
+  }
+  .gh-mq__name { font: 300 30px/1.05 var(--gh-sans); color: #F7F5F3; margin: 0; }
+  .gh-mq__desc { font: 300 15px/1.4 var(--gh-sans); color: rgba(247,245,243,0.82); margin: 8px 0 0; }
 
   .gh-mq__card {
-    flex: 0 0 auto;
-    width: 180px;
-    padding: 12px;
-    border-radius: 9px;
-    /* Teal island with white text on the light page */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-green: #C3D9DD;
-    /* Gradient ring: a transparent border revealing a second background layer
-       clipped to border-box, with the card's own teal fill clipped to
-       padding-box on top of it — no mask/pseudo-element needed since the fill
-       is opaque. The ramp loops back to its own starting color rather than
-       fading to transparent, so every edge shows solid color. */
-    border: 3px solid transparent;
-    background:
-      linear-gradient(#135E73, #135E73) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
-    color: var(--gh-light);
-    display: flex; flex-direction: column; gap: 6px;
-    scroll-snap-align: start;
-    box-shadow: 0 10px 26px rgba(19, 94, 115, 0.14);
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F1EFEC 100%);
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 20px 50px rgba(13, 59, 70, 0.08);
   }
-  .gh-mq__card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(19, 94, 115, 0.22); }
-
-  /* Icon + name on the same line */
-  .gh-mq__head { display: flex; align-items: center; gap: 8px; }
-  .gh-mq__icon {
-    width: 26px; height: 26px; border-radius: 6px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    display: inline-flex; align-items: center; justify-content: center;
-    color: #F7F5F3;
-    flex-shrink: 0;
+  .gh-mq__badge {
+    display: inline-block; font: 500 12px/1 var(--gh-mono); letter-spacing: 0.08em;
+    color: #F7F5F3; background: var(--gh-brand); border-radius: 999px; padding: 9px 16px;
   }
-  .gh-mq__icon svg { width: 15px; height: 15px; }
-  /* Dawn's base h1-h5 rule sets word-break: break-word, which is the legacy
-     alias for overflow-wrap: anywhere — it breaks mid-word even when the whole
-     word would fit on the next line, which is exactly what cut "Cardiovascular"
-     to "Cardiovascula" + "r" at this card's width. Overriding to normal wrapping
-     (only breaking a word if it can't fit a line by itself) keeps names intact. */
-  .gh-mq__name { font: 500 13px/1.15 var(--gh-sans); color: var(--gh-white); word-break: normal; overflow-wrap: break-word; }
-  .gh-mq__desc { font: 300 11.5px/1.4 var(--gh-sans); color: var(--gh-muted); margin: 0; }
-
-  /* Side fades */
-  .gh-mq__sides { position: absolute; inset: 0; pointer-events: none; }
-  .gh-mq__sides::before,
-  .gh-mq__sides::after {
-    content: ""; position: absolute; top: 0; bottom: 0;
-    width: var(--gh-side-width, 12%);
-    z-index: 2;
+  .gh-mq__summary { font: 300 18px/1.4 var(--gh-sans); color: var(--gh-light); margin: 20px 0 26px; }
+  .gh-mq__soon { font: 300 16px/1.5 var(--gh-sans); color: var(--gh-slate); margin: 0; }
+  .gh-mq__metric + .gh-mq__metric { margin-top: 22px; }
+  .gh-mq__metric-row { display: flex; align-items: baseline; gap: 10px; }
+  .gh-mq__metric-label { font: 600 14px/1.3 var(--gh-sans); color: var(--gh-light); flex: 1; min-width: 0; }
+  .gh-mq__metric-value { font: 700 16px/1 var(--gh-sans); color: var(--gh-brand); flex: none; }
+  .gh-mq__pill {
+    flex: none; font: 500 10px/1 var(--gh-mono); letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 9px; border-radius: 999px;
   }
-  .gh-mq__sides::before {
-    left: 0;
-    background: linear-gradient(to right, var(--gh-bg), rgba(247, 245, 243, 0));
-  }
-  .gh-mq__sides::after {
-    right: 0;
-    background: linear-gradient(to left, var(--gh-bg), rgba(247, 245, 243, 0));
-  }
-
-  /* Interactive scrubber: click/drag to navigate, prev/next arrows, counter */
-  .gh-mq__progress-wrap {
-    margin-top: 24px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .gh-mq__count {
-    font: 500 12px/1 var(--gh-mono);
-    letter-spacing: 0.12em;
-    color: var(--gh-slate);
-    white-space: nowrap;
-  }
-  .gh-mq__count b { font-weight: 500; color: var(--gh-green); }
-  .gh-mq__nav {
-    flex-shrink: 0;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    border: 1px solid var(--gh-border);
-    background: transparent;
-    color: var(--gh-light);
-    font: 300 22px/1 var(--gh-sans);
-    cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-  }
-  .gh-mq__nav:hover { border-color: var(--gh-green); color: var(--gh-green); }
-  .gh-mq__nav:disabled { opacity: 0.35; cursor: default; }
-  .gh-mq__nav:disabled:hover { border-color: var(--gh-border); color: var(--gh-light); }
-
-  .gh-mq__progress {
-    flex: 1;
-    height: 24px;               /* larger hit area than the visible bar */
-    position: relative;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    touch-action: none;
-  }
-  .gh-mq__progress::before {
-    content: "";
-    position: absolute; left: 0; right: 0; top: 50%;
-    height: 6px;
-    background: rgba(168, 194, 200, 0.18);
-    border-radius: 999px;
-    transform: translateY(-50%);
-  }
-  .gh-mq__progress-bar {
-    position: absolute; left: 0; top: 50%;
-    height: 6px;
-    width: 0%;
-    min-width: 16px;   /* accent nub always visible, even at position 0 */
-    background: linear-gradient(90deg, var(--gh-brand, #135E73), var(--gh-accent, #A8C2C8));
-    border-radius: 999px;
-    transform: translateY(-50%);
-    transition: width 0.15s ease-out, background 0.25s ease;
-    pointer-events: none;
-    box-shadow: 0 0 10px rgba(168, 194, 200, 0.7), 0 0 24px rgba(168, 194, 200, 0.3);
-  }
-  .gh-mq__progress-bar.is-end { background: linear-gradient(90deg, var(--gh-green), var(--gh-light)); }
-  .gh-mq__progress-thumb {
-    position: absolute; top: 50%;
-    left: 0%;
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--gh-green);
-    border: 2px solid var(--gh-white);
-    transform: translate(-50%, -50%);
-    transition: left 0.15s ease-out, transform 0.15s ease-out;
-    pointer-events: none;
-    box-shadow: 0 0 0 3px rgba(168, 194, 200, 0.28), 0 2px 8px rgba(6, 31, 38, 0.5);
-  }
-  .gh-mq__progress:hover .gh-mq__progress-thumb,
-  .gh-mq__progress.is-dragging .gh-mq__progress-thumb { transform: translate(-50%, -50%) scale(1.25); }
-  .gh-mq__progress.is-dragging { cursor: grabbing; }
-  .gh-mq__progress:focus-visible { outline: none; }
-  .gh-mq__progress:focus-visible .gh-mq__progress-thumb { box-shadow: 0 0 0 4px rgba(168, 194, 200, 0.35); }
+  .gh-mq__pill--good { background: rgba(92, 178, 74, 0.16); color: #3E7A2E; }
+  .gh-mq__pill--watch { background: rgba(217, 165, 32, 0.18); color: #8A661A; }
+  .gh-mq__metric-bar { margin-top: 8px; height: 5px; border-radius: 999px; background: var(--gh-hairline); overflow: hidden; }
+  .gh-mq__metric-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #2AAFDF, var(--gh-brand)); }
 
   @media (max-width: 768px) {
-    .gh-mq__h2 { font-size: min(22px, 4.6vw); margin-bottom: 16px; }
-    .gh-mq__card { width: 160px; padding: 12px; }
-    .gh-mq__icon { width: 24px; height: 24px; border-radius: 6px; }
-    .gh-mq__icon svg { width: 14px; height: 14px; }
-    .gh-mq__name { font-size: 12.5px; }
-    .gh-mq__desc { font-size: 11px; line-height: 1.35; }
-    .gh-mq__sides::before,
-    .gh-mq__sides::after { width: 6%; }
-    .gh-mq__progress { max-width: none; }
-    .gh-mq__nav { width: 30px; height: 30px; font-size: 18px; }
+    .gh-mq__tabs { gap: 24px; }
+    .gh-mq__tab { font-size: 17px; padding-bottom: 12px; margin-bottom: -13px; }
+    .gh-mq__tab--more { font-size: 13px; }
+    .gh-mq__overlay { left: 20px; right: 20px; min-width: 0; }
+    .gh-mq__panel {
+      display: block;
+      padding-top: 24px;
+    }
+    .gh-mq__intro { display: none; }
+    .gh-mq__image { aspect-ratio: 4 / 5; border-radius: 20px; }
+    .gh-mq__name { font-size: 26px; }
+    .gh-mq__card { margin-top: 20px; padding: 26px 22px; }
+    .gh-mq__summary { font-size: 16px; margin: 16px 0 22px; }
   }
 {% endstylesheet %}
 
@@ -258,12 +265,8 @@
   "class": "gh-section-full",
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "WHAT WE MEASURE" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Every system, in one visit." },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A2F38" },
-    { "type": "range", "id": "speed", "min": 20, "max": 120, "step": 5, "unit": "s", "label": "Loop duration", "info": "Time for one full pass. Higher = slower.", "default": 45 },
-    { "type": "header", "content": "Side fades" },
-    { "type": "color", "id": "side_color", "label": "Side fade color", "default": "#0A2F38" },
-    { "type": "range", "id": "side_width", "min": 0, "max": 30, "step": 2, "unit": "%", "label": "Side fade width", "default": 12 }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Millions of data points, one clear picture." },
+    { "type": "text", "id": "soon_text", "label": "Placeholder text for systems with no results yet", "default": "Full results coming soon." }
   ],
   "blocks": [
     {
@@ -287,7 +290,32 @@
           {"value":"bolt","label":"Performance"}
         ], "default": "eye" },
         { "type": "text", "id": "name", "label": "Name", "default": "Vision" },
-        { "type": "textarea", "id": "description", "label": "Description", "default": "Visual acuity and eye health." }
+        { "type": "textarea", "id": "description", "label": "Short description (shown on the photo)", "default": "Visual acuity and eye health." },
+        { "type": "header", "content": "Photo" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "range", "id": "hotspot_x", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Hotspot marker — horizontal", "default": 55 },
+        { "type": "range", "id": "hotspot_y", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Hotspot marker — vertical", "default": 45 },
+        { "type": "header", "content": "Results card" },
+        { "type": "text", "id": "badge", "label": "Badge", "info": "E.g. \"3 years younger\" or \"27 markers\". Leave blank to hide." },
+        { "type": "text", "id": "summary", "label": "Health summary line" },
+        { "type": "header", "content": "Metric 1" },
+        { "type": "text", "id": "metric1_label", "label": "Label" },
+        { "type": "text", "id": "metric1_value", "label": "Value" },
+        { "type": "text", "id": "metric1_status", "label": "Status pill" },
+        { "type": "select", "id": "metric1_tone", "label": "Pill tone", "options": [{"value":"good","label":"Good (green)"},{"value":"watch","label":"Watch (amber)"}], "default": "good" },
+        { "type": "range", "id": "metric1_percent", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Bar fill", "default": 60 },
+        { "type": "header", "content": "Metric 2" },
+        { "type": "text", "id": "metric2_label", "label": "Label" },
+        { "type": "text", "id": "metric2_value", "label": "Value" },
+        { "type": "text", "id": "metric2_status", "label": "Status pill" },
+        { "type": "select", "id": "metric2_tone", "label": "Pill tone", "options": [{"value":"good","label":"Good (green)"},{"value":"watch","label":"Watch (amber)"}], "default": "good" },
+        { "type": "range", "id": "metric2_percent", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Bar fill", "default": 60 },
+        { "type": "header", "content": "Metric 3" },
+        { "type": "text", "id": "metric3_label", "label": "Label" },
+        { "type": "text", "id": "metric3_value", "label": "Value" },
+        { "type": "text", "id": "metric3_status", "label": "Status pill" },
+        { "type": "select", "id": "metric3_tone", "label": "Pill tone", "options": [{"value":"good","label":"Good (green)"},{"value":"watch","label":"Watch (amber)"}], "default": "good" },
+        { "type": "range", "id": "metric3_percent", "min": 0, "max": 100, "step": 1, "unit": "%", "label": "Bar fill", "default": 60 }
       ]
     }
   ],
@@ -295,17 +323,15 @@
     {
       "name": "Galim · Carousel",
       "blocks": [
+        { "type": "item", "settings": { "icon": "heartbeat", "name": "Heart", "description": "Rhythm, performance, and hidden risk factors" } },
+        { "type": "item", "settings": { "icon": "skin", "name": "Skin", "description": "Sun damage, texture, and mole mapping" } },
+        { "type": "item", "settings": { "icon": "muscle", "name": "Strength", "description": "Real strength, not just what you lift" } },
+        { "type": "item", "settings": { "icon": "brain", "name": "Brain", "description": "Memory, focus, and processing speed" } },
+        { "type": "item", "settings": { "icon": "blood", "name": "Blood", "description": "Metabolic, hormonal, cardiovascular, and more" } },
         { "type": "item", "settings": { "icon": "eye", "name": "Vision", "description": "Visual acuity and eye health." } },
         { "type": "item", "settings": { "icon": "ear", "name": "Hearing", "description": "Auditory range and clarity." } },
         { "type": "item", "settings": { "icon": "lung", "name": "Lung function", "description": "Capacity, flow, oxygen exchange." } },
-        { "type": "item", "settings": { "icon": "heartbeat", "name": "Cardiovascular", "description": "Rhythm, output, arterial health." } },
-        { "type": "item", "settings": { "icon": "pressure", "name": "Blood pressure", "description": "Systolic, diastolic, arterial stiffness." } },
-        { "type": "item", "settings": { "icon": "blood", "name": "Blood biomarkers", "description": "Metabolic, inflammatory, hormonal panels." } },
-        { "type": "item", "settings": { "icon": "muscle", "name": "Strength", "description": "True force output, not just what you lift." } },
-        { "type": "item", "settings": { "icon": "bolt", "name": "Body composition", "description": "DEXA — fat, muscle, distribution." } },
         { "type": "item", "settings": { "icon": "balance", "name": "Mobility & balance", "description": "Joint range, posture, stability." } },
-        { "type": "item", "settings": { "icon": "brain", "name": "Cognition", "description": "Reaction, memory, focus." } },
-        { "type": "item", "settings": { "icon": "skin", "name": "Skin", "description": "Screening for lesions and sun damage." } },
         { "type": "item", "settings": { "icon": "microbiome", "name": "Gut", "description": "Microbiome and metabolic insights." } }
       ]
     }

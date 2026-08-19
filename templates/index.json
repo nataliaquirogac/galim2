@@ -221,7 +221,26 @@
           "settings": {
             "icon": "heartbeat",
             "name": "Heart",
-            "description": "Rhythm, output, and hidden risk factors."
+            "description": "Rhythm, performance, and hidden risk factors",
+            "badge": "3 YEARS + YOUNGER",
+            "summary": "Heart health, one of your strongest systems",
+            "metric1_label": "Total cholesterol",
+            "metric1_value": "182",
+            "metric1_status": "NORMAL",
+            "metric1_tone": "good",
+            "metric1_percent": 85,
+            "metric2_label": "Artery-clogging cholesterol",
+            "metric2_value": "98",
+            "metric2_status": "NORMAL",
+            "metric2_tone": "good",
+            "metric2_percent": 75,
+            "metric3_label": "Insulin resistance",
+            "metric3_value": "1.3",
+            "metric3_status": "NORMAL",
+            "metric3_tone": "good",
+            "metric3_percent": 15,
+            "hotspot_x": 62,
+            "hotspot_y": 38
           }
         },
         "m4": {
@@ -229,7 +248,26 @@
           "settings": {
             "icon": "blood",
             "name": "Blood",
-            "description": "Metabolic, hormonal, cardiovascular, and more."
+            "description": "Metabolic, hormonal, cardiovascular, and more",
+            "badge": "27 MARKERS",
+            "summary": "Blood results",
+            "metric1_label": "Blood protein",
+            "metric1_value": "4.6",
+            "metric1_status": "NORMAL",
+            "metric1_tone": "good",
+            "metric1_percent": 50,
+            "metric2_label": "Sugar over the last 3 months",
+            "metric2_value": "5.1%",
+            "metric2_status": "NORMAL",
+            "metric2_tone": "good",
+            "metric2_percent": 55,
+            "metric3_label": "Triglycerides",
+            "metric3_value": "95",
+            "metric3_status": "NORMAL",
+            "metric3_tone": "good",
+            "metric3_percent": 90,
+            "hotspot_x": 55,
+            "hotspot_y": 25
           }
         },
         "m10": {
@@ -237,7 +275,26 @@
           "settings": {
             "icon": "muscle",
             "name": "Strength",
-            "description": "True force output, not just what you lift."
+            "description": "True force output, not just what you lift.",
+            "badge": "3 YEARS + YOUNGER",
+            "summary": "Strength indices",
+            "metric1_label": "Grip strength",
+            "metric1_value": "48 kg",
+            "metric1_status": "STRONG",
+            "metric1_tone": "good",
+            "metric1_percent": 85,
+            "metric2_label": "Squat (1RM)",
+            "metric2_value": "135 kg",
+            "metric2_status": "STRONG",
+            "metric2_tone": "good",
+            "metric2_percent": 90,
+            "metric3_label": "Left/right symmetry",
+            "metric3_value": "94%",
+            "metric3_status": "BALANCED",
+            "metric3_tone": "good",
+            "metric3_percent": 94,
+            "hotspot_x": 82,
+            "hotspot_y": 32
           }
         },
         "m12": {
@@ -245,7 +302,26 @@
           "settings": {
             "icon": "skin",
             "name": "Skin",
-            "description": "Sun damage, texture, and mole mapping."
+            "description": "Sun damage, texture, and mole mapping.",
+            "badge": "5 YEARS + YOUNGER",
+            "summary": "Skin health, holding steady",
+            "metric1_label": "Mole count",
+            "metric1_value": "87",
+            "metric1_status": "NORMAL",
+            "metric1_tone": "good",
+            "metric1_percent": 85,
+            "metric2_label": "Atypical moles",
+            "metric2_value": "2",
+            "metric2_status": "NORMAL",
+            "metric2_tone": "good",
+            "metric2_percent": 15,
+            "metric3_label": "Lesions to monitor",
+            "metric3_value": "1",
+            "metric3_status": "WATCH",
+            "metric3_tone": "watch",
+            "metric3_percent": 10,
+            "hotspot_x": 40,
+            "hotspot_y": 55
           }
         },
         "m6": {
@@ -277,7 +353,26 @@
           "settings": {
             "icon": "brain",
             "name": "Brain",
-            "description": "Memory, focus, and processing speed."
+            "description": "Memory, focus, and processing speed.",
+            "badge": "3 YEARS + YOUNGER",
+            "summary": "Brain health",
+            "metric1_label": "Memory (percentile)",
+            "metric1_value": "P82",
+            "metric1_status": "SUPERIOR",
+            "metric1_tone": "good",
+            "metric1_percent": 82,
+            "metric2_label": "Vitamin B12",
+            "metric2_value": "410 pg/mL",
+            "metric2_status": "LOW/NORMAL",
+            "metric2_tone": "watch",
+            "metric2_percent": 55,
+            "metric3_label": "Processing speed",
+            "metric3_value": "P76",
+            "metric3_status": "NORMAL",
+            "metric3_tone": "good",
+            "metric3_percent": 76,
+            "hotspot_x": 58,
+            "hotspot_y": 30
           }
         },
         "m9": {
@@ -314,16 +409,16 @@
         }
       },
       "block_order": [
+        "m11",
+        "m12",
+        "m10",
+        "m7",
+        "m4",
         "m8",
         "item_3zaLMx",
-        "m11",
-        "m4",
-        "m10",
-        "m12",
         "m6",
         "item_6WJCYy",
         "item_jCmJiH",
-        "m7",
         "m9",
         "m1",
         "m2",

@@ -5,6 +5,7 @@
    - Sticky header condense on scroll
    - Package cards: accordion (collapsed to name + subtitle by default)
    - Private invitation page (/invitacion-especial)
+   - What we measure: tab-based system navigator
    ============================================================ */
 (function () {
   'use strict';
@@ -495,5 +496,48 @@
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check, { passive: true });
     check();
+  })();
+
+  /* ---- What we measure: tab-based system navigator ---- */
+  (function () {
+    var tabsWrap = document.querySelector('[data-gh-mq-tabs]');
+    if (!tabsWrap) return;
+
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-gh-mq-tab]'));
+    var panels = Array.prototype.slice.call(document.querySelectorAll('[data-gh-mq-panel]'));
+    var moreBtn = document.querySelector('[data-gh-mq-more]');
+    var overlay = document.querySelector('[data-gh-mq-overlay]');
+
+    function showIndex(index) {
+      tabs.forEach(function (t) {
+        t.setAttribute('aria-selected', String(t.getAttribute('data-gh-mq-index') === String(index)));
+      });
+      panels.forEach(function (p) {
+        p.hidden = p.getAttribute('data-gh-mq-index') !== String(index);
+      });
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        showIndex(tab.getAttribute('data-gh-mq-index'));
+        if (overlay) { overlay.hidden = true; }
+        if (moreBtn) { moreBtn.setAttribute('aria-expanded', 'false'); }
+      });
+    });
+
+    if (moreBtn && overlay) {
+      moreBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = overlay.hidden;
+        overlay.hidden = !open;
+        moreBtn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', function (e) {
+        if (!overlay.hidden && !overlay.contains(e.target) && e.target !== moreBtn) {
+          overlay.hidden = true;
+          moreBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
   })();
 })();
