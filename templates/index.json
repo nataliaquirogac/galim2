@@ -231,7 +231,8 @@
         "m4": {
           "type": "item",
           "settings": {
-            "name": "Blood"
+            "name": "Blood",
+            "image": "shopify://shop_images/blood.png"
           }
         },
         "m8": {
