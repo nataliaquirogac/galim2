@@ -204,35 +204,40 @@
           "type": "item",
           "settings": {
             "name": "Heart",
-            "image": "shopify://shop_images/heart.png"
+            "image": "shopify://shop_images/heart.png",
+            "image_mobile": "shopify://shop_images/heart_mobile.png"
           }
         },
         "m12": {
           "type": "item",
           "settings": {
             "name": "Skin",
-            "image": "shopify://shop_images/skin.png"
+            "image": "shopify://shop_images/skin.png",
+            "image_mobile": "shopify://shop_images/skin_mobile.png"
           }
         },
         "m10": {
           "type": "item",
           "settings": {
             "name": "Strength",
-            "image": "shopify://shop_images/strength.png"
+            "image": "shopify://shop_images/strength.png",
+            "image_mobile": "shopify://shop_images/strength_mobile.png"
           }
         },
         "m7": {
           "type": "item",
           "settings": {
             "name": "Brain",
-            "image": "shopify://shop_images/brain.png"
+            "image": "shopify://shop_images/brain.png",
+            "image_mobile": "shopify://shop_images/brain_mobile.png"
           }
         },
         "m4": {
           "type": "item",
           "settings": {
             "name": "Blood",
-            "image": "shopify://shop_images/blood.png"
+            "image": "shopify://shop_images/blood.png",
+            "image_mobile": "shopify://shop_images/blood_mobile.png"
           }
         },
         "m8": {
