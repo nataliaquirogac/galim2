@@ -236,7 +236,8 @@
           "type": "item",
           "settings": {
             "name": "Blood",
-            "image": "shopify://shop_images/blood.png"
+            "image": "shopify://shop_images/blood.png",
+            "image_mobile": "shopify://shop_images/blood_mobile.png"
           }
         },
         "m8": {
