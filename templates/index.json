@@ -204,14 +204,16 @@
           "type": "item",
           "settings": {
             "name": "Heart",
-            "image": "shopify://shop_images/heart.png"
+            "image": "shopify://shop_images/heart.png",
+            "image_mobile": "shopify://shop_images/heart_mobile.png"
           }
         },
         "m12": {
           "type": "item",
           "settings": {
             "name": "Skin",
-            "image": "shopify://shop_images/skin.png"
+            "image": "shopify://shop_images/skin.png",
+            "image_mobile": "shopify://shop_images/skin_mobile.png"
           }
         },
         "m10": {
