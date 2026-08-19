@@ -203,208 +203,85 @@
         "m8": {
           "type": "item",
           "settings": {
-            "icon": "dna",
-            "name": "Real Body composition",
-            "description": "Fat, muscle, and bone - DEXA scan"
+            "name": "Real Body composition"
           }
         },
         "item_3zaLMx": {
           "type": "item",
           "settings": {
-            "icon": "balance",
-            "name": "AI Body Measurements",
-            "description": "Measure your body with millimeter-level precision using AI"
+            "name": "AI Body Measurements"
           }
         },
         "m11": {
           "type": "item",
           "settings": {
-            "icon": "heartbeat",
-            "name": "Heart",
-            "description": "Rhythm, performance, and hidden risk factors",
-            "badge": "3 YEARS + YOUNGER",
-            "summary": "Heart health, one of your strongest systems",
-            "metric1_label": "Total cholesterol",
-            "metric1_value": "182",
-            "metric1_status": "NORMAL",
-            "metric1_tone": "good",
-            "metric1_percent": 85,
-            "metric2_label": "Artery-clogging cholesterol",
-            "metric2_value": "98",
-            "metric2_status": "NORMAL",
-            "metric2_tone": "good",
-            "metric2_percent": 75,
-            "metric3_label": "Insulin resistance",
-            "metric3_value": "1.3",
-            "metric3_status": "NORMAL",
-            "metric3_tone": "good",
-            "metric3_percent": 15,
-            "hotspot_x": 62,
-            "hotspot_y": 38
+            "name": "Heart"
           }
         },
         "m4": {
           "type": "item",
           "settings": {
-            "icon": "blood",
-            "name": "Blood",
-            "description": "Metabolic, hormonal, cardiovascular, and more",
-            "badge": "27 MARKERS",
-            "summary": "Blood results",
-            "metric1_label": "Blood protein",
-            "metric1_value": "4.6",
-            "metric1_status": "NORMAL",
-            "metric1_tone": "good",
-            "metric1_percent": 50,
-            "metric2_label": "Sugar over the last 3 months",
-            "metric2_value": "5.1%",
-            "metric2_status": "NORMAL",
-            "metric2_tone": "good",
-            "metric2_percent": 55,
-            "metric3_label": "Triglycerides",
-            "metric3_value": "95",
-            "metric3_status": "NORMAL",
-            "metric3_tone": "good",
-            "metric3_percent": 90,
-            "hotspot_x": 55,
-            "hotspot_y": 25
+            "name": "Blood"
           }
         },
         "m10": {
           "type": "item",
           "settings": {
-            "icon": "muscle",
-            "name": "Strength",
-            "description": "True force output, not just what you lift.",
-            "badge": "3 YEARS + YOUNGER",
-            "summary": "Strength indices",
-            "metric1_label": "Grip strength",
-            "metric1_value": "48 kg",
-            "metric1_status": "STRONG",
-            "metric1_tone": "good",
-            "metric1_percent": 85,
-            "metric2_label": "Squat (1RM)",
-            "metric2_value": "135 kg",
-            "metric2_status": "STRONG",
-            "metric2_tone": "good",
-            "metric2_percent": 90,
-            "metric3_label": "Left/right symmetry",
-            "metric3_value": "94%",
-            "metric3_status": "BALANCED",
-            "metric3_tone": "good",
-            "metric3_percent": 94,
-            "hotspot_x": 82,
-            "hotspot_y": 32
+            "name": "Strength"
           }
         },
         "m12": {
           "type": "item",
           "settings": {
-            "icon": "skin",
-            "name": "Skin",
-            "description": "Sun damage, texture, and mole mapping.",
-            "badge": "5 YEARS + YOUNGER",
-            "summary": "Skin health, holding steady",
-            "metric1_label": "Mole count",
-            "metric1_value": "87",
-            "metric1_status": "NORMAL",
-            "metric1_tone": "good",
-            "metric1_percent": 85,
-            "metric2_label": "Atypical moles",
-            "metric2_value": "2",
-            "metric2_status": "NORMAL",
-            "metric2_tone": "good",
-            "metric2_percent": 15,
-            "metric3_label": "Lesions to monitor",
-            "metric3_value": "1",
-            "metric3_status": "WATCH",
-            "metric3_tone": "watch",
-            "metric3_percent": 10,
-            "hotspot_x": 40,
-            "hotspot_y": 55
+            "name": "Skin"
           }
         },
         "m6": {
           "type": "item",
           "settings": {
-            "icon": "lung",
-            "name": "Lungs",
-            "description": "Capacity, airflow, and oxygen efficiency."
+            "name": "Lungs"
           }
         },
         "item_6WJCYy": {
           "type": "item",
           "settings": {
-            "icon": "dna",
-            "name": "Bone",
-            "description": "Bone density, strength and skeletal health."
+            "name": "Bone"
           }
         },
         "item_jCmJiH": {
           "type": "item",
           "settings": {
-            "icon": "heartbeat",
-            "name": "Cardiovascular",
-            "description": "VO₂ max, aerobic capacity, and endurance."
+            "name": "Cardiovascular"
           }
         },
         "m7": {
           "type": "item",
           "settings": {
-            "icon": "brain",
-            "name": "Brain",
-            "description": "Memory, focus, and processing speed.",
-            "badge": "3 YEARS + YOUNGER",
-            "summary": "Brain health",
-            "metric1_label": "Memory (percentile)",
-            "metric1_value": "P82",
-            "metric1_status": "SUPERIOR",
-            "metric1_tone": "good",
-            "metric1_percent": 82,
-            "metric2_label": "Vitamin B12",
-            "metric2_value": "410 pg/mL",
-            "metric2_status": "LOW/NORMAL",
-            "metric2_tone": "watch",
-            "metric2_percent": 55,
-            "metric3_label": "Processing speed",
-            "metric3_value": "P76",
-            "metric3_status": "NORMAL",
-            "metric3_tone": "good",
-            "metric3_percent": 76,
-            "hotspot_x": 58,
-            "hotspot_y": 30
+            "name": "Brain"
           }
         },
         "m9": {
           "type": "item",
           "settings": {
-            "icon": "dna",
-            "name": "Arteries",
-            "description": "Stiffness and your true arterial age."
+            "name": "Arteries"
           }
         },
         "m1": {
           "type": "item",
           "settings": {
-            "icon": "eye",
-            "name": "Eyes",
-            "description": "Vision, eye pressure, and retinal health."
+            "name": "Eyes"
           }
         },
         "m2": {
           "type": "item",
           "settings": {
-            "icon": "ear",
-            "name": "Ears",
-            "description": "Hearing range and early signs of loss."
+            "name": "Ears"
           }
         },
         "m3": {
           "type": "item",
           "settings": {
-            "icon": "bolt",
-            "name": "Mobility",
-            "description": "Range of motion and movement quality."
+            "name": "Mobility"
           }
         }
       },
@@ -424,14 +301,7 @@
         "m2",
         "m3"
       ],
-      "settings": {
-        "eyebrow": "WHAT WE MEASURE",
-        "heading": "Millions of data points, one clear picture.",
-        "bg_color": "#0a2f38",
-        "speed": 45,
-        "side_color": "#0a2f38",
-        "side_width": 12
-      }
+      "settings": {}
     },
     "protocols": {
       "type": "galim-protocols",
