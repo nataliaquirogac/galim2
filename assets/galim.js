@@ -507,21 +507,38 @@
     var panels = Array.prototype.slice.call(document.querySelectorAll('[data-gh-mq-panel]'));
     var moreBtn = document.querySelector('[data-gh-mq-more]');
     var overlay = document.querySelector('[data-gh-mq-overlay]');
+    /* [data-gh-mq-tab] matches both the primary row's buttons AND the
+       overlay list's items — `tabs` needs all of them (both get click
+       handling), but this count needs just the primary row's, to know
+       when a swiped-to index falls outside it and belongs to "+N more". */
+    var primaryCount = document.querySelectorAll('.gh-mq__tabs [data-gh-mq-tab]').length;
+
+    function currentIndex() {
+      var i = panels.findIndex(function (p) { return !p.hidden; });
+      return i === -1 ? 0 : i;
+    }
 
     function showIndex(index) {
+      index = String(index);
       tabs.forEach(function (t) {
-        t.setAttribute('aria-selected', String(t.getAttribute('data-gh-mq-index') === String(index)));
+        t.setAttribute('aria-selected', String(t.getAttribute('data-gh-mq-index') === index));
       });
       panels.forEach(function (p) {
-        p.hidden = p.getAttribute('data-gh-mq-index') !== String(index);
+        p.hidden = p.getAttribute('data-gh-mq-index') !== index;
       });
+      /* Swiping past the primary tabs lands on one of the "+N more" items,
+         which has no tab button of its own — flag the pill itself instead
+         so something still reads as active. */
+      if (moreBtn) {
+        moreBtn.classList.toggle('is-active', Number(index) >= primaryCount);
+      }
+      if (overlay) { overlay.hidden = true; }
+      if (moreBtn) { moreBtn.setAttribute('aria-expanded', 'false'); }
     }
 
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
         showIndex(tab.getAttribute('data-gh-mq-index'));
-        if (overlay) { overlay.hidden = true; }
-        if (moreBtn) { moreBtn.setAttribute('aria-expanded', 'false'); }
       });
     });
 
@@ -537,6 +554,46 @@
           overlay.hidden = true;
           moreBtn.setAttribute('aria-expanded', 'false');
         }
+      });
+    }
+
+    /* Finger-swipe on mobile: left = next system, right = previous, wrapping
+       around the full list (not just the 5 primary tabs). Only treated as a
+       swipe once horizontal movement clearly outpaces vertical, so normal
+       page scrolling isn't hijacked. */
+    var panelsWrap = document.querySelector('.gh-mq__panels');
+    if (panelsWrap && panels.length > 1) {
+      var startX = 0, startY = 0, deltaX = 0, swiping = null;
+
+      panelsWrap.addEventListener('touchstart', function (e) {
+        var t = e.touches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        deltaX = 0;
+        swiping = null;
+      }, { passive: true });
+
+      panelsWrap.addEventListener('touchmove', function (e) {
+        var t = e.touches[0];
+        var dx = t.clientX - startX;
+        var dy = t.clientY - startY;
+        if (swiping === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+          swiping = Math.abs(dx) > Math.abs(dy);
+        }
+        if (swiping) {
+          deltaX = dx;
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      panelsWrap.addEventListener('touchend', function () {
+        if (swiping && Math.abs(deltaX) > 40) {
+          var total = panels.length;
+          var current = currentIndex();
+          var next = deltaX < 0 ? (current + 1) % total : (current - 1 + total) % total;
+          showIndex(next);
+        }
+        swiping = null;
       });
     }
   })();

@@ -82,7 +82,12 @@
 
 {% stylesheet %}
   .gh-mq { position: relative; padding: var(--gh-pad-y) 0; background: #FBFAF8; overflow: hidden; }
-  .gh-mq .gh-container { padding: 0 var(--gh-pad-x); }
+  /* Full viewport width — the rest of the site's .gh-container caps out at
+     --gh-max (1440px) and centers with dead space either side on wider
+     screens; this section deliberately breaks out of that so the photo
+     always fills the actual screen width. Side gutter (--gh-pad-x) stays
+     so rounded corners never sit flush against the literal edge. */
+  .gh-mq .gh-container { max-width: none; padding: 0 var(--gh-pad-x); }
 
   /* ---------------- Tabs ---------------- */
   .gh-mq__tabs-wrap { position: relative; }
@@ -115,6 +120,15 @@
   }
   .gh-mq__tab--more { color: var(--gh-slate); font: 300 16px/1 var(--gh-mono); letter-spacing: 0.04em; }
   .gh-mq__tab--more:hover { color: var(--gh-brand); }
+  /* Set via JS when a finger-swipe lands on one of the "+N more" systems,
+     which has no tab button of its own to mark active. */
+  .gh-mq__tab--more.is-active { color: var(--gh-brand); font-weight: 500; }
+  .gh-mq__tab--more.is-active::after {
+    content: ""; position: absolute; left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    width: 28px; height: 3px; border-radius: 2px;
+    background: var(--gh-brand);
+  }
 
   .gh-mq__overlay {
     position: absolute; z-index: 5; top: 100%; right: var(--gh-pad-x); margin-top: 8px;
