@@ -4,9 +4,15 @@
   shows/hides its panel below. A panel is purely the photo — no name,
   no description, no card, no overlay text of any kind. The container
   keeps the full photo (no crop): an <img> at its natural proportions
-  rather than a cropped background-image tile. A panel with no photo yet
-  renders as a plain empty gradient tile — still no text — ready for one
-  to be uploaded via the customizer.
+  rather than a cropped background-image tile.
+
+  Each block has independent desktop/mobile photos (<picture> + a
+  max-width: 767px <source>), same idea as the hero's image/image_mobile
+  pair — a photo cropped for a wide frame rarely reads the same way in a
+  narrow one, so this lets her upload a differently-cropped version for
+  mobile per system instead of one photo stretched across both. Photo
+  fields left blank render as a transparent tile — no placeholder color,
+  no text — ready for one to be uploaded via the customizer.
 {%- endcomment -%}
 
 {%- liquid
@@ -54,8 +60,17 @@
           {%- assign b = block.settings -%}
           <div class="gh-mq__panel" data-gh-mq-panel data-gh-mq-index="{{ forloop.index0 }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
             <div class="gh-mq__image">
-              {%- if b.image != blank -%}
-                {{- b.image | image_url: width: 1600 | image_tag: loading: 'lazy', alt: b.name -}}
+              {%- if b.image != blank or b.image_mobile != blank -%}
+                <picture>
+                  {%- if b.image_mobile != blank -%}
+                    <source media="(max-width: 767px)" srcset="{{ b.image_mobile | image_url: width: 800 }} 800w, {{ b.image_mobile | image_url: width: 1200 }} 1200w">
+                  {%- endif -%}
+                  {%- if b.image != blank -%}
+                    <img src="{{ b.image | image_url: width: 1600 }}" width="{{ b.image.width }}" height="{{ b.image.height }}" alt="{{ b.name }}" loading="lazy">
+                  {%- else -%}
+                    <img src="{{ b.image_mobile | image_url: width: 1600 }}" width="{{ b.image_mobile.width }}" height="{{ b.image_mobile.height }}" alt="{{ b.name }}" loading="lazy">
+                  {%- endif -%}
+                </picture>
               {%- endif -%}
             </div>
           </div>
@@ -150,7 +165,8 @@
       "name": "Measurement",
       "settings": [
         { "type": "text", "id": "name", "label": "Name (tab label)", "default": "Vision" },
-        { "type": "image_picker", "id": "image", "label": "Photo" }
+        { "type": "image_picker", "id": "image", "label": "Photo (desktop)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Photo (mobile)", "info": "Shown below 768px instead of the desktop photo. Leave blank to reuse the desktop photo on mobile too." }
       ]
     }
   ],
