@@ -76,9 +76,9 @@
         "plan_EKdNBT"
       ],
       "settings": {
-        "image": "shopify://shop_images/desktop.jpg",
+        "image": "shopify://shop_images/banner_desktop_ing.jpg",
         "image_url": "",
-        "image_mobile": "shopify://shop_images/mobile_5d9b4e2d-eaa9-4bfd-a8d9-ba690b4cb320.png",
+        "image_mobile": "shopify://shop_images/mobile_ing.jpg",
         "image_url_mobile": "",
         "overlay_strength": 0,
         "side_color": "#0d3b46",
