@@ -215,25 +215,33 @@
         "m11": {
           "type": "item",
           "settings": {
-            "name": "Heart"
+            "name": "Heart",
+            "image": "shopify://shop_images/heart.png",
+            "image_mobile": "shopify://shop_images/heart_mobile.png"
           }
         },
         "m4": {
           "type": "item",
           "settings": {
-            "name": "Blood"
+            "name": "Blood",
+            "image": "shopify://shop_images/blood.png",
+            "image_mobile": "shopify://shop_images/blood_mobile.png"
           }
         },
         "m10": {
           "type": "item",
           "settings": {
-            "name": "Strength"
+            "name": "Strength",
+            "image": "shopify://shop_images/strength.png",
+            "image_mobile": "shopify://shop_images/strength_mobile.png"
           }
         },
         "m12": {
           "type": "item",
           "settings": {
-            "name": "Skin"
+            "name": "Skin",
+            "image": "shopify://shop_images/skin.png",
+            "image_mobile": "shopify://shop_images/skin_mobile.png"
           }
         },
         "m6": {
@@ -257,7 +265,9 @@
         "m7": {
           "type": "item",
           "settings": {
-            "name": "Brain"
+            "name": "Brain",
+            "image": "shopify://shop_images/brain.png",
+            "image_mobile": "shopify://shop_images/brain_mobile.png"
           }
         },
         "m9": {
@@ -286,16 +296,16 @@
         }
       },
       "block_order": [
+        "m11",
+        "m12",
+        "m10",
+        "m7",
+        "m4",
         "m8",
         "item_3zaLMx",
-        "m11",
-        "m4",
-        "m10",
-        "m12",
         "m6",
         "item_6WJCYy",
         "item_jCmJiH",
-        "m7",
         "m9",
         "m1",
         "m2",
