@@ -59,9 +59,11 @@ body.gh-page { background: var(--gh-bg) !important; }
   -webkit-font-smoothing: antialiased;
 }
 /* Interior content sections are transparent so they inherit the white canvas.
-   Footer keeps its own (teal) background. */
+   Footer keeps its own (teal) background. .gh-mq (What we measure) is NOT
+   in this list on purpose: its tab bar needs a real, opaque background to
+   read as a solid bar once it's sticky on desktop, rather than the photo
+   underneath showing through it while scrolling. */
 .gh-page .gh-diag,
-.gh-page .gh-mq,
 .gh-page .gh-axes,
 .gh-page .gh-protocols,
 .gh-page .gh-gap,

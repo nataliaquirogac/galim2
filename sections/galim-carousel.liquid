@@ -81,7 +81,11 @@
 </section>
 
 {% stylesheet %}
-  .gh-mq { position: relative; padding: var(--gh-pad-y) 0; background: #FBFAF8; overflow: hidden; }
+  /* No overflow: hidden — this section has nothing that needs clipping in
+     the current design (no ambient glow/decoration bleeding past its
+     edges), and it would otherwise break both the sticky tab bar below and
+     the "+N more" overlay, which needs to visibly extend past the tab row. */
+  .gh-mq { position: relative; padding: var(--gh-pad-y) 0; background: #FBFAF8; }
   /* Full viewport width — the rest of the site's .gh-container caps out at
      --gh-max (1440px) and centers with dead space either side on wider
      screens; this section deliberately breaks out of that so the photo
@@ -91,6 +95,21 @@
 
   /* ---------------- Tabs ---------------- */
   .gh-mq__tabs-wrap { position: relative; }
+  /* Desktop only, per her request: pinned as a solid bar while scrolling so
+     it's always reachable without ever sitting on top of the photo. Offset
+     (not top: 0) clears the site's own floating pill header — measured live
+     at ~67px tall once condensed/scrolled, so 88px leaves it a clean ~20px
+     gap instead of overlapping it. Solid background (not transparent) is
+     what makes it read as a bar rather than the tabs just floating over
+     whatever photo is currently scrolling underneath. */
+  @media (min-width: 769px) {
+    .gh-mq__tabs-wrap {
+      position: sticky;
+      top: 88px;
+      z-index: 20;
+      background: #FBFAF8;
+    }
+  }
   .gh-mq__tabs {
     display: flex; align-items: flex-end; gap: 36px;
     overflow-x: auto; overflow-y: hidden;
