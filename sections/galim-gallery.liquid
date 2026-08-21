@@ -36,19 +36,15 @@
 <section
   {% if s.anchor_id != blank %}id="{{ s.anchor_id }}"{% endif %}
   class="gh-gallery gh-section{{ gallery_class }}"
-  data-gh-section="gallery" data-gh-gallery-root>
+  data-gh-section="gallery">
   <div class="gh-container gh-gallery__head">
-    <div>
-      {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-gallery__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-      {%- if s.heading != blank -%}<h2 class="gh-gallery__h2">{{ s.heading }}</h2>{%- endif -%}
-    </div>
-    <div class="gh-gallery__nav" aria-hidden="true">
-      <button type="button" class="gh-gallery__arrow" data-gh-g-prev aria-label="Previous">‹</button>
-      <button type="button" class="gh-gallery__arrow" data-gh-g-next aria-label="Next">›</button>
-    </div>
+    {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-gallery__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}
+      <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.heading }}</a>
+    {%- endif -%}
   </div>
 
-  <div class="gh-gallery__track" data-gh-g-track>
+  <div class="gh-gallery__track">
     {%- for block in section.blocks -%}
       {%- liquid
         assign b = block.settings
@@ -90,95 +86,12 @@
     {%- endfor -%}
   </div>
 
-  {%- if s.button_label != blank -%}
-    <div class="gh-container gh-gallery__cta">
-      {%- if s.button_opens_modal -%}
-        <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
-      {%- else -%}
-        <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
-  <script>
-    (function () {
-      /* The script must resolve its own section. closest() only works while it is
-         a DESCENDANT of it — it previously sat after </section> as a sibling, so
-         closest() returned null, the function bailed and the arrows were never
-         wired up at all. The sibling lookup is a belt-and-braces fallback. */
-      var self = document.currentScript;
-      var root = self.closest('[data-gh-gallery-root]')
-              || (self.parentElement && self.parentElement.querySelector('[data-gh-gallery-root]'));
-      if (!root) return;
-      var track = root.querySelector('[data-gh-g-track]');
-      var prev = root.querySelector('[data-gh-g-prev]');
-      var next = root.querySelector('[data-gh-g-next]');
-      if (!track) return;
-
-      /* The first slide in the DOM may be hidden at this breakpoint (a block with
-         only the other breakpoint's photo), and a hidden slide measures 0 wide —
-         which made the arrows step by just the gap and look broken. Always measure
-         the first slide that is actually rendered. */
-      function firstVisibleSlide() {
-        var slides = track.querySelectorAll('.gh-gallery__slide');
-        for (var i = 0; i < slides.length; i++) {
-          if (slides[i].getBoundingClientRect().width > 0) return slides[i];
-        }
-        return null;
-      }
-
-      function gap() {
-        var g = parseFloat(getComputedStyle(track).columnGap);
-        return isNaN(g) ? 16 : g;
-      }
-
-      function maxScroll() { return track.scrollWidth - track.clientWidth; }
-
-      /* A dead-looking arrow is worse than no arrow, so reflect what is possible.
-         Takes the position to judge by, because after a click the smooth scroll has
-         not moved scrollLeft yet — reading it there would leave the arrows a scroll
-         event behind and swallow a rapid second click. */
-      function syncAt(pos) {
-        var max = maxScroll();
-        if (prev) prev.disabled = max <= 1 || pos <= 1;
-        if (next) next.disabled = max <= 1 || pos >= max - 1;
-      }
-      function sync() { syncAt(track.scrollLeft); }
-
-      function go(dir) {
-        var slide = firstVisibleSlide();
-        var by = slide ? slide.getBoundingClientRect().width + gap() : track.clientWidth * 0.8;
-        var target = Math.max(0, Math.min(maxScroll(), track.scrollLeft + dir * by));
-        track.scrollBy({ left: dir * by, behavior: 'smooth' });
-        syncAt(target);
-      }
-
-      if (prev) prev.addEventListener('click', function () { go(-1); });
-      if (next) next.addEventListener('click', function () { go(1); });
-      track.addEventListener('scroll', sync, { passive: true });
-      window.addEventListener('resize', sync);
-      sync();
-    })();
-  </script>
 </section>
 
 {% stylesheet %}
   .gh-gallery { position: relative; z-index: 1; padding-left: 0; padding-right: 0; }
   .gh-gallery__head { display: flex; flex-direction: column; align-items: center; gap: 18px; padding-left: var(--gh-pad-x); padding-right: var(--gh-pad-x); margin-bottom: 28px; text-align: center; }
   .gh-gallery__eyebrow { margin-bottom: 12px; text-align: center; }
-  .gh-gallery__h2 { font: 200 clamp(30px, 4vw, 52px)/1.1 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0; text-align: center; }
-
-  .gh-gallery__nav { display: flex; gap: 10px; justify-content: center; }
-  .gh-gallery__arrow {
-    width: 46px; height: 46px; border-radius: 50%;
-    border: 1px solid var(--gh-border-strong); background: transparent;
-    color: var(--gh-light); font-size: 22px; line-height: 1; cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-    transition: border-color .2s ease, background .2s ease;
-  }
-  .gh-gallery__arrow:hover { border-color: var(--gh-brand); background: rgba(19,94,115,.08); }
-  .gh-gallery__arrow:disabled { opacity: 0.32; cursor: default; }
-  .gh-gallery__arrow:disabled:hover { border-color: var(--gh-border); background: none; }
 
   .gh-gallery__track {
     display: flex; gap: 16px;
@@ -204,18 +117,14 @@
      cannot win on specificity. */
   .gh-gallery__slide .gh-gallery__img--m { display: none; }
   .gh-gallery__slide.is-mobile-only { display: none; }
-  .gh-gallery.is-empty-desktop .gh-gallery__track,
-  .gh-gallery.is-empty-desktop .gh-gallery__nav { display: none; }
+  .gh-gallery.is-empty-desktop .gh-gallery__track { display: none; }
 
   /* One track; the slide frame switches shape per breakpoint and <picture>
      serves the matching crop. */
   .gh-gallery__slide { width: min(72vw, 860px); aspect-ratio: 1439 / 1110; }
 
-  .gh-gallery__cta { margin-top: 32px; }
-
   @media (max-width: 768px) {
     .gh-gallery__head { margin-bottom: 20px; }
-    .gh-gallery__nav { display: none; }
     .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
     /* Mirror image on mobile: portrait photo only, desktop-only slides gone. */
     .gh-gallery__slide .gh-gallery__img--d { display: none; }
@@ -224,8 +133,6 @@
     .gh-gallery__slide.is-mobile-only { display: block; }
     .gh-gallery.is-empty-desktop .gh-gallery__track { display: flex; }
     .gh-gallery.is-empty-mobile .gh-gallery__track { display: none; }
-    .gh-gallery__cta { margin-top: 24px; }
-    .gh-gallery__cta .gh-btn { width: 100%; justify-content: center; }
   }
 {% endstylesheet %}
 {% schema %}
@@ -235,10 +142,7 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "visit" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE SPACE" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Book your visit" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Join the waitlist" },
-    { "type": "checkbox", "id": "button_opens_modal", "label": "Button opens waitlist modal", "default": true },
-    { "type": "url", "id": "button_link", "label": "Button link (if not modal)" }
+    { "type": "text", "id": "heading", "label": "Button label (opens waitlist modal)", "default": "Book your visit" }
   ],
   "max_blocks": 12,
   "blocks": [
