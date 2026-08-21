@@ -13,7 +13,7 @@
           {%- if s.logo != blank -%}
             <img src="{{ s.logo | image_url: width: 320 }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;">
           {%- else -%}
-            <img src="{{ 'logo_galimhealth_white.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;">
+            <img src="{{ 'logo_galimhealth.png' | asset_url }}" alt="{{ shop.name }}" style="height: {{ s.logo_height }}px;">
           {%- endif -%}
         </a>
         {%- if s.tagline != blank -%}<p class="gh-footer__tagline">{{ s.tagline }}</p>{%- endif -%}
@@ -61,13 +61,13 @@
 
 {% stylesheet %}
   .gh-footer {
-    /* Teal block on the light site — keep text/links light */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD; --gh-green: #C3D9DD;
-    background: var(--gh-bg-950); color: var(--gh-light); padding: 46px 40px 26px; font-family: var(--gh-sans);
+    /* Light block, matching the page canvas — all text in solid brand teal. */
+    --gh-light: #135E73; --gh-white: #135E73; --gh-muted: #135E73; --gh-slate: #135E73; --gh-green: #135E73;
+    background: #F2F2F2; color: var(--gh-light); padding: 46px 40px 26px; font-family: var(--gh-sans);
   }
   .gh-footer a { color: var(--gh-muted); }
   .gh-footer a:hover { color: var(--gh-green); }
-  .gh-footer__top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 28px; border-bottom: 1px solid rgba(168,194,200,.12); }
+  .gh-footer__top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; padding-bottom: 28px; border-bottom: 1px solid rgba(19,94,115,.16); }
   .gh-footer__logo { display: inline-block; }
   .gh-footer__logo img { width: auto; display: block; margin-bottom: 12px; }
   .gh-footer__tagline { font: 300 14px/1.5 var(--gh-sans); color: var(--gh-slate); max-width: 260px; }
@@ -82,7 +82,7 @@
     .gh-footer { padding: 30px 20px 18px; }
     .gh-footer__top { flex-direction: column; gap: 18px; padding-bottom: 18px; }
     .gh-footer__cols { gap: 48px; }
-    .gh-footer__bottom { padding-top: 14px; border-top: 1px solid rgba(168,194,200,.12); }
+    .gh-footer__bottom { padding-top: 14px; border-top: 1px solid rgba(19,94,115,.16); }
   }
 {% endstylesheet %}
 
