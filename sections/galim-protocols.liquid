@@ -107,18 +107,16 @@
 
 {% stylesheet %}
   .gh-protocols__eyebrow { margin-bottom: 12px; text-align: center; }
-  .gh-protocols__h2 { font: 200 44px/1.14 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); margin: 0 auto 36px; max-width: 900px; text-align: center; }
+  .gh-protocols__h2 { font: 200 44px/1.14 var(--gh-mono); letter-spacing: -0.02em; color: var(--gh-white); margin: 0 auto 36px; max-width: 900px; text-align: center; }
   .gh-protocols__h2 p { margin: 0; }
-  /* Bold in the heading = animated teal -> blue -> gold gradient text. Blue #1E63A8
-     comes from the banner's royal-blue family (sampled #0D3880). The gold could
-     NOT come from the artwork — sampling it turned up only 3 warm pixels — so it
-     is set by contrast instead: every letter passes through every stop as this
-     animates, and on the light page a bright yellow like #D9A520 measures 2.01:1,
-     under the 3:1 floor for display type. #A97C1F is the most yellow value that
-     clears it, at 3.36:1. */
+  /* Bold in the heading = animated teal -> blue -> white gradient text. Blue
+     #1E63A8 comes from the banner's royal-blue family (sampled #0D3880). Pure
+     white measures ~1.1:1 on the light page — essentially invisible as every
+     letter sweeps through it — so the "white" stop is the brightest blue that
+     still clears the 3:1 floor for display type (#3E7BC0, 3.9:1). */
   .gh-protocols__h2 strong {
     font-weight: 500;
-    background: linear-gradient(90deg, #135E73, #1E63A8 30%, #A97C1F 58%, #135E73 90%);
+    background: linear-gradient(90deg, #135E73, #1E63A8 30%, #3E7BC0 58%, #135E73 90%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
