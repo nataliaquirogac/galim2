@@ -35,9 +35,18 @@
         {%- if s.bq_number_caption != blank -%}<p class="gh-axes__bq-cap-solo">{{ s.bq_number_caption }}</p>{%- endif -%}
         {%- if s.bq_copy != blank -%}<p class="gh-axes__bq-copy">{{ s.bq_copy }}</p>{%- endif -%}
       </div>
-      {%- if s.bq_image != blank -%}
+      {%- if s.bq_image != blank or s.bq_image_mobile != blank -%}
         <div class="gh-axes__bq-image">
-          <img src="{{ s.bq_image | image_url: width: 1600 }}" width="{{ s.bq_image.width }}" height="{{ s.bq_image.height }}" alt="" loading="lazy">
+          <picture>
+            {%- if s.bq_image_mobile != blank -%}
+              <source media="(max-width: 767px)" srcset="{{ s.bq_image_mobile | image_url: width: 800 }} 800w, {{ s.bq_image_mobile | image_url: width: 1200 }} 1200w">
+            {%- endif -%}
+            {%- if s.bq_image != blank -%}
+              <img src="{{ s.bq_image | image_url: width: 1600 }}" width="{{ s.bq_image.width }}" height="{{ s.bq_image.height }}" alt="" loading="lazy">
+            {%- else -%}
+              <img src="{{ s.bq_image_mobile | image_url: width: 1600 }}" width="{{ s.bq_image_mobile.width }}" height="{{ s.bq_image_mobile.height }}" alt="" loading="lazy">
+            {%- endif -%}
+          </picture>
         </div>
       {%- endif -%}
     </div>
@@ -117,7 +126,8 @@
     { "type": "text", "id": "bq_label", "label": "Panel label", "default": "THE BQ, EXPLAINED" },
     { "type": "text", "id": "bq_number_caption", "label": "Title", "default": "Your results place you into one of six performance levels — and show you what comes next." },
     { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing." },
-    { "type": "image_picker", "id": "bq_image", "label": "Photo (percentile chart)", "info": "Replaces the old live-coded tier bars — upload the designed chart image instead." }
+    { "type": "image_picker", "id": "bq_image", "label": "Photo (percentile chart, desktop)", "info": "Replaces the old live-coded tier bars — upload the designed chart image instead." },
+    { "type": "image_picker", "id": "bq_image_mobile", "label": "Photo (percentile chart, mobile)", "info": "Shown below 768px. If empty, the desktop photo is used." }
   ],
   "blocks": [
     {
