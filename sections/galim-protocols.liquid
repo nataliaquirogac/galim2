@@ -14,42 +14,29 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'package' -%}
           {%- assign b = block.settings -%}
-          <div class="gh-pkg{% if b.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
-            {%- if b.featured and b.badge_label != blank -%}<div class="gh-pkg__badge">{{ b.badge_label }}</div>{%- endif -%}
+          <div class="gh-pkg" {{ block.shopify_attributes }}>
             {%- comment -%}
-              Collapsed by default: name, subtitle, price. Everything else
-              lives in the panel below, revealed on click.
+              Collapsed by default: name, price, included note, subtitle and
+              the tag pills. Everything else lives in the panel below,
+              revealed on click.
             {%- endcomment -%}
             <button type="button" class="gh-pkg__head" data-gh-pkg-toggle aria-expanded="false">
               <div class="gh-pkg__toprow">
-                {%- comment -%}
-                  Square icon tile beside the title. 'none' lets a package opt
-                  out so a card without a fitting icon doesn't get a filler one.
-                {%- endcomment -%}
-                {%- unless b.icon == 'none' -%}
-                  <span class="gh-pkg__icon" aria-hidden="true">
-                    {%- case b.icon -%}
-                      {%- when 'muscle' -%}{%- render 'icon-muscle', size: 22 -%}
-                      {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 22 -%}
-                      {%- when 'dna' -%}{%- render 'icon-dna', size: 22 -%}
-                      {%- when 'brain' -%}{%- render 'icon-brain', size: 22 -%}
-                      {%- when 'lung' -%}{%- render 'icon-lung', size: 22 -%}
-                      {%- when 'blood' -%}{%- render 'icon-blood', size: 22 -%}
-                      {%- when 'mri' -%}{%- render 'icon-mri', size: 22 -%}
-                      {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 22 -%}
-                      {%- when 'balance' -%}{%- render 'icon-balance', size: 22 -%}
-                      {%- when 'infinity' -%}{%- render 'icon-infinity', size: 22 -%}
-                      {%- when 'pressure' -%}{%- render 'icon-pressure', size: 22 -%}
-                      {%- else -%}{%- render 'icon-bolt', size: 22 -%}
-                    {%- endcase -%}
-                  </span>
-                {%- endunless -%}
                 {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
                 {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
               </div>
-              {%- if b.subtitle != blank -%}<p class="gh-pkg__subtitle">{{ b.subtitle }}</p>{%- endif -%}
               {%- if b.included_note != blank -%}<p class="gh-pkg__included">{{ b.included_note }}</p>{%- endif -%}
-              <span class="gh-pkg__chevron" aria-hidden="true">{%- render 'icon-chevron-down', size: 20 -%}</span>
+              {%- if b.subtitle != blank -%}<div class="gh-pkg__subtitle">{{ b.subtitle }}</div>{%- endif -%}
+              {%- if b.tags != blank -%}
+                <div class="gh-pkg__tags">
+                  {%- assign tag_rows = b.tags | newline_to_br | split: '<br />' -%}
+                  {%- for row in tag_rows -%}
+                    {%- assign row_clean = row | strip_html | strip -%}
+                    {%- if row_clean != blank -%}<span class="gh-pkg__tag">{{ row_clean }}</span>{%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              <span class="gh-pkg__plus" aria-hidden="true">+</span>
             </button>
             <div class="gh-pkg__collapse" data-gh-pkg-panel>
               <div class="gh-pkg__collapse-inner">
@@ -67,12 +54,25 @@
 
                   {%- if b.addon_line != blank -%}
                     <div class="gh-pkg__section gh-pkg__addons">
-                      <div class="gh-pkg__label">{{ b.addon_title | default: 'ADD-ONS' }}</div>
+                      <div class="gh-pkg__label gh-pkg__label--muted">{{ b.addon_title | default: 'ADD-ONS' }}</div>
                       <div class="gh-pkg__addon-list">
                         {%- assign addon_rows = b.addon_line | newline_to_br | split: '<br />' -%}
                         {%- for row in addon_rows -%}
                           {%- assign row_clean = row | strip_html | strip -%}
-                          {%- if row_clean != blank -%}<div class="gh-pkg__addon">{{ row_clean }}</div>{%- endif -%}
+                          {%- if row_clean != blank -%}
+                            {%- if row_clean contains '$' -%}
+                              {%- assign gh_price = row_clean | split: '$' | last | strip -%}
+                              {%- assign gh_text = row_clean | split: '$' | first | strip -%}
+                              <div class="gh-pkg__addon">
+                                <span class="gh-pkg__addon-price">+${{ gh_price }}</span>
+                                <span class="gh-pkg__addon-text">{{ gh_text }}</span>
+                              </div>
+                            {%- else -%}
+                              <div class="gh-pkg__addon">
+                                <span class="gh-pkg__addon-text">{{ row_clean }}</span>
+                              </div>
+                            {%- endif -%}
+                          {%- endif -%}
                         {%- endfor -%}
                       </div>
                     </div>
@@ -80,9 +80,9 @@
 
                   {%- if b.button_label != blank -%}
                     {%- if b.button_link != blank -%}
-                      <a href="{{ b.button_link }}" class="gh-btn gh-btn--solid gh-pkg__cta">{{ b.button_label }} →</a>
+                      <a href="{{ b.button_link }}" class="gh-btn gh-btn--solid gh-pkg__cta">{{ b.button_label }}</a>
                     {%- else -%}
-                      <a href="#" class="gh-btn gh-btn--solid gh-pkg__cta" data-gh-waitlist-open>{{ b.button_label }} →</a>
+                      <a href="#" class="gh-btn gh-btn--solid gh-pkg__cta" data-gh-waitlist-open>{{ b.button_label }}</a>
                     {%- endif -%}
                   {%- endif -%}
                 </div>
@@ -130,122 +130,51 @@
   .gh-protocols__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
   .gh-pkg { display: flex; flex-direction: column; }
 
-  /* Package cards = light glass islands, tuned to the hero's palette */
+  /* Package cards = light surface, same recipe as the diagnostics rows. */
   .gh-pkg {
     position: relative; border-radius: 16px; overflow: hidden;
-    /* Deep and saturated rather than pale — the pastel version read as nursery.
-       Cream text, so the card rejoins the rest of the site instead of being the
-       one light island. Slate is lifted from #A8C2C8 to #C3D9DD. Price uses the
-       same mint green as the rest of the site's green accents (two-axes, GLP-1
-       note) rather than --gh-accent's blue, since she asked for it in green —
-       4.83:1 on the plain card, 5.83:1 on featured, both clear 4.5:1. */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD;
-    --gh-green: #A5E4F2; --gh-accent: #A5E4F2; --gh-price: #9FE0BE;
-    /* Flat #135E73 — the brand teal. Every text level clears 4.5:1 on it: cream
-       6.7, body 5.4, labels 5.0, price 5.2. */
-    /* Gradient ring, same trick and same ramp as the "What we measure" cards:
-       the card's own fill clipped to padding-box, the brand ramp clipped to
-       border-box behind it, showing through a 3px transparent border. The
-       ramp loops back to its own starting color instead of fading to
-       transparent, so every edge — including the sides — shows solid color. */
-    border: 3px solid transparent;
-    background:
-      linear-gradient(#135E73, #135E73) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
-    box-shadow: 0 16px 44px rgba(19, 94, 115, 0.20);
+    background: linear-gradient(165deg, var(--gh-teal-750), var(--gh-teal-770));
+    box-shadow: 0 8px 22px rgba(19, 94, 115, 0.10);
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 64px rgba(19, 94, 115, 0.28); }
-  .gh-pkg.is-featured {
-    /* Featured goes DARKER, not lighter. #17708A would have read as the obvious
-       lift but drops the label token to 3.84:1; #0F5164 keeps the worst case at
-       6.00:1 while still separating from the plain card. Same gradient ring,
-       just re-paired with the darker fill. */
-    background:
-      linear-gradient(#0F5164, #0F5164) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 20px 54px rgba(19, 94, 115, 0.28);
-  }
-  .gh-pkg.is-featured:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.32), 0 30px 74px rgba(19, 94, 115, 0.34); }
-  /* Normal flow, not absolutely positioned: with the head row now pinned to
-     flex-start (price sits flush with the title's top line, not vertically
-     centered), an absolute top:20px;right:20px badge would land in exactly
-     the same corner as the price and collide at every width, not just narrow
-     ones. Giving it its own row above the head avoids that outright. */
-  .gh-pkg__badge {
-    align-self: flex-end; margin: 20px 20px 0; z-index: 2;
-    font: 500 10px/1 var(--gh-mono); letter-spacing: 0.14em; color: #135E73;
-    background: #F7F5F3; padding: 6px 11px; border-radius: 2px;
-  }
-  /* The collapsed summary is itself the toggle button. It stacks two things
-     now: the top row (icon, name, price) and the subtitle on its own
-     full-width line beneath it — the subtitle no longer shares a column with
-     the name, so it can't squeeze the name down to a sliver on a narrow card. */
+  .gh-pkg:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(19, 94, 115, 0.16); }
+  /* The collapsed summary is itself the toggle button. */
   .gh-pkg__head {
-    position: relative; width: 100%;
-    /* Right padding reserves room for the chevron, which is positioned
-       absolutely (below) rather than sitting in the row. */
-    padding: 26px 46px 20px 30px;
-    border: 0; border-bottom: 1px solid rgba(255,255,255,.14);
-    background: radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.07), transparent 60%);
+    position: relative; width: 100%; display: block;
+    /* Right padding reserves room for the plus icon, positioned absolutely
+       (below) rather than sitting in the row. */
+    padding: 28px 56px 44px 30px;
+    border: 0; background: none;
     font: inherit; color: inherit; text-align: left; cursor: pointer;
   }
-  .gh-pkg.is-featured .gh-pkg__head { background: radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.09), transparent 60%); }
-  /* Icon, name and price share this row. align-items: center (not
-     flex-start) — price sits centered against the whole name block, not
-     pinned to its first line, since the name can run to two lines now. */
-  .gh-pkg__toprow { display: flex; align-items: center; gap: 12px; }
-  /* Absolute, not a flex child, so it doesn't compete with the name/price row
-     for width — top/right match the head's own padding so it lands in the
-     same corner it would have occupied in the row. */
-  .gh-pkg__chevron {
-    position: absolute; top: 20px; right: 18px;
-    display: inline-flex; color: var(--gh-slate);
-    transition: transform 0.3s ease, color 0.3s ease;
+  .gh-pkg__toprow { display: flex; align-items: baseline; gap: 12px; }
+  /* Anchored to the bottom of the (variable-height) head — not a fixed
+     top offset — so it still sits in the corner once the tag row wraps to
+     more than one line. */
+  .gh-pkg__plus {
+    position: absolute; bottom: 18px; right: 22px;
+    font: 300 26px/1 var(--gh-mono); color: var(--gh-brand);
+    transition: transform 0.3s ease;
   }
-  .gh-pkg__head[aria-expanded="true"] .gh-pkg__chevron { transform: rotate(180deg); color: var(--gh-white); }
-  .gh-pkg__head:hover .gh-pkg__chevron { color: var(--gh-white); }
-  /* Square icon tile: a small logo-like mark for each package. Frosted glass
-     rather than a solid fill, so it reads on both the plain and the featured
-     card gradient without a second colour. aspect-ratio keeps it square if the
-     size is ever changed from one value. */
-  .gh-pkg__icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 44px; aspect-ratio: 1; margin: 0; flex-shrink: 0;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    color: var(--gh-white);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .gh-pkg:hover .gh-pkg__icon { background: rgba(255, 255, 255, 0.17); border-color: rgba(255, 255, 255, 0.32); }
-  .gh-pkg__icon svg { display: block; }
-  /* The featured card's badge sits top-right, so the tile never collides. */
+  .gh-pkg__head[aria-expanded="true"] .gh-pkg__plus { transform: rotate(45deg); }
 
-  /* Package titles stay in Chillax (brand display face); everything else in
-     the card is DM Sans. One line, always — white-space: nowrap instead of
-     letting it wrap. min-width: 0 is still what lets it shrink below its own
-     content width in the first place; overflow/text-overflow are the safety
-     net for names that don't fit even then: measured against "Body
-     Performance Scan," the column left after icon + price is only 96-135px
-     at 320-414px wide, and even a 12px title needs 139px — no legible size
-     makes the full string fit there, so it truncates with an ellipsis rather
-     than wrapping or bleeding into the price. Full title shows from ~428px. */
+  /* Package titles stay in Chillax (brand display face), thin weight, in the
+     mid-teal accent; everything else in the card is DM Sans. */
   .gh-pkg__name {
-    flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    font: 600 20px/1.15 var(--gh-sans); color: var(--gh-white); margin: 0; padding: 0; letter-spacing: -0.01em;
+    flex: 1; min-width: 0;
+    font: 300 30px/1.15 var(--gh-sans); color: #1B88A6; margin: 0; padding: 0; letter-spacing: -0.01em;
   }
-  /* Full width, on its own line below the top row now — not sharing a column
-     with the name, so it can't be the thing that pushes it to three lines. */
-  .gh-pkg__subtitle { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 8px 0 0; padding: 0; }
-  .gh-pkg__included { font: 400 11px/1.4 var(--gh-mono); color: var(--gh-slate); margin: 4px 0 0; padding: 0; letter-spacing: 0.02em; }
-  /* flex: none + white-space: nowrap: never shrinks, never breaks "$1,499
-     MXN" onto two lines. The name is what gives way (flex: 1 + min-width: 0
-     above lets it wrap instead). Smaller than before on purpose — at 24-26px
-     the price was what left the name no room to fit at all. */
-  .gh-pkg__price { flex: none; white-space: nowrap; font: 500 22px/1 var(--gh-mono); color: var(--gh-price); letter-spacing: 0; }
+  .gh-pkg__price { flex: none; white-space: nowrap; font: 500 22px/1 var(--gh-mono); color: var(--gh-brand); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 12px; }
+  .gh-pkg__included { font: 400 italic 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 10px 0 0; padding: 0; }
+  .gh-pkg__subtitle { font: 400 16px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 14px 0 0; padding: 0; }
+  .gh-pkg__subtitle strong { font-weight: 700; color: var(--gh-light); }
+  /* Tag pills — the compact preview of what's measured, always visible. */
+  .gh-pkg__tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .gh-pkg__tag {
+    font: 500 13px/1 var(--gh-mono); color: #FFFFFF; background: #0D3B46;
+    padding: 10px 16px; border-radius: 999px; white-space: nowrap;
+  }
 
   /* Collapsible panel: grid-template-rows 0fr -> 1fr animates height without
      JS measuring scrollHeight. The inner wrapper clips overflow during the
@@ -259,43 +188,40 @@
   .gh-pkg__collapse.is-open { grid-template-rows: 1fr; }
   .gh-pkg__collapse-inner { overflow: hidden; min-height: 0; }
   .gh-pkg__body {
-    padding: 20px 30px 24px; flex: 1; display: flex; flex-direction: column;
+    padding: 0 30px 30px; flex: 1; display: flex; flex-direction: column;
     opacity: 0; transform: translateY(-6px);
     transition: opacity 0.35s ease, transform 0.35s ease;
   }
   .gh-pkg__collapse.is-open .gh-pkg__body { opacity: 1; transform: none; transition-delay: 0.1s; }
   /* Lead line */
-  .gh-pkg__intro { font: 400 15px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0 0 18px; }
+  .gh-pkg__intro { font: 400 16px/1.5 var(--gh-mono); color: #1B88A6; margin: 0 0 20px; }
   /* Each block is a labelled section split by a hairline divider */
-  .gh-pkg__section { padding-top: 16px; border-top: 1px solid rgba(255,255,255,.14); margin-bottom: 16px; }
-  .gh-pkg__label { font: 500 10px/1 var(--gh-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 12px; }
-  /* Feature rows: bold term on its own line, description under it (no dashes) */
-  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-  .gh-pkg__features li { font: 400 13px/1.4 var(--gh-mono); color: var(--gh-muted); padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
-  .gh-pkg__features li:first-child { padding-top: 0; }
-  .gh-pkg__features li:last-child { border-bottom: 0; padding-bottom: 0; }
-  .gh-pkg__features strong { display: block; font: 600 14px/1.25 var(--gh-mono); color: var(--gh-white); margin-bottom: 1px; }
+  .gh-pkg__section { padding-top: 18px; border-top: 1px solid var(--gh-hairline); margin-bottom: 18px; }
+  .gh-pkg__label { font: 700 12px/1 var(--gh-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gh-brand); margin-bottom: 16px; }
+  .gh-pkg__label--muted { color: var(--gh-slate); font-weight: 500; }
+  /* Feature rows: bold dark term, description under it in the teal accent */
+  .gh-pkg__features ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .gh-pkg__features li { font: 400 15px/1.4 var(--gh-mono); color: #1B88A6; padding: 0; }
+  .gh-pkg__features strong { display: block; font: 700 16px/1.3 var(--gh-mono); color: var(--gh-light); margin-bottom: 3px; }
   .gh-pkg__features p { margin: 0; }
-  /* Closing note as a highlighted callout, not loose text */
+  /* Highlighted takeaway callout — solid fill, not a translucent overlay. */
   .gh-pkg__note {
-    background: rgba(255,255,255, 0.09); border: 1px solid rgba(255,255,255, 0.16);
-    border-left: 3px solid #A5E4F2; border-radius: 10px;
-    padding: 14px 16px; margin-bottom: 16px;
-    display: flex; flex-direction: column; gap: 7px;
+    background: #0B6E8A; border-radius: 12px;
+    padding: 18px 20px; margin-bottom: 18px;
+    display: flex; flex-direction: column; gap: 8px;
   }
-  .gh-pkg__note p { font: 400 13px/1.45 var(--gh-mono); color: var(--gh-light); margin: 0; }
-  /* Add-ons as bordered rows */
-  .gh-pkg__addons { margin-bottom: 20px; }
-  .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 6px; }
-  .gh-pkg__addon {
-    font: 400 13px/1.35 var(--gh-mono); color: var(--gh-muted); margin: 0;
-    padding: 9px 12px; border-radius: 7px;
-    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15);
-  }
-  /* Cream button pops on the teal card */
-  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: auto; font: 500 14px/1 var(--gh-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 15px 24px; }
-  .gh-pkg .gh-btn--solid { background: #F7F5F3; color: #135E73; }
-  .gh-pkg .gh-btn--solid:hover { background: #FFFFFF; color: #135E73; }
+  .gh-pkg__note p { font: 400 14px/1.5 var(--gh-mono); color: #FFFFFF; margin: 0; }
+  .gh-pkg__note p:first-child { font-weight: 700; }
+  /* Add-ons: bold price on the left, description filling the rest */
+  .gh-pkg__addons { margin-bottom: 22px; }
+  .gh-pkg__addon-list { display: flex; flex-direction: column; gap: 14px; }
+  .gh-pkg__addon { display: flex; gap: 18px; align-items: baseline; }
+  .gh-pkg__addon-price { flex: none; width: 76px; font: 700 15px/1.3 var(--gh-mono); color: var(--gh-brand); }
+  .gh-pkg__addon-text { font: 400 14px/1.4 var(--gh-mono); color: var(--gh-muted); }
+  /* Solid CTA in the same teal as the BQ callout */
+  .gh-pkg__cta { width: 100%; justify-content: center; margin-top: auto; font: 500 15px/1 var(--gh-sans); letter-spacing: 0.02em; padding: 16px 24px; }
+  .gh-pkg .gh-btn--solid { background: #0B6E8A; }
+  .gh-pkg .gh-btn--solid:hover { background: #095A72; }
 
   .gh-glp {
     margin-top: 28px; border-radius: 14px; background: rgba(19,94,115,.06);
@@ -311,20 +237,15 @@
     .gh-protocols__h2 { font-size: 30px; margin-bottom: 24px; }
     .gh-protocols__cards { grid-template-columns: 1fr; gap: 16px; }
     .gh-pkg:hover { transform: none; }
-    .gh-pkg__badge { margin: 16px 16px 0; }
-    .gh-pkg__head { padding: 22px 46px 18px 20px; }
-    .gh-pkg__icon { width: 38px; border-radius: 9px; }
-    /* Shrinking name/price small enough to zero out truncation (12px/11px)
-       made both smaller than the 14px subtitle sitting right underneath them
-       — backwards hierarchy, reads as broken regardless of whether anything
-       is technically cut off. Restored a title that's clearly the biggest
-       text in the card and a price that still reads as the headline number;
-       her longest name goes back to truncating on narrow phones as a result
-       (see .gh-pkg__name below) — the truncation is the lesser problem. */
-    .gh-pkg__name { font-size: 18px; }
-    .gh-pkg__price { font-size: 16px; }
+    .gh-pkg__head { padding: 22px 46px 36px 20px; }
+    .gh-pkg__name { font-size: 24px; }
+    .gh-pkg__price { font-size: 18px; }
     .gh-pkg__unit { font-size: 11px; }
-    .gh-pkg__body { padding: 18px 20px 22px; }
+    .gh-pkg__tags { gap: 8px; margin-top: 14px; }
+    .gh-pkg__tag { font-size: 12px; padding: 8px 13px; }
+    .gh-pkg__body { padding: 0 20px 22px; }
+    .gh-pkg__addon { flex-direction: column; gap: 4px; }
+    .gh-pkg__addon-price { width: auto; }
     .gh-glp { padding: 26px; gap: 0; flex-direction: column; }
     .gh-glp__glyph { display: none; }
     .gh-glp__title { font-size: 18px; margin-bottom: 10px; }
@@ -351,34 +272,16 @@
       "type": "package",
       "name": "Package",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icon (square tile above the name)", "default": "bolt",
-          "options": [
-            { "value": "bolt", "label": "Bolt / performance" },
-            { "value": "muscle", "label": "Muscle" },
-            { "value": "heartbeat", "label": "Heartbeat" },
-            { "value": "dna", "label": "DNA" },
-            { "value": "brain", "label": "Brain" },
-            { "value": "lung", "label": "Lungs" },
-            { "value": "blood", "label": "Blood" },
-            { "value": "mri", "label": "MRI / scan" },
-            { "value": "microbiome", "label": "Microbiome" },
-            { "value": "balance", "label": "Balance" },
-            { "value": "infinity", "label": "Infinity / longevity" },
-            { "value": "pressure", "label": "Blood pressure" },
-            { "value": "none", "label": "No icon" }
-          ]
-        },
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle (under name)", "default": "25 minutes. Six systems. One number." },
-        { "type": "text", "id": "included_note", "label": "Included note (small, under subtitle)", "info": "E.g. \"Body Performance included\" — leave blank to hide." },
+        { "type": "richtext", "id": "subtitle", "label": "Subtitle (under name, bold the duration)", "default": "<p><strong>25 min.</strong> Six systems, one number.</p>" },
+        { "type": "text", "id": "included_note", "label": "Included note (italic, under name)", "info": "E.g. \"Includes Body Performance Scan\" — leave blank to hide." },
         { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
         { "type": "text", "id": "price_unit", "label": "Price unit", "default": "MXN" },
-        { "type": "checkbox", "id": "featured", "label": "Featured (green border + badge)", "default": false },
-        { "type": "text", "id": "badge_label", "label": "Badge label", "default": "FULL PICTURE" },
+        { "type": "textarea", "id": "tags", "label": "Summary tags (one per line)", "info": "Short pills shown under the subtitle, visible whether the card is open or closed.", "default": "Body fat & muscle\nStrength\nVO2 max\nStability & mobility\nBody measurements" },
         { "type": "text", "id": "intro", "label": "Intro line (under price)", "default": "Your BQ — where your body ranks, and what to train next." },
         { "type": "text", "id": "features_label", "label": "Features section label", "default": "WHAT WE MEASURE" },
         { "type": "richtext", "id": "features", "label": "Features (list, bold = term on top, rest under it)", "default": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>" },
-        { "type": "richtext", "id": "outro", "label": "Closing lines (after list)", "default": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>" },
+        { "type": "richtext", "id": "outro", "label": "Closing lines (first paragraph = bold label)", "default": "<p>YOU LEAVE WITH:</p><p>Your BQ, your level, and the three things to fix. Re-test every 8–12 weeks. Watch the number move.</p>" },
         { "type": "text", "id": "addon_title", "label": "Add-ons title (mono)", "default": "ADD-ONS" },
         { "type": "textarea", "id": "addon_line", "label": "Add-ons (one per line, optional)", "default": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones\nGalim AI — your plan, adjusted daily" },
         { "type": "text", "id": "button_label", "label": "Button label (shown as [ … ])", "default": "BOOK YOUR BQ" },
@@ -390,8 +293,8 @@
     {
       "name": "Galim · Protocols",
       "blocks": [
-        { "type": "package", "settings": { "name": "Performance", "subtitle": "25 minutes. Six systems. One number.", "price": "$1,499", "price_unit": "MXN", "featured": false, "intro": "Your BQ — where your body ranks, and what to train next.", "features_label": "WHAT WE MEASURE", "features": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>", "outro": "<p>You leave with your BQ, your level, and the three things to fix.</p><p>Re-test every 8–12 weeks. Watch the number move.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones\nGalim AI — your plan, adjusted daily", "button_label": "BOOK YOUR BQ" } },
-        { "type": "package", "settings": { "name": "Prevention", "subtitle": "50 minutes. Every system. Your biological age.", "price": "$4,999", "price_unit": "MXN", "featured": false, "intro": "Performance tells you where you stand today. Prevention tells you what's coming.", "features_label": "WHAT WE SCREEN", "features": "<ul><li><strong>Heart & arteries</strong> arterial age, plaque risk. The #1 killer, found early.</li><li><strong>Brain</strong> cognition, retina, vascular risk</li><li><strong>Organs & metabolism</strong> blood, liver, kidney, thyroid, hormones</li><li><strong>Structure</strong> bone density, lung function</li><li><strong>Senses & skin</strong> vision, hearing, skin age</li></ul>", "outro": "<p>You leave with a biological age for each system, the gap against your real age, and what to do about the worst one.</p><p>Once a year. Watch the gap close.</p><p>Includes everything in Performance. Includes Galim AI.</p>", "addon_line": "RMR — $700 — your real calorie number\nLactate Threshold — $1,300 — your exact training zones", "button_label": "BOOK YOUR PREVENTION VISIT" } }
+        { "type": "package", "settings": { "name": "Performance", "subtitle": "<p><strong>25 min.</strong> Six systems, one number.</p>", "price": "$1,499", "price_unit": "MXN", "tags": "Muscle & fat\nStrength\nVO2 max\nStability & mobility\nMetabolic health", "intro": "Your BQ — where your body ranks, and what to train next.", "features_label": "WHAT WE MEASURE", "features": "<ul><li><strong>Muscle & fat</strong> kilo by kilo, not an estimate</li><li><strong>Strength</strong> how you rank for your age</li><li><strong>VO₂ max</strong> the strongest single predictor of lifespan</li><li><strong>Stability & mobility</strong> the restriction that will injure you</li><li><strong>Metabolic health</strong> how efficiently you burn fuel</li></ul>", "outro": "<p>YOU LEAVE WITH:</p><p>Your BQ, your level, and the three things to fix. Re-test every 8–12 weeks. Watch the number move.</p>", "addon_line": "RMR - your real calorie number $700\nLactate Threshold - your exact training zones $1300\nGalim AI - your plan, adjusted daily", "button_label": "BOOK YOUR BQ" } },
+        { "type": "package", "settings": { "name": "Prevention", "subtitle": "<p><strong>50 min.</strong> Every system, your biological age.</p>", "price": "$4,999", "price_unit": "MXN", "tags": "Heart & arteries\nBrain\nOrgans & metabolism\nStructure\nSenses & skin", "intro": "Performance tells you where you stand today. Prevention tells you what's coming.", "features_label": "WHAT WE SCREEN", "features": "<ul><li><strong>Heart & arteries</strong> arterial age, plaque risk. The #1 killer, found early.</li><li><strong>Brain</strong> cognition, retina, vascular risk</li><li><strong>Organs & metabolism</strong> blood, liver, kidney, thyroid, hormones</li><li><strong>Structure</strong> bone density, lung function</li><li><strong>Senses & skin</strong> vision, hearing, skin age</li></ul>", "outro": "<p>YOU LEAVE WITH:</p><p>Your biological age for each system, the gap against your real age, and what to do about the worst one. Once a year. Watch the gap close. Includes everything in Performance and Galim AI.</p>", "addon_line": "RMR - your real calorie number $700\nLactate Threshold - your exact training zones $1300", "button_label": "BOOK YOUR PREVENTION VISIT" } }
       ]
     }
   ]
