@@ -37,23 +37,22 @@
   .gh-diag__rows { display: flex; flex-direction: column; gap: 16px; }
   .gh-diag__row {
     display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
-    /* Light card surface (top/bottom tokens already used for this look
-       elsewhere) instead of the old solid teal island. */
+    /* Fully transparent — the page's own light background shows through;
+       only the featured row gets a visible surface (its blue ring below). */
     border-radius: 14px; padding: 24px 32px;
     border: 2px solid transparent;
-    background: linear-gradient(165deg, var(--gh-teal-750), var(--gh-teal-770));
-    box-shadow: 0 12px 32px rgba(19, 94, 115, 0.08);
+    background: transparent;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     color: var(--gh-light); text-decoration: none;
   }
   .gh-diag__row:hover { transform: translateX(8px); color: var(--gh-light); }
   /* Blue highlight ring on the flagship add-on, per her reference screenshot. */
   .gh-diag__row--featured { border-color: #3B82F6; box-shadow: 0 12px 32px rgba(59, 130, 246, 0.18); }
-  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: var(--gh-brand); }
+  .gh-diag__num { font: 300 40px/1 var(--gh-mono); color: var(--gh-brand); }
   .gh-diag__text { display: flex; flex-direction: column; gap: 6px; }
-  .gh-diag__name { font: 700 24px/1.15 var(--gh-sans); color: var(--gh-brand); }
-  .gh-diag__desc { font: 400 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
-  .gh-diag__plus { font: 300 28px/1 var(--gh-sans); color: var(--gh-brand); }
+  .gh-diag__name { font: 400 24px/1.15 var(--gh-mono); color: var(--gh-brand); }
+  .gh-diag__desc { font: 400 16px/1.4 var(--gh-mono); color: var(--gh-muted); }
+  .gh-diag__plus { font: 300 28px/1 var(--gh-mono); color: var(--gh-brand); }
 
   @media (max-width: 768px) {
     .gh-diag__h2 { font-size: 28px; margin-bottom: 10px; }
