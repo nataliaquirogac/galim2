@@ -321,6 +321,7 @@
             "included_note": "",
             "price": "$1,499",
             "price_unit": "MXN",
+            "tags": "Body fat & muscle\nStrength\nVO2 max\nStability & mobility\n100+ body measurements",
             "intro": "Your BQ shows how you perform, where you rank, and what to improve.",
             "features_label": "WHAT WE MEASURE",
             "features": "<ul><li><strong>Body fat & muscle </strong> gold-standard body composition measured by DEXA.</li><li><strong>Strength</strong>  muscle quality and ranking</li><li><strong>VO₂ max</strong>  fitness and longevity.</li><li><strong>Stability & mobility</strong> injury risks and restrictions</li><li><strong>Body measurements</strong> 100+ AI-captured measurements</li></ul><p></p>",
@@ -328,8 +329,7 @@
             "addon_title": "ADD-ONS",
             "addon_line": "RMR - your exact daily calories $1399\nLactate Threshold - your exact training zones $1499\nGALIM AI",
             "button_label": "BOOK YOUR BQ",
-            "button_link": "",
-            "tags": "Body fat & muscle\nStrength\nVO2 max\nStability & mobility\n100+ body measurements"
+            "button_link": ""
           }
         },
         "long": {
@@ -340,6 +340,7 @@
             "included_note": "Body Performance included",
             "price": "$4,999",
             "price_unit": "MXN",
+            "tags": "Blood - 100+ biomarkers\nLung age\nCognitive age\nCardiovascular health\nSkin & moles\nEyes & ears\nPerformance",
             "intro": "Performance shows where you are. Prevention shows where you're headed.",
             "features_label": "WHAT WE SCREEN",
             "features": "<ul><li><strong>Heart & arteries</strong> arterial age and plaque risk. </li><li><strong>Brain</strong> cognition, retina, vascular risk</li><li><strong>Blood </strong>biomarkers, inflammation, and nutrient levels</li><li><strong>Organs & metabolism</strong> blood, liver, kidney, thyroid, and hormones</li><li><strong>Structure</strong> bone density and lung function</li><li><strong>Senses & skin</strong> vision, hearing and skin age</li></ul>",
@@ -347,8 +348,7 @@
             "addon_title": "ADD-ONS",
             "addon_line": "RMR - your exact daily calories $1399\nLactate Threshold - your exact training zones $1499",
             "button_label": "BOOK YOUR PREVENTION VISIT",
-            "button_link": "",
-            "tags": "Blood — 24+ biomarkers\nLung age\nCognitive age\nCardiovascular health\nSkin & moles\nEyes & ears\nPerformance"
+            "button_link": ""
           }
         }
       },
@@ -485,7 +485,7 @@
         "button_opens_modal": true,
         "button_link": "",
         "note": "OPENING NOVEMBER 1ST",
-        "bg_color": "#135E73"
+        "bg_color": "#135e73"
       }
     }
   },
