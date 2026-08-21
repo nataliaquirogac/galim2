@@ -396,108 +396,16 @@
             "note_title": "",
             "note_body": ""
           }
-        },
-        "tier_1": {
-          "type": "tier",
-          "settings": {
-            "numeral": "",
-            "label": "",
-            "range": "AGE PERCENTILE",
-            "numeral_color": "green",
-            "label_color": "white",
-            "range_color": "light",
-            "highlight": false
-          }
-        },
-        "tier_CbCjzD": {
-          "type": "tier",
-          "settings": {
-            "numeral": "VI",
-            "label": "Apex",
-            "range": "1%",
-            "numeral_color": "green",
-            "label_color": "white",
-            "range_color": "muted",
-            "highlight": false
-          }
-        },
-        "tier_2": {
-          "type": "tier",
-          "settings": {
-            "numeral": "V",
-            "label": "Exceptional",
-            "range": "2–9%",
-            "numeral_color": "muted",
-            "label_color": "white",
-            "range_color": "muted",
-            "highlight": false
-          }
-        },
-        "tier_3": {
-          "type": "tier",
-          "settings": {
-            "numeral": "IV",
-            "label": "Advanced",
-            "range": "10-19%",
-            "numeral_color": "muted",
-            "label_color": "white",
-            "range_color": "muted",
-            "highlight": false
-          }
-        },
-        "tier_4": {
-          "type": "tier",
-          "settings": {
-            "numeral": "III",
-            "label": "Fit",
-            "range": "20-29%",
-            "numeral_color": "light",
-            "label_color": "white",
-            "range_color": "light",
-            "highlight": true
-          }
-        },
-        "tier_5": {
-          "type": "tier",
-          "settings": {
-            "numeral": "II",
-            "label": "Developing",
-            "range": "30-49%",
-            "numeral_color": "slate",
-            "label_color": "muted",
-            "range_color": "muted",
-            "highlight": false
-          }
-        },
-        "tier_6": {
-          "type": "tier",
-          "settings": {
-            "numeral": "I",
-            "label": "Base",
-            "range": ">50%",
-            "numeral_color": "slate",
-            "label_color": "muted",
-            "range_color": "muted",
-            "highlight": false
-          }
         }
       },
       "block_order": [
         "axis_1",
-        "axis_2",
-        "tier_1",
-        "tier_CbCjzD",
-        "tier_2",
-        "tier_3",
-        "tier_4",
-        "tier_5",
-        "tier_6"
+        "axis_2"
       ],
       "settings": {
         "eyebrow": "",
         "bg_color": "#0d3b46",
         "bq_label": "One score that measures how your body performs",
-        "bq_number": "",
         "bq_number_caption": "We call it your Body Quotient (BQ)",
         "bq_copy": "A single score built from muscle, cardiovascular fitness, mobility, metabolism, and body composition."
       }

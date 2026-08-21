@@ -30,51 +30,16 @@
     </div>
 
     <div class="gh-axes__bq">
-      <div class="gh-axes__bq-left">
+      <div class="gh-axes__bq-text">
         {%- if s.bq_label != blank -%}<div class="gh-axes__bq-label">{{ s.bq_label }}</div>{%- endif -%}
-        {%- if s.bq_number != blank -%}
-          <div class="gh-axes__bq-num-row">
-            <span class="gh-axes__bq-num">{{ s.bq_number }}</span>
-            {%- if s.bq_number_caption != blank -%}<span class="gh-axes__bq-num-cap">{{ s.bq_number_caption }}</span>{%- endif -%}
-          </div>
-        {%- elsif s.bq_number_caption != blank -%}
-          <p class="gh-axes__bq-cap-solo">{{ s.bq_number_caption }}</p>
-        {%- endif -%}
+        {%- if s.bq_number_caption != blank -%}<p class="gh-axes__bq-cap-solo">{{ s.bq_number_caption }}</p>{%- endif -%}
         {%- if s.bq_copy != blank -%}<p class="gh-axes__bq-copy">{{ s.bq_copy }}</p>{%- endif -%}
-        <div class="gh-axes__bar gh-axes__bar--desktop"></div>
       </div>
-      <div class="gh-axes__bq-right">
-        {%- comment -%} Count real tier rows (label present) to size the level meters {%- endcomment -%}
-        {%- assign tier_count = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tier' and block.settings.label != blank -%}{%- assign tier_count = tier_count | plus: 1 -%}{%- endif -%}
-        {%- endfor -%}
-        {%- if tier_count == 0 -%}{%- assign tier_count = 1 -%}{%- endif -%}
-
-        {%- assign tier_i = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tier' -%}
-            {%- if block.settings.label == blank -%}
-              {%- comment -%} Header row (e.g. "AGE PERCENTILE") — no meter {%- endcomment -%}
-              <div class="gh-axes__tier gh-axes__tier--head" {{ block.shopify_attributes }}>
-                <span class="gh-axes__tier-label"></span>
-                <span></span>
-                <span class="gh-axes__tier-range">{{ block.settings.range }}</span>
-              </div>
-            {%- else -%}
-              {%- assign rank = tier_count | minus: tier_i -%}
-              {%- assign fill = rank | times: 100 | divided_by: tier_count -%}
-              <div class="gh-axes__tier{% if block.settings.highlight %} is-highlight{% endif %}" {{ block.shopify_attributes }}>
-                <span class="gh-axes__tier-label">{{ block.settings.label }}</span>
-                <span class="gh-axes__tier-meter"><i style="width: {{ fill }}%;"></i></span>
-                <span class="gh-axes__tier-range">{{ block.settings.range }}</span>
-              </div>
-              {%- assign tier_i = tier_i | plus: 1 -%}
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-        <div class="gh-axes__bar gh-axes__bar--mobile"></div>
-      </div>
+      {%- if s.bq_image != blank -%}
+        <div class="gh-axes__bq-image">
+          <img src="{{ s.bq_image | image_url: width: 1600 }}" width="{{ s.bq_image.width }}" height="{{ s.bq_image.height }}" alt="" loading="lazy">
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -108,61 +73,23 @@
   .gh-axes__note-body p { font: 300 15px/1.6 var(--gh-sans); color: var(--gh-light); margin: 0; }
   .gh-axes__note-body strong { font-weight: 600; color: var(--gh-green); }
 
+  /* Stacked, not a dark card: all the BQ copy centered above, then the
+     photo (the percentile chart is now a designed image she uploads, not
+     live-coded bars) spanning full width below it — no separate treatment,
+     just plain content sitting on the section's own (light) background. */
   .gh-axes__bq {
-    margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD; --gh-green: #C3D9DD;
-    border-radius: 14px; background: #135E73; border: 1px solid rgba(255,255,255,0.10); padding: 40px;
-    overflow: hidden; position: relative; box-shadow: 0 16px 44px rgba(19, 94, 115, 0.18);
+    margin-top: 48px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    gap: 40px;
   }
-  .gh-axes__bq-label { font: 500 15px/1.2 var(--gh-mono); letter-spacing: 0.24em; color: var(--gh-light); text-transform: uppercase; margin-bottom: 24px; }
-  .gh-axes__bq-num-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
-  .gh-axes__bq-num { font: 200 120px/1 var(--gh-sans); color: var(--gh-light); letter-spacing: -0.04em; }
-  .gh-axes__bq-num-cap { font: 400 15px/1.4 var(--gh-mono); color: var(--gh-muted); max-width: 160px; }
-  .gh-axes__bq-cap-solo { font: 300 22px/1.5 var(--gh-sans); color: var(--gh-light); max-width: 440px; margin-bottom: 20px; }
-  .gh-axes__bq-copy { font: 400 14px/1.7 var(--gh-mono); color: var(--gh-muted); max-width: 440px; }
-  .gh-axes__bar {
-    margin-top: 24px; height: 5px; border-radius: 3px; max-width: 440px;
-    background: linear-gradient(90deg, #9FE0BE, #F7F5F3 60%, #9FE0BE);
-    background-size: 200% 100%; animation: gh-sweep 5s linear infinite;
-  }
-  .gh-axes__bar--mobile { display: none; }
-  .gh-axes__bq-right { display: flex; flex-direction: column; }
-  /* Level meter: each tier gets a bar that grows Base -> Apex */
-  .gh-axes__tier {
-    display: grid; grid-template-columns: 120px 1fr 60px; align-items: center; gap: 20px;
-    padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.14);
-  }
-  .gh-axes__tier:last-child { border-bottom: 0; }
-  .gh-axes__tier-num { display: none; }
-  .gh-axes__tier-label { font: 400 17px/1.1 var(--gh-sans); color: var(--gh-light); }
-  .gh-axes__tier-range { font: 400 14px/1 var(--gh-mono); color: var(--gh-muted); text-align: right; letter-spacing: 0.02em; }
-  .gh-axes__tier-meter { position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.15); overflow: hidden; }
-  .gh-axes__tier-meter i {
-    position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px;
-    background: linear-gradient(90deg, #9FE0BE, #F7F5F3);
-  }
-  /* Column header row */
-  /* Header row: escape the narrow grid so "AGE PERCENTILE" stays one line, right-aligned */
-  .gh-axes__tier--head { display: flex; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,.18); padding-bottom: 12px; }
-  .gh-axes__tier--head > span:not(.gh-axes__tier-range) { display: none; }
-  .gh-axes__tier--head .gh-axes__tier-range { font: 500 11px/1 var(--gh-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gh-slate); white-space: nowrap; text-align: right; }
-  /* Active tier — glows and pops */
-  .gh-axes__tier.is-highlight {
-    background: rgba(255, 255, 255, 0.12);
-    border-bottom-color: transparent;
-    border-radius: 8px;
-    margin: 2px -14px; padding: 13px 14px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.28);
-  }
-  .gh-axes__tier.is-highlight .gh-axes__tier-label { color: #F7F5F3; font-weight: 600; }
-  .gh-axes__tier.is-highlight .gh-axes__tier-range { color: #F7F5F3; }
-  .gh-axes__tier.is-highlight .gh-axes__tier-meter i { box-shadow: 0 0 12px rgba(255,255,255,.5); }
-
-  .gh-c-green { color: var(--gh-green); }
-  .gh-c-light { color: var(--gh-light); }
-  .gh-c-muted { color: var(--gh-muted); }
-  .gh-c-slate { color: var(--gh-slate); }
-  .gh-c-white { color: var(--gh-white); }
+  .gh-axes__bq-text { max-width: 640px; }
+  /* DM Sans (var(--gh-mono), despite the name — see the root token comment)
+     for this whole block, per her explicit request. */
+  .gh-axes__bq-label { font: 500 12px/1 var(--gh-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gh-slate); margin-bottom: 18px; }
+  .gh-axes__bq-cap-solo { font: 500 26px/1.35 var(--gh-mono); color: var(--gh-brand); margin: 0 0 16px; }
+  .gh-axes__bq-copy { font: 400 15px/1.65 var(--gh-mono); color: var(--gh-muted); margin: 0; }
+  .gh-axes__bq-image { width: 100%; }
+  .gh-axes__bq-image img { display: block; width: 100%; height: auto; border-radius: 16px; }
 
   @media (max-width: 768px) {
     .gh-axes__eyebrow { margin-bottom: 20px; font-size: 10px; letter-spacing: 0.24em; }
@@ -172,20 +99,10 @@
     .gh-axes__card-eyebrow { font-size: 11px; letter-spacing: 0.14em; margin-bottom: 12px; }
     .gh-axes__card-h3 { font-size: 24px; margin-bottom: 12px; }
     .gh-axes__card-body { font-size: 15px; }
-    .gh-axes__bq { grid-template-columns: 1fr; gap: 0; padding: 24px; margin-top: 12px; }
-    .gh-axes__bq-num { font-size: 84px; }
-    .gh-axes__bq-num-cap { font-size: 13px; }
-    .gh-axes__bq-cap-solo { font-size: 18px; margin-bottom: 18px; }
-    .gh-axes__bq-copy { font-size: 13px; }
-    .gh-axes__bar--desktop { display: none; }
-    .gh-axes__bar--mobile { display: block; margin-top: 18px; max-width: none; }
-    .gh-axes__bq-right { margin-top: 0; }
-    .gh-axes__tier { grid-template-columns: 96px 1fr 52px; gap: 12px; padding: 12px 0; }
-    .gh-axes__tier.is-highlight { margin: 2px -12px; padding: 12px; }
-    .gh-axes__bq-label { font-size: 13px; letter-spacing: 0.22em; margin-bottom: 20px; }
-    .gh-axes__tier-label { font-size: 15px; }
-    .gh-axes__tier-range { font-size: 13px; }
-    .gh-axes__tier-meter { height: 5px; }
+    .gh-axes__bq { margin-top: 28px; gap: 28px; }
+    .gh-axes__bq-cap-solo { font-size: 20px; }
+    .gh-axes__bq-copy { font-size: 14px; }
+    .gh-axes__bq-image img { border-radius: 12px; }
   }
 {% endstylesheet %}
 
@@ -198,9 +115,9 @@
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#0D3B46" },
     { "type": "header", "content": "BQ panel" },
     { "type": "text", "id": "bq_label", "label": "Panel label", "default": "THE BQ, EXPLAINED" },
-    { "type": "text", "id": "bq_number", "label": "Big number (optional)", "info": "Leave blank to hide." },
-    { "type": "text", "id": "bq_number_caption", "label": "Number caption", "default": "Your results place you into one of six performance levels — and show you what comes next." },
-    { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing." }
+    { "type": "text", "id": "bq_number_caption", "label": "Title", "default": "Your results place you into one of six performance levels — and show you what comes next." },
+    { "type": "textarea", "id": "bq_copy", "label": "BQ copy", "default": "(BQ) is to your body what IQ is to your mind: one score that helps you understand how your body is truly performing." },
+    { "type": "image_picker", "id": "bq_image", "label": "Photo (percentile chart)", "info": "Replaces the old live-coded tier bars — upload the designed chart image instead." }
   ],
   "blocks": [
     {
@@ -214,19 +131,6 @@
         { "type": "text", "id": "note_title", "label": "Note title" },
         { "type": "richtext", "id": "note_body", "label": "Note body (bold = green)" }
       ]
-    },
-    {
-      "type": "tier",
-      "name": "BQ tier row",
-      "settings": [
-        { "type": "text", "id": "numeral", "label": "Roman numeral", "default": "VI" },
-        { "type": "text", "id": "label", "label": "Label", "default": "Apex" },
-        { "type": "text", "id": "range", "label": "Range", "default": "145+" },
-        { "type": "select", "id": "numeral_color", "label": "Numeral color", "options": [ {"value":"green","label":"Green"}, {"value":"light","label":"Light"}, {"value":"muted","label":"Muted"}, {"value":"slate","label":"Slate"} ], "default": "green" },
-        { "type": "select", "id": "label_color", "label": "Label color", "options": [ {"value":"white","label":"White"}, {"value":"muted","label":"Muted"} ], "default": "white" },
-        { "type": "select", "id": "range_color", "label": "Range color", "options": [ {"value":"light","label":"Light"}, {"value":"muted","label":"Muted"} ], "default": "muted" },
-        { "type": "checkbox", "id": "highlight", "label": "Highlight row", "default": false }
-      ]
     }
   ],
   "presets": [
@@ -234,13 +138,7 @@
       "name": "Galim · Two Axes",
       "blocks": [
         { "type": "axis", "settings": { "eyebrow": "◇ LONGEVITY", "heading": "Find it a decade early.", "body": "Most diseases begin years before symptoms appear. Measure your biological age across every major body system and identify potential risks while there's still time to act." } },
-        { "type": "axis", "settings": { "eyebrow": "◇ PERFORMANCE · YOUR BQ", "heading": "Your body in one number.", "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number." } },
-        { "type": "tier", "settings": { "numeral": "VI", "label": "Apex", "range": "99%", "numeral_color": "green", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "V", "label": "Exceptional", "range": "92–98%", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "IV", "label": "Advanced", "range": "75–91%", "numeral_color": "muted", "label_color": "white", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "III", "label": "Fit", "range": "50–74%", "numeral_color": "light", "label_color": "white", "range_color": "light", "highlight": true } },
-        { "type": "tier", "settings": { "numeral": "II", "label": "Developing", "range": "25–49%", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } },
-        { "type": "tier", "settings": { "numeral": "I", "label": "Base", "range": "<25%", "numeral_color": "slate", "label_color": "muted", "range_color": "muted" } }
+        { "type": "axis", "settings": { "eyebrow": "◇ PERFORMANCE · YOUR BQ", "heading": "Your body in one number.", "body": "A single score that measures how your body truly performs — not estimates. Strength, body composition, endurance, and mobility, all in one number." } }
       ]
     }
   ]
