@@ -200,18 +200,6 @@
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
-        "m8": {
-          "type": "item",
-          "settings": {
-            "name": "Real Body composition"
-          }
-        },
-        "item_3zaLMx": {
-          "type": "item",
-          "settings": {
-            "name": "AI Body Measurements"
-          }
-        },
         "m11": {
           "type": "item",
           "settings": {
@@ -220,12 +208,12 @@
             "image_mobile": "shopify://shop_images/heart_mobile.png"
           }
         },
-        "m4": {
+        "m12": {
           "type": "item",
           "settings": {
-            "name": "Blood",
-            "image": "shopify://shop_images/blood.png",
-            "image_mobile": "shopify://shop_images/blood_mobile.png"
+            "name": "Skin",
+            "image": "shopify://shop_images/skin.png",
+            "image_mobile": "shopify://shop_images/skin_mobile.png"
           }
         },
         "m10": {
@@ -236,12 +224,32 @@
             "image_mobile": "shopify://shop_images/strength_mobile.png"
           }
         },
-        "m12": {
+        "m7": {
           "type": "item",
           "settings": {
-            "name": "Skin",
-            "image": "shopify://shop_images/skin.png",
-            "image_mobile": "shopify://shop_images/skin_mobile.png"
+            "name": "Brain",
+            "image": "shopify://shop_images/brain.png",
+            "image_mobile": "shopify://shop_images/brain_mobile.png"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "name": "Blood",
+            "image": "shopify://shop_images/blood.png",
+            "image_mobile": "shopify://shop_images/blood_mobile.png"
+          }
+        },
+        "m8": {
+          "type": "item",
+          "settings": {
+            "name": "Real Body composition"
+          }
+        },
+        "item_3zaLMx": {
+          "type": "item",
+          "settings": {
+            "name": "AI Body Measurements"
           }
         },
         "m6": {
@@ -260,14 +268,6 @@
           "type": "item",
           "settings": {
             "name": "Cardiovascular"
-          }
-        },
-        "m7": {
-          "type": "item",
-          "settings": {
-            "name": "Brain",
-            "image": "shopify://shop_images/brain.png",
-            "image_mobile": "shopify://shop_images/brain_mobile.png"
           }
         },
         "m9": {
@@ -407,7 +407,8 @@
         "bg_color": "#0d3b46",
         "bq_label": "One score that measures how your body performs",
         "bq_number_caption": "We call it your Body Quotient (BQ)",
-        "bq_copy": "A single score built from muscle, cardiovascular fitness, mobility, metabolism, and body composition."
+        "bq_copy": "A single score built from muscle, cardiovascular fitness, mobility, metabolism, and body composition.",
+        "bq_image": "shopify://shop_images/categories_3.png"
       }
     },
     "app_cta": {
