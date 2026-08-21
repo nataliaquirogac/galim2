@@ -89,7 +89,7 @@
 </section>
 
 {% stylesheet %}
-  .gh-gallery { position: relative; z-index: 1; padding-left: 0; padding-right: 0; }
+  .gh-gallery { position: relative; z-index: 1; padding-top: 56px; padding-left: 0; padding-right: 0; }
   .gh-gallery__head { display: flex; flex-direction: column; align-items: center; gap: 18px; padding-left: var(--gh-pad-x); padding-right: var(--gh-pad-x); margin-bottom: 28px; text-align: center; }
   .gh-gallery__eyebrow { margin-bottom: 12px; text-align: center; }
 
@@ -124,6 +124,7 @@
   .gh-gallery__slide { width: min(72vw, 860px); aspect-ratio: 1439 / 1110; }
 
   @media (max-width: 768px) {
+    .gh-gallery { padding-top: 32px; }
     .gh-gallery__head { margin-bottom: 20px; }
     .gh-gallery__slide { width: 78vw; aspect-ratio: 1439 / 2210; }
     /* Mirror image on mobile: portrait photo only, desktop-only slides gone. */
