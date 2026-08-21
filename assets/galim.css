@@ -161,7 +161,6 @@ body.gh-page { background: var(--gh-bg) !important; }
 @keyframes gh-grid  { 0% { background-position: 0 0; } 100% { background-position: 0 64px; } }
 @keyframes gh-pulse { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.06); } }
 @keyframes gh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-@keyframes gh-kenburns { from { transform: scale(1); } to { transform: scale(1.07); } }
 @keyframes gh-hero-in { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 
 /* Smooth anchor scrolling; sections land just below the sticky header ----- */
@@ -192,8 +191,9 @@ footer[id] { scroll-margin-top: 84px; }
 }
 .gh-reveal.is-visible { opacity: 1; transform: none; }
 
-/* Hero life: slow Ken Burns on the photo, fade-up for the copy ------------ */
-.gh-hero__img { animation: gh-kenburns 26s ease-in-out infinite alternate; }
+/* Hero life: fade-up for the copy. No ambient motion on the photo itself —
+   it should only change size in response to an actual window resize, not
+   drift/zoom on its own via a timed animation. */
 .gh-hero__col { animation: gh-hero-in 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {
