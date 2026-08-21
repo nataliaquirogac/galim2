@@ -433,8 +433,7 @@
           "settings": {
             "name": "Whole Genome Sequencing",
             "description": "Your lifelong genetic blueprint",
-            "link": "",
-            "featured": true
+            "link": ""
           }
         },
         "d3": {

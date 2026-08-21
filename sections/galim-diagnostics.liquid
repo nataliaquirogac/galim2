@@ -17,7 +17,7 @@
         {%- assign n = forloop.index -%}
         {%- assign row_tag = 'div' -%}
         {%- if b.link != blank -%}{%- assign row_tag = 'a' -%}{%- endif -%}
-        <{{ row_tag }} class="gh-diag__row{% if b.featured %} gh-diag__row--featured{% endif %}"{% if b.link != blank %} href="{{ b.link }}"{% endif %} {{ block.shopify_attributes }}>
+        <{{ row_tag }} class="gh-diag__row"{% if b.link != blank %} href="{{ b.link }}"{% endif %} {{ block.shopify_attributes }}>
           <span class="gh-diag__num">{{ n | prepend: '0' | slice: -2, 2 }}</span>
           <span class="gh-diag__text">
             {%- if b.name != blank -%}<span class="gh-diag__name">{{ b.name }}</span>{%- endif -%}
@@ -37,17 +37,15 @@
   .gh-diag__rows { display: flex; flex-direction: column; gap: 16px; }
   .gh-diag__row {
     display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
-    /* Fully transparent — the page's own light background shows through;
-       only the featured row gets a visible surface (its blue ring below). */
+    /* Light card surface with just a soft shadow for definition — no border,
+       no per-row highlight color; every row reads the same. */
     border-radius: 14px; padding: 24px 32px;
-    border: 2px solid transparent;
-    background: transparent;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    background: linear-gradient(165deg, var(--gh-teal-750), var(--gh-teal-770));
+    box-shadow: 0 8px 22px rgba(19, 94, 115, 0.10);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     color: var(--gh-light); text-decoration: none;
   }
-  .gh-diag__row:hover { transform: translateX(8px); color: var(--gh-light); }
-  /* Blue highlight ring on the flagship add-on, per her reference screenshot. */
-  .gh-diag__row--featured { border-color: #3B82F6; box-shadow: 0 12px 32px rgba(59, 130, 246, 0.18); }
+  .gh-diag__row:hover { transform: translateX(8px); box-shadow: 0 12px 30px rgba(19, 94, 115, 0.16); color: var(--gh-light); }
   .gh-diag__num { font: 300 40px/1 var(--gh-mono); color: var(--gh-brand); }
   .gh-diag__text { display: flex; flex-direction: column; gap: 6px; }
   .gh-diag__name { font: 400 24px/1.15 var(--gh-mono); color: var(--gh-brand); }
@@ -84,7 +82,6 @@
       "settings": [
         { "type": "text", "id": "name", "label": "Name", "default": "Whole Genome Sequencing" },
         { "type": "text", "id": "description", "label": "Description", "default": "Your lifelong genetic blueprint" },
-        { "type": "checkbox", "id": "featured", "label": "Highlight with blue border", "default": false },
         { "type": "url", "id": "link", "label": "Link (optional)" }
       ]
     }
@@ -93,7 +90,7 @@
     {
       "name": "Galim · Diagnostics",
       "blocks": [
-        { "type": "addon", "settings": { "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint", "featured": true } },
+        { "type": "addon", "settings": { "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint" } },
         { "type": "addon", "settings": { "name": "Full-Body MRI", "description": "Comprehensive whole-body screening" } },
         { "type": "addon", "settings": { "name": "Multi-Cancer Blood Test", "description": "Early screening for 50+ cancers" } },
         { "type": "addon", "settings": { "name": "Coronary CT Angiography", "description": "Detect hidden heart disease" } },
