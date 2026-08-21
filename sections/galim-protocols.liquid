@@ -109,14 +109,11 @@
   .gh-protocols__eyebrow { margin-bottom: 12px; text-align: center; }
   .gh-protocols__h2 { font: 200 44px/1.14 var(--gh-mono); letter-spacing: -0.02em; color: var(--gh-white); margin: 0 auto 36px; max-width: 900px; text-align: center; }
   .gh-protocols__h2 p { margin: 0; }
-  /* Bold in the heading = animated teal -> blue -> white gradient text. Blue
-     #1E63A8 comes from the banner's royal-blue family (sampled #0D3880). Pure
-     white measures ~1.1:1 on the light page — essentially invisible as every
-     letter sweeps through it — so the "white" stop is the brightest blue that
-     still clears the 3:1 floor for display type (#3E7BC0, 3.9:1). */
+  /* Bold in the heading = animated gradient text using the site's own brand
+     ramp (same 4 colors as the gradient-ring borders on buttons/cards). */
   .gh-protocols__h2 strong {
     font-weight: 500;
-    background: linear-gradient(90deg, #135E73, #1E63A8 30%, #3E7BC0 58%, #135E73 90%);
+    background: linear-gradient(90deg, #C9D1C3, #1B88A6 30%, #2AAFDF 60%, #135E73 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
