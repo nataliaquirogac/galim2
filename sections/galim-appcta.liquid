@@ -36,14 +36,6 @@
       {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-app__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
       {%- if s.heading != blank -%}<h2 class="gh-app__h2">{{ s.heading | newline_to_br }}</h2>{%- endif -%}
       {%- if s.body != blank -%}<p class="gh-app__body">{{ s.body }}</p>{%- endif -%}
-      <div class="gh-app__btns">
-        {%- if s.android_label != blank -%}
-          <a href="{{ s.android_link | default: '#' }}" class="gh-btn gh-btn--solid gh-app__btn"{% if s.android_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.android_label }}</a>
-        {%- endif -%}
-        {%- if s.ios_label != blank -%}
-          <a href="{{ s.ios_link | default: '#' }}" class="gh-btn gh-btn--outline gh-app__btn"{% if s.ios_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.ios_label }}</a>
-        {%- endif -%}
-      </div>
     </div>
     <div class="gh-app__media">
       {%- if src2 != blank -%}
@@ -63,6 +55,14 @@
         </div>
       {%- else -%}
         <img class="gh-app__img" src="{{ src }}" alt="{{ alt }}" loading="lazy" decoding="async">
+      {%- endif -%}
+    </div>
+    <div class="gh-app__btns">
+      {%- if s.android_label != blank -%}
+        <a href="{{ s.android_link | default: '#' }}" class="gh-btn gh-btn--solid gh-app__btn"{% if s.android_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.android_label }}</a>
+      {%- endif -%}
+      {%- if s.ios_label != blank -%}
+        <a href="{{ s.ios_link | default: '#' }}" class="gh-btn gh-btn--outline gh-app__btn"{% if s.ios_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.ios_label }}</a>
       {%- endif -%}
     </div>
   </div>
@@ -111,15 +111,28 @@
 </section>
 
 {% stylesheet %}
-  /* Desktop: two columns — text left, phone right */
-  .gh-app__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .gh-app__text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+  /* Desktop: two columns — text + buttons stacked on the left, phone on the
+     right (spanning both rows). Named areas (not source order + flex order)
+     because the buttons need to move to a different position relative to the
+     photo between desktop and mobile, not just reverse. */
+  .gh-app__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "text media" "btns media";
+    gap: 56px 56px;
+    /* start, not center: media spans both rows, and centering would let its
+       own tall content inflate the "btns" row height, leaving the buttons
+       floating far below the text instead of right under it. */
+    align-items: start;
+  }
+  .gh-app__media { align-self: center; }
+  .gh-app__text { grid-area: text; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
   .gh-app__eyebrow { margin-bottom: 28px; }
   .gh-app__h2 { font: 300 clamp(30px, 3.6vw, 46px)/1.16 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-light); margin: 0; }
   .gh-app__body { font: 300 17px/1.6 var(--gh-sans); color: var(--gh-muted); margin: 20px 0 0; max-width: 420px; }
-  .gh-app__btns { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+  .gh-app__btns { grid-area: btns; display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
   .gh-app__btn { min-width: 180px; justify-content: center; }
-  .gh-app__media { display: flex; justify-content: center; }
+  .gh-app__media { grid-area: media; display: flex; justify-content: center; }
   .gh-app__img { display: block; width: 100%; max-width: 440px; height: auto; border-radius: 20px; }
 
   /* Carousel — only rendered when a second photo is set. One photo per view with
@@ -154,15 +167,19 @@
   .gh-app__dot:hover::after { background: rgba(19, 94, 115, 0.35); }
   .gh-app__dot.is-active::after { background: var(--gh-brand); transform: scale(1.3); }
 
-  /* Mobile: single centered column */
+  /* Mobile: single centered column, buttons BELOW the photo (was above it,
+     between the body copy and the photo). */
   @media (max-width: 768px) {
-    .gh-app__grid { grid-template-columns: 1fr; gap: 36px; text-align: center; }
+    .gh-app__grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "text" "media" "btns";
+      gap: 28px; text-align: center;
+    }
     .gh-app__text { align-items: center; text-align: center; }
     .gh-app__eyebrow { margin-bottom: 18px; }
     .gh-app__body { margin: 20px auto 0; }
-    .gh-app__btns { justify-content: center; margin-top: 28px; }
+    .gh-app__btns { justify-content: center; margin-top: 0; }
     .gh-app__btn { flex: 1 1 auto; min-width: 0; }
-    .gh-app__media { order: 2; }
     .gh-app__img { max-width: 300px; }
     .gh-app__carousel { max-width: 300px; }
   }
