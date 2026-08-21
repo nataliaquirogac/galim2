@@ -66,18 +66,7 @@
 </section>
 
 {% stylesheet %}
-  /* Centered statement moment with an ambient glow behind it */
   .gh-steps { position: relative; overflow: hidden; padding: 120px 40px; text-align: center; }
-  .gh-steps::before {
-    content: "";
-    position: absolute; left: 50%; top: 50%;
-    width: 900px; height: 620px; transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.12), rgba(19, 94, 115, 0) 68%);
-    filter: blur(20px);
-    pointer-events: none;
-  }
-  /* Stronger glow only when the section background is dark */
-  .gh-steps.gh-inv::before { background: radial-gradient(ellipse at center, rgba(19, 94, 115, 0.5), rgba(19, 94, 115, 0) 68%); }
   .gh-steps .gh-container { position: relative; max-width: 920px; }
   .gh-steps__eyebrow { margin: 0 0 28px; }
 
