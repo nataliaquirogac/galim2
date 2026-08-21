@@ -121,17 +121,8 @@ body.gh-page { background: var(--gh-bg) !important; }
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 .gh-btn--solid {
-  /* Gradient ring, same recipe as the What we measure / package cards and the
-     diagnostics rows: fill clipped to padding-box, the brand ramp clipped to
-     border-box behind it, through a 3px transparent border. Diagonal (135deg)
-     so the ramp crosses every edge of the pill — including its rounded left
-     and right caps — instead of leaving them as a single flat stop color. The
-     ramp loops back to its own starting color instead of fading to
-     transparent, so the ring reads as solid color everywhere. */
-  border: 3px solid transparent;
-  background:
-    linear-gradient(#135E73, #135E73) padding-box,
-    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+  border: none;
+  background: #135E73;
   color: #F7F5F3;
   font: 500 15px/1 var(--gh-sans);
   letter-spacing: 0.02em;
@@ -139,9 +130,7 @@ body.gh-page { background: var(--gh-bg) !important; }
   border-radius: 999px;
 }
 .gh-btn--solid:hover {
-  background:
-    linear-gradient(#16505F, #16505F) padding-box,
-    linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
+  background: #16505F;
   color: #F7F5F3;
   transform: translateY(-1px);
 }
