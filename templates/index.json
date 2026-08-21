@@ -433,16 +433,15 @@
         "d1": {
           "type": "addon",
           "settings": {
-            "icon": "dna",
             "name": "Whole Genome Sequencing",
             "description": "Your lifelong genetic blueprint",
-            "link": ""
+            "link": "",
+            "featured": true
           }
         },
         "d3": {
           "type": "addon",
           "settings": {
-            "icon": "blood",
             "name": "Multi-Cancer Blood Test",
             "description": "Early screening for 50+ cancers",
             "link": ""
@@ -451,7 +450,6 @@
         "d5": {
           "type": "addon",
           "settings": {
-            "icon": "microbiome",
             "name": "Microbiome Analysis",
             "description": "Gut health & metabolic insights",
             "link": ""

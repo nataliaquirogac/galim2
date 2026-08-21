@@ -17,23 +17,13 @@
         {%- assign n = forloop.index -%}
         {%- assign row_tag = 'div' -%}
         {%- if b.link != blank -%}{%- assign row_tag = 'a' -%}{%- endif -%}
-        <{{ row_tag }} class="gh-diag__row"{% if b.link != blank %} href="{{ b.link }}"{% endif %} {{ block.shopify_attributes }}>
-          <span class="gh-diag__icon">
-            {%- case b.icon -%}
-              {%- when 'dna' -%}{%- render 'icon-dna', size: 30 -%}
-              {%- when 'mri' -%}{%- render 'icon-mri', size: 30 -%}
-              {%- when 'blood' -%}{%- render 'icon-blood', size: 30 -%}
-              {%- when 'heartbeat' -%}{%- render 'icon-heartbeat', size: 30 -%}
-              {%- when 'microbiome' -%}{%- render 'icon-microbiome', size: 30 -%}
-              {%- else -%}{%- render 'icon-dna', size: 30 -%}
-            {%- endcase -%}
-          </span>
+        <{{ row_tag }} class="gh-diag__row{% if b.featured %} gh-diag__row--featured{% endif %}"{% if b.link != blank %} href="{{ b.link }}"{% endif %} {{ block.shopify_attributes }}>
           <span class="gh-diag__num">{{ n | prepend: '0' | slice: -2, 2 }}</span>
           <span class="gh-diag__text">
             {%- if b.name != blank -%}<span class="gh-diag__name">{{ b.name }}</span>{%- endif -%}
             {%- if b.description != blank -%}<span class="gh-diag__desc">{{ b.description }}</span>{%- endif -%}
           </span>
-          <span class="gh-diag__arrow">→</span>
+          <span class="gh-diag__plus" aria-hidden="true">+</span>
         </{{ row_tag }}>
       {%- endfor -%}
     </div>
@@ -44,48 +34,37 @@
   .gh-diag__eyebrow { margin-bottom: 12px; text-align: center; }
   .gh-diag__h2 { font: 200 40px/1.15 var(--gh-sans); letter-spacing: -0.02em; color: var(--gh-white); max-width: 820px; margin: 0 auto 10px; text-align: center; }
   .gh-diag__sub { font: 300 16px/1.5 var(--gh-sans); color: var(--gh-muted); margin: 0 auto 32px; text-align: center; }
-  .gh-diag__rows { display: flex; flex-direction: column; gap: 12px; }
+  .gh-diag__rows { display: flex; flex-direction: column; gap: 16px; }
   .gh-diag__row {
-    display: grid; grid-template-columns: auto 64px 1fr auto; align-items: center; gap: 24px;
-    /* Teal island with white text */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD; --gh-green: #C3D9DD;
-    /* Gradient ring, same recipe as the What we measure / package cards: fill
-       clipped to padding-box, the brand ramp clipped to border-box behind it,
-       through a 3px transparent border. Diagonal (135deg) rather than 90deg so
-       a wide row like this one shows color on the sides too, not just top and
-       bottom. The ramp loops back to its own starting color instead of fading
-       to transparent, so it's solid at every point. */
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
+    /* Light card surface (top/bottom tokens already used for this look
+       elsewhere) instead of the old solid teal island. */
     border-radius: 14px; padding: 24px 32px;
-    border: 3px solid transparent;
-    background:
-      linear-gradient(#135E73, #135E73) padding-box,
-      linear-gradient(135deg, #135E73 0%, #2AAFDF 25%, #1B88A6 50%, #C9D1C3 75%, #135E73 100%) border-box;
-    box-shadow: 0 12px 32px rgba(19, 94, 115, 0.12);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; color: var(--gh-light);
+    border: 2px solid transparent;
+    background: linear-gradient(165deg, var(--gh-teal-750), var(--gh-teal-770));
+    box-shadow: 0 12px 32px rgba(19, 94, 115, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    color: var(--gh-light); text-decoration: none;
   }
   .gh-diag__row:hover { transform: translateX(8px); color: var(--gh-light); }
-  .gh-diag__icon {
-    width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
-    background: rgba(255, 255, 255,.12); border: 1px solid rgba(255, 255, 255,.22);
-    display: inline-flex; align-items: center; justify-content: center; color: #F7F5F3;
-  }
-  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: rgba(255, 255, 255,.5); }
-  .gh-diag__text { display: flex; flex-direction: column; gap: 4px; }
-  .gh-diag__name { font: 500 24px/1.1 var(--gh-sans); color: var(--gh-white); }
-  .gh-diag__desc { font: 300 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
-  .gh-diag__arrow { font: 400 22px/1 var(--gh-sans); color: #CDE0E4; }
+  /* Blue highlight ring on the flagship add-on, per her reference screenshot. */
+  .gh-diag__row--featured { border-color: #3B82F6; box-shadow: 0 12px 32px rgba(59, 130, 246, 0.18); }
+  .gh-diag__num { font: 200 40px/1 var(--gh-sans); color: var(--gh-brand); }
+  .gh-diag__text { display: flex; flex-direction: column; gap: 6px; }
+  .gh-diag__name { font: 700 24px/1.15 var(--gh-sans); color: var(--gh-brand); }
+  .gh-diag__desc { font: 400 16px/1.4 var(--gh-sans); color: var(--gh-muted); }
+  .gh-diag__plus { font: 300 28px/1 var(--gh-sans); color: var(--gh-brand); }
 
   @media (max-width: 768px) {
     .gh-diag__h2 { font-size: 28px; margin-bottom: 10px; }
     .gh-diag__sub { font-size: 14px; margin-bottom: 24px; }
     .gh-diag__rows { gap: 12px; }
-    .gh-diag__row { grid-template-columns: auto 1fr; gap: 16px; padding: 20px; }
+    .gh-diag__row { grid-template-columns: auto 1fr auto; gap: 16px; padding: 20px; }
     .gh-diag__row:hover { transform: none; }
-    .gh-diag__icon { width: 48px; height: 48px; border-radius: 12px; }
-    .gh-diag__num { display: none; }
+    .gh-diag__num { font-size: 28px; }
     .gh-diag__name { font-size: 18px; }
     .gh-diag__desc { font-size: 13px; }
-    .gh-diag__arrow { display: none; }
+    .gh-diag__plus { font-size: 22px; }
   }
 {% endstylesheet %}
 
@@ -104,9 +83,9 @@
       "type": "addon",
       "name": "Add-on row",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icon", "options": [ {"value":"dna","label":"DNA helix"}, {"value":"mri","label":"MRI scan frame"}, {"value":"blood","label":"Blood drop"}, {"value":"heartbeat","label":"Heartbeat"}, {"value":"microbiome","label":"Microbiome circles"} ], "default": "dna" },
         { "type": "text", "id": "name", "label": "Name", "default": "Whole Genome Sequencing" },
         { "type": "text", "id": "description", "label": "Description", "default": "Your lifelong genetic blueprint" },
+        { "type": "checkbox", "id": "featured", "label": "Highlight with blue border", "default": false },
         { "type": "url", "id": "link", "label": "Link (optional)" }
       ]
     }
@@ -115,11 +94,11 @@
     {
       "name": "Galim · Diagnostics",
       "blocks": [
-        { "type": "addon", "settings": { "icon": "dna", "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint" } },
-        { "type": "addon", "settings": { "icon": "mri", "name": "Full-Body MRI", "description": "Comprehensive whole-body screening" } },
-        { "type": "addon", "settings": { "icon": "blood", "name": "Multi-Cancer Blood Test", "description": "Early screening for 50+ cancers" } },
-        { "type": "addon", "settings": { "icon": "heartbeat", "name": "Coronary CT Angiography", "description": "Detect hidden heart disease" } },
-        { "type": "addon", "settings": { "icon": "microbiome", "name": "Microbiome Analysis", "description": "Gut health & metabolic insights" } }
+        { "type": "addon", "settings": { "name": "Whole Genome Sequencing", "description": "Your lifelong genetic blueprint", "featured": true } },
+        { "type": "addon", "settings": { "name": "Full-Body MRI", "description": "Comprehensive whole-body screening" } },
+        { "type": "addon", "settings": { "name": "Multi-Cancer Blood Test", "description": "Early screening for 50+ cancers" } },
+        { "type": "addon", "settings": { "name": "Coronary CT Angiography", "description": "Detect hidden heart disease" } },
+        { "type": "addon", "settings": { "name": "Microbiome Analysis", "description": "Gut health & metabolic insights" } }
       ]
     }
   ]
