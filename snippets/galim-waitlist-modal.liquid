@@ -165,11 +165,8 @@
     max-width: 480px;
     max-height: calc(100vh - 48px);
     overflow-y: auto;
-    /* Teal island with white text */
-    --gh-light: #F7F5F3; --gh-white: #F7F5F3; --gh-muted: #CDE0E4; --gh-slate: #C3D9DD;
-    --gh-green: #C3D9DD; --gh-border: rgba(255,255,255,0.18); --gh-border-strong: rgba(255,255,255,0.24);
-    background: #135E73;
-    border: 1px solid rgba(255,255,255,0.12);
+    background: #F2F2F2;
+    border: 1px solid rgba(19, 94, 115, 0.14);
     border-radius: 16px;
     padding: 44px 40px 40px;
     transform: translateY(12px) scale(0.98);
@@ -205,18 +202,18 @@
        make every input 30px wider than its column — which made the two
        apellidos overlap in the 2-up row. */
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(19, 94, 115, 0.06);
+    border: 1px solid rgba(19, 94, 115, 0.2);
     border-radius: 4px;
     padding: 13px 14px;
-    color: #F7F5F3;
+    color: #0D3B46;
     font: 400 15px/1.2 var(--gh-sans);
     width: 100%;
   }
-  .gh-field input::placeholder { color: rgba(247, 245, 243, 0.55); }
+  .gh-field input::placeholder { color: rgba(13, 59, 70, 0.4); }
   .gh-field select option { color: #0D3B46; }
   .gh-field input:focus,
-  .gh-field select:focus { outline: none; border-color: rgba(255, 255, 255, 0.6); }
+  .gh-field select:focus { outline: none; border-color: rgba(19, 94, 115, 0.55); }
   .gh-field select { appearance: none; cursor: pointer; }
   /* Age: keep the numeric keypad on mobile but drop the desktop spinner arrows,
      which break the flat field styling. */
@@ -225,10 +222,9 @@
   .gh-field input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   /* Age needs far less room than a phone number. */
   .gh-field-row--age { grid-template-columns: minmax(84px, 0.5fr) 1fr; }
-  .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; background: #F7F5F3; color: #135E73; }
-  .gh-modal__submit:hover { background: #FFFFFF; color: #135E73; }
+  .gh-modal__submit { width: 100%; justify-content: center; margin-top: 8px; }
   .gh-modal__success { font: 400 17px/1.5 var(--gh-sans); color: var(--gh-green); }
-  .gh-modal__error { font: 400 14px/1.5 var(--gh-sans); color: #e8a0a0; margin-bottom: 16px; }
+  .gh-modal__error { font: 400 14px/1.5 var(--gh-sans); color: #B23B3B; margin-bottom: 16px; }
   @media (max-width: 768px) {
     .gh-modal { padding: 14px; }
     .gh-modal__panel { padding: 36px 22px 28px; }
