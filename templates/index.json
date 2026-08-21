@@ -401,7 +401,8 @@
         "bq_label": "One score that measures how your body performs",
         "bq_number_caption": "We call it your Body Quotient (BQ)",
         "bq_copy": "A single score built from muscle, cardiovascular fitness, mobility, metabolism, and body composition.",
-        "bq_image": "shopify://shop_images/categories_3.png"
+        "bq_image": "shopify://shop_images/categories_3.png",
+        "bq_image_mobile": "shopify://shop_images/categories-mobile.png"
       }
     },
     "app_cta": {
