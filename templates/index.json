@@ -263,20 +263,19 @@
             "image_mobile": "shopify://shop_images/real_body_composition_4c9fdc68-eb97-44a0-8928-5c065851d83e.png"
           }
         },
+        "m6": {
+          "type": "item",
+          "settings": {
+            "name": "Lungs",
+            "image": "shopify://shop_images/lungs_2.png",
+            "image_mobile": "shopify://shop_images/lungs.png"
+          }
+        },
         "item_3zaLMx": {
           "type": "item",
           "disabled": true,
           "settings": {
             "name": "AI Body Measurements"
-          }
-        },
-        "m6": {
-          "type": "item",
-          "disabled": true,
-          "settings": {
-            "name": "Lungs",
-            "image": "shopify://shop_images/lungs_2.png",
-            "image_mobile": "shopify://shop_images/lungs.png"
           }
         },
         "item_6WJCYy": {
@@ -286,13 +285,6 @@
             "name": "Bone"
           }
         },
-        "item_jCmJiH": {
-          "type": "item",
-          "disabled": true,
-          "settings": {
-            "name": "Cardiovascular"
-          }
-        },
         "m9": {
           "type": "item",
           "disabled": true,
@@ -300,18 +292,34 @@
             "name": "Arteries"
           }
         },
-        "m1": {
+        "item_pAdYih": {
           "type": "item",
           "disabled": true,
           "settings": {
-            "name": "Eyes"
+            "name": "Vision"
+          }
+        },
+        "item_qmmgKz": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "name": "Vision"
+          }
+        },
+        "m1": {
+          "type": "item",
+          "settings": {
+            "name": "Eyes",
+            "image": "shopify://shop_images/eyes_2.png",
+            "image_mobile": "shopify://shop_images/eyes.png"
           }
         },
         "m2": {
           "type": "item",
-          "disabled": true,
           "settings": {
-            "name": "Ears"
+            "name": "Ears",
+            "image": "shopify://shop_images/ears_1.png",
+            "image_mobile": "shopify://shop_images/oidos.png"
           }
         },
         "m3": {
@@ -329,11 +337,12 @@
         "m7",
         "m4",
         "m8",
-        "item_3zaLMx",
         "m6",
+        "item_3zaLMx",
         "item_6WJCYy",
-        "item_jCmJiH",
         "m9",
+        "item_pAdYih",
+        "item_qmmgKz",
         "m1",
         "m2",
         "m3"
