@@ -17,41 +17,19 @@
 
 {%- liquid
   assign items = section.blocks | where: 'type', 'item'
-  assign primary_count = 5
 -%}
 
 <section class="gh-mq gh-section" data-gh-section="carousel">
   <div class="gh-container">
     {%- if items.size > 0 -%}
-      {%- comment -%} ---------------- Shared tab row ---------------- {%- endcomment -%}
+      {%- comment -%} ---------------- Shared tab row: every system gets its own tab ---------------- {%- endcomment -%}
       <div class="gh-mq__tabs-wrap">
         <div class="gh-mq__tabs" data-gh-mq-tabs role="tablist" aria-label="Body systems">
           {%- for block in items -%}
             {%- assign b = block.settings -%}
-            {%- if forloop.index0 < primary_count -%}
-              <button type="button" class="gh-mq__tab" data-gh-mq-tab data-gh-mq-index="{{ forloop.index0 }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ b.name }}</button>
-            {%- endif -%}
+            <button type="button" class="gh-mq__tab" data-gh-mq-tab data-gh-mq-index="{{ forloop.index0 }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ block.shopify_attributes }}>{{ b.name }}</button>
           {%- endfor -%}
-          {%- if items.size > primary_count -%}
-            {%- assign more_count = items.size | minus: primary_count -%}
-            <button type="button" class="gh-mq__tab gh-mq__tab--more" data-gh-mq-more aria-expanded="false" aria-haspopup="listbox">+{{ more_count }} more</button>
-          {%- endif -%}
         </div>
-
-        {%- if items.size > primary_count -%}
-          <div class="gh-mq__overlay" data-gh-mq-overlay hidden>
-            <ul class="gh-mq__overlay-list" role="listbox">
-              {%- for block in items -%}
-                {%- assign b = block.settings -%}
-                {%- if forloop.index0 >= primary_count -%}
-                  <li>
-                    <button type="button" class="gh-mq__overlay-item" data-gh-mq-tab data-gh-mq-index="{{ forloop.index0 }}" role="option">{{ b.name }}</button>
-                  </li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
       </div>
 
       {%- comment -%} ---------------- Panels: photo only ---------------- {%- endcomment -%}
@@ -137,33 +115,6 @@
     width: 28px; height: 3px; border-radius: 2px;
     background: var(--gh-brand);
   }
-  .gh-mq__tab--more { color: var(--gh-slate); font: 300 16px/1 var(--gh-mono); letter-spacing: 0.04em; }
-  .gh-mq__tab--more:hover { color: var(--gh-brand); }
-  /* Set via JS when a finger-swipe lands on one of the "+N more" systems,
-     which has no tab button of its own to mark active. */
-  .gh-mq__tab--more.is-active { color: var(--gh-brand); font-weight: 500; }
-  .gh-mq__tab--more.is-active::after {
-    content: ""; position: absolute; left: 50%; bottom: 0;
-    transform: translateX(-50%);
-    width: 28px; height: 3px; border-radius: 2px;
-    background: var(--gh-brand);
-  }
-
-  .gh-mq__overlay {
-    position: absolute; z-index: 5; top: 100%; right: var(--gh-pad-x); margin-top: 8px;
-    background: #FFFFFF; border: 1px solid var(--gh-border); border-radius: 14px;
-    box-shadow: 0 20px 50px rgba(13, 59, 70, 0.16);
-    padding: 10px; min-width: 220px; max-height: 320px; overflow-y: auto;
-  }
-  .gh-mq__overlay[hidden] { display: none; }
-  .gh-mq__overlay-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-  .gh-mq__overlay-item {
-    display: block; width: 100%; text-align: left;
-    background: none; border: 0; border-radius: 8px; padding: 10px 12px;
-    font: 300 15px/1.2 var(--gh-sans); color: var(--gh-light); cursor: pointer;
-  }
-  .gh-mq__overlay-item:hover { background: var(--gh-light-tint); color: var(--gh-brand); }
-
   /* ---------------- Panel: just the photo, full container, no crop ---------------- */
   @keyframes gh-mq-fade { from { opacity: 0; } to { opacity: 1; } }
   .gh-mq__panel[hidden] { display: none; }
@@ -181,8 +132,6 @@
   @media (max-width: 768px) {
     .gh-mq__tabs { gap: 24px; }
     .gh-mq__tab { font-size: 17px; padding-bottom: 12px; margin-bottom: -13px; }
-    .gh-mq__tab--more { font-size: 13px; }
-    .gh-mq__overlay { left: 20px; right: 20px; min-width: 0; }
     .gh-mq__panel { padding-top: 24px; }
     .gh-mq__image { border-radius: 18px; min-height: 260px; }
   }
