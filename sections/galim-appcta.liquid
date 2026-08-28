@@ -59,10 +59,10 @@
     </div>
     <div class="gh-app__btns">
       {%- if s.android_label != blank -%}
-        <a href="{{ s.android_link | default: '#' }}" class="gh-btn gh-btn--solid gh-app__btn"{% if s.android_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.android_label }}</a>
+        <a href="{{ s.android_link | default: '#' }}" class="gh-btn gh-btn--solid gh-app__btn"{% if s.android_link == blank %} data-gh-waitlist-open{% else %} target="_blank" rel="noopener"{% endif %}>{%- render 'icon-google-play', size: 18 -%}{{ s.android_label }}</a>
       {%- endif -%}
       {%- if s.ios_label != blank -%}
-        <a href="{{ s.ios_link | default: '#' }}" class="gh-btn gh-btn--outline gh-app__btn"{% if s.ios_link == blank %} data-gh-waitlist-open{% endif %}>{{ s.ios_label }}</a>
+        <a href="{{ s.ios_link | default: '#' }}" class="gh-btn gh-btn--outline gh-app__btn"{% if s.ios_link == blank %} data-gh-waitlist-open{% else %} target="_blank" rel="noopener"{% endif %}>{%- render 'icon-apple', size: 18 -%}{{ s.ios_label }}</a>
       {%- endif -%}
     </div>
   </div>
