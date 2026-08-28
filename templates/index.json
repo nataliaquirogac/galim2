@@ -274,7 +274,9 @@
           "type": "item",
           "disabled": true,
           "settings": {
-            "name": "Lungs"
+            "name": "Lungs",
+            "image": "shopify://shop_images/lungs_2.png",
+            "image_mobile": "shopify://shop_images/lungs.png"
           }
         },
         "item_6WJCYy": {
