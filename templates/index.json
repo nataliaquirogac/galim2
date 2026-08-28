@@ -194,6 +194,23 @@
         "heading": "Book your visit"
       }
     },
+    "app_cta": {
+      "type": "galim-appcta",
+      "settings": {
+        "anchor_id": "app",
+        "eyebrow": "GET THE APP",
+        "heading": "Your health. Your data.\nYour next move.",
+        "body": "",
+        "image": "shopify://shop_images/app_mockup.png",
+        "image_url": "",
+        "image_2": "shopify://shop_images/app_mockup2.png",
+        "image_2_url": "",
+        "android_label": "Android",
+        "android_link": "https://play.google.com/apps/internaltest/4701049872877601619",
+        "ios_label": "iOS",
+        "ios_link": "https://www.apple.com/mx/app-store/"
+      }
+    },
     "carousel": {
       "type": "galim-carousel",
       "blocks": {
@@ -405,23 +422,6 @@
         "bq_image_mobile": "shopify://shop_images/categories-mobile.png"
       }
     },
-    "app_cta": {
-      "type": "galim-appcta",
-      "settings": {
-        "anchor_id": "app",
-        "eyebrow": "GET THE APP",
-        "heading": "Your health. Your data.\nYour next move.",
-        "body": "",
-        "image": "shopify://shop_images/app_mockup.png",
-        "image_url": "",
-        "image_2": "shopify://shop_images/app_mockup2.png",
-        "image_2_url": "",
-        "android_label": "Android",
-        "android_link": "https://play.google.com/apps/internaltest/4701049872877601619",
-        "ios_label": "iOS",
-        "ios_link": "https://www.apple.com/mx/app-store/"
-      }
-    },
     "diagnostics": {
       "type": "galim-diagnostics",
       "blocks": {
@@ -495,10 +495,10 @@
     "gap",
     "steps",
     "visit_gallery",
+    "app_cta",
     "carousel",
     "protocols",
     "two_axes",
-    "app_cta",
     "diagnostics",
     "method",
     "final_cta"
