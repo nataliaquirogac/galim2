@@ -219,16 +219,16 @@
           "type": "item",
           "settings": {
             "name": "Heart",
-            "image": "shopify://shop_images/heart.png",
-            "image_mobile": "shopify://shop_images/heart_mobile.png"
+            "image": "shopify://shop_images/heart_82cc9439-38d7-4213-a7f0-3786b0a66d1c.png",
+            "image_mobile": "shopify://shop_images/Heart_Cardio_mobile.png"
           }
         },
         "m12": {
           "type": "item",
           "settings": {
             "name": "Skin",
-            "image": "shopify://shop_images/skin.png",
-            "image_mobile": "shopify://shop_images/skin_mobile.png"
+            "image": "shopify://shop_images/skin_4a67267f-432e-478c-8a1b-398ada00054a.png",
+            "image_mobile": "shopify://shop_images/skin_mobile_f018df94-b48b-405a-a6ab-e30ae5f5a2d3.png"
           }
         },
         "m10": {
