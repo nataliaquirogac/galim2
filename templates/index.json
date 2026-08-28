@@ -93,9 +93,9 @@
         "heading_accent": "",
         "subheading": "",
         "council_line": "",
-        "button_label": "Join the waitlist",
+        "button_label": "Book your visit",
         "button_opens_modal": true,
-        "button_link": "",
+        "button_link": "https://agendar.galimhealth.com/agendar",
         "coords": "CALZADA DEL VALLE"
       }
     },
@@ -192,6 +192,23 @@
         "anchor_id": "visit",
         "eyebrow": "THE SPACE",
         "heading": "Book your visit"
+      }
+    },
+    "app_cta": {
+      "type": "galim-appcta",
+      "settings": {
+        "anchor_id": "app",
+        "eyebrow": "GET THE APP",
+        "heading": "Your health. Your data.\nYour next move.",
+        "body": "",
+        "image": "shopify://shop_images/app_mockup.png",
+        "image_url": "",
+        "image_2": "shopify://shop_images/app_mockup2.png",
+        "image_2_url": "",
+        "android_label": "Android",
+        "android_link": "https://play.google.com/apps/internaltest/4701049872877601619",
+        "ios_label": "iOS",
+        "ios_link": "https://www.apple.com/mx/app-store/"
       }
     },
     "carousel": {
@@ -405,23 +422,6 @@
         "bq_image_mobile": "shopify://shop_images/categories-mobile.png"
       }
     },
-    "app_cta": {
-      "type": "galim-appcta",
-      "settings": {
-        "anchor_id": "app",
-        "eyebrow": "GET THE APP",
-        "heading": "Your health. Your data.\nYour next move.",
-        "body": "",
-        "image": "shopify://shop_images/app_mockup.png",
-        "image_url": "",
-        "image_2": "shopify://shop_images/app_mockup2.png",
-        "image_2_url": "",
-        "android_label": "Android",
-        "android_link": "https://play.google.com/apps/internaltest/4701049872877601619",
-        "ios_label": "iOS",
-        "ios_link": "https://www.apple.com/mx/app-store/"
-      }
-    },
     "diagnostics": {
       "type": "galim-diagnostics",
       "blocks": {
@@ -482,9 +482,9 @@
         "anchor_id": "waitlist",
         "eyebrow": "CALZADA DEL VALLE · MONTERREY MX",
         "heading": "Measured body.\n<strong>Optimized life.</strong>",
-        "button_label": "Join the waiting list",
+        "button_label": "Book your visit",
         "button_opens_modal": true,
-        "button_link": "",
+        "button_link": "https://agendar.galimhealth.com/agendar",
         "note": "OPENING NOVEMBER 1ST",
         "bg_color": "#135e73"
       }
@@ -495,10 +495,10 @@
     "gap",
     "steps",
     "visit_gallery",
+    "app_cta",
     "carousel",
     "protocols",
     "two_axes",
-    "app_cta",
     "diagnostics",
     "method",
     "final_cta"
