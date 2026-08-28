@@ -187,7 +187,7 @@
           {%- if s.button_opens_modal -%}
             <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.button_label }} →</a>
           {%- else -%}
-            <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid">{{ s.button_label }} →</a>
+            <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid" target="_blank" rel="noopener">{{ s.button_label }} →</a>
           {%- endif -%}
         {%- endif -%}
 

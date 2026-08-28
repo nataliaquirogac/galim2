@@ -23,7 +23,7 @@
       {%- if s.button_opens_modal -%}
         <a href="#" class="gh-btn gh-btn--solid gh-cta__btn" data-gh-waitlist-open>{{ s.button_label }} →</a>
       {%- else -%}
-        <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid gh-cta__btn">{{ s.button_label }} →</a>
+        <a href="{{ s.button_link | default: '#' }}" class="gh-btn gh-btn--solid gh-cta__btn" target="_blank" rel="noopener">{{ s.button_label }} →</a>
       {%- endif -%}
     {%- endif -%}
     {%- if s.note != blank -%}<p class="gh-cta__note">{{ s.note }}</p>{%- endif -%}

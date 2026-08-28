@@ -94,7 +94,7 @@
         "subheading": "",
         "council_line": "",
         "button_label": "Book your visit",
-        "button_opens_modal": true,
+        "button_opens_modal": false,
         "button_link": "https://agendar.galimhealth.com/agendar",
         "coords": "CALZADA DEL VALLE"
       }
@@ -191,7 +191,8 @@
       "settings": {
         "anchor_id": "visit",
         "eyebrow": "THE SPACE",
-        "heading": "Book your visit"
+        "heading": "Book your visit",
+        "button_link": "https://agendar.galimhealth.com/agendar"
       }
     },
     "app_cta": {
@@ -483,7 +484,7 @@
         "eyebrow": "CALZADA DEL VALLE · MONTERREY MX",
         "heading": "Measured body.\n<strong>Optimized life.</strong>",
         "button_label": "Book your visit",
-        "button_opens_modal": true,
+        "button_opens_modal": false,
         "button_link": "https://agendar.galimhealth.com/agendar",
         "note": "OPENING NOVEMBER 1ST",
         "bg_color": "#135e73"

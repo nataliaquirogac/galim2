@@ -54,7 +54,11 @@
           {%- endfor -%}
         {%- endform -%}
       {%- endif -%}
-      <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- if s.waitlist_link != blank -%}
+        <a href="{{ s.waitlist_link }}" class="gh-header__cta" target="_blank" rel="noopener">{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- else -%}
+        <a href="#" class="gh-header__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- endif -%}
     </div>
 
     <button type="button" class="gh-header__burger" data-gh-drawer-toggle aria-label="Menu" aria-expanded="false" aria-controls="gh-drawer">
@@ -82,7 +86,11 @@
       {%- if s.show_login -%}
         <a href="{{ login_url }}" class="gh-drawer__login">{{ s.login_label | default: 'LOG IN' }}</a>
       {%- endif -%}
-      <a href="#" class="gh-btn gh-btn--solid gh-drawer__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- if s.waitlist_link != blank -%}
+        <a href="{{ s.waitlist_link }}" class="gh-btn gh-btn--solid gh-drawer__cta" target="_blank" rel="noopener">{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- else -%}
+        <a href="#" class="gh-btn gh-btn--solid gh-drawer__cta" data-gh-waitlist-open>{{ s.waitlist_label | default: 'JOIN WAITLIST' }}</a>
+      {%- endif -%}
     </div>
   </aside>
 </div>
@@ -324,6 +332,12 @@
       "id": "waitlist_label",
       "label": "Waitlist button label",
       "default": "JOIN WAITLIST"
+    },
+    {
+      "type": "url",
+      "id": "waitlist_link",
+      "label": "Waitlist button link",
+      "info": "Opens in a new tab. Leave blank to open the waitlist modal instead."
     }
   ]
 }

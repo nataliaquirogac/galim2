@@ -30,7 +30,8 @@
         "show_login": false,
         "login_label": "LOG IN",
         "login_url": "",
-        "waitlist_label": "BOOK YOUR VISIT"
+        "waitlist_label": "BOOK YOUR VISIT",
+        "waitlist_link": "https://agendar.galimhealth.com/agendar"
       }
     }
   },

@@ -40,7 +40,11 @@
   <div class="gh-container gh-gallery__head">
     {%- if s.eyebrow != blank -%}<p class="gh-eyebrow gh-gallery__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
     {%- if s.heading != blank -%}
-      <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.heading }}</a>
+      {%- if s.button_link != blank -%}
+        <a href="{{ s.button_link }}" class="gh-btn gh-btn--solid" target="_blank" rel="noopener">{{ s.heading }}</a>
+      {%- else -%}
+        <a href="#" class="gh-btn gh-btn--solid" data-gh-waitlist-open>{{ s.heading }}</a>
+      {%- endif -%}
     {%- endif -%}
   </div>
 
@@ -143,7 +147,8 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "visit" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE SPACE" },
-    { "type": "text", "id": "heading", "label": "Button label (opens waitlist modal)", "default": "Book your visit" }
+    { "type": "text", "id": "heading", "label": "Button label", "default": "Book your visit" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Opens in a new tab. Leave blank to open the waitlist modal instead." }
   ],
   "max_blocks": 12,
   "blocks": [
