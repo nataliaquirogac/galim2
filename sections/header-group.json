@@ -16,7 +16,7 @@
       "settings": {
         "text": "CALZADA DEL VALLE, SSPG",
         "show_glyphs": true,
-        "bg_color": "#0D3B46",
+        "bg_color": "#0d3b46",
         "text_color": "#f7f5f3"
       }
     },
@@ -30,7 +30,7 @@
         "show_login": false,
         "login_label": "LOG IN",
         "login_url": "",
-        "waitlist_label": "JOIN WAITLIST"
+        "waitlist_label": "BOOK YOUR VISIT"
       }
     }
   },
