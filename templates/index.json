@@ -265,48 +265,56 @@
         },
         "item_3zaLMx": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "AI Body Measurements"
           }
         },
         "m6": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Lungs"
           }
         },
         "item_6WJCYy": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Bone"
           }
         },
         "item_jCmJiH": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Cardiovascular"
           }
         },
         "m9": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Arteries"
           }
         },
         "m1": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Eyes"
           }
         },
         "m2": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Ears"
           }
         },
         "m3": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "name": "Mobility"
           }
