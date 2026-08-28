@@ -235,8 +235,8 @@
           "type": "item",
           "settings": {
             "name": "Strength",
-            "image": "shopify://shop_images/fuerza_536af188-b29b-463e-a944-c42812c866aa.png",
-            "image_mobile": "shopify://shop_images/fuerza_mobile_d3c68c1a-357e-4391-8e75-ec461ebb10fa.png"
+            "image": "shopify://shop_images/strength_01eb61f5-ec53-4e4a-95d1-ca598ce4e2f6.png",
+            "image_mobile": "shopify://shop_images/strength_mobile_390aa4d6-6730-4183-9c1e-144eb67a4089.png"
           }
         },
         "m7": {
