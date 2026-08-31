@@ -513,12 +513,23 @@
 
     function showIndex(index) {
       index = String(index);
+      var activeTab = null;
       tabs.forEach(function (t) {
-        t.setAttribute('aria-selected', String(t.getAttribute('data-gh-mq-index') === index));
+        var on = t.getAttribute('data-gh-mq-index') === index;
+        t.setAttribute('aria-selected', String(on));
+        if (on) activeTab = t;
       });
       panels.forEach(function (p) {
         p.hidden = p.getAttribute('data-gh-mq-index') !== index;
       });
+      /* Keep the active tab centred in the (horizontally scrollable) bar so
+         swiping through the photos scrolls the name row along with them —
+         not just toggling which name is highlighted in whatever position it
+         already sits at. block: 'nearest' keeps this from also scrolling the
+         page vertically to bring the bar into view. */
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
     }
 
     tabs.forEach(function (tab) {
