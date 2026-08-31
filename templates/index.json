@@ -273,9 +273,10 @@
         },
         "item_3zaLMx": {
           "type": "item",
-          "disabled": true,
           "settings": {
-            "name": "AI Body Measurements"
+            "name": "AI Body Measurements",
+            "image": "shopify://shop_images/IA_body_measurements.png",
+            "image_mobile": "shopify://shop_images/body_measurements.png"
           }
         },
         "item_6WJCYy": {
@@ -287,9 +288,10 @@
         },
         "m9": {
           "type": "item",
-          "disabled": true,
           "settings": {
-            "name": "Arteries"
+            "name": "Arteries",
+            "image": "shopify://shop_images/arteries_1.png",
+            "image_mobile": "shopify://shop_images/arteries.png"
           }
         },
         "item_pAdYih": {
