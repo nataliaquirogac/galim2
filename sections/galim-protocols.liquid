@@ -25,7 +25,7 @@
                 {%- if b.name != blank -%}<h3 class="gh-pkg__name">{{ b.name }}</h3>{%- endif -%}
                 {%- if b.price != blank -%}<div class="gh-pkg__price">{{ b.price }} <span class="gh-pkg__unit">{{ b.price_unit }}</span></div>{%- endif -%}
               </div>
-              {%- if b.included_note != blank -%}<p class="gh-pkg__included">{{ b.included_note }}</p>{%- endif -%}
+              <p class="gh-pkg__included">{{ b.included_note }}</p>
               {%- if b.subtitle != blank -%}<div class="gh-pkg__subtitle">{{ b.subtitle }}</div>{%- endif -%}
               {%- if b.tags != blank -%}
                 <div class="gh-pkg__tags">
@@ -166,7 +166,9 @@
   }
   .gh-pkg__price { flex: none; white-space: nowrap; font: 500 22px/1 var(--gh-mono); color: var(--gh-brand); letter-spacing: 0; }
   .gh-pkg__unit { font-size: 12px; }
-  .gh-pkg__included { font: 400 italic 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 10px 0 0; padding: 0; }
+  /* Always in the DOM, even empty — reserves its line so a card without this
+     note still lines up with one that has it, instead of being shorter. */
+  .gh-pkg__included { font: 400 italic 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 10px 0 0; padding: 0; min-height: 1.4em; }
   .gh-pkg__subtitle { font: 400 16px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 14px 0 0; padding: 0; }
   .gh-pkg__subtitle strong { font-weight: 700; color: var(--gh-light); }
   /* Tag pills — the compact preview of what's measured, always visible. */
@@ -274,7 +276,7 @@
       "settings": [
         { "type": "text", "id": "name", "label": "Name", "default": "Performance" },
         { "type": "richtext", "id": "subtitle", "label": "Subtitle (under name, bold the duration)", "default": "<p><strong>25 min.</strong> Six systems, one number.</p>" },
-        { "type": "text", "id": "included_note", "label": "Included note (italic, under name)", "info": "E.g. \"Includes Body Performance Scan\" — leave blank to hide." },
+        { "type": "text", "id": "included_note", "label": "Included note (italic, under name)", "info": "E.g. \"Includes Body Performance Scan\". This line always reserves its space (even left blank) so every card's header lines up at the same height." },
         { "type": "text", "id": "price", "label": "Price", "default": "$1,499" },
         { "type": "text", "id": "price_unit", "label": "Price unit", "default": "MXN" },
         { "type": "textarea", "id": "tags", "label": "Summary tags (one per line)", "info": "Short pills shown under the subtitle, visible whether the card is open or closed.", "default": "Body fat & muscle\nStrength\nVO2 max\nStability & mobility\nBody measurements" },
