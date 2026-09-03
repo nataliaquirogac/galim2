@@ -170,6 +170,11 @@
      note still lines up with one that has it, instead of being shorter. */
   .gh-pkg__included { font: 400 italic 14px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 10px 0 0; padding: 0; min-height: 1.4em; }
   .gh-pkg__subtitle { font: 400 16px/1.4 var(--gh-mono); color: var(--gh-muted); margin: 14px 0 0; padding: 0; }
+  /* Richtext field: whether she writes it as one <p> or splits the bold
+     duration into its own, both must read as a single line — not two
+     paragraphs with the browser's default spacing between them. */
+  .gh-pkg__subtitle p { display: inline; margin: 0; }
+  .gh-pkg__subtitle p + p::before { content: " "; }
   .gh-pkg__subtitle strong { font-weight: 700; color: var(--gh-light); }
   /* Tag pills — the compact preview of what's measured, always visible. */
   .gh-pkg__tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
