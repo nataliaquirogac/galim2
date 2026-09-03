@@ -358,7 +358,7 @@
           "type": "package",
           "settings": {
             "name": "Body Performance",
-            "subtitle": "<p><strong>25 minutes.</strong> Six systems. One number.</p>",
+            "subtitle": "<p><strong>25 minutes</strong></p><p> Six systems. One number.</p>",
             "included_note": "",
             "price": "$1,499",
             "price_unit": "MXN",
@@ -377,7 +377,7 @@
           "type": "package",
           "settings": {
             "name": "Prevention",
-            "subtitle": "<p><strong>50 minutes.</strong> Every system. Your biological age.</p>",
+            "subtitle": "<p><strong>50 minutes</strong></p><p>Every system. Your biological age.</p>",
             "included_note": "Body Performance included",
             "price": "$4,999",
             "price_unit": "MXN",
